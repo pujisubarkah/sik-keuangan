@@ -1,8 +1,11 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('/main_logo.png')">
-    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('/main_logo.png')">
+    <!-- Gambar lanri.png di atas background main_logo.png di sebelah kiri -->
+    <!-- Logo lanri.png di atas form login, agak ke kanan -->
+    <img src="/lanri.png" alt="LANRI" class="absolute top-16 left-1/2 transform -translate-x-1/2 w-[320px] max-w-[60vw] h-auto opacity-90 z-10" />
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
-    <div class="relative z-10 w-full max-w-md mx-4">
+    <div class="fixed top-12 right-12 z-20 w-full max-w-md">
       <!-- Login Box -->
       <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
         <!-- Header -->
@@ -141,21 +144,18 @@ const handleLogin = () => {
         // decode token untuk cek role_id
         const tokenParts = res.token.split('.')
         const payload = JSON.parse(atob(tokenParts[1] || ''))
-        const roleId = Number(payload.role_id) // Normalize to number
-        // Determine role string based on role_id
-        const roleString = roleId === 1 ? 'admin' : 'user'
-        // Set user ke Pinia with role_id and role
+        // Set user ke Pinia
         userStore.setUser({ 
           username: form.username, 
           name: res.name || form.username,
-          role: roleString,
-          role_id: roleId,
-          satker_id: payload.satker_id // pastikan JWT login mengandung satker_id
+          role: payload.role || '',
+          role_id: payload.role_id,
+          satker_id: payload.satker_id
         })
-        if (roleId === 1) {
+        if (payload.role_id === 1) {
           navigateTo('/admin')
-        } else if (roleId === 8) {
-          navigateTo(`/${form.username}`)
+        } else if (payload.role_id === 8) {
+          navigateTo(`/${userStore.username}`)
         } else {
           // navigasi sesuai role lain
         }

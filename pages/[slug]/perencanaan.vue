@@ -76,10 +76,10 @@
                   <td class="text-center font-bold text-blue-700">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                   <td class="text-center font-semibold text-blue-600 text-sm">{{ item.kode }}</td>
                   <td class="text-blue-700 font-semibold truncate-cell">
-                    <NuxtLink :to="`/pekerjaan/perencanaan?id=${item.id}`" class="link link-primary font-semibold">{{ item.suboutput }}</NuxtLink>
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.id}`" class="link link-primary font-semibold">{{ item.suboutput }}</NuxtLink>
                   </td>
                   <td class="text-right text-green-700 font-bold pagu-cell"><span class="badge badge-primary" style="font-size:inherit">{{ formatCurrency(item.pagu) }}</span></td>
-                  <td class="text-right text-blue-700 font-bold perencanaan-cell"><NuxtLink :to="`/pekerjaan/perencanaan?id=${item.id}`" class="badge badge-success" style="font-size:inherit">{{ formatCurrency(item.perencanaan) }}</NuxtLink></td>
+                  <td class="text-right text-blue-700 font-bold perencanaan-cell"><NuxtLink :to="`/${$route.params.slug}/suboutput/${item.id}`" class="badge badge-success" style="font-size:inherit">{{ formatCurrency(item.perencanaan) }}</NuxtLink></td>
                   <td class="text-right text-red-700 font-bold selisih-cell"><span class="badge badge-error" style="font-size:inherit">{{ formatCurrency(item.selisih) }}</span></td>
                 </tr>
               </tbody>
