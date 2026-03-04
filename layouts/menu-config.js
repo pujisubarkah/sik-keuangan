@@ -218,6 +218,13 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
       group: 'admin',
       children: []
     },
+    {
+      title: 'Logout',
+      icon: 'heroicons:arrow-left-on-rectangle',
+      to: `/logout`,
+      group: 'navigation',
+      children: []
+    }
   ]
 
   // Menu khusus untuk role_id 8
