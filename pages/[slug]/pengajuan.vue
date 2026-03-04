@@ -16,54 +16,62 @@
     <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <template #header>
         <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
-          <Icon icon="mdi:magnify" class="w-6 h-6 text-blue-500" />
+          <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
           Filter Data
         </h2>
       </template>
       <template #default>
         <form @submit.prevent="filterData">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
-            <div class="form-control md:col-span-4">
+            <div class="md:col-span-4">
               <label class="label">
                 <span class="label-text">Status Data Dukung</span>
               </label>
-              <select v-model="filterForm.status_berkas" class="select select-bordered w-full">
-                <option value="">Semua Status</option>
-                <option value="1">Tersedia</option>
-                <option value="0">Belum Tersedia</option>
-              </select>
+              <div class="relative">
+                <select v-model="filterForm.status_berkas" class="select select-bordered w-full pr-10 custom-select-outline">
+                  <option value="">Semua Status</option>
+                  <option value="1">Tersedia</option>
+                  <option value="0">Belum Tersedia</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </span>
+              </div>
             </div>
-            <div class="form-control md:col-span-3">
-              <label class="label">
-                <span class="label-text">Tanggal Pengajuan Awal</span>
-              </label>
+            <div class="md:col-span-3">
               <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
             </div>
-            <div class="form-control md:col-span-1 flex items-end justify-center">
+            <div class="md:col-span-1 flex items-end justify-center">
               <span class="pb-3">s/d</span>
             </div>
-            <div class="form-control md:col-span-3">
-              <label class="label">
-                <span class="label-text">Tanggal Pengajuan Akhir</span>
-              </label>
+            <div class="md:col-span-3">
               <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="form-control">
+            <div>
               <label class="label">
                 <span class="label-text">Status Data</span>
               </label>
-              <select v-model="filterForm.status_verifikator" class="select select-bordered w-full">
-                <option value="">Semua Data</option>
-                <option value="0">Hanya Pengajuan Baru</option>
-              </select>
+              <div class="relative">
+                <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pr-10 custom-select-outline">
+                  <option value="">Semua Data</option>
+                  <option value="0">Hanya Pengajuan Baru</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </span>
+              </div>
             </div>
           </div>
-          <div>
+          <div class="flex gap-2">
             <Button type="success" @click="filterData" class="w-auto px-6">
-              <Icon icon="mdi:magnify" class="w-4 h-4 mr-2" />
+              <Icon icon="tabler:search" class="w-4 h-4 mr-2" />
               Filter Data
+            </Button>
+            <Button type="outline" @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="w-auto px-6">
+              <Icon icon="tabler:refresh" class="w-4 h-4 mr-2" />
+              Reset
             </Button>
           </div>
         </form>
@@ -368,5 +376,19 @@ onMounted(() => {
 .badge-error {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: #fff;
+}
+.custom-select-outline {
+  border: 2px solid #3b82f6 !important;
+  border-radius: 0.75rem !important;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+.custom-select-outline:focus {
+  border-color: #1d4ed8 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px #60a5fa33;
+}
+.custom-select-outline:hover {
+  border-color: #2563eb !important;
 }
 </style>

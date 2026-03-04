@@ -171,36 +171,38 @@ function submitForm() {
       <template #default>
         <h3 class="text-xl font-bold mb-6">Form Suboutput</h3>
         <form @submit.prevent="submitForm" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block font-semibold mb-1" for="satker">Satker</label>
-              <select v-model="satker" id="satker" class="select select-bordered w-full">
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="satker">Satker</label>
+              <select v-model="satker" id="satker" class="select select-bordered flex-1">
                 <option v-for="s in satkerList" :key="s.value" :value="s.value">{{ s.label }}</option>
               </select>
             </div>
-            <div>
-              <label class="block font-semibold mb-1" for="output">Output <span class="text-red-500">*</span></label>
-              <select v-model="output" id="output" class="select select-bordered w-full" required>
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="output">Output <span class="text-red-500">*</span></label>
+              <select v-model="output" id="output" class="select select-bordered flex-1" required>
                 <option v-for="o in outputList" :key="o.value" :value="o.value">{{ o.label }}</option>
               </select>
             </div>
-            <div class="md:col-span-2">
-              <label class="block font-semibold mb-1" for="suboutput">Suboutput <span class="text-red-500">*</span></label>
-              <textarea v-model="suboutput" id="suboutput" rows="3" class="textarea textarea-bordered w-full" placeholder="Suboutput" required></textarea>
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="suboutput">Suboutput <span class="text-red-500">*</span></label>
+              <textarea v-model="suboutput" id="suboutput" rows="3" class="textarea textarea-bordered flex-1" placeholder="Suboutput" required></textarea>
             </div>
-            <div>
-              <label class="block font-semibold mb-1" for="kode">Kode <span class="text-red-500">*</span></label>
-              <TextField v-model="kode" id="kode" type="text" class="w-full" placeholder="Kode" required maxlength="255" />
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="kode">Kode <span class="text-red-500">*</span></label>
+              <TextField v-model="kode" id="kode" type="text" class="flex-1" placeholder="Kode" required maxlength="255" />
             </div>
-            <div>
-              <label class="block font-semibold mb-1" for="unit">Unit</label>
-              <select v-model="unit" id="unit" class="select select-bordered w-full">
-                <option v-for="u in unitList" :key="u.value" :value="u.value">{{ u.label }}</option>
-              </select>
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="unit">Unit</label>
+              <div class="flex-1">
+                <select v-model="unit" id="unit" class="select select-bordered w-full">
+                  <option v-for="u in unitList" :key="u.value" :value="u.value">{{ u.label }}</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label class="block font-semibold mb-1" for="tahun">Tahun <span class="text-red-500">*</span></label>
-              <TextField v-model="tahun" id="tahun" type="text" class="w-full" placeholder="Tahun" readonly required />
+            <div class="flex items-center gap-4">
+              <label class="w-40 font-semibold mb-0" for="tahun">Tahun <span class="text-red-500">*</span></label>
+              <TextField v-model="tahun" id="tahun" type="text" class="flex-1" placeholder="Tahun" readonly required />
             </div>
           </div>
           <div class="mt-6">

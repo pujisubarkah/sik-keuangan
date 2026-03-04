@@ -24,11 +24,11 @@
     <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <template #default>
         <div class="mb-4 flex gap-2">
-          <NuxtLink to="/admin/suboutput/create" class="btn btn-primary btn-sm">
-            <Icon icon="mdi:plus" class="w-4 h-4 mr-1" /> Tambah Suboutput
+          <NuxtLink to="/admin/suboutput/create" class="btn btn-success btn-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border: none;">
+            <Icon icon="tabler:plus" class="w-4 h-4 mr-1" /> Tambah Suboutput
           </NuxtLink>
-          <NuxtLink to="/admin/suboutput/export" class="btn btn-success btn-sm">
-            <Icon icon="mdi:download" class="w-4 h-4 mr-1" /> Export ke Excel
+          <NuxtLink to="/admin/suboutput/export" class="btn btn-success btn-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border: none;">
+            <Icon icon="tabler:download" class="w-4 h-4 mr-1" /> Export ke Excel
           </NuxtLink>
         </div>
         <div class="mb-2 text-blue-700 font-semibold text-sm">
@@ -236,24 +236,29 @@ const confirmDelete = (id) => { if (confirm('Yakin akan menghapus data?')) { /* 
   width: 100%;
 }
 .suboutput-table th:nth-child(1) { width: 40px; }
-.suboutput-table th:nth-child(2) { width: 100px; }
-.suboutput-table th:nth-child(3) { width: 320px; }
-.suboutput-table th:nth-child(4) { width: 80px; }
-.suboutput-table th:nth-child(5),
-.suboutput-table td.suboutput-jumlah-cell {
-  text-align: left !important;
+/* Lebar kolom lebih besar dan atur overflow agar tidak tabrakan */
+.suboutput-table th:nth-child(2) { width: 140px; }
+.suboutput-table th:nth-child(3) { width: 380px; }
+.suboutput-table th:nth-child(4) { width: 100px; }
+.suboutput-table th:nth-child(5) { width: 160px; }
+.suboutput-table th:nth-child(6) { width: 160px; }
+.suboutput-table th,
+.suboutput-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.suboutput-jumlah-cell {
+.suboutput-table td.suboutput-jumlah-cell {
   font-size: 1rem !important;
   font-weight: 700;
   white-space: nowrap;
   position: relative;
 }
-.suboutput-jumlah-cell span {
+.suboutput-table td.suboutput-jumlah-cell span {
   display: inline-block;
 }
 @media (max-width: 1024px) {
-  .suboutput-table th:nth-child(3) { width: 180px; }
+  .suboutput-table th:nth-child(3) { width: 200px; }
   .suboutput-table th:nth-child(6) { width: 120px; }
 }
 </style>
