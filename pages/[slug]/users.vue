@@ -43,7 +43,7 @@ definePageMeta({ layout: 'default' })
   <div class="pt-14">
 
     <!-- ALERT -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
@@ -190,41 +190,35 @@ definePageMeta({ layout: 'default' })
                     data-tip="Set Password"
                   >
                     <Button type="warning" size="sm" circle>
-                      <Icon icon="mdi:lock-reset" class="w-4 h-4" />
+                      <Icon icon="tabler:lock" class="w-5 h-5" />
                     </Button>
                   </NuxtLink>
                 </td>
 
                 <!-- ACTION -->
                 <td class="text-center">
-                  <div class="flex justify-center gap-1">
+                  <div class="flex justify-center gap-2">
                     <NuxtLink
                       :to="`/admin/user/view/${u.id}`"
-                      data-tip="View"
+                      class="hover:text-blue-700 transition tooltip" data-tip="View"
                     >
-                      <Button type="info" size="sm" circle>
-                        <Icon icon="tabler:eye" class="w-4 h-4" />
-                      </Button>
+                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/user/update/${u.id}`"
-                      data-tip="Update"
+                      class="hover:text-blue-700 transition tooltip" data-tip="Update"
                     >
-                      <Button type="warning" size="sm" circle>
-                        <Icon icon="tabler:pencil" class="w-4 h-4" />
-                      </Button>
+                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
 
-                    <Button
-                      type="error"
-                      size="sm"
-                      circle
-                      data-tip="Delete"
+                    <button
+                      class="hover:text-red-600 transition tooltip" data-tip="Delete"
                       @click="confirm('Yakin hapus user ini?')"
+                      style="background:none;border:none;padding:0;"
                     >
-                      <Icon icon="tabler:trash" class="w-4 h-4" />
-                    </Button>
+                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                    </button>
                   </div>
                 </td>
               </tr>

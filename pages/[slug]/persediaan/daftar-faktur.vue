@@ -51,7 +51,7 @@ const filterData = () => {
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
@@ -134,18 +134,18 @@ const filterData = () => {
                 
                 <!-- Action Icons -->
                 <td class="text-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="btn btn-xs btn-circle btn-ghost tooltip" data-tip="Detail Pengeluaran">
-                    <Icon icon="mdi:file-document" class="w-5 h-5 text-gray-600" />
+                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="hover:text-blue-700 transition tooltip" data-tip="Detail Pengeluaran">
+                    <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                 </td>
                 <td class="text-center">
-                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="btn btn-xs btn-circle btn-ghost tooltip" data-tip="Cetak Faktur">
-                    <Icon icon="mdi:printer" class="w-5 h-5 text-gray-600" />
+                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="hover:text-blue-700 transition tooltip" data-tip="Cetak Faktur">
+                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </a>
                 </td>
                 <td class="text-center">
-                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="btn btn-xs btn-circle btn-info tooltip" data-tip="View">
-                    <Icon icon="mdi:eye" class="w-5 h-5 text-white" />
+                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
+                    <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                 </td>
               </tr>

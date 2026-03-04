@@ -1,54 +1,57 @@
 <!-- filepath: c:\Users\user\Documents\sik-keuangan\components\Header.vue -->
 <template>
-  <div class="navbar bg-blue-900 text-white fixed top-0 left-0 right-0 z-50 shadow-lg min-h-0 h-14 py-0">
-    <div class="navbar-start">
+  <div class="navbar bg-blue-900 text-white fixed top-0 left-0 right-0 z-50 shadow-lg min-h-0 h-20 flex items-center px-4">
+    <div class="flex items-center flex-1 min-w-0">
+      <!-- Sidebar toggle button -->
+      <button
+        class="btn btn-ghost btn-sm btn-circle text-white hover:bg-blue-800 mr-2"
+        @click="toggleSidebar"
+        aria-label="Toggle Sidebar"
+      >
+        <Icon :icon="rail ? 'tabler:chevron-right' : 'tabler:menu'" class="w-5 h-5" />
+      </button>
       <!-- Logo -->
-      <div class="font-bold text-lg px-3 flex items-center gap-2">
+      <div class="font-bold text-lg flex items-center gap-2 whitespace-nowrap">
         <span class="text-green-400">SIK</span>
         <span>LAN</span>
       </div>
-
-      <!-- Sidebar toggle button -->
-      <button
-        class="btn btn-ghost btn-sm btn-circle text-white hover:bg-blue-800"
-        @click="toggleSidebar"
-      >
-        <Icon :icon="rail ? 'mdi:chevron-right' : 'mdi:menu'" class="w-5 h-5" />
-      </button>
     </div>
-
-    <div class="navbar-end">
+    <div class="flex items-center gap-4 ml-auto">
       <!-- Pengajuan Baru Menu -->
-      <div class="dropdown dropdown-end">
+      <div class="dropdown dropdown-end flex items-center">
         <button
           tabindex="0"
-          class="btn btn-ghost btn-sm text-white hover:bg-blue-800 gap-2"
+          class="btn btn-ghost btn-sm text-white gap-2 hover:bg-blue-800 flex items-center"
         >
-          <Icon icon="mdi:cart" class="w-4 h-4" />
-          <span class="text-sm">Pengajuan Baru</span>
-          <div v-if="pengajuanCount > 0" class="badge bg-green-500 text-white border-green-600 badge-xs">{{ pengajuanCount }}</div>
+          <Icon icon="tabler:shopping-cart" class="w-5 h-5" />
+          <span class="hidden sm:inline">Pengajuan Baru</span>
+          <div v-if="pengajuanCount > 0" class="badge badge-success badge-sm">{{ pengajuanCount }}</div>
         </button>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-base-content">
-
+          <!-- Tambahkan item pengajuan di sini jika ada -->
         </ul>
       </div>
 
-      <!-- User Menu -->
-      <div class="dropdown dropdown-end">
+      <!-- User Menu (panel style) -->
+      <div class="dropdown dropdown-end flex items-center">
         <button
           tabindex="0"
-          class="btn btn-ghost btn-sm text-white hover:bg-blue-800 gap-2"
+          class="btn btn-ghost btn-sm text-white gap-2 hover:bg-blue-800 flex items-center"
         >
-          <Icon icon="mdi:account-circle" class="w-5 h-5" />
-          <span class="text-sm">{{ username }}</span>
-          <Icon icon="mdi:chevron-down" class="w-3 h-3" />
+          <div class="user-panel flex items-center bg-blue-950 rounded-lg shadow px-3 py-1">
+            <div class="pull-left image mr-2">
+              <Icon icon="mdi:account-circle" class="w-8 h-8 text-green-400" />
+            </div>
+            <div class="pull-left info flex flex-col items-start">
+              <span class="font-semibold leading-tight text-sm">{{ username }}</span>
+              <span class="flex items-center text-xs text-green-400">
+                <Icon icon="fa:circle" class="w-3 h-3 text-success mr-1" /> Online
+              </span>
+            </div>
+          </div>
+          <Icon icon="tabler:chevron-down" class="w-4 h-4 ml-1" />
         </button>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li class="menu-title">
-            <div class="flex flex-col items-center py-3">
-              <p class="font-semibold text-base">{{ username }}</p>
-            </div>
-          </li>
         </ul>
       </div>
     </div>

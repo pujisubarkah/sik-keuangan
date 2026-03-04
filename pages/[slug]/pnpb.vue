@@ -1,7 +1,7 @@
 <template>
   <div class="pt-14 px-1 md:px-2">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6 mx-auto max-w-7xl">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 mx-auto max-w-7xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <i class="fa fa-exclamation-triangle"></i>
         <span>

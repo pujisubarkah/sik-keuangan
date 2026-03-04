@@ -1,7 +1,7 @@
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
       <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
       untuk memperbaiki.
@@ -152,15 +152,15 @@
                   <span class="badge badge-success">{{ item.jumlah_data_dukung }}</span>
                 </td>
                 <td class="text-center">
-                  <div class="flex gap-1 justify-center">
-                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="btn btn-xs btn-circle btn-info tooltip" data-tip="Lihat Berkas">
-                      <Icon icon="tabler:eye" class="w-5 h-5" />
+                  <div class="flex gap-2 justify-center">
+                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Sunting">
-                      <Icon icon="tabler:pencil" class="w-5 h-5" />
+                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="btn btn-xs btn-circle btn-error tooltip text-white" data-tip="Hapus">
-                      <Icon icon="tabler:trash" class="w-5 h-5" />
+                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>

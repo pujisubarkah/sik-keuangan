@@ -16,7 +16,7 @@ definePageMeta({ layout: 'default' });
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Barang Persediaan</h1>
    
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
@@ -130,15 +130,15 @@ definePageMeta({ layout: 'default' });
                 <td class="text-center text-blue-700">{{ getUnitName(item.id_unit) }}</td>
                 <td class="text-center font-semibold text-blue-600">{{ item.kode_akun }}</td>
                 <td class="text-center">
-                  <div class="flex gap-1 justify-center">
-                    <button @click="viewItem(item)" class="btn btn-xs btn-circle btn-info tooltip" data-tip="View">
-                      <Icon icon="tabler:eye" class="w-5 h-5" />
+                  <div class="flex gap-2 justify-center">
+                    <button @click="viewItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
+                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </button>
-                    <button @click="editItem(item)" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Update">
-                      <Icon icon="tabler:pencil" class="w-5 h-5" />
+                    <button @click="editItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
+                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </button>
-                    <button @click="deleteItem(item)" class="btn btn-xs btn-circle btn-error tooltip text-white" data-tip="Delete">
-                      <Icon icon="tabler:trash" class="w-5 h-5" />
+                    <button @click="deleteItem(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
+                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>

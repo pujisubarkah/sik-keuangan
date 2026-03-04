@@ -156,6 +156,12 @@ export default {
 .main-sidebar {
   transition: width 0.3s;
   width: 16rem;
+  position: fixed;
+  top: 5rem; /* 80px, matches h-20 (header) */
+  left: 0;
+  height: calc(100vh - 5rem);
+  z-index: 30;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
 }
 .main-sidebar.rail {
   width: 4.5rem;
@@ -164,6 +170,8 @@ export default {
   /* Custom scrollbar for sidebar */
   scrollbar-width: thin;
   scrollbar-color: #1e3a8a #172554;
+  overflow-y: auto;
+  max-height: calc(100vh - 18rem);
 }
 .sidebar-menu::-webkit-scrollbar {
   width: 6px;
@@ -174,14 +182,6 @@ export default {
 }
 .sidebar-menu::-webkit-scrollbar-track {
   background: #172554;
-}
-.main-sidebar {
-  position: fixed;
-  top: 3.5rem;
-  left: 0;
-  height: calc(100vh - 3.5rem);
-  z-index: 30;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
 }
 .user-panel img {
   width: 48px;
@@ -198,9 +198,5 @@ export default {
 }
 .sidebar-form input::placeholder {
   color: #93c5fd;
-}
-.sidebar-menu {
-  overflow-y: auto;
-  max-height: calc(100vh - 18rem);
 }
 </style>

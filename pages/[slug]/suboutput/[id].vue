@@ -1,8 +1,8 @@
 <template>
      <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
+        <Icon icon="tabler:alert-circle" class="w-6 h-6 text-blue-600" />
         <span>
           Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
           <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
@@ -13,11 +13,11 @@
    
 
       <!-- Detail Suboutput Section -->
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Detail Suboutput</h3>
-        </div>
-        <div class="box-body">
+      <Card class="mb-6">
+        <template #header>
+          <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
+        </template>
+        <div class="p-4">
           <table class="table table-hover table-condensed">
             <tbody>
               <tr><th>Unit</th><td>{{ subOutputData.unit }}</td></tr>
@@ -30,83 +30,82 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </Card>
 
       <!-- Tombol Aksi Section -->
-      <div class="box-footer with-border flex flex-wrap gap-2 items-center">
-        <button class="btn btn-success btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handleEdit">
-          <Icon icon="mdi:pencil" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
+      <div class="flex flex-wrap gap-2 items-center mb-6">
+        <button class="btn bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-800 transition flex items-center gap-1" @click="handleEdit">
+          <Icon icon="tabler:pencil" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
         </button>
-        <button class="btn btn-primary btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handleAnggaran">
-          <Icon icon="mdi:cash-multiple" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Anggaran</span>
+        <button class="btn bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition flex items-center gap-1" @click="handleAnggaran">
+          <Icon icon="tabler:cash" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Anggaran</span>
         </button>
-        <button class="btn btn-danger btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handlePengeluaran">
-          <Icon icon="mdi:cart" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengeluaran</span> <span class="ml-1">({{ stats.pengeluaranCount }})</span>
+        <button class="btn bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition flex items-center gap-1" @click="handlePengeluaran">
+          <Icon icon="tabler:shopping-cart" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengeluaran</span> <span class="ml-1">({{ stats.pengeluaranCount }})</span>
         </button>
-        <button class="btn btn-warning btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handlePengajuan">
-          <Icon icon="mdi:arrow-up-bold-circle" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengajuan</span> <span class="ml-1">({{ stats.pengajuanCount }})</span>
+        <button class="btn bg-yellow-400 text-white rounded-lg shadow-md hover:bg-yellow-500 transition flex items-center gap-1" @click="handlePengajuan">
+          <Icon icon="tabler:arrow-up-circle" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengajuan</span> <span class="ml-1">({{ stats.pengajuanCount }})</span>
         </button>
-        <button class="btn btn-success btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handlePerencanaan">
-          <Icon icon="mdi:calendar" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
+        <button class="btn bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition flex items-center gap-1" @click="handlePerencanaan">
+          <Icon icon="tabler:calendar" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
         </button>
-        <button class="btn btn-danger btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-1" @click="handleSalin">
-          <Icon icon="mdi:content-copy" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
+        <button class="btn bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition flex items-center gap-1" @click="handleSalin">
+          <Icon icon="tabler:copy" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
         </button>
-        <div class="btn-group btn-flat">
-          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            <Icon icon="mdi:refresh" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Refresh</span> <span class="caret"></span>
+        <div class="relative inline-block">
+          <button class="btn bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition flex items-center gap-1" @click="showDropdown = !showDropdown">
+            <Icon icon="tabler:refresh" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Refresh</span>
+            <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
-            <li><a href="#" @click.prevent="refreshData('pagu')">Refresh Pagu</a></li>
-            <li><a href="#" @click.prevent="refreshData('realisasi')">Refresh Realisasi</a></li>
-            <li><a href="#" @click.prevent="refreshData('perencanaan')">Refresh Perencanaan</a></li>
-          </ul>
+          <div v-if="showDropdown" class="absolute z-10 mt-2 w-40 bg-white border rounded shadow-lg">
+            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('pagu')">Refresh Pagu</a>
+            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('realisasi')">Refresh Realisasi</a>
+            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('perencanaan')">Refresh Perencanaan</a>
+          </div>
         </div>
       </div>
 
     <!-- Rekap Perencanaan Section -->
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">Rekap Perencanaan</h3>
-      </div>
-      <div class="box-body">
-        <div class="flex flex-col md:flex-row gap-4 w-full">
-          <!-- Pagu -->
-          <div class="flex-1">
-            <div class="small-box bg-blue h-full flex flex-col justify-between">
-              <div class="inner">
-                <p>Pagu Anggaran</p>
-                <h3 style="font-size:24px">Rp {{ formatCurrency(stats.pagu) }}</h3>
-              </div>
-              <div class="icon"><i class="fa fa-shopping-cart"></i></div>
-              <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
+    <Card class="mb-6">
+      <template #header>
+        <h3 class="text-xl font-bold text-blue-700">Rekap Perencanaan</h3>
+      </template>
+      <div class="p-4 flex flex-col md:flex-row gap-4 w-full">
+        <!-- Pagu -->
+        <div class="flex-1 bg-blue-50 rounded-xl p-4 flex flex-col justify-between">
+          <div>
+            <p class="text-blue-700 font-semibold">Pagu Anggaran</p>
+            <h3 class="text-2xl font-bold text-blue-900">Rp {{ formatCurrency(stats.pagu) }}</h3>
           </div>
-          <!-- Perencanaan -->
-          <div class="flex-1">
-            <div class="small-box bg-green h-full flex flex-col justify-between">
-              <div class="inner">
-                <p>Perencanaan</p>
-                <h3 style="font-size:24px">Rp {{ formatCurrency(stats.perencanaan) }}</h3>
-              </div>
-              <div class="icon"><i class="fa fa-tags"></i></div>
-              <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
+          <div class="flex items-center gap-2 mt-2">
+            <Icon icon="tabler:shopping-cart" class="w-6 h-6 text-blue-500" />
+            <span class="text-xs text-blue-500">More info</span>
           </div>
-          <!-- Selisih -->
-          <div class="flex-1">
-            <div class="small-box bg-red h-full flex flex-col justify-between">
-              <div class="inner">
-                <p>Selisih</p>
-                <h3 style="font-size:24px">Rp {{ formatCurrency(stats.selisih) }}</h3>
-              </div>
-              <div class="icon"><i class="fa fa-circle-o"></i></div>
-              <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
+        </div>
+        <!-- Perencanaan -->
+        <div class="flex-1 bg-green-50 rounded-xl p-4 flex flex-col justify-between">
+          <div>
+            <p class="text-green-700 font-semibold">Perencanaan</p>
+            <h3 class="text-2xl font-bold text-green-900">Rp {{ formatCurrency(stats.perencanaan) }}</h3>
+          </div>
+          <div class="flex items-center gap-2 mt-2">
+            <Icon icon="tabler:tags" class="w-6 h-6 text-green-500" />
+            <span class="text-xs text-green-500">More info</span>
+          </div>
+        </div>
+        <!-- Selisih -->
+        <div class="flex-1 bg-red-50 rounded-xl p-4 flex flex-col justify-between">
+          <div>
+            <p class="text-red-700 font-semibold">Selisih</p>
+            <h3 class="text-2xl font-bold text-red-900">Rp {{ formatCurrency(stats.selisih) }}</h3>
+          </div>
+          <div class="flex items-center gap-2 mt-2">
+            <Icon icon="tabler:circle" class="w-6 h-6 text-red-500" />
+            <span class="text-xs text-red-500">More info</span>
           </div>
         </div>
       </div>
-    </div>
+    </Card>
 
    
     <div class="pt-14 flex flex-col gap-6">
@@ -117,7 +116,7 @@
           <div class="px-5 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
               <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
-                <Icon icon="mdi:chart-bar" class="w-4 h-4 text-blue-600" />
+                <Icon icon="tabler:chart-bar" class="w-4 h-4 text-blue-600" />
               </div>
               <div>
                 <h3 class="font-semibold text-gray-800">Penyerapan Anggaran</h3>
@@ -141,7 +140,7 @@
           <div class="px-5 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
               <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-green-100">
-                <Icon icon="mdi:chart-line" class="w-4 h-4 text-green-600" />
+                <Icon icon="tabler:chart-line" class="w-4 h-4 text-green-600" />
               </div>
               <div>
                 <h3 class="font-semibold text-gray-800">Pengeluaran Anggaran</h3>

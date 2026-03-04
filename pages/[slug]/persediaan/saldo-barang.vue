@@ -105,9 +105,9 @@ function cetakPdf() {
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
+        <Icon icon="tabler:alert-circle" class="w-6 h-6 text-blue-600" />
         <span>
           Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
           <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
@@ -119,7 +119,7 @@ function cetakPdf() {
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700">
-        <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
+        <Icon icon="tabler:home" class="w-4 h-4 inline text-blue-600" /> Dashboard
       </NuxtLink>
       <span>/</span>
       <span>Persediaan</span>
@@ -133,7 +133,7 @@ function cetakPdf() {
     <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <div class="card-body">
         <div class="text-sm mb-4 text-blue-700 font-semibold flex items-center gap-2">
-          <Icon icon="mdi:filter-variant" class="w-5 h-5" />
+          <Icon icon="tabler:filter" class="w-5 h-5" />
           Filter Pencarian
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -168,7 +168,7 @@ function cetakPdf() {
         </div>
         <div class="card-actions justify-end mt-4">
           <button @click="filterData" type="button" class="btn btn-success btn-sm px-6">
-            <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
+            <Icon icon="tabler:search" class="w-4 h-4 mr-1" />
             Filter
           </button>
         </div>
@@ -178,11 +178,11 @@ function cetakPdf() {
     <!-- Action Buttons -->
     <div class="flex flex-wrap gap-3 mb-4">
       <NuxtLink to="/admin/persediaan/create" class="btn btn-success btn-sm shadow-md">
-        <Icon icon="mdi:plus" class="w-4 h-4 mr-1" />
+        <Icon icon="tabler:plus" class="w-4 h-4 mr-1" />
         Tambah Barang Persediaan
       </NuxtLink>
       <button @click="cetakPdf" type="button" class="btn btn-info btn-sm shadow-md text-white">
-        <Icon icon="mdi:printer" class="w-4 h-4 mr-1" />
+        <Icon icon="tabler:printer" class="w-4 h-4 mr-1" />
         Cetak Rekap Saldo
       </button>
     </div>
@@ -217,7 +217,7 @@ function cetakPdf() {
               <!-- Group Header (Unit Name) -->
               <tr class="bg-blue-50/50">
                 <td colspan="10" class="font-bold text-blue-800 py-3 pl-4 border-b-2 border-blue-200">
-                  <Icon icon="mdi:folder-account" class="w-5 h-5 inline mr-2 text-blue-600" />
+                  <Icon icon="tabler:folder" class="w-5 h-5 inline mr-2 text-blue-600" />
                   {{ group.unitName }}
                 </td>
               </tr>
@@ -249,7 +249,7 @@ function cetakPdf() {
             <!-- Empty State -->
             <tr v-if="tableData.length === 0">
               <td colspan="10" class="text-center py-10 text-gray-400">
-                <Icon icon="mdi:inbox-empty" class="w-12 h-12 mx-auto mb-2" />
+                <Icon icon="tabler:inbox" class="w-12 h-12 mx-auto mb-2" />
                 Tidak ada data ditemukan
               </td>
             </tr>

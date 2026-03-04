@@ -31,7 +31,7 @@ const formatCurrency = (value) =>
 <template>
   <div class="pt-14">
     <!-- ALERT -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
@@ -109,32 +109,26 @@ const formatCurrency = (value) =>
 
                 <!-- ACTION -->
                 <td class="text-center">
-                  <div class="flex justify-center gap-1">
+                  <div class="flex justify-center gap-2">
                     <NuxtLink
                       :to="`/admin/omspan/preview/${row.id}`"
-                      data-tip="Preview"
+                      class="hover:text-blue-700 transition tooltip" data-tip="Preview"
                     >
-                      <Button type="info" size="sm" circle>
-                        <Icon icon="tabler:eye" class="w-4 h-4" />
-                      </Button>
+                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/omspan/sendEmail/${row.id}`"
-                      data-tip="Kirim Email"
+                      class="hover:text-blue-700 transition tooltip" data-tip="Kirim Email"
                     >
-                      <Button type="success" size="sm" circle>
-                        <Icon icon="mdi:send" class="w-4 h-4" />
-                      </Button>
+                      <Icon icon="mdi:send" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/omspan/update/${row.id}`"
-                      data-tip="Penerima Email"
+                      class="hover:text-blue-700 transition tooltip" data-tip="Penerima Email"
                     >
-                      <Button type="warning" size="sm" circle>
-                        <Icon icon="mdi:account" class="w-4 h-4" />
-                      </Button>
+                      <Icon icon="mdi:account" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                   </div>
                 </td>

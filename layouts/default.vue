@@ -1,12 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
     <Header :rail="rail" @toggle-sidebar="toggleSidebar" />
-    <div class="flex pt-14">
-      <Sidebar :rail="rail" />
-      <main :class="[rail ? 'ml-20' : 'ml-64', 'flex-1 px-6 py-6', 'transition-all duration-300']">
-        <slot />
-      </main>
-    </div>
+    <!-- Sidebar top offset and main padding-top must match header height -->
+    <Sidebar :rail="rail" class="fixed top-20 left-0 z-30" />
+    <main :class="[rail ? 'ml-20' : 'ml-64', 'pt-20', 'transition-all duration-300', 'px-6', 'py-6']">
+      <slot />
+    </main>
     <!-- <Footer /> jika ada -->
   </div>
 </template>

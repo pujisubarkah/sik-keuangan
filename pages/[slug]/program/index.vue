@@ -1,7 +1,7 @@
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
+    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
@@ -74,16 +74,16 @@
                 <td class="text-center"><span class="badge badge-warning badge-lg text-white font-bold">{{ item.suboutput }}</span></td>
                 <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah) }}</td>
                 <td class="text-center">
-                  <div class="flex gap-1 justify-center">
-                    <NuxtLink :to="`/${$route.params.slug}/program/view/${item.id}`" class="btn btn-xs btn-circle btn-info tooltip" data-tip="View">
-                      <Icon icon="tabler:eye" class="w-5 h-5" />
+                  <div class="flex gap-2 justify-center">
+                    <NuxtLink :to="`/${$route.params.slug}/program/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
+                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/program/update?id=${item.id}`" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Update">
-                      <Icon icon="tabler:pencil" class="w-5 h-5" />
+                    <NuxtLink :to="`/program/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
+                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <Button @click="confirmDelete(item.id)" size="sm" circle class="btn-error tooltip text-white" data-tip="Delete">
-                      <Icon icon="tabler:trash" class="w-5 h-5" />
-                    </Button>
+                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
+                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                    </button>
                   </div>
                 </td>
               </tr>
