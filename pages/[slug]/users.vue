@@ -1,6 +1,5 @@
 <script setup>
-definePageMeta({ layout: 'default' })
-
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
@@ -36,6 +35,8 @@ const users = ref([
     lastLogin: 'Sabtu, 28 Februari 2026 19:30 WIB'
   }
 ])
+
+definePageMeta({ layout: 'default' })
 </script>
 
 <template>
@@ -74,17 +75,20 @@ const users = ref([
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card>
+      <template #header>
+        <h2 class="text-xl font-bold text-blue-700">Daftar Admin</h2>
+      </template>
 
         <!-- ACTION -->
         <div class="mb-4">
           <NuxtLink
             to="/admin/user/create?role=admin"
-            class="btn btn-success"
           >
-            <Icon icon="mdi:plus" class="w-5 h-5 mr-2" />
-            Tambah Admin
+            <Button type="success">
+              <Icon icon="mdi:plus" class="w-5 h-5 mr-2" />
+              Tambah Admin
+            </Button>
           </NuxtLink>
         </div>
 
@@ -111,17 +115,17 @@ const users = ref([
               <tr class="bg-blue-50">
                 <td></td>
                 <td>
-                  <input
+                  <TextField
                     v-model="filter.nama"
-                    class="input input-bordered input-xs w-full"
                     placeholder="Nama"
+                    size="sm"
                   />
                 </td>
                 <td>
-                  <input
+                  <TextField
                     v-model="filter.username"
-                    class="input input-bordered input-xs w-full"
                     placeholder="Username"
+                    size="sm"
                   />
                 </td>
                 <td>
@@ -183,10 +187,11 @@ const users = ref([
                 <td class="text-center">
                   <NuxtLink
                     :to="`/admin/user/set-password/${u.id}`"
-                    class="btn btn-xs btn-circle btn-warning tooltip"
                     data-tip="Set Password"
                   >
-                    <Icon icon="mdi:lock-reset" class="w-4 h-4" />
+                    <Button type="warning" size="sm" circle>
+                      <Icon icon="mdi:lock-reset" class="w-4 h-4" />
+                    </Button>
                   </NuxtLink>
                 </td>
 
@@ -195,27 +200,31 @@ const users = ref([
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/admin/user/view/${u.id}`"
-                      class="btn btn-xs btn-circle btn-info tooltip"
                       data-tip="View"
                     >
-                      <Icon icon="tabler:eye" class="w-4 h-4" />
+                      <Button type="info" size="sm" circle>
+                        <Icon icon="tabler:eye" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/user/update/${u.id}`"
-                      class="btn btn-xs btn-circle btn-warning tooltip"
                       data-tip="Update"
                     >
-                      <Icon icon="tabler:pencil" class="w-4 h-4" />
+                      <Button type="warning" size="sm" circle>
+                        <Icon icon="tabler:pencil" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
 
-                    <button
-                      class="btn btn-xs btn-circle btn-error tooltip text-white"
+                    <Button
+                      type="error"
+                      size="sm"
+                      circle
                       data-tip="Delete"
                       @click="confirm('Yakin hapus user ini?')"
                     >
                       <Icon icon="tabler:trash" class="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -223,7 +232,6 @@ const users = ref([
           </table>
         </div>
 
-      </div>
-    </div>
+    </Card>
   </div>
 </template>

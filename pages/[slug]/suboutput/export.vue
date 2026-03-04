@@ -1,4 +1,5 @@
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import * as XLSX from 'xlsx'
@@ -109,14 +110,14 @@ function submitForm() {
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl rounded-xl border border-blue-100">
+      <template #default>
         <h3 class="text-xl font-bold mb-6">Filter Pekerjaan</h3>
         <form @submit.prevent="submitForm" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block font-semibold mb-1" for="tahun">Tahun</label>
-              <input v-model="tahun" id="tahun" type="text" class="input input-bordered w-full" placeholder="Tahun, misal: 2015" />
+              <TextField v-model="tahun" id="tahun" type="text" class="w-full" placeholder="Tahun, misal: 2015" />
             </div>
             <div>
               <label class="block font-semibold mb-1" for="unit">Unit</label>
@@ -126,12 +127,12 @@ function submitForm() {
             </div>
           </div>
           <div class="mt-6">
-            <button type="submit" class="btn btn-primary">
+            <Button type="primary" native-type="submit">
               <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Proses
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </template>
+    </Card>
   </div>
 </template>

@@ -1,6 +1,6 @@
-import { pgTable, serial, varchar, integer, timestamp, text } from 'drizzle-orm/pg-core'
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 
 export const satker = pgTable('satker', {
-  id: serial('id').primaryKey(),
-  name: varchar('name'),
-})
+	id: serial('id').primaryKey(),
+	name: varchar('name', { length: 255 }),
+});

@@ -1,8 +1,9 @@
 <script setup>
-definePageMeta({ layout: 'default' })
-
+import { Button, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
+
+definePageMeta({ layout: 'default' })
 
 const showAlert = ref(true)
 
@@ -60,8 +61,10 @@ const formatCurrency = (value) =>
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card>
+      <template #header>
+        <h2 class="text-xl font-bold text-blue-700">Realisasi OMSPAN Terakhir Satker</h2>
+      </template>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
           Menampilkan <span class="font-bold">{{ tableData.length }}</span> satker
         </div>
@@ -109,26 +112,29 @@ const formatCurrency = (value) =>
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/admin/omspan/preview/${row.id}`"
-                      class="btn btn-xs btn-circle btn-info tooltip"
                       data-tip="Preview"
                     >
-                      <Icon icon="tabler:eye" class="w-4 h-4" />
+                      <Button type="info" size="sm" circle>
+                        <Icon icon="tabler:eye" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/omspan/sendEmail/${row.id}`"
-                      class="btn btn-xs btn-circle btn-success tooltip"
                       data-tip="Kirim Email"
                     >
-                      <Icon icon="mdi:send" class="w-4 h-4" />
+                      <Button type="success" size="sm" circle>
+                        <Icon icon="mdi:send" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
 
                     <NuxtLink
                       :to="`/admin/omspan/update/${row.id}`"
-                      class="btn btn-xs btn-circle btn-warning tooltip"
                       data-tip="Penerima Email"
                     >
-                      <Icon icon="mdi:account" class="w-4 h-4" />
+                      <Button type="warning" size="sm" circle>
+                        <Icon icon="mdi:account" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
                   </div>
                 </td>
@@ -157,13 +163,13 @@ const formatCurrency = (value) =>
         <div class="mt-6">
           <NuxtLink
             to="/admin/omspanPengaturan"
-            class="btn btn-success"
           >
-            <Icon icon="mdi:email-edit-outline" class="w-5 h-5 mr-2" />
-            Kelola Isi Konten OMSPAN
+            <Button type="success">
+              <Icon icon="mdi:email-edit-outline" class="w-5 h-5 mr-2" />
+              Kelola Isi Konten OMSPAN
+            </Button>
           </NuxtLink>
         </div>
-      </div>
-    </div>
+    </Card>
   </div>
 </template>

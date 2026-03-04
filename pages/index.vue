@@ -1,177 +1,157 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('/main_logo.png')">
-    <!-- Gambar lanri.png di atas background main_logo.png di sebelah kiri -->
-    <!-- Logo lanri.png di atas form login, agak ke kanan -->
-    <img src="/lanri.png" alt="LANRI" class="absolute top-16 left-1/2 transform -translate-x-1/2 w-[320px] max-w-[60vw] h-auto opacity-90 z-10" />
-    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-
-    <div class="fixed top-12 right-12 z-20 w-full max-w-md">
-      <!-- Login Box -->
-      <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
-        <!-- Header -->
-        <div class="bg-blue-600 px-6 py-4">
-          <h1 class="text-2xl font-bold text-white text-center">
-            Sistem Informasi Keuangan (SIK)
-          </h1>
-        </div>
-
-        <!-- Body -->
-        <div class="px-6 py-8">
-          <p class="text-gray-600 text-center mb-6 text-lg">
-            Silahkan login terlebih dahulu
-          </p>
-
-          <form class="space-y-4" @submit.prevent="handleLogin">
-            <!-- Username Field -->
-            <div class="form-group">
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                </div>
-                <input
-                  v-model="form.username"
-                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Username"
-                  type="text"
-                  required
-                />
-              </div>
-            </div>
-
-            <!-- Password Field -->
-            <div class="form-group">
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                  </svg>
-                </div>
-                <input
-                  v-model="form.password"
-                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Password"
-                  type="password"
-                  required
-                />
-              </div>
-              <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
-            </div>
-
-            <!-- Year Field -->
-            <div class="form-group">
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                </div>
-                <input
-                  v-model="form.tahun"
-                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Tahun"
-                  type="text"
-                  required
-                />
-              </div>
-            </div>
-
-            <!-- Remember Me & Login Button -->
-            <div class="flex items-center justify-between pt-4">
-              <div class="flex items-center">
-                <input
-                  v-model="form.rememberMe"
-                  id="rememberMe"
-                  type="checkbox"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label for="rememberMe" class="ml-2 block text-sm text-gray-700">
-                  Remember me next time
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                LOGIN
-              </button>
-            </div>
-          </form>
-        </div>
+  <div class="pt-14">
+    
+    <!-- BREADCRUMB -->
+    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
+      <div class="flex items-center gap-1 text-blue-700 font-bold">
+        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
       </div>
     </div>
+
+    <!-- TITLE -->
+    <h1 class="text-3xl font-bold text-blue-700 mb-6">
+      Selamat Datang di SIK Keuangan
+    </h1>
+
+    <!-- WELCOME CARD -->
+    <Card class="mb-6">
+      <template #header>
+        <h2 class="text-2xl font-bold text-blue-900">
+          Sistem Informasi Keuangan
+        </h2>
+      </template>
+      <p class="text-blue-800">
+        Kelola data satuan kerja, unit, dan keuangan dengan mudah dan efisien
+      </p>
+    </Card>
+
+    <!-- FEATURE CARDS -->
+    <div class="grid md:grid-cols-3 gap-6 mb-6">
+      
+      <!-- Manajemen Satker -->
+      <Card>
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="bg-blue-100 p-3 rounded-lg">
+              <Icon icon="mdi:office-building" class="w-8 h-8 text-blue-700" />
+            </div>
+            <h3 class="text-xl font-bold text-blue-700">Manajemen Satker</h3>
+          </div>
+        </template>
+        <p class="text-gray-600 mb-4">
+          Kelola data satuan kerja dengan mudah dan terstruktur
+        </p>
+        <NuxtLink to="/satker">
+          <Button type="primary" size="sm">
+            <Icon icon="mdi:arrow-right" class="w-4 h-4 mr-1" />
+            Lihat Satker
+          </Button>
+        </NuxtLink>
+      </Card>
+
+      <!-- Manajemen Unit -->
+      <Card>
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <Icon icon="mdi:domain" class="w-8 h-8 text-green-700" />
+            </div>
+            <h3 class="text-xl font-bold text-blue-700">Manajemen Unit</h3>
+          </div>
+        </template>
+        <p class="text-gray-600 mb-4">
+          Monitor dan kelola unit-unit dalam setiap satuan kerja
+        </p>
+        <NuxtLink to="/satker-by-unit-count">
+          <Button type="success" size="sm">
+            <Icon icon="mdi:arrow-right" class="w-4 h-4 mr-1" />
+            Satker by Unit
+          </Button>
+        </NuxtLink>
+      </Card>
+
+      <!-- Laporan Keuangan -->
+      <Card>
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="bg-yellow-100 p-3 rounded-lg">
+              <Icon icon="mdi:chart-line" class="w-8 h-8 text-yellow-700" />
+            </div>
+            <h3 class="text-xl font-bold text-blue-700">Laporan Keuangan</h3>
+          </div>
+        </template>
+        <p class="text-gray-600 mb-4">
+          Analisis dan laporan keuangan yang detail dan akurat
+        </p>
+        <Button type="warning" size="sm" disabled>
+          <Icon icon="mdi:arrow-right" class="w-4 h-4 mr-1" />
+          Coming Soon
+        </Button>
+      </Card>
+
+    </div>
+
+    <!-- STATISTICS CARD -->
+    <Card>
+      <template #header>
+        <h2 class="text-2xl font-bold text-blue-700">
+          Statistik Sistem
+        </h2>
+      </template>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        
+        <!-- Total Satker -->
+        <div class="stats shadow bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200">
+          <div class="stat">
+            <div class="stat-figure text-blue-700">
+              <Icon icon="mdi:office-building" class="w-12 h-12" />
+            </div>
+            <div class="stat-title text-blue-900 font-semibold">Total Satker</div>
+            <div class="stat-value text-blue-700">{{ stats.satkerCount }}</div>
+            <div class="stat-desc text-blue-600">Satuan Kerja Terdaftar</div>
+          </div>
+        </div>
+
+        <!-- Total Unit -->
+        <div class="stats shadow bg-gradient-to-br from-green-50 to-green-100 border border-green-200">
+          <div class="stat">
+            <div class="stat-figure text-green-700">
+              <Icon icon="mdi:domain" class="w-12 h-12" />
+            </div>
+            <div class="stat-title text-green-900 font-semibold">Total Unit</div>
+            <div class="stat-value text-green-700">{{ stats.unitCount }}</div>
+            <div class="stat-desc text-green-600">Unit yang Dikelola</div>
+          </div>
+        </div>
+
+        <!-- Pengguna Aktif -->
+        <div class="stats shadow bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200">
+          <div class="stat">
+            <div class="stat-figure text-yellow-700">
+              <Icon icon="mdi:account-group" class="w-12 h-12" />
+            </div>
+            <div class="stat-title text-yellow-900 font-semibold">Pengguna Aktif</div>
+            <div class="stat-value text-yellow-700">{{ stats.activeUsers }}</div>
+            <div class="stat-desc text-yellow-600">User Terdaftar</div>
+          </div>
+        </div>
+
+      </div>
+    </Card>
+
   </div>
 </template>
 
-<script setup lang="ts">
-import { useUserStore } from '~/stores/user'
+<script setup>
+import { Icon } from '@iconify/vue'
+import { Button, Card } from '@idds/vue'
 
-definePageMeta({
-  layout: false
+definePageMeta({ layout: 'default' })
+
+const stats = ref({
+  satkerCount: 0,
+  unitCount: 0,
+  activeUsers: 0
 })
-
-const form = reactive({
-  username: '',
-  password: '',
-  tahun: '2026',
-  rememberMe: false
-})
-
-const errors = reactive({
-  password: ''
-})
-
-const userStore = useUserStore()
-
-const handleLogin = () => {
-  errors.password = ''
-  if (!form.password) {
-    errors.password = 'Password cannot be blank.'
-    return
-  }
-  $fetch<{ token: string; name?: string }>('/api/auth/login', {
-    method: 'POST',
-    body: {
-      username: form.username,
-      password: form.password
-    }
-  })
-    .then((res) => {
-      if (res.token) {
-        localStorage.setItem('token', res.token)
-        // decode token untuk cek role_id
-        const tokenParts = res.token.split('.')
-        const payload = JSON.parse(atob(tokenParts[1] || ''))
-        // Set user ke Pinia
-        userStore.setUser({ 
-          username: form.username, 
-          name: res.name || form.username,
-          role: payload.role || '',
-          role_id: payload.role_id,
-          satker_id: payload.satker_id
-        })
-        if (payload.role_id === 1) {
-          navigateTo('/admin')
-        } else if (payload.role_id === 8) {
-          navigateTo(`/${userStore.username}`)
-        } else {
-          // navigasi sesuai role lain
-        }
-      } else {
-        errors.password = 'Login gagal: token tidak diterima.'
-      }
-    })
-    .catch((err) => {
-      errors.password = err?.statusMessage || 'Login gagal.'
-    })
-}
 </script>
-
-<style scoped>
-/* Additional custom styles if needed */
-.form-group {
-  margin-bottom: 1rem;
-}
-</style>

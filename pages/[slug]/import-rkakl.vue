@@ -1,4 +1,5 @@
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
@@ -63,14 +64,14 @@ function submitForm() {
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl rounded-xl border border-blue-100">
+      <template #default>
         <h3 class="text-xl font-bold mb-6">Form Import</h3>
         <form @submit.prevent="submitForm" enctype="multipart/form-data" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block font-semibold mb-1" for="tahun">Tahun <span class="text-red-500">*</span></label>
-              <input v-model="tahun" id="tahun" type="number" class="input input-bordered w-full" placeholder="Tahun" required />
+              <TextField v-model="tahun" id="tahun" type="number" class="w-full" placeholder="Tahun" required />
             </div>
             <div>
               <label class="block font-semibold mb-1" for="satker">Satker</label>
@@ -84,20 +85,20 @@ function submitForm() {
             </div>
             <div>
               <label class="block font-semibold mb-1" for="barisAwal">Baris Awal <span class="text-red-500">*</span></label>
-              <input v-model="barisAwal" id="barisAwal" type="text" class="input input-bordered w-full" placeholder="Baris Awal" required />
+              <TextField v-model="barisAwal" id="barisAwal" type="text" class="w-full" placeholder="Baris Awal" required />
             </div>
             <div>
               <label class="block font-semibold mb-1" for="barisAkhir">Baris Akhir <span class="text-red-500">*</span></label>
-              <input v-model="barisAkhir" id="barisAkhir" type="number" class="input input-bordered w-full" placeholder="Baris Akhir" required />
+              <TextField v-model="barisAkhir" id="barisAkhir" type="number" class="w-full" placeholder="Baris Akhir" required />
             </div>
           </div>
           <div class="mt-6">
-            <button type="submit" class="btn btn-success">
+            <Button type="success" native-type="submit">
               <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Proses Impor RKAKL
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </template>
+    </Card>
   </div>
 </template>

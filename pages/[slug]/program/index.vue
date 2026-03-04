@@ -1,4 +1,3 @@
-definePageMeta({ layout: 'default' });
 <template>
   <div class="pt-14">
     <!-- Alert -->
@@ -24,8 +23,8 @@ definePageMeta({ layout: 'default' });
     </div>
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Program Tahun 2026</h1>
     <!-- Data Table -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
+      <template #default>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
           Menampilkan <span class="font-bold">{{ tableData.length }}</span> hasil.
         </div>
@@ -46,10 +45,10 @@ definePageMeta({ layout: 'default' });
               <tr class="bg-blue-50">
                 <td></td>
                 <td>
-                  <input v-model="filterForm.kode" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Kode" />
+                  <TextField v-model="filterForm.kode" type="text" size="sm" class="w-full" maxlength="255" placeholder="Kode" />
                 </td>
                 <td>
-                  <input v-model="filterForm.nama" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Nama" />
+                  <TextField v-model="filterForm.nama" type="text" size="sm" class="w-full" maxlength="255" placeholder="Nama" />
                 </td>
                 <td></td>
                 <td></td>
@@ -57,10 +56,10 @@ definePageMeta({ layout: 'default' });
                 <td></td>
                 <td></td>
                 <td class="text-center">
-                  <button @click="filterData" type="button" class="btn btn-success btn-xs px-4">
+                  <Button @click="filterData" type="success" size="sm" class="px-4">
                     <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
                     Filter
-                  </button>
+                  </Button>
                 </td>
               </tr>
             </thead>
@@ -82,22 +81,25 @@ definePageMeta({ layout: 'default' });
                     <NuxtLink :to="`/program/update?id=${item.id}`" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Update">
                       <Icon icon="tabler:pencil" class="w-5 h-5" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="btn btn-xs btn-circle btn-error tooltip text-white" data-tip="Delete">
+                    <Button @click="confirmDelete(item.id)" size="sm" circle class="btn-error tooltip text-white" data-tip="Delete">
                       <Icon icon="tabler:trash" class="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
+      </template>
+    </Card>
   </div>
 </template>
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
+
+definePageMeta({ layout: 'default' })
 const drawerOpen = ref(false)
 const sidebarRail = ref(false)
 const showAlert = ref(true)

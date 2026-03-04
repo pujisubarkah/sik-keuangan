@@ -21,8 +21,8 @@
     <h1 class="text-2xl md:text-3xl font-bold text-blue-700 mb-4">Daftar Suboutput Tahun 2026</h1>
 
     <!-- Main content -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
+      <template #default>
         <div class="mb-4 flex gap-2">
           <NuxtLink to="/admin/suboutput/create" class="btn btn-primary btn-sm">
             <Icon icon="mdi:plus" class="w-4 h-4 mr-1" /> Tambah Suboutput
@@ -48,19 +48,19 @@
               </tr>
               <tr class="bg-blue-50">
                 <td></td>
-                <td><input v-model="filterForm.kode" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Kode" /></td>
-                <td><input v-model="filterForm.nama" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Suboutput" /></td>
-                <td><input v-model="filterForm.tahun" type="text" class="input input-bordered input-xs w-full" maxlength="4" placeholder="Tahun" /></td>
-                <td><input v-model="filterForm.jumlah" type="text" class="input input-bordered input-xs w-full" maxlength="20" placeholder="Jumlah" /></td>
+                <td><TextField v-model="filterForm.kode" type="text" size="sm" class="w-full" maxlength="255" placeholder="Kode" /></td>
+                <td><TextField v-model="filterForm.nama" type="text" size="sm" class="w-full" maxlength="255" placeholder="Suboutput" /></td>
+                <td><TextField v-model="filterForm.tahun" type="text" size="sm" class="w-full" maxlength="4" placeholder="Tahun" /></td>
+                <td><TextField v-model="filterForm.jumlah" type="text" size="sm" class="w-full" maxlength="20" placeholder="Jumlah" /></td>
                 <td><select v-model="filterForm.unit" class="select select-bordered select-xs w-full">
                   <option value="">- Semua Unit -</option>
                   <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                 </select></td>
                 <td class="text-center">
-                  <button @click="filterData" type="button" class="btn btn-success btn-xs px-4">
+                  <Button @click="filterData" type="success" size="sm" class="px-4">
                     <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
                     Filter
-                  </button>
+                  </Button>
                 </td>
               </tr>
             </thead>
@@ -83,27 +83,28 @@
                     <NuxtLink :to="`/pekerjaan/update?id=${item.id}`" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Update">
                       <Icon icon="tabler:pencil" class="w-5 h-5" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="btn btn-xs btn-circle btn-error tooltip text-white" data-tip="Delete">
+                    <Button @click="confirmDelete(item.id)" size="sm" circle class="btn-error tooltip text-white" data-tip="Delete">
                       <Icon icon="tabler:trash" class="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
+      </template>
+    </Card>
     <!-- Pagination navigation -->
     <div class="flex justify-center items-center gap-2 mt-4">
-      <button class="btn btn-xs" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</button>
+      <Button size="sm" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</Button>
       <span>Halaman {{ currentPage }} dari {{ totalPages }}</span>
-      <button class="btn btn-xs" :disabled="currentPage === totalPages" @click="goToPage(currentPage + 1)">Next</button>
+      <Button size="sm" :disabled="currentPage === totalPages" @click="goToPage(currentPage + 1)">Next</Button>
     </div>
   </div>
 </template>
 
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { NuxtLink } from '#components'

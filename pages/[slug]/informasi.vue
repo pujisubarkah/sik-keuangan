@@ -1,4 +1,5 @@
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
@@ -17,6 +18,8 @@ const informasis = ref([
   { id: 9, judul: 'Honor Notulensi' },
   { id: 10, judul: 'Pengadaan Barang/Jasa Nominal 2 juta < X < 10 juta' },
 ])
+
+definePageMeta({ layout: 'default' })
 </script>
 
 <template>
@@ -54,16 +57,19 @@ const informasis = ref([
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card>
+      <template #header>
+        <h2 class="text-xl font-bold text-blue-700">Daftar Informasi</h2>
+      </template>
         <!-- ACTION -->
         <div class="mb-4">
           <NuxtLink
             to="/admin/informasi/create"
-            class="btn btn-success"
           >
-            <Icon icon="mdi:plus" class="w-5 h-5 mr-2" />
-            Informasi Baru
+            <Button type="success">
+              <Icon icon="mdi:plus" class="w-5 h-5 mr-2" />
+              Informasi Baru
+            </Button>
           </NuxtLink>
         </div>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
@@ -81,10 +87,10 @@ const informasis = ref([
               <tr class="bg-blue-50">
                 <td></td>
                 <td>
-                  <input
+                  <TextField
                     v-model="filter.judul"
-                    class="input input-bordered input-xs w-full"
                     placeholder="Judul Informasi"
+                    size="sm"
                   />
                 </td>
                 <td></td>
@@ -102,32 +108,35 @@ const informasis = ref([
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/admin/informasi/view/${info.id}`"
-                      class="btn btn-xs btn-circle btn-info tooltip"
                       data-tip="View"
                     >
-                      <Icon icon="tabler:eye" class="w-4 h-4" />
+                      <Button type="info" size="sm" circle>
+                        <Icon icon="tabler:eye" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
                     <NuxtLink
                       :to="`/admin/informasi/update/${info.id}`"
-                      class="btn btn-xs btn-circle btn-warning tooltip"
                       data-tip="Update"
                     >
-                      <Icon icon="tabler:pencil" class="w-4 h-4" />
+                      <Button type="warning" size="sm" circle>
+                        <Icon icon="tabler:pencil" class="w-4 h-4" />
+                      </Button>
                     </NuxtLink>
-                    <button
-                      class="btn btn-xs btn-circle btn-error tooltip text-white"
+                    <Button
+                      type="error"
+                      size="sm"
+                      circle
                       data-tip="Delete"
                       @click="confirm('Yakin hapus informasi ini?')"
                     >
                       <Icon icon="tabler:trash" class="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
+    </Card>
   </div>
 </template>

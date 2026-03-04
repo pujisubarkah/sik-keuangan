@@ -1,5 +1,3 @@
-definePageMeta({ layout: 'default' });
-<!-- filepath: c:\Users\user\Documents\sik-keuangan\pages\admin\pengajuan.vue -->
 <template>
   <div class="pt-14">
     <!-- Alert -->
@@ -15,12 +13,14 @@ definePageMeta({ layout: 'default' });
     </div>
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengajuan Tahun 2026</h1>
     <!-- Filter Form -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
-        <h2 class="card-title text-lg font-bold text-blue-700 mb-2 flex items-center gap-2">
+    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
+      <template #header>
+        <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
           <Icon icon="mdi:magnify" class="w-6 h-6 text-blue-500" />
           Filter Data
         </h2>
+      </template>
+      <template #default>
         <form @submit.prevent="filterData">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
             <div class="form-control md:col-span-4">
@@ -37,7 +37,7 @@ definePageMeta({ layout: 'default' });
               <label class="label">
                 <span class="label-text">Tanggal Pengajuan Awal</span>
               </label>
-              <input v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="input input-bordered w-full" />
+              <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
             </div>
             <div class="form-control md:col-span-1 flex items-end justify-center">
               <span class="pb-3">s/d</span>
@@ -46,7 +46,7 @@ definePageMeta({ layout: 'default' });
               <label class="label">
                 <span class="label-text">Tanggal Pengajuan Akhir</span>
               </label>
-              <input v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="input input-bordered w-full" />
+              <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -61,17 +61,17 @@ definePageMeta({ layout: 'default' });
             </div>
           </div>
           <div>
-            <button type="submit" class="btn btn-success w-auto px-6">
+            <Button type="success" @click="filterData" class="w-auto px-6">
               <Icon icon="mdi:magnify" class="w-4 h-4 mr-2" />
               Filter Data
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </template>
+    </Card>
     <!-- Data Table -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
+      <template #default>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
           Menampilkan <span class="font-bold">{{ startIndex }}-{{ endIndex }}</span> dari <span class="font-bold">{{ tableData.length }}</span> hasil.
         </div>
@@ -127,9 +127,9 @@ definePageMeta({ layout: 'default' });
                     <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="btn btn-xs btn-circle btn-warning tooltip" data-tip="Sunting">
                       <Icon icon="tabler:pencil" class="w-5 h-5" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="btn btn-xs btn-circle btn-error tooltip text-white" data-tip="Hapus">
+                    <Button @click="confirmDelete(item.id)" size="sm" circle class="btn-error tooltip text-white" data-tip="Hapus">
                       <Icon icon="tabler:trash" class="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -139,13 +139,13 @@ definePageMeta({ layout: 'default' });
         <!-- Pagination -->
         <div class="flex justify-center mt-4">
           <div class="btn-group">
-            <button class="btn btn-sm" :disabled="currentPage === 1" @click="currentPage--">«</button>
-            <button class="btn btn-sm">Page {{ currentPage }} of {{ totalPages }}</button>
-            <button class="btn btn-sm" :disabled="currentPage === totalPages" @click="currentPage++">»</button>
+            <Button size="sm" :disabled="currentPage === 1" @click="currentPage--">«</Button>
+            <Button size="sm">Page {{ currentPage }} of {{ totalPages }}</Button>
+            <Button size="sm" :disabled="currentPage === totalPages" @click="currentPage++">»</Button>
           </div>
         </div>
-      </div>
-    </div>
+      </template>
+    </Card>
     <!-- Rekap Data Pengajuan -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
       <!-- Jumlah Pengajuan -->
@@ -173,9 +173,11 @@ definePageMeta({ layout: 'default' });
 </template>
 
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
-definePageMeta({ layout: 'default' });
 import { Icon } from '@iconify/vue';
+
+definePageMeta({ layout: 'default' });
 
 
 // Reactive data

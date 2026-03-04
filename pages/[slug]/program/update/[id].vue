@@ -47,9 +47,9 @@
             <input v-model="form.jumlah" class="form-control w-full rounded-lg border-gray-300" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
           </div>
           <div class="flex justify-end bg-gray-50 border-t border-gray-100 pt-6 pb-2">
-            <button class="btn btn-success btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-6 py-2 text-white font-semibold" type="submit">
+            <Button type="success" class="rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-6 py-2 font-semibold" native-type="submit">
               <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Save
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue';
 import { NuxtLink } from '#components';
 import { Icon } from '@iconify/vue';

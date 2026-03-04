@@ -1,4 +1,5 @@
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
@@ -208,8 +209,8 @@ function submitForm() {
     </h1>
 
     <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
+    <Card class="bg-white shadow-xl rounded-xl border border-blue-100">
+      <template #default>
         <h3 class="text-xl font-bold mb-6">Form Output</h3>
         <form @submit.prevent="submitForm" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -227,24 +228,24 @@ function submitForm() {
             </div>
             <div>
               <label class="block font-semibold mb-1" for="kode">Kode</label>
-              <input v-model="kode" id="kode" type="text" class="input input-bordered w-full" placeholder="Kode" />
+              <TextField v-model="kode" id="kode" type="text" class="w-full" placeholder="Kode" />
             </div>
             <div>
               <label class="block font-semibold mb-1" for="nama">Nama</label>
-              <input v-model="nama" id="nama" type="text" class="input input-bordered w-full" placeholder="Nama" />
+              <TextField v-model="nama" id="nama" type="text" class="w-full" placeholder="Nama" />
             </div>
             <div>
               <label class="block font-semibold mb-1" for="tahun">Tahun</label>
-              <input v-model="tahun" id="tahun" type="text" class="input input-bordered w-full" placeholder="Tahun" />
+              <TextField v-model="tahun" id="tahun" type="text" class="w-full" placeholder="Tahun" />
             </div>
           </div>
           <div class="mt-6">
-            <button type="submit" class="btn btn-success">
+            <Button type="success" native-type="submit">
               <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Simpan
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </template>
+    </Card>
   </div>
 </template>

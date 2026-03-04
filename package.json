@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
+    "@idds/vue": "^1.5.61",
     "apexcharts": "^5.7.0",
     "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
@@ -24,7 +25,6 @@
     "nuxt": "^4.3.1",
     "pg": "^8.19.0",
     "pinia": "^3.0.4",
-    "tailwindcss": "^3.4.17",
     "vue": "^3.5.29",
     "vue-fusioncharts": "^3.4.0",
     "vue-router": "^4.6.4",
@@ -33,9 +33,12 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@tabler/icons-vue": "^3.38.0",
+    "@tailwindcss/vite": "^4.2.1",
     "@types/bcrypt": "^6.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/pg": "^8.18.0"
+    "@types/pg": "^8.18.0",
+    "tailwindcss": "^3.4.19"
   }
 }

@@ -72,9 +72,9 @@
             </div>
           </div>
           <div class="px-6 pb-8 flex justify-end bg-gray-50 border-t border-gray-100">
-            <button class="btn btn-success btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-6 py-2 text-white font-semibold" type="submit">
+            <Button type="success" class="btn-flat rounded-lg shadow-md hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-6 py-2 font-semibold" native-type="submit">
               <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Simpan
-            </button>
+            </Button>
           </div>
         </div>
       </form>
@@ -83,6 +83,7 @@
 </template>
 
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { NuxtLink } from '#components';

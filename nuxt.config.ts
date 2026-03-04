@@ -5,7 +5,7 @@ export default defineNuxtConfig({
       link: [
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'
         },
         {
           rel: 'stylesheet',
@@ -23,12 +23,19 @@ export default defineNuxtConfig({
       ]
     }
   },
-  css: [
-    '~/assets/css/main.css',
-  ],
-  compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
+  css: [
+    '@idds/vue/index.css',
+    '~/assets/css/main.css'
+  ],
+  tailwindcss: {
+    cssPath: '~/assets/css/main.css',
+    configPath: 'tailwind.config.js',
+    exposeConfig: false,
+    viewer: true,
+  },
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
   plugins: [
     { src: '~/plugins/auth-fetch.ts', mode: 'client' },
     '~/plugins/pinia.js',
