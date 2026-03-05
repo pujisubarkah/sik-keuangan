@@ -1,4 +1,4 @@
-<!-- src/components/FilterForm.vue -->
+﻿<!-- src/components/FilterForm.vue -->
 <template>
   <div 
     class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden"
@@ -12,7 +12,7 @@
       <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
         <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
           <div class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-            <Icon icon="tabler:filter" class="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
+            <IconFilter class="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
           </div>
           <span>Filter Data</span>
         </h2>
@@ -24,7 +24,7 @@
           class="text-xs text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors px-2 py-1 rounded hover:bg-red-50"
           title="Reset semua filter"
         >
-          <Icon icon="tabler:refresh" class="w-3.5 h-3.5" />
+          <IconRefresh class="w-3.5 h-3.5" />
           Reset
         </button>
       </div>
@@ -36,7 +36,7 @@
           <!-- 🏢 Satker Select -->
           <div class="md:col-span-4">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Icon icon="tabler:building" class="w-4 h-4 text-blue-500" />
+              <IconBuilding class="w-4 h-4 text-blue-500" />
               <span>Satker</span>
               <span v-if="selectedSatker" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
             </label>
@@ -54,10 +54,10 @@
                 </option>
               </select>
               <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon icon="tabler:building" class="w-5 h-5 text-gray-400" />
+                <IconBuilding class="w-5 h-5 text-gray-400" />
               </div>
               <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon icon="tabler:chevron-down" class="w-4 h-4 text-gray-400" />
+                <IconChevronDown class="w-4 h-4 text-gray-400" />
               </div>
             </div>
           </div>
@@ -65,7 +65,7 @@
           <!-- 🏭 Unit Select -->
           <div class="md:col-span-4">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Icon icon="tabler:sitemap" class="w-4 h-4 text-blue-500" />
+              <IconSitemap class="w-4 h-4 text-blue-500" />
               <span>Unit</span>
               <span v-if="selectedUnit" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
             </label>
@@ -83,14 +83,14 @@
                 </option>
               </select>
               <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon icon="tabler:users-group" class="w-5 h-5 text-gray-400" />
+                <IconUsersGroup class="w-5 h-5 text-gray-400" />
               </div>
               <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon icon="tabler:chevron-down" class="w-4 h-4 text-gray-400" />
+                <IconChevronDown class="w-4 h-4 text-gray-400" />
               </div>
             </div>
             <p v-if="!selectedSatker" class="text-xs text-gray-400 mt-1 ml-1">
-              <Icon icon="tabler:info-circle" class="w-3 h-3 inline mr-0.5" />
+              <IconInfoCircle class="w-3 h-3 inline mr-0.5" />
               Pilih satker untuk menampilkan unit
             </p>
           </div>
@@ -98,7 +98,7 @@
           <!-- 📅 Year Input -->
           <div class="md:col-span-2">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Icon icon="tabler:calendar" class="w-4 h-4 text-blue-500" />
+              <IconCalendar class="w-4 h-4 text-blue-500" />
               <span>Tahun</span>
             </label>
             <div class="relative">
@@ -112,7 +112,7 @@
                 @input="validateYear"
               />
               <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon icon="tabler:calendar-time" class="w-5 h-5 text-gray-400" />
+                <IconCalendarTime class="w-5 h-5 text-gray-400" />
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@
               type="submit" 
               class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
             >
-              <Icon icon="tabler:search" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span>Tampilkan</span>
             </button>
           </div>
@@ -135,19 +135,19 @@
           <span v-if="selectedSatker" class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
             🏢 {{ getSatkerLabel }}
             <button @click.prevent="selectedSatker = ''; selectedUnit = ''" class="hover:text-red-500 transition-colors">
-              <Icon icon="tabler:x" class="w-3 h-3" />
+              <IconX class="w-3 h-3" />
             </button>
           </span>
           <span v-if="selectedUnit" class="inline-flex items-center gap-1 px-2.5 py-1 bg-indigo-100 text-indigo-700 text-xs font-medium rounded-full">
             🏭 {{ getUnitLabel }}
             <button @click.prevent="selectedUnit = ''" class="hover:text-red-500 transition-colors">
-              <Icon icon="tabler:x" class="w-3 h-3" />
+              <IconX class="w-3 h-3" />
             </button>
           </span>
           <span v-if="localYear !== props.currentYear" class="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
             📅 {{ localYear }}
             <button @click.prevent="localYear = props.currentYear" class="hover:text-red-500 transition-colors">
-              <Icon icon="tabler:x" class="w-3 h-3" />
+              <IconX class="w-3 h-3" />
             </button>
           </span>
         </div>
@@ -161,7 +161,7 @@
           href="/index.php?r=admin/perBulan" 
           class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
         >
-          <Icon icon="tabler:calendar-month" class="w-4 h-4 mr-1.5 group-hover:animate-bounce" />
+          <IconCalendarMonth class="w-4 h-4 mr-1.5 group-hover:animate-bounce" />
           <span class="hidden sm:inline">Per Bulan</span>
         </a>
         
@@ -169,7 +169,7 @@
           href="/index.php?r=admin/perBulan&sp2d=1" 
           class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
         >
-          <Icon icon="tabler:calendar-check" class="w-4 h-4 mr-1.5 group-hover:animate-pulse" />
+          <IconCalendarCheck class="w-4 h-4 mr-1.5 group-hover:animate-pulse" />
           <span class="hidden sm:inline">SP2D</span>
         </a>
         
@@ -182,7 +182,7 @@
           class="btn btn-outline btn-sm btn-soft-primary rounded-xl px-4"
           title="Export data"
         >
-          <Icon icon="tabler:download" class="w-4 h-4 mr-1.5" />
+          <IconDownload class="w-4 h-4 mr-1.5" />
           <span class="hidden sm:inline">Export</span>
         </button>
       </div>
@@ -192,7 +192,7 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconBuilding, IconCalendar, IconCalendarCheck, IconCalendarMonth, IconCalendarTime, IconChevronDown, IconDownload, IconFilter, IconInfoCircle, IconRefresh, IconSearch, IconSitemap, IconUsersGroup, IconX } from '@tabler/icons-vue'
 
 const props = defineProps({
   satkers: { type: Array, required: true },

@@ -2,7 +2,7 @@
      <!-- Alert -->
     <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
-        <Icon icon="tabler:alert-circle" class="w-6 h-6 text-blue-600" />
+        <IconAlertCircle class="w-6 h-6 text-blue-600" />
         <span>
           Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
           <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
@@ -35,26 +35,26 @@
       <!-- Tombol Aksi Section -->
       <div class="flex flex-wrap gap-2 items-center mb-6">
         <button class="btn bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-800 transition flex items-center gap-1" @click="handleEdit">
-          <Icon icon="tabler:pencil" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
+          <IconPencil class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
         </button>
         <button class="btn bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition flex items-center gap-1" @click="handleAnggaran">
-          <Icon icon="tabler:cash" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Anggaran</span>
+          <IconCash class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Anggaran</span>
         </button>
         <button class="btn bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition flex items-center gap-1" @click="handlePengeluaran">
-          <Icon icon="tabler:shopping-cart" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengeluaran</span> <span class="ml-1">({{ stats.pengeluaranCount }})</span>
+          <IconShoppingCart class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengeluaran</span> <span class="ml-1">({{ stats.pengeluaranCount }})</span>
         </button>
         <button class="btn bg-yellow-400 text-white rounded-lg shadow-md hover:bg-yellow-500 transition flex items-center gap-1" @click="handlePengajuan">
-          <Icon icon="tabler:arrow-up-circle" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengajuan</span> <span class="ml-1">({{ stats.pengajuanCount }})</span>
+          <IconArrowUpCircle class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengajuan</span> <span class="ml-1">({{ stats.pengajuanCount }})</span>
         </button>
         <button class="btn bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition flex items-center gap-1" @click="handlePerencanaan">
-          <Icon icon="tabler:calendar" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
+          <IconCalendar class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
         </button>
         <button class="btn bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition flex items-center gap-1" @click="handleSalin">
-          <Icon icon="tabler:copy" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
+          <IconCopy class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
         </button>
         <div class="relative inline-block">
           <button class="btn bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition flex items-center gap-1" @click="showDropdown = !showDropdown">
-            <Icon icon="tabler:refresh" class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Refresh</span>
+            <IconRefresh class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Refresh</span>
             <span class="caret"></span>
           </button>
           <div v-if="showDropdown" class="absolute z-10 mt-2 w-40 bg-white border rounded shadow-lg">
@@ -78,7 +78,7 @@
             <h3 class="text-2xl font-bold text-blue-900">Rp {{ formatCurrency(stats.pagu) }}</h3>
           </div>
           <div class="flex items-center gap-2 mt-2">
-            <Icon icon="tabler:shopping-cart" class="w-6 h-6 text-blue-500" />
+            <IconShoppingCart class="w-6 h-6 text-blue-500" />
             <span class="text-xs text-blue-500">More info</span>
           </div>
         </div>
@@ -89,7 +89,7 @@
             <h3 class="text-2xl font-bold text-green-900">Rp {{ formatCurrency(stats.perencanaan) }}</h3>
           </div>
           <div class="flex items-center gap-2 mt-2">
-            <Icon icon="tabler:tags" class="w-6 h-6 text-green-500" />
+            <IconTags class="w-6 h-6 text-green-500" />
             <span class="text-xs text-green-500">More info</span>
           </div>
         </div>
@@ -100,7 +100,7 @@
             <h3 class="text-2xl font-bold text-red-900">Rp {{ formatCurrency(stats.selisih) }}</h3>
           </div>
           <div class="flex items-center gap-2 mt-2">
-            <Icon icon="tabler:circle" class="w-6 h-6 text-red-500" />
+            <IconCircle class="w-6 h-6 text-red-500" />
             <span class="text-xs text-red-500">More info</span>
           </div>
         </div>
@@ -116,7 +116,7 @@
           <div class="px-5 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
               <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
-                <Icon icon="tabler:chart-bar" class="w-4 h-4 text-blue-600" />
+                <IconChartBar class="w-4 h-4 text-blue-600" />
               </div>
               <div>
                 <h3 class="font-semibold text-gray-800">Penyerapan Anggaran</h3>
@@ -140,7 +140,7 @@
           <div class="px-5 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
               <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-green-100">
-                <Icon icon="tabler:chart-line" class="w-4 h-4 text-green-600" />
+                <IconChartLine class="w-4 h-4 text-green-600" />
               </div>
               <div>
                 <h3 class="font-semibold text-gray-800">Pengeluaran Anggaran</h3>
@@ -231,7 +231,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
-import { Icon } from '@iconify/vue';
+import { IconAlertCircle, IconPencil, IconCash, IconShoppingCart, IconArrowUpCircle, IconCalendar, IconCopy, IconRefresh, IconTags, IconCircle, IconChartBar, IconChartLine } from '@tabler/icons-vue';
 // ...existing code...
 // Chart Penyerapan (ApexCharts)
 const chartPenyerapanOptions = {

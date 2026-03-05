@@ -1,7 +1,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 
 const showAlert = ref(true)
 const kegiatan = ref('')

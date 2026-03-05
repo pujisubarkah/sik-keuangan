@@ -1,4 +1,4 @@
-<!-- src/components/layout/UserMenuDropdown.vue -->
+﻿<!-- src/components/layout/UserMenuDropdown.vue -->
 <template>
   <div class="dropdown dropdown-end" ref="dropdownRef" data-testid="user-dropdown">
     <button
@@ -18,7 +18,7 @@
           Online
         </span>
       </div>
-      <Icon icon="tabler:chevron-down" class="w-4 h-4 text-white transition-transform" :class="{ 'rotate-180': isOpen }" />
+      <IconChevronDown class="w-4 h-4 text-white transition-transform" :class="{ 'rotate-180': isOpen }" />
     </button>
     
     <ul 
@@ -58,7 +58,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconChevronDown } from '@tabler/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useClickOutside } from '@/composables/useClickOutside'

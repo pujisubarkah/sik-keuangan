@@ -1,4 +1,4 @@
-<!-- src/components/layout/PengajuanDropdown.vue -->
+﻿<!-- src/components/layout/PengajuanDropdown.vue -->
 <template>
   <div class="dropdown dropdown-end" ref="dropdownRef" data-testid="pengajuan-dropdown">
     <button
@@ -10,7 +10,7 @@
       @click="toggle"
       data-testid="btn-pengajuan-toggle"
     >
-      <Icon icon="tabler:shopping-cart" class="w-5 h-5" />
+      <IconShoppingCart class="w-5 h-5" />
       <span class="hidden md:inline text-sm font-semibold">Pengajuan Baru</span>
       
       <!-- Loading skeleton -->
@@ -39,7 +39,7 @@
           @click="close"
           data-testid="menu-pengajuan-baru"
         >
-          <Icon icon="tabler:plus" class="w-4 h-4" />
+          <IconPlus class="w-4 h-4" />
           <span class="font-medium">Buat Pengajuan</span>
         </router-link>
       </li>
@@ -63,7 +63,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconPlus, IconShoppingCart } from '@tabler/icons-vue'
 import { usePengajuanStore } from '@/stores/pengajuan'
 import Badge from '@/components/UI/badge.vue'
 import { useClickOutside } from '@/composables/useClickOutside'

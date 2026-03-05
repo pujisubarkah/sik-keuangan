@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 
 const showAlert = ref(true)
 const filter = ref({ kode_akun: '', nama_berkas: '', kata_kunci: '' })
@@ -126,20 +126,20 @@ const berkasList = ref([
                       :to="`/admin/berkas/view/${b.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="View"
                     >
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink
                       :to="`/admin/berkas/update/${b.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="Update"
                     >
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button
                       class="hover:text-red-600 transition tooltip" data-tip="Delete"
                       @click="confirm('Yakin hapus berkas ini?')"
                       style="background:none;border:none;padding:0;"
                     >
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>

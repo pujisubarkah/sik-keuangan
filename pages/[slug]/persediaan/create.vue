@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

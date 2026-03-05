@@ -1,7 +1,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, reactive } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconKey, IconX } from '@tabler/icons-vue'
 
 definePageMeta({ layout: 'default' })
 
@@ -129,14 +129,18 @@ const handleSubmit = async () => {
       Ganti Password
     </h1>
 
-    <!-- CARD -->
-    <Card class="max-w-3xl">
-      <template #header>
-        <h2 class="text-xl font-bold text-blue-700">
-          Form Ganti Password
-        </h2>
-      </template>
-
+    <!-- CARD (Styled like DashboardFilter.vue) -->
+    <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden max-w-3xl mx-auto">
+      <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+      <div class="p-5 md:p-6">
+        <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
+          <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <IconKey class="w-5 h-5 text-blue-600" />
+            </div>
+            <span>Form Ganti Password</span>
+          </h2>
+        </div>
         <!-- PASSWORD LAMA -->
         <div class="mb-4">
           <label class="block font-semibold text-blue-700 mb-2">
@@ -152,7 +156,6 @@ const handleSubmit = async () => {
             {{ errors.oldPassword }}
           </span>
         </div>
-
         <!-- PASSWORD BARU -->
         <div class="mb-4">
           <label class="block font-semibold text-blue-700 mb-2">
@@ -168,7 +171,6 @@ const handleSubmit = async () => {
             {{ errors.newPassword }}
           </span>
         </div>
-
         <!-- KONFIRMASI -->
         <div class="mb-6">
           <label class="block font-semibold text-blue-700 mb-2">
@@ -184,35 +186,31 @@ const handleSubmit = async () => {
             {{ errors.confirmPassword }}
           </span>
         </div>
-
         <!-- ACTION -->
         <div class="flex gap-3">
           <Button
             @click="handleSubmit"
             :disabled="isSubmitting"
-            type="success"
+            class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
           >
             <Icon
               v-if="!isSubmitting"
-              icon="mdi:check"
-              class="w-5 h-5 mr-2"
+              icon="tabler:check"
+              class="w-4 h-4"
             />
             <span>
               {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
             </span>
           </Button>
-
-          <NuxtLink
-            to="/admin/omspan"
-          >
-            <Button type="error">
-              <Icon icon="mdi:close" class="w-5 h-5 mr-2" />
+          <NuxtLink to="/admin/omspan">
+            <Button class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              <IconX class="w-4 h-4" />
               Batal
             </Button>
           </NuxtLink>
         </div>
-
-    </Card>
+      </div>
+    </div>
 
     <!-- SUCCESS MODAL -->
     <div v-if="showSuccessModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">

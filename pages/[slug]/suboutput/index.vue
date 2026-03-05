@@ -24,17 +24,19 @@
     <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <template #default>
         <div class="mb-4 flex gap-2">
-          <NuxtLink to="/admin/suboutput/create" class="btn btn-success btn-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border: none;">
-            <Icon icon="tabler:plus" class="w-4 h-4 mr-1" /> Tambah Suboutput
+          <NuxtLink to="/admin/suboutput/create" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+            <IconPlus class="w-4 h-4" />
+            <span>Tambah Suboutput</span>
           </NuxtLink>
-          <NuxtLink to="/admin/suboutput/export" class="btn btn-success btn-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border: none;">
-            <Icon icon="tabler:download" class="w-4 h-4 mr-1" /> Export ke Excel
+          <NuxtLink to="/admin/suboutput/export" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+            <IconDownload class="w-4 h-4" />
+            <span>Export ke Excel</span>
           </NuxtLink>
         </div>
         <div class="mb-2 text-blue-700 font-semibold text-sm">
           Menampilkan <span class="font-bold">{{ suboutputData.length }}</span> hasil.
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto w-full" style="max-width: 100vw;">
           <table class="table table-md w-full rounded-xl overflow-hidden suboutput-table">
             <thead>
               <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
@@ -57,9 +59,9 @@
                   <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                 </select></td>
                 <td class="text-center">
-                  <Button @click="filterData" type="success" size="sm" class="px-4">
-                    <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
-                    Filter
+                  <Button @click="filterData" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                    <IconSearch class="w-4 h-4" />
+                    <span>Filter Data</span>
                   </Button>
                 </td>
               </tr>
@@ -78,13 +80,13 @@
                 <td class="text-center">
                   <div class="flex gap-2 justify-center">
                     <NuxtLink :to="`/pekerjaan/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink :to="`/pekerjaan/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>
@@ -106,7 +108,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconPlus, IconDownload, IconSearch, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import { NuxtLink } from '#components'
 import { useUserStore } from '~/stores/user'
 

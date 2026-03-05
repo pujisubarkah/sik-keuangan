@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
     <!-- Header -->
     <div class="px-5 py-4 border-b border-gray-100">
@@ -36,7 +36,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 import VueApexCharts from 'vue3-apexcharts'
 
 const props = defineProps({

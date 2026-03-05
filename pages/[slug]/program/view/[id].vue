@@ -84,7 +84,7 @@
 
 <script setup>
 import { NuxtLink } from '#components';
-import { Icon } from '@iconify/vue';
+import Icon from '~/components/Icon.vue';
 
 const suboutputs = [
   { nama: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN', pagu: '1.076.950.000' },

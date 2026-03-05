@@ -3,43 +3,86 @@
   <div class="pt-14 px-1 md:px-2">
     <div class="w-full max-w-7xl mx-auto">
       <h1 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">Perencanaan LAN JAKARTA Tahun 2026</h1>
-      <!-- Filter Form -->
-      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
-        <div class="card-body p-3 md:p-4">
-          <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-            <Icon icon="mdi:magnify" class="w-5 h-5 text-blue-500" />
-            Filter Data
-          </h2>
-          <form @submit.prevent="filterData">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Satker</span>
-                </label>
-                <select v-model="filterForm.id_satker" class="select select-bordered w-full" @change="loadUnitList">
-                  <option value="">- Semua Satker -</option>
-                  <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
-                </select>
+      <!-- Filter Form: Konsisten dengan DashboardFilter.vue -->
+      <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden animate-fade-in-up">
+        <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+        <div class="p-5 md:p-6">
+          <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
+            <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
+              <div class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                <IconFilter class="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
               </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Unit</span>
+              <span>Filter Data</span>
+            </h2>
+            <button v-if="hasActiveFilters" @click="resetFilters" class="text-xs text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors px-2 py-1 rounded hover:bg-red-50" title="Reset semua filter">
+              <IconRefresh class="w-3.5 h-3.5" />
+              Reset
+            </button>
+          </div>
+          <form @submit.prevent="filterData" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <!-- 🏢 Satker Select -->
+              <div class="md:col-span-4">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <IconBuilding class="w-4 h-4 text-blue-500" />
+                  <span>Satker</span>
+                  <span v-if="filterForm.id_satker" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
                 </label>
-                <select v-model="filterForm.id_unit" class="select select-bordered w-full">
-                  <option value="">- Semua Unit -</option>
-                  <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
-                </select>
+                <div class="relative">
+                  <select v-model="filterForm.id_satker" @change="loadUnitList" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" name="PerencanaanForm[id_satker]" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.id_satker }">
+                    <option value="" disabled selected>Pilih Satker...</option>
+                    <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
+                  </select>
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconBuilding class="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
               </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Tahun</span>
+              <!-- 🏭 Unit Select -->
+              <div class="md:col-span-4">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <IconSitemap class="w-4 h-4 text-blue-500" />
+                  <span>Unit</span>
+                  <span v-if="filterForm.id_unit" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
                 </label>
-                <input v-model="filterForm.tahun" type="number" placeholder="2026" class="input input-bordered w-full" />
+                <div class="relative">
+                  <select v-model="filterForm.id_unit" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed" name="PerencanaanForm[id_unit]" :disabled="!filterForm.id_satker" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.id_unit }">
+                    <option value="" disabled selected>{{ filterForm.id_satker ? 'Pilih Unit...' : 'Pilih Satker dulu' }}</option>
+                    <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
+                  </select>
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconUsersGroup class="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+                <p v-if="!filterForm.id_satker" class="text-xs text-gray-400 mt-1 ml-1">
+                  <IconInfoCircle class="w-3 h-3 inline mr-0.5" />
+                  Pilih satker untuk menampilkan unit
+                </p>
               </div>
-              <div class="form-control flex items-end justify-end h-full">
-                <button type="submit" class="btn btn-success btn-sm w-full md:w-auto px-4">
-                  <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
-                  Tampilkan
+              <!-- 📅 Year Input -->
+              <div class="md:col-span-2">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <IconCalendar class="w-4 h-4 text-blue-500" />
+                  <span>Tahun</span>
+                </label>
+                <div class="relative">
+                  <input v-model.number="filterForm.tahun" type="number" min="2000" max="2100" placeholder="2026" class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 text-center font-mono" />
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconCalendarTime class="w-5 h-5 text-gray-400" />
+                  </div>
+                </div>
+              </div>
+              <!-- 🔍 Submit Button -->
+              <div class="md:col-span-2 flex items-end">
+                <button type="submit" class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
+                  <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>Tampilkan</span>
                 </button>
               </div>
             </div>
@@ -101,7 +144,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Icon } from '@iconify/vue';
+import { IconFilter, IconRefresh, IconBuilding, IconChevronDown, IconSitemap, IconUsersGroup, IconInfoCircle, IconCalendar, IconCalendarTime, IconSearch } from '@tabler/icons-vue';
 import StatBox from '~/components/UI/StatBox.vue'
 import { NuxtLink } from '#components'
 

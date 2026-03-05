@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50">
     <div class="text-center">
       <Icon icon="mdi:loading" class="w-12 h-12 text-blue-700 animate-spin mx-auto mb-4" />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 import { useUserStore } from '~/stores/user'
 
 definePageMeta({

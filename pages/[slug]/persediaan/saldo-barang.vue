@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconAlertCircle, IconHome, IconFilter, IconBuilding, IconChevronDown, IconSitemap, IconUsersGroup, IconCalendar, IconCalendarTime, IconSearch, IconPlus, IconPrinter, IconFolder, IconInbox } from '@tabler/icons-vue'
 
 definePageMeta({
   layout: 'default'
@@ -129,61 +129,97 @@ function cetakPdf() {
 
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Saldo Barang Persediaan</h1>
 
-    <!-- Filter Card -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
-        <div class="text-sm mb-4 text-blue-700 font-semibold flex items-center gap-2">
-          <Icon icon="tabler:filter" class="w-5 h-5" />
-          Filter Pencarian
+    <!-- Filter Card (Refactored to match DashboardFilter.vue) -->
+    <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden">
+      <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+      <div class="p-5 md:p-6">
+        <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
+          <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <Icon icon="tabler:filter" class="w-5 h-5 text-blue-600" />
+            </div>
+            <span>Filter Data</span>
+          </h2>
+          <!-- Reset Button (to be implemented) -->
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Satker -->
-          <div>
-            <label class="label text-xs font-bold text-blue-800">Satker</label>
-            <select v-model="filterForm.satker" class="select select-bordered select-xs w-full bg-blue-50/30">
-              <option value="">Seluruh Satker</option>
-              <option value="1">LAN JAKARTA</option>
-              <option value="2">PUSJAR SKTASN NAS</option>
-            </select>
+        <form @submit.prevent="filterData" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <!-- Satker Select (dynamic options to be implemented) -->
+            <div class="md:col-span-4">
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <Icon icon="tabler:building" class="w-4 h-4 text-blue-500" />
+                <span>Satker</span>
+              </label>
+              <div class="relative">
+                <select v-model="filterForm.satker" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer">
+                  <option value="">Pilih Satker...</option>
+                  <!-- <option v-for="satker in satkers" :key="satker.id" :value="satker.id">{{ satker.name }}</option> -->
+                  <option value="1">LAN JAKARTA</option>
+                  <option value="2">PUSJAR SKTASN NAS</option>
+                </select>
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon icon="tabler:building" class="w-5 h-5 text-gray-400" />
+                </div>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon icon="tabler:chevron-down" class="w-4 h-4 text-gray-400" />
+                </div>
+              </div>
+            </div>
+            <!-- Unit Select (dynamic options to be implemented) -->
+            <div class="md:col-span-4">
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <Icon icon="tabler:sitemap" class="w-4 h-4 text-blue-500" />
+                <span>Unit</span>
+              </label>
+              <div class="relative">
+                <select v-model="filterForm.unit" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer">
+                  <option value="">Pilih Unit...</option>
+                  <!-- <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.name }}</option> -->
+                  <option value="1">Poksi Keuangan</option>
+                  <option value="3">Poksi SDM</option>
+                </select>
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon icon="tabler:users-group" class="w-5 h-5 text-gray-400" />
+                </div>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon icon="tabler:chevron-down" class="w-4 h-4 text-gray-400" />
+                </div>
+              </div>
+            </div>
+            <!-- Tahun Filter (year input) -->
+            <div class="md:col-span-2">
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <Icon icon="tabler:calendar" class="w-4 h-4 text-blue-500" />
+                <span>Tahun</span>
+              </label>
+              <div class="relative">
+                <input v-model="filterForm.tahun" type="number" min="2000" max="2100" placeholder="2026" class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 text-center font-mono" />
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon icon="tabler:calendar-time" class="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+            </div>
+            <!-- Filter Button -->
+            <div class="md:col-span-2 flex items-end">
+              <button type="submit" class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
+                <Icon icon="tabler:search" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Tampilkan</span>
+              </button>
+            </div>
           </div>
-          <!-- Unit -->
-          <div>
-            <label class="label text-xs font-bold text-blue-800">Unit</label>
-            <select v-model="filterForm.unit" class="select select-bordered select-xs w-full bg-blue-50/30">
-              <option value="">Seluruh Unit</option>
-              <option value="1">Poksi Keuangan</option>
-              <option value="3">Poksi SDM</option>
-            </select>
-          </div>
-          <!-- Tanggal Awal -->
-          <div>
-            <label class="label text-xs font-bold text-blue-800">Tanggal Awal</label>
-            <input v-model="filterForm.tanggalAwal" type="date" class="input input-bordered input-xs w-full bg-blue-50/30" />
-          </div>
-          <!-- Tanggal Akhir -->
-          <div>
-            <label class="label text-xs font-bold text-blue-800">Tanggal Akhir</label>
-            <input v-model="filterForm.tanggalAkhir" type="date" class="input input-bordered input-xs w-full bg-blue-50/30" />
-          </div>
-        </div>
-        <div class="card-actions justify-end mt-4">
-          <button @click="filterData" type="button" class="btn btn-success btn-sm px-6">
-            <Icon icon="tabler:search" class="w-4 h-4 mr-1" />
-            Filter
-          </button>
-        </div>
+        </form>
       </div>
     </div>
 
     <!-- Action Buttons -->
     <div class="flex flex-wrap gap-3 mb-4">
-      <NuxtLink to="/admin/persediaan/create" class="btn btn-success btn-sm shadow-md">
-        <Icon icon="tabler:plus" class="w-4 h-4 mr-1" />
-        Tambah Barang Persediaan
+      <NuxtLink to="/admin/persediaan/create" class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+        <Icon icon="tabler:plus" class="w-4 h-4" />
+        <span>Tambah Barang Persediaan</span>
       </NuxtLink>
-      <button @click="cetakPdf" type="button" class="btn btn-info btn-sm shadow-md text-white">
-        <Icon icon="tabler:printer" class="w-4 h-4 mr-1" />
-        Cetak Rekap Saldo
+      <button @click="cetakPdf" type="button" class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+        <Icon icon="tabler:printer" class="w-4 h-4" />
+        <span>Cetak Rekap Saldo</span>
       </button>
     </div>
 

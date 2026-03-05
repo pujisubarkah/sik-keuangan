@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="mb-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold text-blue-700 flex items-center gap-3">
@@ -41,7 +41,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 
 const props = defineProps({
   satkerData: {

@@ -1,4 +1,4 @@
-<!-- src/components/Sidebar.vue -->
+﻿<!-- src/components/Sidebar.vue -->
 <template>
   <aside 
     :class="['main-sidebar', 'bg-blue-900', 'text-white', 'flex', 'flex-col', 'overflow-hidden', { rail }]"
@@ -166,7 +166,7 @@
 </template>
 
 <script>
-import { Icon } from '@iconify/vue';
+import Icon from '~/components/Icon.vue'
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { getMenuItems } from '~/layouts/menu-config.js';
@@ -303,9 +303,9 @@ export default {
 .menu-item,
 .submenu-item {
   display: flex;
-  align-items: center;  /* ✅ Vertikal center */
+  align-items: center;  /* âœ… Vertikal center */
   justify-content: flex-start;
-  gap: 12px;            /* ✅ Jarak icon-text konsisten */
+  gap: 12px;            /* âœ… Jarak icon-text konsisten */
   width: 100%;
 }
 
@@ -319,7 +319,7 @@ export default {
   line-height: 1;
 }
 
-/* Text styling - ✅ BUKAN 'block' */
+/* Text styling - âœ… BUKAN 'block' */
 .menu-parent span,
 .menu-item span,
 .submenu-item span {
@@ -335,7 +335,7 @@ export default {
 .menu-parent > div:first-child,
 .menu-item,
 .submenu-item {
-  min-width: 0; /* ✅ Penting untuk truncate bekerja */
+  min-width: 0; /* âœ… Penting untuk truncate bekerja */
 }
 
 /* Submenu styling */

@@ -74,13 +74,13 @@
                 <td class="text-center">
                   <div class="flex gap-2 justify-center">
                     <NuxtLink :to="`/output/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink :to="`/output/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>
@@ -96,7 +96,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import { NuxtLink } from '#components'
 
 const showAlert = ref(true)

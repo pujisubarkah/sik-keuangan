@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="dropdown dropdown-end">
     <button
       tabindex="0"
@@ -12,12 +12,12 @@
           Online
         </span>
       </div>
-      <Icon icon="tabler:chevron-down" class="w-4 h-4 text-white" />
+      <IconChevronDown class="w-4 h-4 text-white" />
     </button>
     <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-xl bg-gradient-to-br from-blue-50 to-white rounded-lg w-52 border border-blue-200">
       <li>
         <a href="/admin/users" class="text-blue-900 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-600 hover:text-white rounded-md transition-all">
-          <Icon icon="tabler:user" class="w-4 h-4" />
+          <IconUser class="w-4 h-4" />
           <span class="font-medium">Data User</span>
         </a>
       </li>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
+import { IconChevronDown, IconUser } from '@tabler/icons-vue'
 import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()

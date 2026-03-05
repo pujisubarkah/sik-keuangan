@@ -10,7 +10,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@iconify/vue": "^5.0.0",
     "@idds/vue": "^1.5.61",
     "apexcharts": "^5.7.0",
     "axios": "^1.13.6",

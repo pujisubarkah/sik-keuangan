@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('/main_logo.png')">
     <!-- Gambar logolanwhite.png di atas background main_logo.png di sebelah kiri -->
     <!-- Logo logolanwhite.png di atas form login, agak ke kanan -->
@@ -22,38 +22,57 @@
           </p>
 
           <form class="space-y-4" @submit.prevent="handleLogin">
-            <!-- Username Field -->
+
+            <!-- Username Field with Icon -->
             <div class="form-group">
               <label class="block text-sm font-medium mb-1 text-gray-700">Username</label>
-              <TextField
-                v-model="form.username"
-                placeholder="Username"
-                type="text"
-                required
-              />
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2">
+                  <IconUser class="w-5 h-5 text-blue-500" />
+                </span>
+                <TextField
+                  v-model="form.username"
+                  placeholder="Username"
+                  type="text"
+                  required
+                  class="pl-10"
+                />
+              </div>
             </div>
 
-            <!-- Password Field -->
+            <!-- Password Field with Icon -->
             <div class="form-group">
               <label class="block text-sm font-medium mb-1 text-gray-700">Password</label>
-              <TextField
-                v-model="form.password"
-                placeholder="Password"
-                type="password"
-                required
-              />
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2">
+                  <IconLock class="w-5 h-5 text-blue-500" />
+                </span>
+                <TextField
+                  v-model="form.password"
+                  placeholder="Password"
+                  type="password"
+                  required
+                  class="pl-10"
+                />
+              </div>
               <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
             </div>
 
-            <!-- Year Field -->
+            <!-- Year Field with Icon -->
             <div class="form-group">
               <label class="block text-sm font-medium mb-1 text-gray-700">Tahun</label>
-              <TextField
-                v-model="form.tahun"
-                placeholder="Tahun"
-                type="text"
-                required
-              />
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2">
+                  <IconCalendar class="w-5 h-5 text-blue-500" />
+                </span>
+                <TextField
+                  v-model="form.tahun"
+                  placeholder="Tahun"
+                  type="text"
+                  required
+                  class="pl-10"
+                />
+              </div>
             </div>
 
             <!-- Remember Me & Login Button -->
@@ -87,6 +106,7 @@
 <script setup lang="ts">
 import { Button, TextField, Card } from '@idds/vue'
 import { useUserStore } from '~/stores/user'
+import { IconCalendar, IconLock, IconUser } from '@tabler/icons-vue'
 
 definePageMeta({
   layout: false

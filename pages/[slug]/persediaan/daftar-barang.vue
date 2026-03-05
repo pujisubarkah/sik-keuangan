@@ -31,10 +31,10 @@ definePageMeta({ layout: 'default' });
     <div class="mb-4">
       <NuxtLink
         to="/admin/persediaan/create"
-        class="btn btn-success"
+        class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
       >
-         <Icon icon="mdi:plus" class="w-4 h-4 mr-1" />
-        Tambah Barang Persediaan
+        <IconPlus class="w-4 h-4" />
+        <span>Tambah Barang Persediaan</span>
       </NuxtLink>
     </div>
     
@@ -113,9 +113,9 @@ definePageMeta({ layout: 'default' });
                   <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Akun" />
                 </td>
                 <td class="text-center">
-                  <button @click="applyFilters" type="button" class="btn btn-success btn-xs px-4">
-                    <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
-                    Filter
+                  <button @click="applyFilters" type="button" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                    <IconSearch class="w-4 h-4" />
+                    <span>Filter Data</span>
                   </button>
                 </td>
               </tr>
@@ -132,13 +132,13 @@ definePageMeta({ layout: 'default' });
                 <td class="text-center">
                   <div class="flex gap-2 justify-center">
                     <button @click="viewItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </button>
                     <button @click="editItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </button>
                     <button @click="deleteItem(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>
@@ -174,7 +174,7 @@ definePageMeta({ layout: 'default' });
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconPlus, IconSearch, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 
 // State
 const items = ref([])

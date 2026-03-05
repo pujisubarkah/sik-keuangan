@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@iconify/vue':
-        specifier: ^5.0.0
-        version: 5.0.0(vue@3.5.29)
       '@idds/vue':
         specifier: ^1.5.61
         version: 1.5.61(vue@3.5.29)
@@ -458,14 +455,6 @@ packages:
 
   '@fusioncharts/widgets@4.2.1':
     resolution: {integrity: sha512-8c57fImflU5IFkhoOsI7MWuhQc9nTIJahBzlYpx2cLL3oMhL5HbHIrpwiQo5i9Ap5P2vMOw1pvJ1Bd3StTnxaA==}
-
-  '@iconify/types@2.0.0':
-    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-
-  '@iconify/vue@5.0.0':
-    resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
-    peerDependencies:
-      vue: '>=3'
 
   '@idds/styles@1.5.61':
     resolution: {integrity: sha512-DAhfodDWqutkf18VAEZOaMuSOzJxL6EhefiGkTUDT1+YwFrrv0BO4egxtrmYOccB8xIlwQeMe8OBGXWae8oMlQ==}
@@ -4853,13 +4842,6 @@ snapshots:
       '@fusioncharts/core': 1.9.9
       '@fusioncharts/features': 1.9.9
       '@fusioncharts/utils': 1.9.9
-
-  '@iconify/types@2.0.0': {}
-
-  '@iconify/vue@5.0.0(vue@3.5.29)':
-    dependencies:
-      '@iconify/types': 2.0.0
-      vue: 3.5.29
 
   '@idds/styles@1.5.61': {}
 

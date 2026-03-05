@@ -20,72 +20,85 @@
 
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun 2026</h1>
 
-    <!-- Filter Form -->
-    <Card class="bg-gradient-to-br from-blue-100 via-blue-50 to-green-50 shadow-xl mb-6 rounded-xl border border-blue-100">
+      <!-- Filter Form -->
+    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <template #header>
         <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
-          <Icon icon="tabler:search" class="w-6 h-6 text-blue-500" />
+          <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
           Filter Data
         </h2>
       </template>
       <template #default>
-        <form @submit.prevent="filterData">
+        <form @submit.prevent="filterData" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+            <!-- Status Data Dukung -->
             <div class="md:col-span-4">
-              <label class="label">
-                <span class="label-text">Status Data Dukung</span>
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <IconFolderCheck class="w-4 h-4 text-blue-500" />
+                <span>Status Data Dukung</span>
+                <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
               </label>
               <div class="relative">
-                <select v-model="filterForm.status_berkas" class="select select-bordered w-full pr-10 custom-select-outline">
-                  <option value="">Semua Status</option>
+                <select v-model="filterForm.status_berkas" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
+                  <option value="" disabled selected>Semua Status</option>
                   <option value="1">Tersedia</option>
                   <option value="0">Belum Tersedia</option>
                 </select>
-                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </span>
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <IconFolderCheck class="w-5 h-5 text-gray-400" />
+                </div>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <IconChevronDown class="w-4 h-4 text-gray-400" />
+                </div>
               </div>
             </div>
+            <!-- Tanggal Pengajuan Awal -->
             <div class="md:col-span-3">
               <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
             </div>
             <div class="md:col-span-1 flex items-end justify-center">
               <span class="pb-3">s/d</span>
             </div>
+            <!-- Tanggal Pengajuan Akhir -->
             <div class="md:col-span-3">
               <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label class="label">
-                <span class="label-text">Status Data</span>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <!-- Status Data -->
+            <div class="md:col-span-4">
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
+                <span>Status Data</span>
+                <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
               </label>
               <div class="relative">
-                <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pr-10 custom-select-outline">
-                  <option value="">Semua Data</option>
+                <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
+                  <option value="" disabled selected>Semua Data</option>
                   <option value="0">Hanya Pengajuan Baru</option>
                 </select>
-                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </span>
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <IconDatabaseSearch class="w-5 h-5 text-gray-400" />
+                </div>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <IconChevronDown class="w-4 h-4 text-gray-400" />
+                </div>
               </div>
             </div>
           </div>
           <div class="flex gap-2">
-            <Button type="success" @click="filterData" class="w-auto px-6">
-              <Icon icon="tabler:search" class="w-4 h-4 mr-2" />
-              Filter Data
+            <Button @click="filterData" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              <IconSearch class="w-4 h-4" />
+              <span>Filter Data</span>
             </Button>
-            <Button type="outline" @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="w-auto px-6">
-              <Icon icon="tabler:refresh" class="w-4 h-4 mr-2" />
-              Reset
+            <Button @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              <IconRefresh class="w-4 h-4" />
+              <span>Reset</span>
             </Button>
           </div>
         </form>
       </template>
     </Card>
-
     <!-- Table -->
     <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <div class="card-body">
@@ -164,13 +177,13 @@
                 <td class="text-center">
                   <div class="flex gap-2 justify-center">
                     <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>
@@ -235,7 +248,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
 import { NuxtLink } from '#components'
 
 definePageMeta({ layout: 'default' })

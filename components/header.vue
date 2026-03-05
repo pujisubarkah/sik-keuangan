@@ -143,6 +143,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useUserStore } from '~/stores/user'
 
 const props = defineProps({
   rail: { 
@@ -163,9 +164,10 @@ const isPengajuanOpen = ref(false)
 const userRef = ref(null)
 const pengajuanRef = ref(null)
 
-// Dummy data - ganti dengan Pinia store
-const displayName = computed(() => 'Admin User')
-const displayRole = computed(() => 'Administrator')
+const userStore = useUserStore()
+
+const displayName = computed(() => userStore.username || userStore.name || 'User')
+const displayRole = computed(() => userStore.role || 'User')
 
 // Toggle methods
 const togglePengajuan = () => {

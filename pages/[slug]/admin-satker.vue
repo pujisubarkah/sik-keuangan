@@ -1,7 +1,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 
 definePageMeta({ layout: 'default' })
 
@@ -199,7 +199,7 @@ const totalPage = ref(2)
                       data-tip="View"
                     >
                       <Button type="info" size="sm" circle>
-                        <Icon icon="tabler:eye" class="w-4 h-4" />
+                        <IconEye class="w-4 h-4" />
                       </Button>
                     </NuxtLink>
 
@@ -208,7 +208,7 @@ const totalPage = ref(2)
                       data-tip="Update"
                     >
                       <Button type="warning" size="sm" circle>
-                        <Icon icon="tabler:pencil" class="w-4 h-4" />
+                        <IconPencil class="w-4 h-4" />
                       </Button>
                     </NuxtLink>
 
@@ -219,7 +219,7 @@ const totalPage = ref(2)
                       data-tip="Delete"
                       @click="confirm('Yakin hapus user ini?')"
                     >
-                      <Icon icon="tabler:trash" class="w-4 h-4" />
+                      <IconTrash class="w-4 h-4" />
                     </Button>
                   </div>
                 </td>

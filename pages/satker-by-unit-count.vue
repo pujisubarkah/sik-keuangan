@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="content-wrapper p-6">
 
     <!-- Header -->
@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
+import Icon from '~/components/Icon.vue'
 import { Button, TextField, Card } from '@idds/vue'
 
 const minCount = ref(0)

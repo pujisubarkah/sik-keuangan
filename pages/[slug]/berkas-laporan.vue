@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconAlertCircle, IconHome, IconPlus, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 
 const showAlert = ref(true)
 const filter = ref({ judul: '', berkas: '', user_pembuat: '', waktu_dibuat: '' })
@@ -21,7 +21,7 @@ const laporanList = ref([
     <!-- ALERT -->
     <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
       <div>
-        <Icon icon="tabler:alert-circle" class="w-6 h-6 text-blue-600" />
+        <IconAlertCircle class="w-6 h-6 text-blue-600" />
         <span>
           Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
           <NuxtLink
@@ -37,7 +37,7 @@ const laporanList = ref([
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="tabler:home" class="w-4 h-4 text-blue-600" /> Dashboard
+        <IconHome class="w-4 h-4 text-blue-600" /> Dashboard
       </NuxtLink>
       <span>/</span>
       <NuxtLink to="/admin/berkas-laporan" class="hover:text-blue-700">Berkas Laporans</NuxtLink>
@@ -59,7 +59,7 @@ const laporanList = ref([
             to="/admin/berkas-laporan/create"
             class="btn btn-primary"
           >
-            <Icon icon="tabler:plus" class="w-5 h-5 mr-2 text-blue-600" />
+            <IconPlus class="w-5 h-5 mr-2 text-blue-600" />
             Tambah Berkas Laporans
           </NuxtLink>
         </div>
@@ -133,20 +133,20 @@ const laporanList = ref([
                       :to="`/admin/berkas-laporan/view/${lap.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="View"
                     >
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink
                       :to="`/admin/berkas-laporan/update/${lap.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="Update"
                     >
-                      <Icon icon="tabler:pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button
                       class="hover:text-red-600 transition tooltip" data-tip="Delete"
                       @click="confirm('Yakin hapus berkas laporan ini?')"
                       style="background:none;border:none;padding:0;"
                     >
-                      <Icon icon="tabler:trash" class="w-5 h-5 text-red-500 hover:text-red-700" />
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
                   </div>
                 </td>

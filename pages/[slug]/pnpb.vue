@@ -13,24 +13,43 @@
     </div>
     <div class="w-full max-w-7xl mx-auto">
       <h1 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">LAN JAKARTA - PNBP</h1>
-      <!-- Filter Form -->
-      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
-        <div class="card-body p-3 md:p-4">
-          <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-            <i class="fa fa-folder text-blue-500"></i>
-            Filter Satker
-          </h2>
-          <form @submit.prevent="filterData">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
-              <div class="form-control">
-                <select v-model="filterForm.id_satker" class="select select-bordered w-full">
-                  <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
-                </select>
+      <!-- Filter Form: Konsisten dengan DashboardFilter.vue -->
+      <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden animate-fade-in-up">
+        <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+        <div class="p-5 md:p-6">
+          <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
+            <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
+              <div class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                <i class="fa fa-folder text-blue-600 group-hover:scale-110 transition-transform" />
               </div>
-              <div class="form-control flex items-end justify-end h-full">
-                <button type="submit" class="btn btn-success btn-sm w-full md:w-auto px-4">
-                  <i class="fa fa-search mr-1"></i>
-                  Tampilkan
+              <span>Filter Satker</span>
+            </h2>
+          </div>
+          <form @submit.prevent="filterData" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div class="md:col-span-6">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <i class="fa fa-building text-blue-500" />
+                  <span>Satker</span>
+                  <span v-if="filterForm.id_satker" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
+                </label>
+                <div class="relative">
+                  <select v-model="filterForm.id_satker" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.id_satker }">
+                    <option value="" disabled selected>Pilih Satker...</option>
+                    <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
+                  </select>
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <i class="fa fa-building text-gray-400" />
+                  </div>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <i class="fa fa-chevron-down text-gray-400" />
+                  </div>
+                </div>
+              </div>
+              <div class="md:col-span-2 flex items-end">
+                <button type="submit" class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
+                  <i class="fa fa-search w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span>Tampilkan</span>
                 </button>
               </div>
             </div>

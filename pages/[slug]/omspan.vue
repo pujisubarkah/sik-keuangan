@@ -1,7 +1,7 @@
 <script setup>
 import { Button, Card } from '@idds/vue'
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+import { IconEye, IconEdit } from '@tabler/icons-vue'
 
 definePageMeta({ layout: 'default' })
 
@@ -114,7 +114,7 @@ const formatCurrency = (value) =>
                       :to="`/admin/omspan/preview/${row.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="Preview"
                     >
-                      <Icon icon="tabler:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
 
                     <NuxtLink
@@ -155,12 +155,10 @@ const formatCurrency = (value) =>
 
         <!-- FOOTER ACTION -->
         <div class="mt-6">
-          <NuxtLink
-            to="/admin/omspanPengaturan"
-          >
-            <Button type="success">
-              <Icon icon="mdi:email-edit-outline" class="w-5 h-5 mr-2" />
-              Kelola Isi Konten OMSPAN
+          <NuxtLink to="/admin/omspanPengaturan">
+            <Button class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              <IconEdit class="w-4 h-4" />
+              <span>Kelola Isi Konten OMSPAN</span>
             </Button>
           </NuxtLink>
         </div>

@@ -61,7 +61,7 @@
 import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue';
 import { NuxtLink } from '#components';
-import { Icon } from '@iconify/vue';
+import Icon from '~/components/Icon.vue';
 
 const form = ref({
   tahun: '2026',
