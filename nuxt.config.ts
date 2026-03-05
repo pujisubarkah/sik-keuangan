@@ -37,9 +37,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   plugins: [
-    { src: '~/plugins/auth-fetch.ts', mode: 'client' },
-    '~/plugins/pinia.js',
-    { src: '~/plugins/fusioncharts.js', mode: 'client' },
-    { src: '~/plugins/apexcharts.js', mode: 'client' },
-  ],
+  { src: '~/plugins/auth-fetch.ts', mode: 'client' },
+  '~/plugins/pinia.js',
+  { src: '~/plugins/fusioncharts.js', mode: 'client' },
+  { src: '~/plugins/apexcharts.js', mode: 'client' },
+  { src: '~/plugins/idds.client.ts', mode: 'client' },
+  { src: '~/plugins/idds-theme.client.ts', mode: 'client' }, // tambah ini
+],
 })

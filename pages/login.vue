@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('/main_logo.png')">
-    <!-- Gambar lanri.png di atas background main_logo.png di sebelah kiri -->
-    <!-- Logo lanri.png di atas form login, agak ke kanan -->
-    <img src="/lanri.png" alt="LANRI" class="absolute top-16 left-1/2 transform -translate-x-1/2 w-[320px] max-w-[60vw] h-auto opacity-90 z-10" />
+    <!-- Gambar logolanwhite.png di atas background main_logo.png di sebelah kiri -->
+    <!-- Logo logolanwhite.png di atas form login, agak ke kanan -->
+    <img src="/logolanwhite.png" alt="LANRI" class="absolute top-16 left-1/2 transform -translate-x-1/2 w-[320px] max-w-[60vw] h-auto opacity-90 z-10" />
     <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
     <div class="fixed top-12 right-12 z-20 w-full max-w-md">
