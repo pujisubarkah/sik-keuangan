@@ -41,7 +41,8 @@ export default defineNuxtConfig({
   '~/plugins/pinia.js',
   { src: '~/plugins/fusioncharts.js', mode: 'client' },
   { src: '~/plugins/apexcharts.js', mode: 'client' },
+
   { src: '~/plugins/idds.client.ts', mode: 'client' },
-  { src: '~/plugins/idds-theme.client.ts', mode: 'client' }, // tambah ini
+  { src: '~/plugins/idds-theme.client.ts', mode: 'client' },
 ],
 })
