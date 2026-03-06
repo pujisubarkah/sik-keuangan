@@ -1,18 +1,18 @@
 ﻿<!-- src/components/Sidebar.vue -->
 <template>
   <aside 
-    :class="['main-sidebar', 'bg-blue-900', 'text-white', 'flex', 'flex-col', 'overflow-hidden', { rail }]"
+    :class="['main-sidebar', 'bg-[#1f4f85]', 'text-white', 'flex', 'flex-col', 'overflow-hidden', { rail }]"
     role="navigation"
     aria-label="Main Navigation"
   >
     <!-- User Panel Section -->
-    <div v-if="!rail" class="user-panel flex items-center p-4 mb-2 bg-blue-950 rounded-lg shadow mx-2">
+    <div v-if="!rail" class="user-panel flex items-center p-4 mb-2 bg-white rounded-lg shadow mx-2">
       <div class="pull-left image mr-3 flex-shrink-0">
-        <Icon icon="mdi:account-circle" class="w-12 h-12 text-green-400" />
+        <Icon icon="mdi:account-circle" class="w-12 h-12 text-brandBlue-400" />
       </div>
       <div class="pull-left info overflow-hidden">
         <p class="font-semibold mb-1 text-sm truncate">{{ username }}</p>
-        <a href="#" class="flex items-center text-xs text-green-400">
+        <a href="#" class="flex items-center text-xs text-brandBlue-400">
           <Icon icon="fa:circle" class="w-3 h-3 mr-1 flex-shrink-0" /> 
           <span class="truncate">Online</span>
         </a>
@@ -21,15 +21,15 @@
 
     <!-- Search Form -->
     <form v-if="!rail" class="sidebar-form px-4 mb-2" @submit.prevent>
-      <div class="flex rounded overflow-hidden bg-blue-800">
+      <div class="flex rounded overflow-hidden bg-gray-200">
         <input 
           v-model="searchQuery" 
           type="text" 
           placeholder="Search..." 
-          class="flex-1 px-3 py-2 bg-blue-800 text-white focus:outline-none placeholder-blue-300 text-sm"
+          class="flex-1 px-3 py-2 bg-gray-200 text-white focus:outline-none placeholder-white text-sm"
           aria-label="Search menu"
         />
-        <button type="submit" class="px-3 text-gray-400 hover:text-white flex items-center justify-center" aria-label="Submit search">
+        <button type="submit" class="px-3 text-white hover:text-gray-300 flex items-center justify-center" aria-label="Submit search">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4-4m0 0A7 7 0 104 4a7 7 0 0013 13z" />
           </svg>
@@ -37,13 +37,13 @@
       </div>
     </form>
 
-    <div class="divider my-2 border-t border-blue-800 mx-2" v-if="!rail"></div>
+    <div class="divider my-2 border-t border-gray-300 mx-2" v-if="!rail"></div>
 
     <!-- Navigation Menu -->
-    <ul class="sidebar-menu flex-1 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-950">
+    <ul class="sidebar-menu flex-1 px-2 overflow-y-auto">
       
       <!-- Navigation Group Header -->
-      <li v-if="!rail" class="header text-xs text-green-300 tracking-wider py-2 px-3 font-semibold">MENU NAVIGASI</li>
+      <li v-if="!rail" class="header text-xs text-brandBlue-300 tracking-wider py-2 px-3 font-semibold">MENU NAVIGASI</li>
       
       <!-- Navigation Group Items -->
       <template v-for="(item, index) in menuItems.filter(i => i.group === 'navigation')" :key="'nav-' + index">
@@ -52,14 +52,14 @@
         <li v-if="item.children && item.children.length > 0">
           <div class="menu-item-group">
             <button 
-              class="menu-parent flex items-center justify-between w-full py-2.5 px-3 hover:bg-blue-800 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
+              class="menu-parent flex items-center justify-between w-full py-2.5 px-3 hover:bg-brandBlue-800 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
               @click="toggleSubmenu('nav-' + index)"
               :aria-expanded="openMenus.includes('nav-' + index)"
               type="button"
             >
               <!-- Icon + Title Container -->
               <div class="flex items-center gap-3 min-w-0 flex-1">
-                <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-green-400" />
+                <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-brandBlue-400" />
                 <span v-if="!rail" class="text-sm font-medium truncate">{{ item.title }}</span>
               </div>
               <!-- Chevron Icon -->
@@ -76,11 +76,11 @@
                 <li v-for="(child, childIndex) in item.children" :key="childIndex">
                   <NuxtLink 
                     :to="child.to" 
-                    class="submenu-item flex items-center gap-3 py-2 px-3 hover:bg-blue-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
-                    active-class="bg-green-600 text-white"
+                    class="submenu-item flex items-center gap-3 py-2 px-3 hover:bg-brandBlue-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
+                    active-class="bg-brandBlue-600 text-white"
                     @click="closeAllSubmenus"
                   >
-                    <Icon :icon="child.icon" class="w-4 h-4 flex-shrink-0 text-green-400" />
+                    <Icon :icon="child.icon" class="w-4 h-4 flex-shrink-0 text-brandBlue-400" />
                     <span v-if="!rail" class="truncate">{{ child.title }}</span>
                   </NuxtLink>
                 </li>
@@ -93,17 +93,17 @@
         <li v-else>
           <NuxtLink 
             :to="item.to" 
-            class="menu-item flex items-center gap-3 py-2.5 px-3 hover:bg-blue-800 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
-            active-class="bg-green-600 text-white"
+            class="menu-item flex items-center gap-3 py-2.5 px-3 hover:bg-brandBlue-800 rounded focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
+            active-class="bg-brandBlue-600 text-white"
           >
-            <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-green-400" />
+            <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-brandBlue-400" />
             <span v-if="!rail" class="text-sm font-medium truncate">{{ item.title }}</span>
           </NuxtLink>
         </li>
       </template>
       
       <!-- Admin Group Header -->
-      <li v-if="!rail && menuItems.some(i => i.group === 'admin')" class="header text-xs text-green-300 tracking-wider py-2 px-3 mt-4 font-semibold">MENU ADMIN</li>
+      <li v-if="!rail && menuItems.some(i => i.group === 'admin')" class="header text-xs text-brandBlue-300 tracking-wider py-2 px-3 mt-4 font-semibold">MENU ADMIN</li>
       
       <!-- Admin Group Items -->
       <template v-for="(item, index) in menuItems.filter(i => i.group === 'admin')" :key="'admin-' + index">
@@ -112,14 +112,14 @@
         <li v-if="item.children && item.children.length > 0">
           <div class="menu-item-group">
             <button 
-              class="menu-parent flex items-center justify-between w-full py-2.5 px-3 hover:bg-blue-800 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
+              class="menu-parent flex items-center justify-between w-full py-2.5 px-3 hover:bg-brandBlue-800 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
               @click="toggleSubmenu('admin-' + index)"
               :aria-expanded="openMenus.includes('admin-' + index)"
               type="button"
             >
               <!-- Icon + Title Container -->
               <div class="flex items-center gap-3 min-w-0 flex-1">
-                <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-green-400" />
+                <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-brandBlue-400" />
                 <span v-if="!rail" class="text-sm font-medium truncate">{{ item.title }}</span>
               </div>
               <!-- Chevron Icon -->
@@ -136,11 +136,11 @@
                 <li v-for="(child, childIndex) in item.children" :key="childIndex">
                   <NuxtLink 
                     :to="child.to" 
-                    class="submenu-item flex items-center gap-3 py-2 px-3 hover:bg-blue-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
-                    active-class="bg-green-600 text-white"
+                    class="submenu-item flex items-center gap-3 py-2 px-3 hover:bg-brandBlue-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
+                    active-class="bg-brandBlue-600 text-white"
                     @click="closeAllSubmenus"
                   >
-                    <Icon :icon="child.icon" class="w-4 h-4 flex-shrink-0 text-green-400" />
+                    <Icon :icon="child.icon" class="w-4 h-4 flex-shrink-0 text-brandBlue-400" />
                     <span v-if="!rail" class="truncate">{{ child.title }}</span>
                   </NuxtLink>
                 </li>
@@ -153,10 +153,10 @@
         <li v-else>
           <NuxtLink 
             :to="item.to" 
-            class="menu-item flex items-center gap-3 py-2.5 px-3 hover:bg-blue-800 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors"
-            active-class="bg-green-600 text-white"
+            class="menu-item flex items-center gap-3 py-2.5 px-3 hover:bg-brandBlue-800 rounded focus:outline-none focus:ring-2 focus:ring-brandBlue-400 transition-colors"
+            active-class="bg-brandBlue-600 text-white"
           >
-            <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-green-400" />
+            <Icon :icon="item.icon" class="w-5 h-5 flex-shrink-0 text-brandBlue-400" />
             <span v-if="!rail" class="text-sm font-medium truncate">{{ item.title }}</span>
           </NuxtLink>
         </li>
@@ -245,27 +245,24 @@ export default {
 
 /* ===== SCROLLBAR CUSTOM ===== */
 .sidebar-menu {
-  scrollbar-width: thin;
-  scrollbar-color: #1e3a8a #172554;
+  /* hide scrollbar visually but keep scrolling */
+  scrollbar-width: none; /* Firefox */
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .sidebar-menu::-webkit-scrollbar {
-  width: 6px;
+  width: 0; /* hide on webkit */
 }
 
+/* thumb and track rules can remain but will not be visible */
 .sidebar-menu::-webkit-scrollbar-thumb {
-  background: #1e3a8a;
+  background: transparent;
   border-radius: 4px;
 }
 
-.sidebar-menu::-webkit-scrollbar-thumb:hover {
-  background: #1e40af;
-}
-
 .sidebar-menu::-webkit-scrollbar-track {
-  background: #172554;
+  background: transparent;
 }
 
 /* ===== USER PANEL ===== */

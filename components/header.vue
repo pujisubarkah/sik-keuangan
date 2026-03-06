@@ -4,7 +4,7 @@
     <div class="header-left">
       <span class="logo" aria-label="SIK-LAN Dashboard">
         <span class="logo-lg">
-          <span class="text-green-400">SIK</span>LAN
+          <span class="text-white">SIK</span>LAN
         </span>
       </span>
     </div>
@@ -21,9 +21,9 @@
     >
       <!-- Icon tiga garis vertikal putih -->
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="6" width="16" height="2" rx="1" fill="#fff"/>
-        <rect x="4" y="11" width="16" height="2" rx="1" fill="#fff"/>
-        <rect x="4" y="16" width="16" height="2" rx="1" fill="#fff"/>
+        <rect x="4" y="6" width="16" height="2" rx="1" fill="#1f4f85"/>
+        <rect x="4" y="11" width="16" height="2" rx="1" fill="#1f4f85"/>
+        <rect x="4" y="16" width="16" height="2" rx="1" fill="#1f4f85"/>
       </svg>
       <span class="sr-only">Toggle navigation</span>
     </button>
@@ -222,8 +222,9 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   height: 56px; /* 3.5rem = 56px */
-  background: #1e3a8a; /* blue-900 */
-  border-bottom: 1px solid #1e3a8a;
+  background: #1f4f85; /* brandBlue-700 */
+  border-bottom: 1px solid #1f4f85;
+  color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -238,16 +239,16 @@ onBeforeUnmount(() => {
   align-items: center;
   height: 56px;
   padding: 0 16px;
-  background: #172554; /* blue-950 */
+  background: #1f4f85; /* sidebar color now */
   color: white;
   text-decoration: none;
   transition: background 0.2s;
   min-width: 230px;
-  border-right: 1px solid #1e3a8a;
+  border-right: 1px solid #f3f4f6;
 }
 
 .logo:hover {
-  background: #1e40af; /* blue-800 */
+  background: #1f4f85; /* match header */
 }
 
 .logo-lg {
@@ -262,7 +263,8 @@ onBeforeUnmount(() => {
   flex: 1;
   display: flex;
   align-items: center;
-  background: #1e3a8a; /* blue-900 */
+  background: #1f4f85; /* brandBlue-700 */
+  color: white;
   height: 56px;
   padding: 0;
   margin: 0;
@@ -277,15 +279,15 @@ onBeforeUnmount(() => {
   justify-content: center;
   background: none;
   border: none;
-  color: white;
+  color: #1f4f85;
   cursor: pointer;
   transition: all 0.2s;
   border-right: none;
 }
 
 .sidebar-toggle:hover {
-  background: #1e40af; /* blue-800 */
-  color: #4ade80; /* green-400 */
+  background: #e5e7eb; /* light gray hover */
+  color: #1f4f85;
 }
 
 .sidebar-toggle:focus {
@@ -328,23 +330,23 @@ onBeforeUnmount(() => {
 }
 
 .dropdown-toggle:hover {
-  background: #1e40af; /* blue-800 */
-  color: #4ade80; /* green-400 */
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 .dropdown-toggle:focus {
-  outline: 2px solid #4ade80;
+  outline: 2px solid #5B9BD5;
   outline-offset: 2px;
 }
 
 .dropdown-toggle i:first-child {
-  color: #4ade80; /* green-400 */
+  color: #5B9BD5; /* brandBlue-400 */
   font-size: 18px;
 }
 
 /* Badge Notification */
 .badge-notification {
-  background: #22c55e; /* green-500 */
+  background: #3781C7; /* brandBlue-500 */
   color: white;
   font-size: 11px;
   font-weight: bold;
@@ -369,8 +371,8 @@ onBeforeUnmount(() => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid #4ade80; /* green-400 */
-  background: #1e40af; /* blue-700 */
+  border: 2px solid #5B9BD5; /* brandBlue-400 */
+  background: #1F4F85; /* brandBlue-700 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -448,7 +450,7 @@ onBeforeUnmount(() => {
   height: 64px;
   border-radius: 50%;
   border: 2px solid white;
-  background: #1e40af; /* blue-700 */
+  background: #1F4F85; /* brandBlue-700 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -471,7 +473,7 @@ onBeforeUnmount(() => {
 .user-info-role {
   display: block;
   font-size: 12px;
-  color: #4ade80; /* green-300 */
+  color: #94BDE5; /* brandBlue-300 */
   text-transform: capitalize;
 }
 
@@ -547,7 +549,7 @@ i {
 
 /* Tambahkan di style scoped header.vue atau global CSS */
 .sidebar-toggle i {
-  color: #fff; /* putih */
+  color: #1f4f85; /* dark icon */
   font-size: 24px;
 }
 

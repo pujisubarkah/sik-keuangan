@@ -8,6 +8,112 @@ export default {
     "./app.vue",
   ],
   theme: {
+    colors: {
+      // Primary Colors
+      primary: '#1F1F1F',
+      secondary: '#525252',
+      tertiary: '#A3A3A3',
+      guideInfo: '#0969F6',
+      negative: '#F80909',
+      positive: '#00BB25',
+      warning: '#FFB23B',
+      // Yellow Palette
+      yellow: {
+        50: '#FFF7EB',
+        100: '#FEE8C4',
+        200: '#FDD189',
+        300: '#FCC162',
+        400: '#FBB238',
+        500: '#D4952F',
+        600: '#AC7824',
+        700: '#855C18',
+      },
+      // Orange Palette
+      orange: {
+        50: '#FFF3EB',
+        100: '#FEE4D2',
+        200: '#FC974F',
+        300: '#F66A09',
+        400: '#BB4D00',
+        500: '#6B2D00',
+        600: '#42210A',
+        700: '#301603',
+      },
+      // Green Palette
+      green: {
+        50: '#EBFFEF',
+        100: '#D2FEDB',
+        200: '#B3FC9B',
+        300: '#51FB73',
+        400: '#00B925',
+        500: '#006B15',
+        600: '#044215',
+        700: '#03300C',
+      },
+      // Blue Palette
+      blue: {
+        50: '#EBF3FF',
+        100: '#D2E4FE',
+        200: '#84B4F8',
+        300: '#4D93FC',
+        400: '#0969F6',
+        500: '#004ABB',
+        600: '#002A69',
+        700: '#031530',
+      },
+      // Red Palette
+      red: {
+        50: '#FFEBEB',
+        100: '#FED2D2',
+        200: '#FB8383',
+        300: '#FC4F4F',
+        400: '#B80000',
+        500: '#6B0000',
+        600: '#420A0A',
+        700: '#300303',
+      },
+      // Brand Primary Biru
+      brandBlue: {
+        50: '#F3F6FC',
+        100: '#E5EFF9',
+        200: '#C6DAF1',
+        300: '#94BDE5',
+        400: '#5B9BD5',
+        500: '#3781C7',
+        600: '#2663A3',
+        700: '#1F4F85',
+        800: '#1E446E',
+        900: '#193454',
+        950: '#14263D',
+      },
+      // Brand Secondary Gold
+      brandGold: {
+        50: '#FBF38C',
+        100: '#F9E650',
+        200: '#F7D628',
+        300: '#F2BD1D',
+        400: '#D69009',
+        500: '#B1670C',
+        600: '#905110',
+        700: '#764111',
+        800: '#442204',
+      },
+      // Monochrome colors
+      black: '#000000',
+      white: '#ffffff',
+      gray: {
+        50: '#f9fafb',
+        100: '#f3f4f6',
+        200: '#e5e7eb',
+        300: '#d1d5db',
+        400: '#9ca3af',
+        500: '#6b7280',
+        600: '#4b5563',
+        700: '#374151',
+        800: '#1f2937',
+        900: '#111827',
+      },
+    },
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
