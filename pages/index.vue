@@ -1,97 +1,91 @@
 ﻿<template>
-  <div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('/main_logo.png')">
-    <!-- Gambar logolanwhite.png di atas background main_logo.png di sebelah kiri -->
-    <!-- Logo logolanwhite.png di atas form login, agak ke kanan -->
-    <img src="/logolanwhite.png" alt="LANRI" class="absolute top-16 left-1/2 transform -translate-x-1/2 w-[320px] max-w-[60vw] h-auto opacity-90 z-10" />
-    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+  <div
+    class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
+    style="background-image: url('/main_logo.png')"
+  >
+    <div class="absolute inset-0 bg-black/30"></div>
 
-    <div class="fixed top-12 right-12 z-20 w-full max-w-md">
-      <!-- Login Box -->
-      <Card class="overflow-hidden">
-        <!-- Header -->
-        <div class="bg-blue-600 px-6 py-4">
-          <h1 class="text-2xl font-bold text-white text-center">
-            Sistem Informasi Keuangan (SIK)
-          </h1>
-        </div>
+    <!-- Card login tetap di kanan -->
+    <div class="fixed top-12 right-12 z-20 w-full max-w-[420px]">
+      <Card class="overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl">
+        <div class="px-8 py-8">
+          <!-- Logo di dalam card -->
+          <div class="flex flex-col items-center text-center mb-8">
+            <img
+              src="/LANRI-ORG.png"
+              alt="LANRI"
+              class="w-[220px] max-w-full h-auto mb-5"
+            />
 
-        <!-- Body -->
-        <div class="px-6 py-8">
-          <p class="text-gray-600 text-center mb-6 text-lg">
-            Silahkan login terlebih dahulu
-          </p>
+            
+            <p class="mt-2 text-sm text-gray-600">
+              Silahkan login terlebih dahulu
+            </p>
+          </div>
 
-          <form class="space-y-4" @submit.prevent="handleLogin">
-
-            <!-- Username Field with Icon -->
+          <form class="space-y-5" @submit.prevent="handleLogin">
+            <!-- Username -->
             <div class="form-group">
-              <label class="block text-sm font-medium mb-1 text-gray-700">Username</label>
-              <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2">
-                  <IconUser class="w-5 h-5 text-blue-500" />
-                </span>
-                <TextField
-                  v-model="form.username"
-                  placeholder="Username"
-                  type="text"
-                  required
-                  class="pl-10"
-                />
-              </div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">
+                Username
+              </label>
+              <TextField
+                v-model="form.username"
+                placeholder="Masukkan username"
+                type="text"
+                required
+              />
             </div>
 
-            <!-- Password Field with Icon -->
+            <!-- Password -->
             <div class="form-group">
-              <label class="block text-sm font-medium mb-1 text-gray-700">Password</label>
-              <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2">
-                  <IconLock class="w-5 h-5 text-blue-500" />
-                </span>
-                <TextField
-                  v-model="form.password"
-                  placeholder="Password"
-                  type="password"
-                  required
-                  class="pl-10"
-                />
-              </div>
-              <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
+              <label class="block text-sm font-medium mb-2 text-gray-700">
+                Password
+              </label>
+              <TextField
+                v-model="form.password"
+                placeholder="Masukkan password"
+                type="password"
+                required
+              />
+              <p v-if="errors.password" class="text-red-500 text-sm mt-2">
+                {{ errors.password }}
+              </p>
             </div>
 
-            <!-- Year Field with Icon -->
+            <!-- Tahun -->
             <div class="form-group">
-              <label class="block text-sm font-medium mb-1 text-gray-700">Tahun</label>
-              <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2">
-                  <IconCalendar class="w-5 h-5 text-blue-500" />
-                </span>
-                <TextField
-                  v-model="form.tahun"
-                  placeholder="Tahun"
-                  type="text"
-                  required
-                  class="pl-10"
-                />
-              </div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">
+                Tahun
+              </label>
+              <TextField
+                v-model="form.tahun"
+                placeholder="Masukkan tahun"
+                type="text"
+                required
+              />
             </div>
 
-            <!-- Remember Me & Login Button -->
-            <div class="flex items-center justify-between pt-4">
-              <div class="flex items-center">
+            <!-- Checkbox -->
+            <div class="pt-1">
+              <label for="rememberMe" class="flex items-center gap-3 cursor-pointer">
                 <input
                   v-model="form.rememberMe"
                   id="rememberMe"
                   type="checkbox"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  class="w-4 h-4 border border-gray-300 rounded cursor-pointer"
+                  style="appearance: auto; -webkit-appearance: auto;"
                 />
-                <label for="rememberMe" class="ml-2 block text-sm text-gray-700">
-                  Remember me next time
-                </label>
-              </div>
+                <span class="text-sm font-medium text-gray-700">Ingatkan saya</span>
+              </label>
+            </div>
 
+            <!-- Button Login -->
+            <div class="pt-2">
               <Button
                 html-type="primary"
                 type="submit"
+                class="w-full"
               >
                 LOGIN
               </Button>
@@ -106,7 +100,6 @@
 <script setup lang="ts">
 import { Button, TextField, Card } from '@idds/vue'
 import { useUserStore } from '~/stores/user'
-import { IconCalendar, IconLock, IconUser } from '@tabler/icons-vue'
 
 definePageMeta({
   layout: false
@@ -125,12 +118,37 @@ const errors = reactive({
 
 const userStore = useUserStore()
 
+// Load remember me data on mount
+onMounted(() => {
+  const savedUsername = localStorage.getItem('remember_username')
+  const savedPassword = localStorage.getItem('remember_password')
+  const savedRememberMe = localStorage.getItem('remember_me')
+  
+  if (savedRememberMe === 'true' && savedUsername && savedPassword) {
+    form.username = savedUsername
+    form.password = savedPassword
+    form.rememberMe = true
+  }
+})
+
 const handleLogin = () => {
   errors.password = ''
   if (!form.password) {
     errors.password = 'Password cannot be blank.'
     return
   }
+  
+  // Save or clear remember me data
+  if (form.rememberMe) {
+    localStorage.setItem('remember_username', form.username)
+    localStorage.setItem('remember_password', form.password)
+    localStorage.setItem('remember_me', 'true')
+  } else {
+    localStorage.removeItem('remember_username')
+    localStorage.removeItem('remember_password')
+    localStorage.removeItem('remember_me')
+  }
+  
   $fetch<{ token: string; name?: string }>('/api/auth/login', {
     method: 'POST',
     body: {
@@ -141,12 +159,10 @@ const handleLogin = () => {
     .then((res) => {
       if (res.token) {
         localStorage.setItem('token', res.token)
-        // decode token untuk cek role_id
         const tokenParts = res.token.split('.')
         const payload = JSON.parse(atob(tokenParts[1] || ''))
-        // Set user ke Pinia
-        userStore.setUser({ 
-          username: form.username, 
+        userStore.setUser({
+          username: form.username,
           name: res.name || form.username,
           role: payload.role || '',
           role_id: payload.role_id,
@@ -170,8 +186,7 @@ const handleLogin = () => {
 </script>
 
 <style scoped>
-/* Additional custom styles if needed */
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 </style>
