@@ -11,7 +11,7 @@
         <Icon icon="mdi:account-circle" class="w-12 h-12 text-brandBlue-400" />
       </div>
       <div class="pull-left info overflow-hidden">
-        <p class="font-semibold mb-1 text-sm truncate">{{ username }}</p>
+        <p class="font-semibold mb-1 text-sm truncate text-gray-900">{{ displayName }}</p>
         <a href="#" class="flex items-center text-xs text-brandBlue-400">
           <Icon icon="fa:circle" class="w-3 h-3 mr-1 flex-shrink-0" /> 
           <span class="truncate">Online</span>
@@ -170,6 +170,7 @@ import Icon from '~/components/Icon.vue'
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { getMenuItems } from '~/layouts/menu-config.js';
+import { computed } from 'vue';
 
 export default {
   name: 'Sidebar',
@@ -188,8 +189,9 @@ export default {
   },
   setup() {
     const userStore = useUserStore();
+    const displayName = computed(() => userStore.name || userStore.username || 'User');
     const { username, role, role_id } = storeToRefs(userStore);
-    return { username, role, role_id };
+    return { displayName, username, role, role_id };
   },
   data() {
     return {

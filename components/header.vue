@@ -21,9 +21,9 @@
     >
       <!-- Icon tiga garis vertikal putih -->
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="6" width="16" height="2" rx="1" fill="#1f4f85"/>
-        <rect x="4" y="11" width="16" height="2" rx="1" fill="#1f4f85"/>
-        <rect x="4" y="16" width="16" height="2" rx="1" fill="#1f4f85"/>
+        <rect x="4" y="6" width="16" height="2" rx="1" fill="#fff"/>
+        <rect x="4" y="11" width="16" height="2" rx="1" fill="#fff"/>
+        <rect x="4" y="16" width="16" height="2" rx="1" fill="#fff"/>
       </svg>
       <span class="sr-only">Toggle navigation</span>
     </button>
@@ -59,7 +59,7 @@
                   @click="closePengajuan"
                   role="menuitem"
                 >
-                  <i class="idds idds-search"></i>
+                    <Icon icon="tabler:shopping-cart" class="dropdown-link-icon" />
                   <span>Pengajuan Baru</span>
                 </NuxtLink>
               </li>
@@ -69,7 +69,7 @@
                   @click="closePengajuan"
                   role="menuitem"
                 >
-                  <i class="idds idds-list"></i>
+                    <Icon icon="tabler:shopping-cart" class="dropdown-link-icon" />
                   <span>Pengajuan Total</span>
                 </NuxtLink>
               </li>
@@ -193,6 +193,10 @@ const handleClickOutside = (event) => {
 }
 
 onMounted(() => {
+  if (!userStore.username) {
+    userStore.hydrateFromStorage()
+  }
+
   document.addEventListener('click', handleClickOutside)
 })
 

@@ -6,7 +6,7 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
   const baseMenu = [
     {
       title: 'Dashboard',
-      icon: 'heroicons:home',
+      icon: 'tabler:home',
       to: `/${effectiveSlug}`,
       children: []
     }
@@ -15,29 +15,29 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
   const userMenu = [
     {
       title: 'Keuangan',
-      icon: 'heroicons:currency-dollar',
+      icon: 'tabler:currency-dollar',
       to: '',
       children: [
         {
           title: 'Pemasukan',
-          icon: 'heroicons:arrow-trending-up',
+          icon: 'tabler:trending-up',
           to: '/pemasukan'
         },
         {
           title: 'Pengeluaran',
-          icon: 'heroicons:arrow-trending-down',
+          icon: 'tabler:trending-down',
           to: '/pengeluaran'
         },
         {
           title: 'Laporan',
-          icon: 'heroicons:chart-bar',
+          icon: 'tabler:chart-bar',
           to: '/laporan'
         }
       ]
     },
     {
       title: 'Profil',
-      icon: 'heroicons:user',
+      icon: 'tabler:user',
       to: '/profil',
       children: []
     }
@@ -46,181 +46,181 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
   const adminMenu = [
     {
       title: 'Dashboard',
-      icon: 'heroicons:home',
+      icon: 'tabler:home',
       to: `/${effectiveSlug}`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Perencanaan',
-      icon: 'heroicons:clipboard-document-list',
+      icon: 'tabler:clipboard-list',
       to: `/${effectiveSlug}/perencanaan`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Pengajuan',
-      icon: 'heroicons:shopping-cart',
+      icon: 'tabler:shopping-cart',
       to: `/${effectiveSlug}/pengajuan`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Pengeluaran',
-      icon: 'heroicons:banknotes',
+      icon: 'tabler:cash-banknote',
       to: `/${effectiveSlug}/pengeluaran`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Program',
-      icon: 'heroicons:star',
+      icon: 'tabler:star',
       to: `/${effectiveSlug}/program`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Kegiatan',
-      icon: 'heroicons:tag',
+      icon: 'tabler:tag',
       to: `/${effectiveSlug}/kegiatan`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Output',
-      icon: 'heroicons:briefcase',
+      icon: 'tabler:briefcase',
       to: `/${effectiveSlug}/output`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Suboutput',
-      icon: 'heroicons:folder',
+      icon: 'tabler:folder',
       to: `/${effectiveSlug}/suboutput`,
       group: 'navigation',
       children: []
     },
     {
       title: 'PNBP',
-      icon: 'heroicons:folder-open',
+      icon: 'tabler:folder-open',
       to: `/${effectiveSlug}/pnpb`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Persediaan',
-      icon: 'heroicons:cube',
+      icon: 'tabler:package',
       to: '',
       group: 'navigation',
       children: [
         {
           title: 'Daftar Barang',
-          icon: 'heroicons:list-bullet',
+          icon: 'tabler:list-details',
           to: `/${effectiveSlug}/persediaan/daftar-barang`
         },
         {
           title: 'Saldo Barang',
-          icon: 'heroicons:scale',
+          icon: 'tabler:scale',
           to: `/${effectiveSlug}/persediaan/saldo-barang`
         },
         {
           title: 'Daftar Faktur',
-          icon: 'heroicons:document-text',
+          icon: 'tabler:file-text',
           to: `/${effectiveSlug}/persediaan/daftar-faktur`
         }
       ]
     },
     {
       title: 'OMSPAN',
-      icon: 'heroicons:folder-open',
+      icon: 'tabler:folder-open',
       to: `/${effectiveSlug}/omspan`,
       group: 'navigation',
       children: []
     },
     {
       title: 'Ganti Password',
-      icon: 'heroicons:lock-closed',
+      icon: 'tabler:lock',
       to: `/${effectiveSlug}/ganti-password`,
       group: 'navigation',
       children: []
     },
     {
       title: 'User',
-      icon: 'heroicons:users',
+      icon: 'tabler:users',
       to: '',
       group: 'admin',
       children: [
-        { title: 'Admin', icon: 'heroicons:user', to: `/${effectiveSlug}/users` },
-        { title: 'Admin Satker', icon: 'heroicons:user', to: `/${effectiveSlug}/admin-satker` },
-        { title: 'Verifikator', icon: 'heroicons:user', to: `/${effectiveSlug}/verifikator` },
-        { title: 'PUMK', icon: 'heroicons:user', to: `/${effectiveSlug}/pumk` },
-        { title: 'Karo Umum/Kabag Keu', icon: 'heroicons:user', to: `/${effectiveSlug}/karo-umum` },
-        { title: 'Kabagmin/Kabag', icon: 'heroicons:user', to: `/${effectiveSlug}/kabagmin` },
-        { title: 'PPK', icon: 'heroicons:user', to: `/${effectiveSlug}/ppk` },
-        { title: 'Bendahara Penerima', icon: 'heroicons:user', to: `/${effectiveSlug}/bendahara-penerima` },
-        { title: 'Deputi', icon: 'heroicons:user', to: `/${effectiveSlug}/deputi` },
-        { title: 'Kepala LAN', icon: 'heroicons:user', to: `/${effectiveSlug}/kepala-lan` },
-        { title: 'Kepala Satker', icon: 'heroicons:user', to: `/${effectiveSlug}/kepala-satker` },
-        { title: 'Persediaan Unit', icon: 'heroicons:user', to: `/${effectiveSlug}/persediaan-unit` },
-        { title: 'Admin OMSPAN', icon: 'heroicons:user', to: `/${effectiveSlug}/admin-omspan` }
+        { title: 'Admin', icon: 'tabler:user', to: `/${effectiveSlug}/users` },
+        { title: 'Admin Satker', icon: 'tabler:user', to: `/${effectiveSlug}/admin-satker` },
+        { title: 'Verifikator', icon: 'tabler:user', to: `/${effectiveSlug}/verifikator` },
+        { title: 'PUMK', icon: 'tabler:user', to: `/${effectiveSlug}/pumk` },
+        { title: 'Karo Umum/Kabag Keu', icon: 'tabler:user', to: `/${effectiveSlug}/karo-umum` },
+        { title: 'Kabagmin/Kabag', icon: 'tabler:user', to: `/${effectiveSlug}/kabagmin` },
+        { title: 'PPK', icon: 'tabler:user', to: `/${effectiveSlug}/ppk` },
+        { title: 'Bendahara Penerima', icon: 'tabler:user', to: `/${effectiveSlug}/bendahara-penerima` },
+        { title: 'Deputi', icon: 'tabler:user', to: `/${effectiveSlug}/deputi` },
+        { title: 'Kepala LAN', icon: 'tabler:user', to: `/${effectiveSlug}/kepala-lan` },
+        { title: 'Kepala Satker', icon: 'tabler:user', to: `/${effectiveSlug}/kepala-satker` },
+        { title: 'Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan-unit` },
+        { title: 'Admin OMSPAN', icon: 'tabler:user', to: `/${effectiveSlug}/admin-omspan` }
       ]
     },
     {
       title: 'User Persediaan',
-      icon: 'heroicons:users',
+      icon: 'tabler:users',
       to: `/${effectiveSlug}/persediaan`,
       group: 'admin',
       children: [
-        { title: 'Admin Persediaan', icon: 'heroicons:user', to: `/${effectiveSlug}/persediaan/admin` },
-        { title: 'Admin Satker Persediaan', icon: 'heroicons:user', to: `/${effectiveSlug}/persediaan/admin-satker` },
-        { title: 'Operator Persediaan Unit', icon: 'heroicons:user', to: `/${effectiveSlug}/persediaan/operator-unit` }
+        { title: 'Admin Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/admin` },
+        { title: 'Admin Satker Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/admin-satker` },
+        { title: 'Operator Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/operator-unit` }
       ]
     },
     {
       title: 'Satker',
-      icon: 'heroicons:building-library',
+      icon: 'tabler:building-bank',
       to: `/${effectiveSlug}/satker`,
       group: 'admin',
       children: []
     },
     {
       title: 'Unit',
-      icon: 'heroicons:building-office',
+      icon: 'tabler:building',
       to: `/${effectiveSlug}/unit`,
       group: 'admin',
       children: []
     },
     {
       title: 'Informasi',
-      icon: 'heroicons:information-circle',
+      icon: 'tabler:info-circle',
       to: `/${effectiveSlug}/informasi`,
       group: 'admin',
       children: []
     },
     {
       title: 'Berkas',
-      icon: 'heroicons:document',
+      icon: 'tabler:file-description',
       to: `/${effectiveSlug}/berkas`,
       group: 'admin',
       children: []
     },
     {
       title: 'Berkas Laporan',
-      icon: 'heroicons:document-text',
+      icon: 'tabler:file-text',
       to: `/${effectiveSlug}/berkas-laporan`,
       group: 'admin',
       children: []
     },
     {
       title: 'Import RKAKL',
-      icon: 'heroicons:arrow-down-tray',
+      icon: 'tabler:file-import',
       to: `/${effectiveSlug}/import-rkakl`,
       group: 'admin',
       children: []
     },
     {
       title: 'Logout',
-      icon: 'heroicons:arrow-left-on-rectangle',
+      icon: 'tabler:logout',
       to: `/logout`,
       group: 'navigation',
       children: []
@@ -229,21 +229,21 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
 
   // Menu khusus untuk role_id 8
   const role8Menu = [
-    { title: 'Dashboard', icon: 'heroicons:home', to: `/${effectiveSlug}`, group: 'navigation', children: [] },
-    { title: 'Perencanaan', icon: 'heroicons:clipboard-document-list', to: `/${effectiveSlug}/perencanaan`, group: 'navigation', children: [] },
-    { title: 'Pengajuan', icon: 'heroicons:shopping-cart', to: `/${effectiveSlug}/pengajuan`, group: 'navigation', children: [] },
-    { title: 'Pengeluaran', icon: 'heroicons:banknotes', to: `/${effectiveSlug}/pengeluaran`, group: 'navigation', children: [] },
-    { title: 'Program', icon: 'heroicons:star', to: `/${effectiveSlug}/program`, group: 'navigation', children: [] },
-    { title: 'Kegiatan', icon: 'heroicons:tag', to: `/${effectiveSlug}/kegiatan`, group: 'navigation', children: [] },
-    { title: 'Output', icon: 'heroicons:briefcase', to: `/${effectiveSlug}/output`, group: 'navigation', children: [] },
-    { title: 'Suboutput', icon: 'heroicons:folder', to: `/${effectiveSlug}/suboutput`, group: 'navigation', children: [] },
-    { title: 'PNBP', icon: 'heroicons:folder-open', to: `/${effectiveSlug}/pnpb`, group: 'navigation', children: [] },
-    { title: 'Informasi', icon: 'heroicons:information-circle', to: `/${effectiveSlug}/informasi`, group: 'navigation', children: [] },
-    { title: 'Ganti Password', icon: 'heroicons:lock-closed', to: `/${effectiveSlug}/ganti-password`, group: 'navigation', children: [] },
-    { title: 'Logout', icon: 'heroicons:arrow-left-on-rectangle', to: `/logout`, group: 'navigation', children: [] },
+    { title: 'Dashboard', icon: 'tabler:home', to: `/${effectiveSlug}`, group: 'navigation', children: [] },
+    { title: 'Perencanaan', icon: 'tabler:clipboard-list', to: `/${effectiveSlug}/perencanaan`, group: 'navigation', children: [] },
+    { title: 'Pengajuan', icon: 'tabler:shopping-cart', to: `/${effectiveSlug}/pengajuan`, group: 'navigation', children: [] },
+    { title: 'Pengeluaran', icon: 'tabler:cash-banknote', to: `/${effectiveSlug}/pengeluaran`, group: 'navigation', children: [] },
+    { title: 'Program', icon: 'tabler:star', to: `/${effectiveSlug}/program`, group: 'navigation', children: [] },
+    { title: 'Kegiatan', icon: 'tabler:tag', to: `/${effectiveSlug}/kegiatan`, group: 'navigation', children: [] },
+    { title: 'Output', icon: 'tabler:briefcase', to: `/${effectiveSlug}/output`, group: 'navigation', children: [] },
+    { title: 'Suboutput', icon: 'tabler:folder', to: `/${effectiveSlug}/suboutput`, group: 'navigation', children: [] },
+    { title: 'PNBP', icon: 'tabler:folder-open', to: `/${effectiveSlug}/pnpb`, group: 'navigation', children: [] },
+    { title: 'Informasi', icon: 'tabler:info-circle', to: `/${effectiveSlug}/informasi`, group: 'navigation', children: [] },
+    { title: 'Ganti Password', icon: 'tabler:lock', to: `/${effectiveSlug}/ganti-password`, group: 'navigation', children: [] },
+    { title: 'Logout', icon: 'tabler:logout', to: `/logout`, group: 'navigation', children: [] },
     // Group MENU ADMIN
-    { title: 'User', icon: 'heroicons:users', to: `/${effectiveSlug}/users`, group: 'admin', children: [] },
-    { title: 'Unit', icon: 'heroicons:building-office', to: `/${effectiveSlug}/unit`, group: 'admin', children: [] }
+    { title: 'User', icon: 'tabler:users', to: `/${effectiveSlug}/users`, group: 'admin', children: [] },
+    { title: 'Unit', icon: 'tabler:building', to: `/${effectiveSlug}/unit`, group: 'admin', children: [] }
   ]
 
   if (normalizedRoleId === 8) {

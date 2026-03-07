@@ -1,148 +1,182 @@
-<script setup>
-import { Card } from '@idds/vue'
-import { ref } from 'vue'
-import Icon from '~/components/Icon.vue'
-
-const showAlert = ref(true)
-
-const units = ref([
-  {
-    nama: 'Inspektorat',
-    kode: '2003',
-    satker: 'LAN JAKARTA',
-    alias: 'Inspektorat'
-  },
-  {
-    nama: 'STIA LAN Jakarta',
-    kode: '2008',
-    satker: 'STIA LAN JAKARTA',
-    alias: 'STIA LAN Jakarta'
-  },
-  {
-    nama: 'STIA LAN Bandung',
-    kode: '2009',
-    satker: 'STIA LAN BANDUNG',
-    alias: 'STIA LAN Bandung'
-  },
-  {
-    nama: 'STIA LAN Makassar',
-    kode: '2010',
-    satker: 'STIA MAKASSAR',
-    alias: 'STIA LAN Makassar'
-  },
-  {
-    nama: 'Pusat Data dan Sistem Informasi (Pusdatin)',
-    kode: '2023',
-    satker: 'LAN JAKARTA',
-    alias: 'Pusdatin'
-  }
-])
-
-definePageMeta({ layout: 'default' })
-</script>
-
 <template>
-  <div class="pt-14">
-
-    <!-- ALERT -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
-          <NuxtLink
-            to="/admin/suboutput"
-            class="link link-hover underline ml-1"
-          >
-            Klik di sini
-          </NuxtLink>
-        </span>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Alert Section -->
+      <div v-if="showAlert" class="mb-6 rounded-md bg-red-50 p-4 border border-red-200">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <!-- Tabler Icon: Alert Triangle -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              Perhatian: Data Belum Lengkap
+            </h3>
+            <div class="mt-2 text-sm text-red-700">
+              <p>
+                Terdapat <span class="font-bold">41 Sub Output</span> yang belum ditentukan unitnya.
+                <a href="/pekerjaan?id_unit=null" class="font-medium underline hover:text-red-900">
+                  Klik di sini untuk memperbaiki
+                </a>.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- BREADCRUMB -->
-    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
-      </NuxtLink>
-      <span>/</span>
-      <NuxtLink to="/admin/unit" class="hover:text-blue-700">Units</NuxtLink>
-      <span>/</span>
-      <span class="font-bold text-blue-700">Manage</span>
-    </div>
+      <!-- Header Section -->
+      <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            Daftar Satker
+          </h2>
+        </div>
+      </div>
 
-    <!-- TITLE -->
-    <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      Daftar Unit
-    </h1>
-
-    <!-- WARNING -->
-    <div class="alert alert-warning shadow mb-6">
-      <Icon icon="mdi:information" class="w-5 h-5" />
-      <span>
-        Untuk tambah / ubah / hapus unit dilakukan melalui aplikasi
-        <b>Sireva</b>
-      </span>
-    </div>
-
-    <!-- CARD -->
-    <Card>
-      <template #header>
-        <h2 class="text-xl font-bold text-blue-700">Daftar Unit</h2>
-      </template>
-
-        <!-- TABLE -->
-        <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-
-            <!-- HEADER -->
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th>Nama</th>
-                <th>Kode</th>
-                <th class="text-center">Satker</th>
-                <th class="text-center rounded-tr-xl">Alias</th>
-              </tr>
-            </thead>
-
-            <!-- BODY -->
-            <tbody>
-              <tr
-                v-for="(unit, index) in units"
-                :key="index"
-                class="hover:bg-blue-50 transition"
-              >
-                <td class="text-center font-bold text-blue-700">
-                  {{ index + 1 }}
-                </td>
-
-                <td class="font-semibold text-blue-700">
-                  {{ unit.nama }}
-                </td>
-
-                <td class="font-mono">
-                  {{ unit.kode }}
-                </td>
-
-                <td class="text-center">
-                  <span class="badge badge-info text-white">
-                    {{ unit.satker }}
-                  </span>
-                </td>
-
-                <td class="text-center">
-                  <span class="badge badge-success text-white">
-                    {{ unit.alias }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-
-          </table>
+      <!-- Content Card -->
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
+        
+        <!-- Summary -->
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+          <span class="text-sm text-gray-500 font-medium">
+            Menampilkan {{ satkers.length }} hasil
+          </span>
         </div>
 
-    </Card>
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
+                  No
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nama Satker
+                </th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Jumlah Unit
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              
+              <!-- Loading State -->
+              <tr v-if="loading">
+                <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                  <div class="flex justify-center items-center">
+                    <!-- Tabler Icon: Loader (Animated) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <span class="ml-2 text-sm">Memuat data...</span>
+                  </div>
+                </td>
+              </tr>
 
+              <!-- Data Rows -->
+              <tr v-for="(satker, index) in satkers" :key="satker.id" class="hover:bg-gray-50 transition-colors duration-150">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                  {{ index + 1 }}
+                </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">{{ satker.name }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 border border-green-200">
+                      {{ satker.unitCount }} Unit
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    
+                    <!-- View Button (Tabler: Eye) -->
+                    <button @click="viewSatker(satker.id)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+
+                    <!-- Edit Button (Tabler: Pencil) -->
+                    <button @click="editSatker(satker.id)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+
+                    <!-- Delete Button (Tabler: Trash) -->
+                    <button @click="deleteSatker(satker.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Empty State -->
+              <tr v-if="!loading && satkers.length === 0">
+                <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                  Tidak ada data satker ditemukan.
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+
+const satkers = ref([])
+const loading = ref(true)
+const showAlert = ref(true)
+
+
+const fetchSatker = async () => {
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch('/api/satker/unit_count', { headers })
+    let data = []
+    if(res.ok) {
+      data = await res.json()
+    }
+    satkers.value = data
+  } catch (error) {
+    console.error("Gagal mengambil data", error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(fetchSatker)
+
+const viewSatker = (id) => {
+  window.location.href = `/satker/${id}`
+}
+
+const editSatker = (id) => {
+  window.location.href = `/satker/edit/${id}`
+}
+
+const deleteSatker = (id) => {
+  if(confirm('Apakah Anda yakin ingin menghapus satker ini?')){
+    console.log('Menghapus ID:', id)
+  }
+}
+</script>
