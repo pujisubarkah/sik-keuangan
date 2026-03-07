@@ -31,7 +31,8 @@ export default defineEventHandler(async (event) => {
     .innerJoin(masterProgram, eq(masterKegiatan.program_id, masterProgram.id))
     .leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id))
     .leftJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
-    .leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id));
+    .leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
+    .orderBy(anggaranSuboutput.id);
 
   return result;
 });
