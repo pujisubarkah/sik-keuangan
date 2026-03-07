@@ -1,16 +1,43 @@
+import { eq, sql } from 'drizzle-orm';
 import { anggaranSuboutput } from '../../database/schema/anggaran_suboutput';
 import { masterSuboutput } from '../../database/schema/master_suboutput';
 import { masterOutput } from '../../database/schema/master_output';
+import { masterKegiatan } from '../../database/schema/master_kegiatan';
+import { satker } from '../../database/schema/satker';
+import { tahunAnggaran } from '../../database/schema/tahun_anggaran';
+import { db } from '../../database';
 
 export default defineEventHandler(async (event) => {
-  const kegiatanId = getRouterParam(event, 'kegiatan_id');
-  if (!kegiatanId) return [];
-  // Query dengan drizzle ORM
-  const result = await db.select()
+  const result = await db
+    .select({
+      id: masterKegiatan.id,
+      kegiatan_id: masterKegiatan.id,
+      nama_kegiatan: masterKegiatan.nama_kegiatan,
+      satker_id: anggaranSuboutput.satker_id,
+      satker_name: satker.name,
+      tahun_anggaran_id: anggaranSuboutput.tahun_anggaran_id,
+      tahun: tahunAnggaran.tahun,
+      output: sql<number>`count(distinct ${masterOutput.id})`.as('output'),
+      suboutput: sql<number>`count(distinct ${masterSuboutput.id})`.as('suboutput'),
+      jumlah: sql<string>`coalesce(sum(${anggaranSuboutput.anggaran}), 0)`.as('jumlah'),
+      kode: masterKegiatan.kode_kegiatan,
+    })
     .from(anggaranSuboutput)
-    .innerJoin(masterSuboutput, anggaranSuboutput.suboutput_id.eq(masterSuboutput.id))
-    .innerJoin(masterOutput, masterSuboutput.output_id.eq(masterOutput.id))
-    .where(masterOutput.kegiatan_id.eq(Number(kegiatanId)))
-    .execute();
+    .innerJoin(masterSuboutput, eq(anggaranSuboutput.suboutput_id, masterSuboutput.id))
+    .innerJoin(masterOutput, eq(masterSuboutput.output_id, masterOutput.id))
+    .innerJoin(masterKegiatan, eq(masterOutput.kegiatan_id, masterKegiatan.id))
+    .leftJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
+    .leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id))
+    .groupBy(
+      masterKegiatan.id,
+      masterKegiatan.nama_kegiatan,
+      masterKegiatan.kode_kegiatan,
+      anggaranSuboutput.satker_id,
+      satker.name,
+      anggaranSuboutput.tahun_anggaran_id,
+      tahunAnggaran.tahun,
+    )
+    .orderBy(masterKegiatan.kode_kegiatan, satker.name, tahunAnggaran.tahun);
+
   return result;
 });

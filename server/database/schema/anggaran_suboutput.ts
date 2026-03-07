@@ -5,6 +5,6 @@ export const anggaranSuboutput = pgTable('anggaran_suboutput', {
   suboutput_id: integer('suboutput_id').notNull(),
   satker_id: integer('satker_id').notNull(),
   unit_id: integer('unit_id').notNull(),
-  tahun: integer('tahun').notNull(),
+  tahun_anggaran_id: integer('tahun_anggaran_id').notNull(),
   anggaran: numeric('anggaran').notNull(),
 });
