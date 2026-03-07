@@ -1,189 +1,178 @@
 <template>
-  <div class="pt-14">
-    <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-      <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-      untuk memperbaiki.
-    </div>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div v-if="showAlert" class="mb-6 rounded-md bg-red-50 p-4 border border-red-200">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">Perhatian: Data Belum Lengkap</h3>
+            <div class="mt-2 text-sm text-red-700">
+              <p>
+                Terdapat <span class="font-bold">41 Sub Output</span> yang belum ditentukan unitnya.
+                <NuxtLink to="/admin/suboutput" class="font-medium underline hover:text-red-900">Klik di sini untuk memperbaiki</NuxtLink>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Breadcrumb -->
-    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
-        <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
-      </NuxtLink>
-      <span>/</span>
-      <NuxtLink to="/pengeluaran" class="hover:text-blue-700">Pengeluarans</NuxtLink>
-      <span>/</span>
-      <span class="font-bold text-blue-700">Manage</span>
-    </div>
+      <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            Daftar Pengeluaran Tahun 2026
+          </h2>
+        </div>
+      </div>
 
-    <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun 2026</h1>
-
-      <!-- Filter Form -->
-    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <template #header>
-        <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
-          <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
-          Filter Data
-        </h2>
-      </template>
-      <template #default>
-        <form @submit.prevent="filterData" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
-            <!-- Status Data Dukung -->
-            <div class="md:col-span-4">
-              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <IconFolderCheck class="w-4 h-4 text-blue-500" />
-                <span>Status Data Dukung</span>
-                <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
-              </label>
-              <div class="relative">
-                <select v-model="filterForm.status_berkas" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
-                  <option value="" disabled selected>Semua Status</option>
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-base font-semibold text-gray-900">Filter Data</h3>
+        </div>
+        <div class="px-6 py-5">
+          <form @submit.prevent="filterData" class="space-y-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+              <div>
+                <label class="mb-2 block text-sm font-medium text-gray-700">Status Data Dukung</label>
+                <select v-model="filterForm.status_berkas" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                  <option value="">Semua Status</option>
                   <option value="1">Tersedia</option>
                   <option value="0">Belum Tersedia</option>
                 </select>
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconFolderCheck class="w-5 h-5 text-gray-400" />
-                </div>
-                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconChevronDown class="w-4 h-4 text-gray-400" />
-                </div>
               </div>
-            </div>
-            <!-- Tanggal Pengajuan Awal -->
-            <div class="md:col-span-3">
-              <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
-            </div>
-            <div class="md:col-span-1 flex items-end justify-center">
-              <span class="pb-3">s/d</span>
-            </div>
-            <!-- Tanggal Pengajuan Akhir -->
-            <div class="md:col-span-3">
-              <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            <!-- Status Data -->
-            <div class="md:col-span-4">
-              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
-                <span>Status Data</span>
-                <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
-              </label>
-              <div class="relative">
-                <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
-                  <option value="" disabled selected>Semua Data</option>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-gray-700">Tanggal Pengajuan Awal</label>
+                <input v-model="filterForm.tanggal_pengajuan_awal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-gray-700">Tanggal Pengajuan Akhir</label>
+                <input v-model="filterForm.tanggal_pengajuan_akhir" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-gray-700">Status Data</label>
+                <select v-model="filterForm.status_verifikator" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                  <option value="">Semua Data</option>
                   <option value="0">Hanya Pengajuan Baru</option>
                 </select>
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconDatabaseSearch class="w-5 h-5 text-gray-400" />
-                </div>
-                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconChevronDown class="w-4 h-4 text-gray-400" />
-                </div>
               </div>
             </div>
-          </div>
-          <div class="flex gap-2">
-            <Button @click="filterData" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              <IconSearch class="w-4 h-4" />
-              <span>Filter Data</span>
-            </Button>
-            <Button @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              <IconRefresh class="w-4 h-4" />
-              <span>Reset</span>
-            </Button>
-          </div>
-        </form>
-      </template>
-    </Card>
-    <!-- Table -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
-        <div class="mb-2 text-blue-700 font-semibold text-sm">
-          Menampilkan {{ filteredData.length }} hasil.
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">
+                <IconSearch class="h-4 w-4" />
+                <span>Filter Data</span>
+              </button>
+              <button type="button" @click="resetFilters" class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
+                <IconRefresh class="h-4 w-4" />
+                <span>Reset</span>
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
+
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <span class="text-sm text-gray-500 font-medium">
+            Menampilkan {{ paginationStart }} - {{ paginationEnd }} dari {{ filteredData.length }} hasil
+          </span>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span>Tampilkan</span>
+            <select v-model="itemsPerPage" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+              <option :value="10">10</option>
+              <option :value="25">25</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+            </select>
+            <span>baris</span>
+          </div>
+        </div>
+
         <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden pengeluaran-table">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center">No</th>
-                <th class="text-center">Kode Suboutput</th>
-                <th>Suboutput</th>
-                <th class="text-center">Komp</th>
-                <th class="text-center">Sub<br>Komp</th>
-                <th class="text-center">Akun</th>
-                <th>Uraian</th>
-                <th class="text-right">Jumlah</th>
-                <th class="text-center">Tanggal<br>Pengajuan</th>
-                <th class="text-center">Pencairan<br>Bendahara</th>
-                <th class="text-center">Status PJ</th>
-                <th class="text-center">SP2D</th>
-                <th>Ket</th>
-                <th class="text-center">Jumlah Data Dukung</th>
-                <th class="text-center">Aksi</th>
+          <table class="min-w-full divide-y divide-gray-200 pengeluaran-table">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">No</th>
+                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Kode Suboutput</th>
+                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Suboutput</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Komp</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Sub Komp</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Akun</th>
+                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Uraian</th>
+                <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Jumlah</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Tanggal Pengajuan</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Pencairan Bendahara</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Status PJ</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">SP2D</th>
+                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Ket</th>
+                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Jumlah Data Dukung</th>
+                <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Aksi</th>
               </tr>
-              <tr class="bg-blue-50">
-                <td></td>
-                <td><input v-model="filterForm.id_pekerjaan_kode" type="text" class="input input-bordered input-xs w-full" placeholder="Kode" /></td>
-                <td><input v-model="filterForm.id_pekerjaan_nama" type="text" class="input input-bordered input-xs w-full" placeholder="Suboutput" /></td>
-                <td><input v-model="filterForm.kode_komponen" type="text" class="input input-bordered input-xs w-full" placeholder="Komp" /></td>
-                <td><input v-model="filterForm.kode_subkomponen" type="text" class="input input-bordered input-xs w-full" placeholder="Sub Komp" /></td>
-                <td><input v-model="filterForm.kode_akun" type="text" class="input input-bordered input-xs w-full" placeholder="Akun" /></td>
-                <td><input v-model="filterForm.id_anggaran" type="text" class="input input-bordered input-xs w-full" placeholder="Uraian" /></td>
-                <td><input v-model="filterForm.jumlah" type="text" class="input input-bordered input-xs w-full" placeholder="Jumlah" /></td>
-                <td><input v-model="filterForm.tanggal_pengajuan" type="date" class="input input-bordered input-xs w-full" /></td>
-                <td><input v-model="filterForm.tanggal" type="date" class="input input-bordered input-xs w-full" /></td>
-                <td><input v-model="filterForm.status_pertanggungjawaban" type="text" class="input input-bordered input-xs w-full" placeholder="Status PJ" /></td>
-                <td><input v-model="filterForm.status_sp2d" type="text" class="input input-bordered input-xs w-full" placeholder="SP2D" /></td>
-                <td><input v-model="filterForm.keterangan" type="text" class="input input-bordered input-xs w-full" placeholder="Ket" /></td>
-                <td></td>
-                <td class="text-center">
-                  <button @click="filterData" type="button" class="btn btn-success btn-xs px-4">
-                    <Icon icon="mdi:magnify" class="w-4 h-4 mr-1" />
-                    Filter
+              <tr>
+                <td class="px-4 py-3 bg-white"></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_pekerjaan_kode" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Kode" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_pekerjaan_nama" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Suboutput" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_komponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Komp" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_subkomponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Sub Komp" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Akun" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_anggaran" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Uraian" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.jumlah" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Jumlah" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.tanggal_pengajuan" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.tanggal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.status_pertanggungjawaban" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Status PJ" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.status_sp2d" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="SP2D" /></td>
+                <td class="px-4 py-3 bg-white"><input v-model="filterForm.keterangan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Ket" /></td>
+                <td class="px-4 py-3 bg-white"></td>
+                <td class="px-4 py-3 bg-white text-right">
+                  <button @click="filterData" type="button" class="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">
+                    <span>Filter</span>
                   </button>
                 </td>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-blue-50 transition-all duration-150">
-                <td class="text-center font-bold text-blue-700">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
-                <td class="text-center font-semibold text-blue-600">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="link link-primary">{{ item.id_pekerjaan_kode }}</NuxtLink>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-gray-50 transition-colors duration-150">
+                <td class="px-4 py-4 text-sm text-gray-500 text-center">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+                <td class="px-4 py-4 text-sm font-medium text-gray-900">
+                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="text-indigo-600 hover:text-indigo-900">
+                    {{ item.id_pekerjaan_kode }}
+                  </NuxtLink>
                 </td>
-                <td class="text-blue-700 font-semibold">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="link link-primary">{{ item.id_pekerjaan_nama }}</NuxtLink>
+                <td class="px-4 py-4 text-sm text-gray-900">
+                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="text-indigo-600 hover:text-indigo-900">
+                    {{ item.id_pekerjaan_nama }}
+                  </NuxtLink>
                 </td>
-                <td class="text-center">{{ item.kode_komponen }}</td>
-                <td class="text-center">{{ item.kode_subkomponen }}</td>
-                <td class="text-center">{{ item.kode_akun }}</td>
-                <td>{{ item.id_anggaran }}</td>
-                <td class="text-right text-green-700 font-bold pengeluaran-jumlah-cell">{{ formatCurrency(item.jumlah) }}</td>
-                <td class="text-center">{{ formatDate(item.tanggal_pengajuan) }}</td>
-                <td class="text-center">{{ formatDate(item.tanggal) }}</td>
-                <td class="text-center">
-                  <span class="badge badge-success" v-if="item.status_pertanggungjawaban">{{ formatDate(item.status_pertanggungjawaban) }}</span>
+                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_komponen }}</td>
+                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_subkomponen }}</td>
+                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_akun }}</td>
+                <td class="px-4 py-4 text-sm text-gray-900">{{ item.id_anggaran }}</td>
+                <td class="px-4 py-4 text-sm text-right font-medium text-gray-900 pengeluaran-jumlah-cell">{{ formatCurrency(item.jumlah) }}</td>
+                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ formatDate(item.tanggal_pengajuan) }}</td>
+                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ formatDate(item.tanggal) }}</td>
+                <td class="px-4 py-4 text-center">
+                  <span v-if="item.status_pertanggungjawaban" class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ formatDate(item.status_pertanggungjawaban) }}</span>
                 </td>
-                <td class="text-center">
-                  <span class="badge badge-success" v-if="item.status_sp2d">{{ formatDate(item.status_sp2d) }}</span>
+                <td class="px-4 py-4 text-center">
+                  <span v-if="item.status_sp2d" class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ formatDate(item.status_sp2d) }}</span>
                 </td>
-                <td>{{ item.keterangan }}</td>
-                <td class="text-center">
-                  <span class="badge badge-success">{{ item.jumlah_data_dukung }}</span>
+                <td class="px-4 py-4 text-sm text-gray-900">{{ item.keterangan }}</td>
+                <td class="px-4 py-4 text-center">
+                  <span class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ item.jumlah_data_dukung }}</span>
                 </td>
-                <td class="text-center">
-                  <div class="flex gap-2 justify-center">
-                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
-                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                <td class="px-4 py-4 text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Berkas">
+                      <IconEye class="h-4 w-4" />
                     </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Sunting">
+                      <IconPencil class="h-4 w-4" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                    <button @click="confirmDelete(item.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+                      <IconTrash class="h-4 w-4" />
                     </button>
                   </div>
                 </td>
@@ -192,53 +181,36 @@
           </table>
         </div>
 
-        <!-- Pagination -->
-        <div class="flex justify-center mt-4">
-          <div class="btn-group">
-            <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-sm">«</button>
-            <button v-for="page in totalPages" :key="page" @click="goToPage(page)" :class="['btn btn-sm', { 'btn-active': page === currentPage }]">{{ page }}</button>
-            <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-sm">»</button>
+        <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <span class="text-sm text-gray-500 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
+          <div class="flex flex-wrap items-center gap-2 md:justify-end">
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(1)">Awal</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</button>
+            <button v-for="page in visiblePages" :key="page" type="button" class="rounded-md border px-3 py-2 text-sm transition-colors" :class="page === currentPage ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'" @click="goToPage(page)">{{ page }}</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(currentPage + 1)">Next</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(totalPages)">Akhir</button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Rekap Data -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
-        <h3 class="text-lg font-bold text-blue-700 mb-4">Rekap Data Pengeluaran</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="card bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div class="card-body">
-              <div class="flex items-center gap-3">
-                <Icon icon="fa:file" class="w-10 h-10 opacity-80" />
-                <div>
-                  <p class="text-blue-100">Jumlah Pengeluaran</p>
-                  <h3 class="text-2xl font-bold">{{ totalPengeluaran }} Pengeluaran</h3>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer bg-blue-600">
-              <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="link link-primary text-blue-100 hover:text-white flex items-center">
-                <Icon icon="fa:download" class="w-4 h-4 mr-1" /> Unduh Rincian
-              </NuxtLink>
-            </div>
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-base font-semibold text-gray-900">Rekap Data Pengeluaran</h3>
+        </div>
+        <div class="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Jumlah Pengeluaran</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">{{ totalPengeluaran }} Pengeluaran</p>
+            <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900">
+              Unduh Rincian
+            </NuxtLink>
           </div>
-          <div class="card bg-gradient-to-br from-green-500 to-green-700 text-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div class="card-body">
-              <div class="flex items-center gap-3">
-                <Icon icon="fa:money" class="w-10 h-10 opacity-80" />
-                <div>
-                  <p class="text-green-100">Jumlah Dana</p>
-                  <h3 class="text-2xl font-bold">{{ formatCurrency(totalDana) }}</h3>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer bg-green-600">
-              <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="link link-primary text-green-100 hover:text-white flex items-center">
-                <Icon icon="fa:download" class="w-4 h-4 mr-1" /> Unduh Rincian
-              </NuxtLink>
-            </div>
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+            <p class="text-sm font-medium text-gray-500">Jumlah Dana</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalDana) }}</p>
+            <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900">
+              Unduh Rincian
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -247,8 +219,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
+import { computed, ref, watch } from 'vue'
+import { IconSearch, IconRefresh, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
 import { NuxtLink } from '#components'
 
 definePageMeta({ layout: 'default' })
@@ -282,20 +254,6 @@ const filterForm = ref({
   status_sp2d: '',
   keterangan: ''
 })
-const months = ref([
-  { value: '1', text: 'Jan' },
-  { value: '2', text: 'Feb' },
-  { value: '3', text: 'Mar' },
-  { value: '4', text: 'Apr' },
-  { value: '5', text: 'Mei' },
-  { value: '6', text: 'Jun' },
-  { value: '7', text: 'Jul' },
-  { value: '8', text: 'Agt' },
-  { value: '9', text: 'Sep' },
-  { value: '10', text: 'Okt' },
-  { value: '11', text: 'Nov' },
-  { value: '12', text: 'Des' }
-])
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const pengeluaranData = ref([
@@ -472,8 +430,39 @@ const pengeluaranData = ref([
 ])
 const filteredData = computed(() => {
   return pengeluaranData.value.filter(item => {
-    // Implement filtering logic based on filterForm
-    return true // Placeholder, implement actual filters
+    const matchesStatusBerkas = filterForm.value.status_berkas === '' || String(item.jumlah_data_dukung > 0 ? 1 : 0) === filterForm.value.status_berkas
+    const matchesTanggalAwal = filterForm.value.tanggal_pengajuan_awal === '' || item.tanggal_pengajuan >= filterForm.value.tanggal_pengajuan_awal
+    const matchesTanggalAkhir = filterForm.value.tanggal_pengajuan_akhir === '' || item.tanggal_pengajuan <= filterForm.value.tanggal_pengajuan_akhir
+    const matchesStatusVerifikator = filterForm.value.status_verifikator === '' || filterForm.value.status_verifikator === '0'
+    const matchesKode = filterForm.value.id_pekerjaan_kode === '' || item.id_pekerjaan_kode.toLowerCase().includes(filterForm.value.id_pekerjaan_kode.toLowerCase())
+    const matchesNama = filterForm.value.id_pekerjaan_nama === '' || item.id_pekerjaan_nama.toLowerCase().includes(filterForm.value.id_pekerjaan_nama.toLowerCase())
+    const matchesKomponen = filterForm.value.kode_komponen === '' || item.kode_komponen.toLowerCase().includes(filterForm.value.kode_komponen.toLowerCase())
+    const matchesSubkomponen = filterForm.value.kode_subkomponen === '' || item.kode_subkomponen.toLowerCase().includes(filterForm.value.kode_subkomponen.toLowerCase())
+    const matchesAkun = filterForm.value.kode_akun === '' || item.kode_akun.toLowerCase().includes(filterForm.value.kode_akun.toLowerCase())
+    const matchesUraian = filterForm.value.id_anggaran === '' || item.id_anggaran.toLowerCase().includes(filterForm.value.id_anggaran.toLowerCase())
+    const matchesJumlah = filterForm.value.jumlah === '' || String(item.jumlah).includes(filterForm.value.jumlah)
+    const matchesTanggalPengajuan = filterForm.value.tanggal_pengajuan === '' || item.tanggal_pengajuan === filterForm.value.tanggal_pengajuan
+    const matchesTanggal = filterForm.value.tanggal === '' || item.tanggal === filterForm.value.tanggal
+    const matchesStatusPertanggungjawaban = filterForm.value.status_pertanggungjawaban === '' || (item.status_pertanggungjawaban || '').includes(filterForm.value.status_pertanggungjawaban)
+    const matchesStatusSp2d = filterForm.value.status_sp2d === '' || (item.status_sp2d || '').includes(filterForm.value.status_sp2d)
+    const matchesKeterangan = filterForm.value.keterangan === '' || item.keterangan.toLowerCase().includes(filterForm.value.keterangan.toLowerCase())
+
+    return matchesStatusBerkas
+      && matchesTanggalAwal
+      && matchesTanggalAkhir
+      && matchesStatusVerifikator
+      && matchesKode
+      && matchesNama
+      && matchesKomponen
+      && matchesSubkomponen
+      && matchesAkun
+      && matchesUraian
+      && matchesJumlah
+      && matchesTanggalPengajuan
+      && matchesTanggal
+      && matchesStatusPertanggungjawaban
+      && matchesStatusSp2d
+      && matchesKeterangan
   })
 })
 const paginatedData = computed(() => {
@@ -481,34 +470,84 @@ const paginatedData = computed(() => {
   const end = start + itemsPerPage.value
   return filteredData.value.slice(start, end)
 })
-const totalPages = computed(() => Math.ceil(filteredData.value.length / itemsPerPage.value))
+const totalPages = computed(() => Math.max(1, Math.ceil(filteredData.value.length / itemsPerPage.value)))
+const paginationStart = computed(() => {
+  if (filteredData.value.length === 0) return 0
+  return (currentPage.value - 1) * itemsPerPage.value + 1
+})
+const paginationEnd = computed(() => {
+  if (filteredData.value.length === 0) return 0
+  return Math.min(currentPage.value * itemsPerPage.value, filteredData.value.length)
+})
+const visiblePages = computed(() => {
+  const maxVisible = 5
+  const total = totalPages.value
+  const start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
+  const end = Math.min(total, start + maxVisible - 1)
+  const adjustedStart = Math.max(1, end - maxVisible + 1)
+
+  return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index)
+})
 const totalPengeluaran = computed(() => filteredData.value.length)
 const totalDana = computed(() => filteredData.value.reduce((sum, item) => sum + item.jumlah, 0))
 const filterData = () => { /* Filtering is reactive */ }
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount)
 const formatDate = (date) => date ? new Date(date).toLocaleDateString('id-ID') : ''
 const confirmDelete = (id) => { if (confirm('Yakin akan menghapus data?')) { /* Implement delete logic */ } }
-const prevPage = () => { if (currentPage.value > 1) currentPage.value-- }
-const nextPage = () => { if (currentPage.value < totalPages.value) currentPage.value++ }
-const goToPage = (page) => { currentPage.value = page }
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+  }
+}
+const resetFilters = () => {
+  filterForm.value = {
+    status_berkas: '',
+    tanggal_pengajuan_awal: '',
+    tanggal_pengajuan_akhir: '',
+    bulan_pencairan_awal: '',
+    tahun_pencairan_awal: '',
+    bulan_pencairan_akhir: '',
+    tahun_pencairan_akhir: '',
+    tanggal_awal: '',
+    tanggal_akhir: '',
+    bulan_sp2d_awal: '',
+    tahun_sp2d_awal: '',
+    bulan_sp2d_akhir: '',
+    tahun_sp2d_akhir: '',
+    tanggal_sp2d_awal: '',
+    tanggal_sp2d_akhir: '',
+    id_pekerjaan_kode: '',
+    id_pekerjaan_nama: '',
+    kode_komponen: '',
+    kode_subkomponen: '',
+    kode_akun: '',
+    id_anggaran: '',
+    jumlah: '',
+    tanggal_pengajuan: '',
+    tanggal: '',
+    status_pertanggungjawaban: '',
+    status_sp2d: '',
+    keterangan: '',
+    status_verifikator: '',
+  }
+}
+
+watch(filteredData, () => {
+  if (currentPage.value > totalPages.value) {
+    currentPage.value = totalPages.value
+  }
+
+  if (filteredData.value.length > 0 && currentPage.value < 1) {
+    currentPage.value = 1
+  }
+})
+
+watch(itemsPerPage, () => {
+  currentPage.value = 1
+})
 </script>
 
 <style scoped>
-/* Custom outline for select dropdown */
-.custom-select-outline {
-  border: 2px solid #3b82f6 !important;
-  border-radius: 0.75rem !important;
-  background-color: #fff;
-  transition: border-color 0.2s;
-}
-.custom-select-outline:focus {
-  border-color: #1d4ed8 !important;
-  outline: none !important;
-  box-shadow: 0 0 0 2px #60a5fa33;
-}
-.custom-select-outline:hover {
-  border-color: #2563eb !important;
-}
 .pengeluaran-table {
   table-layout: fixed;
   width: 100%;
