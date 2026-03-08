@@ -34,10 +34,10 @@ export default defineEventHandler(async (event) => {
       masterKegiatan.kode_kegiatan,
       anggaranSuboutput.satker_id,
       satker.name,
-      anggaranSuboutput.tahun_anggaran_id,
+      anggaranSuboutput.id,
       tahunAnggaran.tahun,
     )
-    .orderBy(masterKegiatan.kode_kegiatan, satker.name, tahunAnggaran.tahun);
+    .orderBy(anggaranSuboutput.id, masterKegiatan.kode_kegiatan, satker.name, tahunAnggaran.tahun);
 
   return result;
 });
