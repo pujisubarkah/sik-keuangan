@@ -163,7 +163,7 @@ import VTable from '~/components/UI/v-table.vue'
                 <td class="px-3 py-2 text-center align-middle">{{ index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">{{ item.kode }}</td>
                 <td class="px-3 py-2 align-middle">
-                  <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.id}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.suboutput_id}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.suboutput }}
                   </NuxtLink>
                 </td>
@@ -207,18 +207,22 @@ import VTable from '~/components/UI/v-table.vue'
       <div class="px-6 py-3 bg-gray-50 border-t border-gray-200">
         <table class="min-w-full text-xs">
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td class="font-semibold text-gray-700 py-2 text-right">Total</td>
-              <td class="text-right font-bold text-blue-700">
-                {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
+            <tr class="bg-blue-50 font-bold">
+              <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
+              <td class="px-3 py-2 text-right align-middle">
+                <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
+                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
+                </span>
               </td>
-              <td class="text-right font-bold text-green-700">
-                {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
+              <td class="px-3 py-2 text-right align-middle">
+                <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
+                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
+                </span>
               </td>
-              <td class="text-right font-bold" :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'text-red-700' : 'text-green-700'">
-                {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
+              <td class="px-3 py-2 text-right align-middle">
+                <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
+                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
+                </span>
               </td>
             </tr>
           </tbody>

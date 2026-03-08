@@ -49,26 +49,34 @@
         Menampilkan <b>{{ units?.length || 0 }}</b> data
       </div>
 
-      <table class="table-auto w-full border border-gray-300">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="p-2 text-center border border-gray-300">No</th>
-            <th class="p-2 text-left border border-gray-300">Nama</th>
-            <th class="p-2 text-left border border-gray-300">Kode</th>
-            <th class="p-2 text-center border border-gray-300">Satker</th>
-            <th class="p-2 text-center border border-gray-300">Alias</th>
+      <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl overflow-hidden border border-blue-100 shadow-lg bg-white">
+        <thead class="bg-blue-100">
+          <tr>
+            <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
+            <th class="px-3 py-2 text-left font-semibold text-blue-700 align-middle">Nama</th>
+            <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Kode</th>
+            <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Satker</th>
+            <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Alias</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="(unit, index) in paginatedUnits" :key="unit.id">
-            <td class="text-center p-2 border border-gray-300">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-            <td class="p-2 border border-gray-300">{{ unit.name }}</td>
-            <td class="p-2 border border-gray-300">{{ unit.kode || '-' }}</td>
-            <td class="text-center p-2 border border-gray-300">{{ getSatkerName(unit.satker_id) }}</td>
-            <td class="text-center p-2 border border-gray-300">{{ unit.alias || '-' }}</td>
+        <tbody class="divide-y divide-gray-100">
+          <tr v-for="(unit, index) in paginatedUnits" :key="unit.id" class="hover:bg-yellow-50 align-middle transition">
+            <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
+            <td class="px-3 py-2 text-left align-middle">
+              <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ unit.name }}</span>
+            </td>
+            <td class="px-3 py-2 text-center align-middle">
+              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ unit.kode || '-' }}</span>
+            </td>
+            <td class="px-3 py-2 text-center align-middle">
+              <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ getSatkerName(unit.satker_id) }}</span>
+            </td>
+            <td class="px-3 py-2 text-center align-middle">
+              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ unit.alias || '-' }}</span>
+            </td>
           </tr>
           <tr v-if="paginatedUnits.length === 0">
-            <td colspan="5" class="text-center py-8 text-gray-500 border border-gray-300">Tidak ada data ditemukan</td>
+            <td colspan="5" class="text-center py-8 text-gray-500 border border-blue-100">Tidak ada data ditemukan</td>
           </tr>
         </tbody>
       </table>

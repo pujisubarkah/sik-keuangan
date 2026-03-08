@@ -71,14 +71,14 @@ const berkasList = ref([
         </div>
         <!-- TABLE -->
         <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl" style="width:5%">No</th>
-                <th class="text-center">Kode Akun</th>
-                <th class="text-center">Nama Berkas</th>
-                <th class="text-center">Kata Kunci</th>
-                <th class="text-center rounded-tr-xl">Aksi</th>
+          <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl overflow-hidden border border-blue-100 shadow-lg bg-white">
+            <thead class="bg-blue-100">
+              <tr>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle" style="width:5%">No</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Kode Akun</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Nama Berkas</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Kata Kunci</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
               <tr class="bg-blue-50">
                 <td></td>
@@ -106,7 +106,7 @@ const berkasList = ref([
                 <td></td>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-gray-100">
               <tr
                 v-for="(b, i) in berkasList.filter(bk =>
                   bk.kode_akun.toLowerCase().includes(filter.kode_akun.toLowerCase()) &&
@@ -114,13 +114,19 @@ const berkasList = ref([
                   bk.kata_kunci.toLowerCase().includes(filter.kata_kunci.toLowerCase())
                 )"
                 :key="b.id"
-                class="hover:bg-blue-50 transition"
+                class="hover:bg-yellow-50 align-middle transition"
               >
-                <td class="text-center font-bold text-blue-700">{{ i + 1 }}</td>
-                <td class="text-center">{{ b.kode_akun }}</td>
-                <td class="text-center font-semibold text-blue-700">{{ b.nama_berkas }}</td>
-                <td class="text-center">{{ b.kata_kunci }}</td>
-                <td class="text-center">
+                <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ i + 1 }}</td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ b.kode_akun }}</span>
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ b.nama_berkas }}</span>
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ b.kata_kunci }}</span>
+                </td>
+                <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/admin/berkas/view/${b.id}`"

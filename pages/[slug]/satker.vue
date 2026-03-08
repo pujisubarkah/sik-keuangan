@@ -48,24 +48,16 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl overflow-hidden border border-blue-100 shadow-lg bg-white">
+            <thead class="bg-blue-100">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
-                  No
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nama Satker
-                </th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Jumlah Unit
-                </th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Aksi
-                </th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle w-16">No</th>
+                <th class="px-3 py-2 text-left font-semibold text-blue-700 align-middle">Nama Satker</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Unit</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-100">
               
               <!-- Loading State -->
               <tr v-if="loading">
@@ -81,23 +73,19 @@
               </tr>
 
               <!-- Data Rows -->
-              <tr v-for="(satker, index) in satkers" :key="satker.id" class="hover:bg-gray-50 transition-colors duration-150">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  {{ index + 1 }}
+              <tr v-for="(satker, index) in satkers" :key="satker.id" class="hover:bg-yellow-50 align-middle transition">
+                <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ index + 1 }}</td>
+                <td class="px-3 py-2 text-left align-middle">
+                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ satker.name }}</span>
                 </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm font-medium text-gray-900">{{ satker.name }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-center">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 border border-green-200">
-                      {{ satker.unitCount }} Unit
-                    </span>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ satker.unitCount }} Unit</span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
+                <td class="px-3 py-2 text-center align-middle">
+                  <div class="flex justify-center gap-1">
                     
                     <!-- View Button (Tabler: Eye) -->
-                    <button @click="viewSatker(satker.id)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+                    <button @click="viewSatker(satker.id)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors tooltip" data-tip="Lihat Detail">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -105,14 +93,14 @@
                     </button>
 
                     <!-- Edit Button (Tabler: Pencil) -->
-                    <button @click="editSatker(satker.id)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+                    <button @click="editSatker(satker.id)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors tooltip" data-tip="Edit">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </button>
 
                     <!-- Delete Button (Tabler: Trash) -->
-                    <button @click="deleteSatker(satker.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+                    <button @click="deleteSatker(satker.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors tooltip" data-tip="Hapus">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>

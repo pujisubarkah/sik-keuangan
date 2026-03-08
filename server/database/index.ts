@@ -11,7 +11,7 @@ function getSslConfig() {
   let sslMode: string | undefined
 
   try {
-    sslMode = new URL(connectionString).searchParams.get('sslmode')?.toLowerCase()
+    sslMode = new URL(connectionString as string).searchParams.get('sslmode')?.toLowerCase()
   } catch {
     sslMode = undefined
   }

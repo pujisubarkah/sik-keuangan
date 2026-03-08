@@ -1,111 +1,32 @@
 <template>
-     <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <IconAlertCircle class="w-6 h-6 text-blue-600" />
-        <span>
-          Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
-   
+  <!-- Alert -->
+  <SuboutputAlert :showAlert="showAlert" />
 
       <!-- Detail Suboutput Section -->
       <Card class="mb-6">
         <template #header>
           <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
         </template>
-        <div class="p-4">
-          <table class="table table-hover table-condensed">
-            <tbody>
-              <tr><th>Unit</th><td>{{ subOutputData.unit }}</td></tr>
-              <tr><th>Program</th><td><a :href="subOutputData.programLink">{{ subOutputData.program }}</a></td></tr>
-              <tr><th>Kegiatan</th><td><a :href="subOutputData.kegiatanLink">{{ subOutputData.kegiatan }}</a></td></tr>
-              <tr><th>Output</th><td><a :href="subOutputData.outputLink">{{ subOutputData.output }}</a></td></tr>
-              <tr><th>Kode</th><td>{{ subOutputData.kode }}</td></tr>
-              <tr><th>Suboutput</th><td>{{ subOutputData.nama }}</td></tr>
-              <tr><th>Tahun</th><td>{{ subOutputData.tahun }}</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SuboutputDetail :data="subOutputData" />
       </Card>
 
       <!-- Tombol Aksi Section -->
-      <div class="flex flex-wrap gap-2 items-center mb-6">
-        <button class="btn bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-800 transition flex items-center gap-1" @click="handleEdit">
-          <IconPencil class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
-        </button>
-        <button class="btn bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition flex items-center gap-1" @click="handleAnggaran">
-          <IconCash class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Anggaran</span>
-        </button>
-        <button class="btn bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition flex items-center gap-1" @click="handlePengeluaran">
-          <IconShoppingCart class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengeluaran</span> <span class="ml-1">({{ stats.pengeluaranCount }})</span>
-        </button>
-        <button class="btn bg-yellow-400 text-white rounded-lg shadow-md hover:bg-yellow-500 transition flex items-center gap-1" @click="handlePengajuan">
-          <IconArrowUpCircle class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Pengajuan</span> <span class="ml-1">({{ stats.pengajuanCount }})</span>
-        </button>
-        <button class="btn bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition flex items-center gap-1" @click="handlePerencanaan">
-          <IconCalendar class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
-        </button>
-        <button class="btn bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition flex items-center gap-1" @click="handleSalin">
-          <IconCopy class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
-        </button>
-        <div class="relative inline-block">
-          <button class="btn bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition flex items-center gap-1" @click="showDropdown = !showDropdown">
-            <IconRefresh class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Refresh</span>
-            <span class="caret"></span>
-          </button>
-          <div v-if="showDropdown" class="absolute z-10 mt-2 w-40 bg-white border rounded shadow-lg">
-            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('pagu')">Refresh Pagu</a>
-            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('realisasi')">Refresh Realisasi</a>
-            <a href="#" class="block px-4 py-2 hover:bg-blue-50" @click.prevent="refreshData('perencanaan')">Refresh Perencanaan</a>
-          </div>
-        </div>
-      </div>
+      <SuboutputActions
+        :stats="stats"
+        :showDropdown="showDropdown"
+        @edit="handleEdit"
+        @anggaran="handleAnggaran"
+        @pengeluaran="handlePengeluaran"
+        @pengajuan="handlePengajuan"
+        @perencanaan="handlePerencanaan"
+        @salin="handleSalin"
+        @toggleDropdown="() => showDropdown = !showDropdown"
+        @refresh="refreshData"
+      />
 
-    <!-- Rekap Perencanaan Section -->
-    <Card class="mb-6">
-      <template #header>
-        <h3 class="text-xl font-bold text-blue-700">Rekap Perencanaan</h3>
-      </template>
-      <div class="p-4 flex flex-col md:flex-row gap-4 w-full">
-        <!-- Pagu -->
-        <div class="flex-1 bg-blue-50 rounded-xl p-4 flex flex-col justify-between">
-          <div>
-            <p class="text-blue-700 font-semibold">Pagu Anggaran</p>
-            <h3 class="text-2xl font-bold text-blue-900">Rp {{ formatCurrency(stats.pagu) }}</h3>
-          </div>
-          <div class="flex items-center gap-2 mt-2">
-            <IconShoppingCart class="w-6 h-6 text-blue-500" />
-            <span class="text-xs text-blue-500">More info</span>
-          </div>
-        </div>
-        <!-- Perencanaan -->
-        <div class="flex-1 bg-green-50 rounded-xl p-4 flex flex-col justify-between">
-          <div>
-            <p class="text-green-700 font-semibold">Perencanaan</p>
-            <h3 class="text-2xl font-bold text-green-900">Rp {{ formatCurrency(stats.perencanaan) }}</h3>
-          </div>
-          <div class="flex items-center gap-2 mt-2">
-            <IconTags class="w-6 h-6 text-green-500" />
-            <span class="text-xs text-green-500">More info</span>
-          </div>
-        </div>
-        <!-- Selisih -->
-        <div class="flex-1 bg-red-50 rounded-xl p-4 flex flex-col justify-between">
-          <div>
-            <p class="text-red-700 font-semibold">Selisih</p>
-            <h3 class="text-2xl font-bold text-red-900">Rp {{ formatCurrency(stats.selisih) }}</h3>
-          </div>
-          <div class="flex items-center gap-2 mt-2">
-            <IconCircle class="w-6 h-6 text-red-500" />
-            <span class="text-xs text-red-500">More info</span>
-          </div>
-        </div>
-      </div>
-    </Card>
+
+    <!-- Rekap Perencanaan Section diganti dengan komponen -->
+    <SuboutputRekap :stats="stats" :formatCurrency="formatCurrency" />
 
    
     <div class="pt-14 flex flex-col gap-6">
@@ -230,9 +151,17 @@
 </template>
 
 <script setup>
+import SuboutputDetail from '@/components/SuboutputDetail.vue';
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user.js';
+import { navigateTo } from '#app';
+import { useRoute, useRouter } from 'vue-router';
+import { $fetch } from 'ofetch';
 import { ref, reactive } from 'vue';
 import { IconAlertCircle, IconPencil, IconCash, IconShoppingCart, IconArrowUpCircle, IconCalendar, IconCopy, IconRefresh, IconTags, IconCircle, IconChartBar, IconChartLine } from '@tabler/icons-vue';
-// ...existing code...
+import SuboutputAlert from '@/components/SuboutputAlert.vue';
+
+import SuboutputActions from '@/components/SuboutputActions.vue';
 // Chart Penyerapan (ApexCharts)
 const chartPenyerapanOptions = {
   chart: {
@@ -286,19 +215,39 @@ const chartPengeluaranSeries = [
 // --- State Data ---
 const showAlert = ref(true);
 
-const subOutputData = reactive({
-  nama: "Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN",
-  satker: "LAN JAKARTA",
-  unit: "Direktorat Penguatan Kapasitas Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN",
-  program: "Program Kebijakan, Pembinaan Profesi, dan Tata Kelola ASN",
-  programLink: "/index.php?r=program/view&id=242",
-  kegiatan: "Penguatan Kapasitas Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran Aparatur Sipil Negara",
-  kegiatanLink: "/index.php?r=kegiatan/view&id=659",
-  output: "Sertifikasi Profesi dan SDM[Base Line]",
-  outputLink: "/index.php?r=output/view&id=2243",
-  kode: "7913.ADI.001",
-  tahun: 2026
-});
+const subOutputData = reactive({});
+const userStore = useUserStore();
+
+const route = useRoute();
+const router = useRouter();
+
+const fetchSuboutput = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    userStore.clearUser();
+    await navigateTo('/login');
+    return;
+  }
+  const headers = { Authorization: `Bearer ${token}` };
+  try {
+    const d = await $fetch(`/api/anggaran_suboutput/${route.params.id}`, { headers });
+    subOutputData.kode = d.kode;
+    subOutputData.nama = d.nama_suboutput;
+    subOutputData.unit = d.nama_unit;
+    subOutputData.satker = d.nama_satker;
+    subOutputData.program = d.nama_program;
+    subOutputData.kegiatan = d.nama_kegiatan;
+    subOutputData.output = d.nama_output;
+    subOutputData.tahun = d.tahun;
+    subOutputData.programLink = '';
+    subOutputData.kegiatanLink = '';
+    subOutputData.outputLink = '';
+  } catch (err) {
+    console.error('Gagal fetch data suboutput', err);
+  }
+};
+
+onMounted(fetchSuboutput);
 
 const stats = reactive({
   pagu: 1076950000,
@@ -326,9 +275,7 @@ const formatCurrency = (value) => {
   return new Intl.NumberFormat('id-ID').format(value);
 };
 
-import { useRoute, useRouter } from 'vue-router';
-const route = useRoute();
-const router = useRouter();
+// Sudah dideklarasikan di atas
 const handleEdit = () => {
   router.push(`/${route.params.slug}/suboutput/update/${route.params.id}`);
 };
@@ -356,9 +303,6 @@ const exportExcel = () => {
 };
 
 const tambahAnggaran = () => {
-  // Navigasi ke halaman tambah anggaran sesuai slug
-  const route = useRoute();
-  const router = useRouter();
   router.push(`/${route.params.slug}/anggaran/create`);
 };
 

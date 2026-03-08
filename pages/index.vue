@@ -27,12 +27,22 @@
               <label class="block text-sm font-semibold text-gray-700 mb-2">
                 Username
               </label>
-              <TextField
-                v-model="form.username"
-                placeholder="Masukkan username"
-                type="text"
-                required
-              />
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                  <!-- Stabler Icon: user -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" />
+                    <path d="M17 21v-2a4 4 0 0 0-8 0v2" />
+                  </svg>
+                </span>
+                <TextField
+                  v-model="form.username"
+                  placeholder="Masukkan username"
+                  type="text"
+                  required
+                  class="pl-10"
+                />
+              </div>
             </div>
 
             <!-- Password -->
@@ -40,12 +50,22 @@
               <label class="block text-sm font-semibold text-gray-700 mb-2">
                 Password
               </label>
-              <TextField
-                v-model="form.password"
-                placeholder="Masukkan password"
-                type="password"
-                required
-              />
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                  <!-- Stabler Icon: lock -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <TextField
+                  v-model="form.password"
+                  placeholder="Masukkan password"
+                  type="password"
+                  required
+                  class="pl-10"
+                />
+              </div>
               <p v-if="errors.password" class="text-red-500 text-sm mt-1">
                 {{ errors.password }}
               </p>
@@ -82,9 +102,17 @@
             <Button
               html-type="primary"
               type="submit"
-              class="w-full shadow-lg hover:shadow-xl transition-shadow"
+              class="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-bold py-2 px-4 rounded-lg border-2 border-green-600 shadow-lg hover:shadow-2xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
             >
-              LOGIN
+              <span class="flex items-center justify-center gap-2">
+                <!-- Stabler Icon: arrow-right (https://tabler.io/icons/arrow-right) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="M13 18l6-6" />
+                  <path d="M13 6l6 6" />
+                </svg>
+                LOGIN
+              </span>
             </Button>
           </form>
         </div>

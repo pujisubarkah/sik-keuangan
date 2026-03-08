@@ -6,11 +6,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         Kembali
       </button>
-      <div class="alert alert-danger mb-0">
-        Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-        <NuxtLink to="/index.php?r=pekerjaan/admin&id_unit=null" class="underline text-blue-700">klik di sini</NuxtLink>
-        untuk memperbaiki.
-      </div>
+      <SuboutputAlert :showAlert="true" />
     </div>
 
     <section class="content-header mt-4">
@@ -95,6 +91,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import SuboutputAlert from '@/components/SuboutputAlert.vue';
 
 const route = useRoute();
 const router = useRouter();

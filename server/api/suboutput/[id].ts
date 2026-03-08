@@ -1,59 +1,55 @@
-import { db } from '../../database';
-import { suboutput } from '../../database/schema/suboutput';
-import { satker } from '../../database/schema/satker';
-import { unit } from '../../database/schema/unit_kerja';
-import { createError } from 'h3';
-import { eq } from 'drizzle-orm';
+import { db } from '@/server/database'
+import { masterSuboutput } from '@/server/database/schema/master_suboutput'
+import { masterOutput } from '@/server/database/schema/master_output'
+import { masterKegiatan } from '@/server/database/schema/master_kegiatan'
+import { masterProgram } from '@/server/database/schema/master_program'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
-  const { req, context } = event;
-  const method = req.method;
-  // GET by id
-  if (method === 'GET') {
-    const id = event.context.params?.id || event.req.url?.split('/').pop();
-    if (id && !isNaN(Number(id))) {
-      // Join satker and unit for name output
-      const data = await db
-        .select({
-          id: suboutput.id,
-          satker_id: suboutput.satker_id,
-          unit_id: suboutput.unit_id,
-          satker_name: satker.name,
-          unit_name: unit.name
-        })
-        .from(suboutput)
-        .leftJoin(satker, eq(suboutput.satker_id, satker.id))
-        .leftJoin(unit, eq(suboutput.unit_id, unit.id))
-        .where(eq(suboutput.id, Number(id)));
-      if (!data.length) throw createError({ statusCode: 404, statusMessage: 'Not found' });
-      return data[0];
+  const id = event.context.params?.id
+  if (!id) {
+    return { error: 'ID is required' }
+  }
+  if (event.req.method === 'POST') {
+    const body = await readBody(event)
+    if (!body.kode_suboutput || !body.nama_suboutput || !body.output_id) {
+      return { error: 'kode_suboutput, nama_suboutput, dan output_id wajib diisi' }
     }
-    // Ambil semua data suboutput
-    const data = await db.select().from(suboutput);
-    return data;
+    try {
+      const updated = await db.update(masterSuboutput)
+        .set({
+          kode_suboutput: body.kode_suboutput,
+          nama_suboutput: body.nama_suboutput,
+          output_id: Number(body.output_id)
+        })
+        .where(eq(masterSuboutput.id, Number(id)))
+        .returning()
+      return updated[0]
+    } catch (e) {
+      const err = e instanceof Error ? e : new Error(String(e))
+      return { error: 'Database error', detail: err.message }
+    }
+  } else {
+    try {
+      const sub = await db.select().from(masterSuboutput).where(eq(masterSuboutput.id, Number(id))).then(r => r[0])
+      if (!sub) return { error: 'Not found' }
+      const output = await db.select().from(masterOutput).where(eq(masterOutput.id, sub.output_id)).then(r => r[0])
+      let kegiatan = null, program = null
+      if (output) {
+        kegiatan = await db.select().from(masterKegiatan).where(eq(masterKegiatan.id, output.kegiatan_id)).then(r => r[0])
+        if (kegiatan) {
+          program = await db.select().from(masterProgram).where(eq(masterProgram.id, kegiatan.program_id)).then(r => r[0])
+        }
+      }
+      return {
+        ...sub,
+        output: output ? { id: output.id, kode_output: output.kode_output, nama_output: output.nama_output } : null,
+        kegiatan: kegiatan ? { id: kegiatan.id, kode_kegiatan: kegiatan.kode_kegiatan, nama_kegiatan: kegiatan.nama_kegiatan } : null,
+        program: program ? { id: program.id, kode_program: program.kode_program, nama_program: program.nama_program } : null
+      }
+    } catch (e) {
+      const err = e instanceof Error ? e : new Error(String(e))
+      return { error: 'Database error', detail: err.message }
+    }
   }
-  // POST
-  if (method === 'POST') {
-    const body = await readBody(event);
-    const inserted = await db.insert(suboutput).values(body).returning();
-    return inserted[0];
-  }
-  // PUT
-  if (method === 'PUT') {
-    const id = event.context.params?.id || event.req.url?.split('/').pop();
-    if (!id || isNaN(Number(id))) throw createError({ statusCode: 400, statusMessage: 'Invalid id' });
-    const body = await readBody(event);
-    const updated = await db.update(suboutput).set(body).where(eq(suboutput.id, Number(id))).returning();
-    if (!updated.length) throw createError({ statusCode: 404, statusMessage: 'Not found' });
-    return updated[0];
-  }
-  // DELETE
-  if (method === 'DELETE') {
-    const id = event.context.params?.id || event.req.url?.split('/').pop();
-    if (!id || isNaN(Number(id))) throw createError({ statusCode: 400, statusMessage: 'Invalid id' });
-    const deleted = await db.delete(suboutput).where(eq(suboutput.id, Number(id))).returning();
-    if (!deleted.length) throw createError({ statusCode: 404, statusMessage: 'Not found' });
-    return { success: true, deleted: deleted[0] };
-  }
-  return { error: 'Method not allowed' };
-});
+})
