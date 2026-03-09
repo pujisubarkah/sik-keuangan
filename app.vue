@@ -11,6 +11,6 @@ import { setBrandTheme } from '@idds/vue'
 setBrandTheme('lan')
 
 if (process.client) {
-  document.documentElement.setAttribute('data-theme', 'inagov')
+  document.documentElement.setAttribute('data-theme', 'lan')
 }
 </script>
