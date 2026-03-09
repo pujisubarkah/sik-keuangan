@@ -24,8 +24,7 @@ export default defineNuxtConfig({
     }
   },
   modules: ['@nuxtjs/tailwindcss'],
-  css: [
-  ],
+  css: ['@idds/vue/index.css'],
   tailwindcss: {
     cssPath: '~/assets/css/main.css',
     configPath: 'tailwind.config.js',
@@ -39,8 +38,7 @@ export default defineNuxtConfig({
     '~/plugins/pinia.js',
     { src: '~/plugins/fusioncharts.js', mode: 'client' },
     { src: '~/plugins/apexcharts.js', mode: 'client' },
-    { src: '~/plugins/idds.client.ts', mode: 'client' },
-    { src: '~/plugins/idds-theme.client.ts', mode: 'client' },
+    '~/plugins/idds.ts',
   ],
   build: {
     transpile: ['@idds/vue']
