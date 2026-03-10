@@ -257,16 +257,82 @@ const stats = reactive({
   pengajuanCount: 0
 });
 
-// Sample Data Struktur Hierarkis (Diambil dari HTML)
-const budgetItems = ref([
-  { id: 4723, level: 0, kode: '7913.ADI.001', uraian: 'Seleksi dan Uji Kompetensi Jabatan Fungsional ...', uraianFull: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN', rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 1076950000, perencanaan: 0, selisih: 1076950000 },
-  { id: 228598, level: 1, kode: '051', uraian: 'Pelaksanaan Seleksi dan Uji Kompetensi JF ...', uraianFull: 'Pelaksanaan Seleksi dan Uji Kompetensi JF di Bidang Pengembangan Kapasitas dan Pembelajaran ASN', rev: 0, volume: '0.00', satuan: '', hargaSatuan: 0, jumlah: 1055080000, perencanaan: 0, selisih: 1055080000 },
-  { id: 228599, level: 2, kode: 'A', uraian: 'Seleksi dan Uji Kompetensi Analis Kebija ...', uraianFull: 'Seleksi dan Uji Kompetensi Analis Kebijakan', rev: 0, volume: '0.00', satuan: '', hargaSatuan: 0, jumlah: 952000000, perencanaan: 0, selisih: 952000000 },
-  { id: 228600, level: 3, kode: '521211', uraian: 'Belanja Bahan', uraianFull: 'Belanja Bahan', rev: 0, volume: '0.00', satuan: '', hargaSatuan: 0, jumlah: 464220000, perencanaan: 0, selisih: 464220000 },
-  { id: 228602, level: 5, kode: '', uraian: '000012 Alat Tulis Kantor', uraianFull: '000012 Alat Tulis Kantor', rev: 0, volume: '5.00', satuan: 'paket', hargaSatuan: 3500000, jumlah: 17500000, perencanaan: 0, selisih: 17500000 },
-  { id: 228603, level: 5, kode: '', uraian: '000964 Penggandaan', uraianFull: '000964 Penggandaan', rev: 0, volume: '5.00', satuan: 'paket', hargaSatuan: 478000, jumlah: 2390000, perencanaan: 0, selisih: 2390000 },
-  // ... Tambahkan data lainnya sesuai kebutuhan
-]);
+// Fetch data anggaran hierarkis dari API dan flatten untuk table
+const budgetItems = ref([]);
+
+const fetchBudgetItems = async () => {
+  const token = localStorage.getItem('token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  try {
+    const res = await $fetch(`/api/rkakl_detail/${route.params.id}`, { headers });
+    const items = [];
+    if (res && res[0]) {
+      const sub = res[0];
+      // Isi detail untuk SuboutputDetail
+      subOutputData.kode = sub.kode_suboutput;
+      subOutputData.nama = sub.nama_suboutput;
+      // Tambahkan field lain jika perlu
+
+      // Level 0: Suboutput
+      items.push({
+        id: 'suboutput',
+        level: 0,
+        kode: sub.kode_suboutput,
+        uraian: sub.nama_suboutput,
+        uraianFull: sub.nama_suboutput,
+        rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
+      });
+      for (const komp of sub.komponen) {
+        // Level 1: Komponen
+        items.push({
+          id: 'komp-' + komp.kode_komponen,
+          level: 1,
+          kode: komp.kode_komponen,
+          uraian: komp.nama_komponen,
+          uraianFull: komp.nama_komponen,
+          rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
+        });
+        for (const subkomp of komp.subkomponen) {
+          // Level 2: Subkomponen
+          items.push({
+            id: 'subkomp-' + subkomp.kode_subkomponen,
+            level: 2,
+            kode: subkomp.kode_subkomponen,
+            uraian: subkomp.nama_subkomponen,
+            uraianFull: subkomp.nama_subkomponen,
+            rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
+          });
+          for (const akun of subkomp.akun) {
+            // Level 3: Akun/Belanja
+            items.push({
+              id: akun.kode_akun + '-' + akun.created_at,
+              level: 3,
+              kode: akun.kode_akun,
+              uraian: akun.nama_akun,
+              uraianFull: akun.nama_akun,
+              rev: '-',
+              volume: akun.volume,
+              satuan: akun.satuan,
+              hargaSatuan: akun.harga_satuan,
+              jumlah: akun.jumlah,
+              perencanaan: 0,
+              selisih: 0
+            });
+          }
+        }
+      }
+    }
+    budgetItems.value = items;
+  } catch (err) {
+    console.error('Gagal fetch budget items', err);
+    budgetItems.value = [];
+  }
+};
+
+onMounted(() => {
+  fetchSuboutput();
+  fetchBudgetItems();
+});
 
 // --- Methods ---
 

@@ -1,6 +1,8 @@
 <script setup>
+
 import { ref } from 'vue'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 const showAlert = ref(true)
 const filter = ref({ kode_akun: '', nama_berkas: '', kata_kunci: '' })
@@ -22,20 +24,7 @@ const berkasList = ref([
 <template>
   <div class="pt-14">
     <!-- ALERT -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
-          <NuxtLink
-            to="/admin/suboutput"
-            class="link link-hover underline ml-1"
-          >
-            Klik di sini
-          </NuxtLink>
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">

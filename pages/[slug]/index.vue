@@ -1,16 +1,7 @@
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
 
 
     <!-- Page Header -->

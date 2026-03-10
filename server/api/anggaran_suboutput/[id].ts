@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
   const result = await db
     .select({
       anggaranSuboutput,
-      kode: sql`CONCAT(master_kegiatan.kode_kegiatan, '.', master_output.kode_output, '.', master_suboutput.kode_suboutput)`,
+      kode: masterSuboutput.kode_suboutput,
       nama_suboutput: masterSuboutput.nama_suboutput,
       nama_satker: satker.name,
       nama_unit: unit.name,

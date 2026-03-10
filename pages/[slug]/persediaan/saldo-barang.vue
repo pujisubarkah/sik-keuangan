@@ -1,6 +1,8 @@
 <script setup>
+
 import { ref } from 'vue'
 import { IconAlertCircle, IconHome, IconFilter, IconBuilding, IconChevronDown, IconSitemap, IconUsersGroup, IconCalendar, IconCalendarTime, IconSearch, IconPlus, IconPrinter, IconFolder, IconInbox } from '@tabler/icons-vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({
   layout: 'default'
@@ -105,16 +107,7 @@ function cetakPdf() {
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <Icon icon="tabler:alert-circle" class="w-6 h-6 text-blue-600" />
-        <span>
-          Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
 
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">

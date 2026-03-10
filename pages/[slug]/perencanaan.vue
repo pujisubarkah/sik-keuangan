@@ -163,9 +163,14 @@ import VTable from '~/components/UI/v-table.vue'
                 <td class="px-3 py-2 text-center align-middle">{{ index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">{{ item.kode }}</td>
                 <td class="px-3 py-2 align-middle">
-                  <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.suboutput_id}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
-                    {{ item.suboutput }}
-                  </NuxtLink>
+                  <template v-if="item.suboutput_id">
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.suboutput_id}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                      {{ item.suboutput }}
+                    </NuxtLink>
+                  </template>
+                  <template v-else>
+                    <span class="text-gray-400">{{ item.suboutput }}</span>
+                  </template>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
                   <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.pagu) }}</span>
@@ -342,7 +347,7 @@ const buildQueryParams = () => {
   }
   
   // Return endpoint URL: jika ada params tambahkan ?, jika tidak return endpoint polos
-  return queryString ? `/api/anggaran_suboutput?${queryString}` : '/api/anggaran_suboutput'
+    return queryString ? `/api/suboutput?${queryString}` : '/api/suboutput'
 }
 
 const filterData = async () => {
@@ -367,20 +372,15 @@ const filterData = async () => {
     
     // Map response sesuai struktur API
     suboutputData.value = dataArray.map(item => {
-      const pagu = Number(item.anggaranSuboutput?.anggaran) || 0
+      const pagu = Number(item.total) || 0
       const perencanaan = 0 // Sesuaikan dengan logic backend
       const selisih = pagu - perencanaan
-      
       return {
-        id: item.anggaranSuboutput?.id,
-        suboutput_id: item.anggaranSuboutput?.suboutput_id,
-        satker_id: item.anggaranSuboutput?.satker_id,
-        unit_id: item.anggaranSuboutput?.unit_id,
-        tahun_anggaran_id: item.anggaranSuboutput?.tahun_anggaran_id,
-        kode: item.kode || '',
+        id: item.id,
+        suboutput_id: item.suboutput_id, // <-- fix agar NuxtLink benar
+        kode: item.kode_suboutput || '',
         suboutput: item.nama_suboutput || '',
-        nama_satker: item.nama_satker || '',
-        nama_unit: item.nama_unit || '',
+        output_id: item.output_id,
         pagu,
         perencanaan,
         selisih

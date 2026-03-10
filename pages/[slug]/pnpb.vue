@@ -1,16 +1,7 @@
 <template>
   <div class="pt-14 px-1 md:px-2">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 mx-auto max-w-7xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <i class="fa fa-exclamation-triangle"></i>
-        <span>
-          Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline font-bold">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
     <div class="w-full max-w-7xl mx-auto">
       <h1 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">LAN JAKARTA - PNBP</h1>
       <!-- Filter Form: Konsisten dengan DashboardFilter.vue -->
@@ -104,57 +95,74 @@
             Rekap Akun PNBP
           </h2>
           <div class="w-full overflow-x-auto">
-            <table class="table table-hover table-bordered table-striped table-condensed">
-              <thead>
+            <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl shadow-lg border border-blue-100 bg-white" style="table-layout: auto;">
+              <thead class="bg-blue-100 sticky top-0 z-10">
                 <tr>
-                  <th class="text-center">Kode</th>
-                  <th class="text-center">Uraian</th>
-                  <th class="text-center">Target (Rp.)</th>
-                  <th class="text-center">Realisasi (Rp.)</th>
-                  <th class="text-center">Lebih / Kurang (Rp.)</th>
-                  <th class="text-center">Persen Realisasi</th>
+                  <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Kode</th>
+                  <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Uraian</th>
+                  <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Target (Rp.)</th>
+                  <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">Realisasi (Rp.)</th>
+                  <th class="px-3 py-2 text-right font-semibold text-red-700 align-middle">Lebih / Kurang (Rp.)</th>
+                  <th class="px-3 py-2 text-right font-semibold text-yellow-700 align-middle">Persen Realisasi</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="row in tableData" :key="row.kode">
-                  <td class="text-center">{{ row.kode }}</td>
-                  <td class="pl-2">
-                    <div class="btn-flat btn-group">
-                      <button class="btn-flat btn btn-primary btn-sm dropdown-toggle" type="button">
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#" @click.prevent="addSubAkun(row)"><i class="glyphicon glyphicon-plus"></i> Tambah Sub Akun</a></li>
-                        <li><a href="#" @click.prevent="editAkun(row)"><i class="glyphicon glyphicon-pencil"></i> Sunting Akun</a></li>
-                        <li><a href="#" @click.prevent="deleteAkun(row)"><i class="glyphicon glyphicon-trash"></i> Hapus Akun</a></li>
-                      </ul>
+              <tbody class="divide-y divide-gray-100">
+                <tr v-for="row in tableData" :key="row.kode" class="hover:bg-yellow-50 align-middle">
+                  <td class="px-3 py-2 text-center align-middle">{{ row.kode }}</td>
+                  <td class="px-3 py-2 align-middle">
+                    <div class="inline-flex gap-1">
+                      <button class="rounded bg-blue-100 text-blue-700 px-2 py-1 text-xs font-semibold hover:bg-blue-200 transition" @click.prevent="addSubAkun(row)"><i class="fa fa-plus"></i></button>
+                      <button class="rounded bg-yellow-100 text-yellow-700 px-2 py-1 text-xs font-semibold hover:bg-yellow-200 transition" @click.prevent="editAkun(row)"><i class="fa fa-pencil"></i></button>
+                      <button class="rounded bg-red-100 text-red-700 px-2 py-1 text-xs font-semibold hover:bg-red-200 transition" @click.prevent="deleteAkun(row)"><i class="fa fa-trash"></i></button>
                     </div>
-                    {{ row.uraian }}
+                    <span class="ml-2">{{ row.uraian }}</span>
                   </td>
-                  <td class="text-right"><span class="label label-primary">{{ formatCurrency(row.target) }}</span></td>
-                  <td class="text-right"><span class="label label-success">{{ formatCurrency(row.realisasi) }}</span></td>
-                  <td class="text-right"><span class="label label-danger">{{ formatCurrency(row.selisih) }}</span></td>
-                  <td class="text-right"><span class="label label-warning">{{ row.persen }}%</span></td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.target) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.realisasi) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.selisih) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ row.persen }}%</span>
+                  </td>
                 </tr>
                 <!-- Total Row -->
-                <tr>
-                  <th class="text-center">&nbsp;</th>
-                  <th class="text-center">Total (Rp.)</th>
-                  <th class="text-right"><span class="label label-primary">{{ formatCurrency(totalRow.target) }}</span></th>
-                  <th class="text-right"><span class="label label-success">{{ formatCurrency(totalRow.realisasi) }}</span></th>
-                  <th class="text-right"><span class="label label-danger">{{ formatCurrency(totalRow.selisih) }}</span></th>
-                  <th class="text-right"><span class="label label-warning">{{ totalRow.persen }}%</span></th>
+                <tr class="bg-blue-50 font-bold">
+                  <td class="px-3 py-2 text-center align-middle">&nbsp;</td>
+                  <td class="px-3 py-2 text-center align-middle">Total (Rp.)</td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.target) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.realisasi) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.selisih) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalRow.persen }}%</span>
+                  </td>
                 </tr>
-                <tr>
-                  <td colspan="6">&nbsp;</td>
-                </tr>
-                <tr>
-                  <th>&nbsp;</th>
-                  <th class="text-center">Total Keseluruhan (Rp.)</th>
-                  <th class="text-right"><span class="label label-primary">{{ formatCurrency(totalAll.target) }}</span></th>
-                  <th class="text-right"><span class="label label-success">{{ formatCurrency(totalAll.realisasi) }}</span></th>
-                  <th class="text-right"><span class="label label-danger">{{ formatCurrency(totalAll.selisih) }}</span></th>
-                  <th class="text-right"><span class="label label-warning">{{ totalAll.persen }}%</span></th>
+                <tr><td colspan="6" class="py-1"></td></tr>
+                <tr class="bg-blue-100 font-bold">
+                  <td class="px-3 py-2">&nbsp;</td>
+                  <td class="px-3 py-2 text-center align-middle">Total Keseluruhan (Rp.)</td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.target) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.realisasi) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.selisih) }}</span>
+                  </td>
+                  <td class="px-3 py-2 text-right align-middle">
+                    <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalAll.persen }}%</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -172,6 +180,7 @@
 </template>
 
 <script setup>
+import SuboutputAlert from '@/components/SuboutputAlert.vue'
 import { ref, onMounted } from 'vue'
 import StatBox from '~/components/UI/StatBox.vue'
 

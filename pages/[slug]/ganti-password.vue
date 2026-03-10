@@ -1,7 +1,9 @@
 <script setup>
+
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, reactive } from 'vue'
 import { IconKey, IconX } from '@tabler/icons-vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' })
 
@@ -97,23 +99,7 @@ const handleSubmit = async () => {
   <div class="pt-14">
 
     <!-- ALERT -->
-    <div
-      v-if="hasSubOutputWarning"
-      class="alert alert-error shadow-lg mb-6"
-    >
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
-          <NuxtLink
-            to="/admin/suboutput"
-            class="link link-hover underline ml-1"
-          >
-            Klik di sini
-          </NuxtLink>
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="hasSubOutputWarning" />
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">

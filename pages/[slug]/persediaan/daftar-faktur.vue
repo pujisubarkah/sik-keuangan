@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
+
 import Icon from '~/components/Icon.vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({
   layout: 'default'
@@ -51,16 +53,7 @@ const filterData = () => {
 <template>
   <div class="pt-14">
     <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
 
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">

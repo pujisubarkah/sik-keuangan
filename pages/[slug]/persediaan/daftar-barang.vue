@@ -16,16 +16,7 @@ definePageMeta({ layout: 'default' });
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Barang Persediaan</h1>
    
     <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
 
      <!-- ACTION -->
     <div class="mb-4">
@@ -38,119 +29,108 @@ definePageMeta({ layout: 'default' });
       </NuxtLink>
     </div>
     
-    <!-- Data Table -->
-    <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <div class="card-body">
-        <div class="text-sm mb-4 text-blue-700 font-semibold">
-          Menampilkan <span class="font-bold">{{ startIndex }}-{{ endIndex }}</span> dari <span class="font-bold">{{ totalItems }}</span> hasil.
-        </div>
-        
-        <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th class="text-center">
-                  <button @click="sortBy('kode_barang')" class="hover:text-blue-700">
-                    Kode Barang {{ getSortIcon('kode_barang') }}
+    <!-- Data Table Card -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
+      <!-- Table -->
+      <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
+          <thead class="bg-blue-100 sticky top-0 z-10">
+            <tr>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">
+                <button @click="sortBy('kode_barang')" class="hover:text-blue-700">Kode Barang {{ getSortIcon('kode_barang') }}</button>
+              </th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">
+                <button @click="sortBy('nama_barang')" class="hover:text-blue-700">Nama Barang {{ getSortIcon('nama_barang') }}</button>
+              </th>
+              <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">
+                <button @click="sortBy('harga_satuan')" class="hover:text-green-700">Harga Satuan {{ getSortIcon('harga_satuan') }}</button>
+              </th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
+                <button @click="sortBy('id_satker')" class="hover:text-blue-700">Satker {{ getSortIcon('id_satker') }}</button>
+              </th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
+                <button @click="sortBy('id_unit')" class="hover:text-blue-700">Unit {{ getSortIcon('id_unit') }}</button>
+              </th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
+                <button @click="sortBy('kode_akun')" class="hover:text-blue-700">Kode Akun {{ getSortIcon('kode_akun') }}</button>
+              </th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
+            </tr>
+            <tr class="bg-blue-50">
+              <td></td>
+              <td>
+                <input v-model="filters.kode_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Barang" />
+              </td>
+              <td>
+                <input v-model="filters.nama_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Nama Barang" />
+              </td>
+              <td>
+                <input v-model="filters.harga_satuan" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="20" placeholder="Harga" />
+              </td>
+              <td>
+                <select v-model="filters.id_satker" @change="applyFilters" class="select select-bordered select-xs w-full">
+                  <option value="">Semua</option>
+                  <option v-for="satker in satkerOptions" :key="satker.id" :value="satker.id">
+                    {{ satker.nama }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <select v-model="filters.id_unit" @change="applyFilters" class="select select-bordered select-xs w-full">
+                  <option value="">Semua</option>
+                  <option v-for="unit in unitOptions" :key="unit.id" :value="unit.id">
+                    {{ unit.nama }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Akun" />
+              </td>
+              <td class="text-center">
+                <button @click="applyFilters" type="button" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                  <IconSearch class="w-4 h-4" />
+                  <span>Filter Data</span>
+                </button>
+              </td>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr v-for="(item, index) in paginatedItems" :key="item.id" class="hover:bg-yellow-50 align-middle">
+              <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ startIndex + index }}</td>
+              <td class="px-3 py-2 text-center align-middle font-semibold text-blue-600">{{ item.kode_barang }}</td>
+              <td class="px-3 py-2 align-middle text-blue-700">{{ item.nama_barang }}</td>
+              <td class="px-3 py-2 text-right align-middle text-green-700 font-bold">{{ formatCurrency(item.harga_satuan) }}</td>
+              <td class="px-3 py-2 text-center align-middle text-blue-700">{{ getSatkerName(item.id_satker) }}</td>
+              <td class="px-3 py-2 text-center align-middle text-blue-700">{{ getUnitName(item.id_unit) }}</td>
+              <td class="px-3 py-2 text-center align-middle font-semibold text-blue-600">{{ item.kode_akun }}</td>
+              <td class="px-3 py-2 text-center align-middle">
+                <div class="flex gap-2 justify-center">
+                  <button @click="viewItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
+                    <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </button>
-                </th>
-                <th>
-                  <button @click="sortBy('nama_barang')" class="hover:text-blue-700">
-                    Nama Barang {{ getSortIcon('nama_barang') }}
+                  <button @click="editItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
+                    <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </button>
-                </th>
-                <th class="text-center">
-                  <button @click="sortBy('harga_satuan')" class="hover:text-blue-700">
-                    Harga Satuan {{ getSortIcon('harga_satuan') }}
+                  <button @click="deleteItem(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
+                    <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                   </button>
-                </th>
-                <th class="text-center">
-                  <button @click="sortBy('id_satker')" class="hover:text-blue-700">
-                    Satker {{ getSortIcon('id_satker') }}
-                  </button>
-                </th>
-                <th class="text-center">
-                  <button @click="sortBy('id_unit')" class="hover:text-blue-700">
-                    Unit {{ getSortIcon('id_unit') }}
-                  </button>
-                </th>
-                <th class="text-center">
-                  <button @click="sortBy('kode_akun')" class="hover:text-blue-700">
-                    Kode Akun {{ getSortIcon('kode_akun') }}
-                  </button>
-                </th>
-                <th class="text-center rounded-tr-xl">Aksi</th>
-              </tr>
-              <tr class="bg-blue-50">
-                <td></td>
-                <td>
-                  <input v-model="filters.kode_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Barang" />
-                </td>
-                <td>
-                  <input v-model="filters.nama_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Nama Barang" />
-                </td>
-                <td>
-                  <input v-model="filters.harga_satuan" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="20" placeholder="Harga" />
-                </td>
-                <td>
-                  <select v-model="filters.id_satker" @change="applyFilters" class="select select-bordered select-xs w-full">
-                    <option value="">Semua</option>
-                    <option v-for="satker in satkerOptions" :key="satker.id" :value="satker.id">
-                      {{ satker.nama }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <select v-model="filters.id_unit" @change="applyFilters" class="select select-bordered select-xs w-full">
-                    <option value="">Semua</option>
-                    <option v-for="unit in unitOptions" :key="unit.id" :value="unit.id">
-                      {{ unit.nama }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Akun" />
-                </td>
-                <td class="text-center">
-                  <button @click="applyFilters" type="button" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                    <IconSearch class="w-4 h-4" />
-                    <span>Filter Data</span>
-                  </button>
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in paginatedItems" :key="item.id" class="hover:bg-blue-50 transition-all duration-150">
-                <td class="text-center font-bold text-blue-700">{{ startIndex + index }}</td>
-                <td class="text-center font-semibold text-blue-600">{{ item.kode_barang }}</td>
-                <td class="text-blue-700">{{ item.nama_barang }}</td>
-                <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.harga_satuan) }}</td>
-                <td class="text-center text-blue-700">{{ getSatkerName(item.id_satker) }}</td>
-                <td class="text-center text-blue-700">{{ getUnitName(item.id_unit) }}</td>
-                <td class="text-center font-semibold text-blue-600">{{ item.kode_akun }}</td>
-                <td class="text-center">
-                  <div class="flex gap-2 justify-center">
-                    <button @click="viewItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
-                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </button>
-                    <button @click="editItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
-                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </button>
-                    <button @click="deleteItem(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr v-if="paginatedItems.length === 0">
-                <td colspan="8" class="text-center py-8 text-gray-500">
-                  Tidak ada data yang ditemukan
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="paginatedItems.length === 0">
+              <td colspan="8" class="px-6 py-10 text-center text-gray-500">
+                <div class="flex flex-col items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span class="text-sm">Tidak ada data yang ditemukan.</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
         
         <!-- Pagination -->
         <div class="flex justify-center mt-6">
@@ -166,15 +146,15 @@ definePageMeta({ layout: 'default' });
             </button>
             <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" class="btn btn-sm">»</button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+		</div>
+	  </div>
+	</div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { IconPlus, IconSearch, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 // State
 const items = ref([])

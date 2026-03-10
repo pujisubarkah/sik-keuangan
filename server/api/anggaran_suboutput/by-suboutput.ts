@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
       tahun_anggaran_id: anggaranSuboutput.tahun_anggaran_id,
       tahun: tahunAnggaran.tahun,
       anggaran: anggaranSuboutput.anggaran,
-      kode: sql<string>`concat(${masterKegiatan.kode_kegiatan}, '.', ${masterOutput.kode_output}, '.', ${masterSuboutput.kode_suboutput})`.as('kode'),
+      kode: masterSuboutput.kode_suboutput,
     })
     .from(anggaranSuboutput)
     .innerJoin(masterSuboutput, eq(anggaranSuboutput.suboutput_id, masterSuboutput.id))
