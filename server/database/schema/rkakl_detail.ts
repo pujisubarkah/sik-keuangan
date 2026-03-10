@@ -19,4 +19,5 @@ export const rkaklDetail = pgTable('rkakl_detail', {
   status: varchar('status'),
   updated_at: timestamp('updated_at'),
   satker_id: integer('satker_id'),
+  uraian: varchar('uraian', { length: 10000 }), // text type, gunakan varchar panjang jika text tidak tersedia
 });

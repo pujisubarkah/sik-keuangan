@@ -242,24 +242,25 @@ export default defineEventHandler(async (event) => {
       // ── PUSH KE DATA INSERT (HANYA JIKA SEMUA MASTER ADA) ──
       if (programIdFixed && kegiatanIdFixed && outputIdFixed && suboutputIdFixed) {
         dataInsert.push({
-          program_id: programIdFixed,        // ✅ pakai Fixed ID
-          kegiatan_id: kegiatanIdFixed,
-          output_id: outputIdFixed,
-          suboutput_id: suboutputIdFixed,
-          komponen_id: komponenIdFixed || null,
+          id: undefined, // auto increment
           sub_komponen_id: subkomponenIdFixed || null,
           akun_id: akunIdFixed || null,
           volume: r.volume,
           satuan: r.satuan,
           harga_satuan: r.harga_satuan,
           jumlah: r.jumlah,
-          uraian: r.uraian,  // ✅ tambahkan uraian jika kolom ini ada di schema
           tahun,
-          import_id: importId,
-          satker_id: satkerId,
-          status: "aktif",
           created_at: new Date(),
-          updated_at: new Date()
+          program_id: programIdFixed,
+          kegiatan_id: kegiatanIdFixed,
+          output_id: outputIdFixed,
+          suboutput_id: suboutputIdFixed,
+          komponen_id: komponenIdFixed || null,
+          import_id: importId,
+          status: "aktif",
+          updated_at: new Date(),
+          satker_id: satkerId,
+          uraian: r.uraian,
         });
 
         // Insert to anggaranSuboutput as well
