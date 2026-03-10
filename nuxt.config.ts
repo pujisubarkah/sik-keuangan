@@ -26,18 +26,14 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   css: ['@idds/vue/index.css'],
   tailwindcss: {
-    cssPath: '~/assets/css/main.css',
-    configPath: 'tailwind.config.js',
-    exposeConfig: false,
-    viewer: true,
-  },
+  cssPath: '~/assets/css/main.css',
+  configPath: 'tailwind.config.cjs',
+  exposeConfig: false,
+  viewer: false,
+},
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   plugins: [
-    { src: '~/plugins/auth-fetch.ts', mode: 'client' },
-    '~/plugins/pinia.js',
-    { src: '~/plugins/fusioncharts.js', mode: 'client' },
-    { src: '~/plugins/apexcharts.js', mode: 'client' },
   ],
   build: {
     transpile: ['@idds/vue']

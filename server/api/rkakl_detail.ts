@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx"
+import * as XLSX from 'xlsx/xlsx.mjs'
 import { db } from "../database"
 import { rkakl_detail } from "../database/schema/rkakl_detail"
 

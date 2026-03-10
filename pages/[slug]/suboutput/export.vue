@@ -2,7 +2,6 @@
 import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import Icon from '~/components/Icon.vue'
-import * as XLSX from 'xlsx'
 
 const showAlert = ref(true)
 const tahun = ref('')
@@ -64,7 +63,10 @@ const unitList = [
   { value: '76', label: 'Biro Perencanaan dan Keuangan' },
 ]
 
-function submitForm() {
+async function submitForm() {
+  if (process.server) return
+  const XLSX = await import('xlsx/xlsx.mjs')
+
   // Data dummy, ganti dengan data asli dari filter
   const data = [
     ['Tahun', 'Unit'],

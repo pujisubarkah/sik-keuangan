@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
@@ -9,7 +9,6 @@ export default {
   ],
   theme: {
     colors: {
-      // Primary Colors
       primary: '#1F1F1F',
       secondary: '#525252',
       tertiary: '#A3A3A3',
@@ -17,7 +16,6 @@ export default {
       negative: '#F80909',
       positive: '#00BB25',
       warning: '#FFB23B',
-      // Yellow Palette
       yellow: {
         50: '#FFF7EB',
         100: '#FEE8C4',
@@ -28,7 +26,6 @@ export default {
         600: '#AC7824',
         700: '#855C18',
       },
-      // Orange Palette
       orange: {
         50: '#FFF3EB',
         100: '#FEE4D2',
@@ -39,7 +36,6 @@ export default {
         600: '#42210A',
         700: '#301603',
       },
-      // Green Palette
       green: {
         50: '#EBFFEF',
         100: '#D2FEDB',
@@ -50,7 +46,6 @@ export default {
         600: '#044215',
         700: '#03300C',
       },
-      // Blue Palette
       blue: {
         50: '#EBF3FF',
         100: '#D2E4FE',
@@ -61,7 +56,6 @@ export default {
         600: '#002A69',
         700: '#031530',
       },
-      // Red Palette
       red: {
         50: '#FFEBEB',
         100: '#FED2D2',
@@ -72,7 +66,6 @@ export default {
         600: '#420A0A',
         700: '#300303',
       },
-      // Brand Primary Biru
       brandBlue: {
         50: '#F3F6FC',
         100: '#E5EFF9',
@@ -86,7 +79,6 @@ export default {
         900: '#193454',
         950: '#14263D',
       },
-      // Brand Secondary Gold
       brandGold: {
         50: '#FBF38C',
         100: '#F9E650',
@@ -98,7 +90,6 @@ export default {
         700: '#764111',
         800: '#442204',
       },
-      // Monochrome colors
       black: '#000000',
       white: '#ffffff',
       gray: {
