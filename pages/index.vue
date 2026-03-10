@@ -10,14 +10,14 @@
      <Card class="overflow-hidden rounded-2xl border border-white/20 bg-white shadow-2xl">
         <div class="px-8 pt-0 py-8">
           <!-- Logo di dalam card -->
-          <div class="flex flex-col items-center text-center mb-4">
+          <div class="flex flex-col items-center text-center mb-5">
             <img
               src="/LANRI-ORG.png"
               alt="LANRI"
               class="w-[220px] max-w-full h-auto mb-0"
             />
 
-            <p class="mt-2 text-sm text-gray-600">
+            <p class="mt-3 text-sm text-gray-600">
               Silahkan login terlebih dahulu
             </p>
           </div>
