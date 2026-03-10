@@ -1,5 +1,5 @@
-import { setBrandTheme } from '@idds/vue'
-
 export default defineNuxtPlugin(() => {
-  setBrandTheme('lan')
+  if (import.meta.client) {
+    document.documentElement.setAttribute('data-brand', 'lan')
+  }
 })
