@@ -19,22 +19,20 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-glyphicons/1.0.0/bootstrap-glyphicons.min.css'
         }
-        // Bootstrap CSS removed to avoid style conflicts
       ]
     }
   },
   modules: ['@nuxtjs/tailwindcss'],
   css: ['@idds/vue/index.css'],
   tailwindcss: {
-  cssPath: '~/assets/css/main.css',
-  configPath: 'tailwind.config.cjs',
-  exposeConfig: false,
-  viewer: false,
-},
+    cssPath: '~/assets/css/main.css',
+    configPath: 'tailwind.config.cjs',
+    exposeConfig: false,
+    viewer: false,
+  },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  plugins: [
-  ],
+  plugins: [],
   build: {
     transpile: ['@idds/vue']
   }

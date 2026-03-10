@@ -167,18 +167,25 @@ const handleLogin = () => {
       if (res.token) {
         localStorage.setItem('token', res.token)
         const tokenParts = res.token.split('.')
-        const payload = JSON.parse(atob(tokenParts[1] || ''))
+        const payloadRaw = (tokenParts[1] || '').replace(/-/g, '+').replace(/_/g, '/')
+        const payload = JSON.parse(atob(payloadRaw))
+        const roleId = Number(payload.role_id)
+        const username = payload.username || form.username
+
         userStore.setUser({ 
-          username: form.username, 
-          name: res.name || form.username,
+          username,
+          name: res.name || username,
           role: payload.role || '',
           role_id: payload.role_id,
           satker_id: payload.satker_id
         })
-        if (payload.role_id === 1) {
+
+        if (roleId === 1) {
           navigateTo('/admin')
-        } else if (payload.role_id === 8) {
-          navigateTo(`/${userStore.username}`)
+        } else if (roleId === 8) {
+          navigateTo(`/${username}`)
+        } else {
+          navigateTo(`/${username}`)
         }
       } else {
         errors.password = 'Login gagal: token tidak diterima.'

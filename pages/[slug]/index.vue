@@ -83,17 +83,18 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 // import ClientOnly from 'vue-client-only' // REMOVE this line
-import DashboardFilter from '../components/DashboardFilter.vue'
-import SatkerRealization from '../components/SatkerRealization.vue'
-import BudgetRecapitulation from '../components/BudgetRecapitulation.vue'
-import ChartsSection from '../components/ChartsSection.vue'
-import ProgramTable from '../components/ProgramTable.vue'
-import ActivityTable from '../components/ActivityTable.vue'
-import OutputTable from '../components/OutputTable.vue'
+import DashboardFilter from '~/components/DashboardFilter.vue'
+import SatkerRealization from '~/components/SatkerRealization.vue'
+import BudgetRecapitulation from '~/components/BudgetRecapitulation.vue'
+import ChartsSection from '~/components/ChartsSection.vue'
+import ProgramTable from '~/components/ProgramTable.vue'
+import ActivityTable from '~/components/ActivityTable.vue'
+import OutputTable from '~/components/OutputTable.vue'
 import SubOutputTable from '~/components/SubOutputTable.vue'
 
 // State
 const currentYear = ref(2026)
+const showAlert = ref(true)
 const hasUnassignedUnits = ref(true)
 const unassignedUnitsCount = ref(41)
 
