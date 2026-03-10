@@ -38,9 +38,9 @@ export default defineNuxtConfig({
     '~/plugins/pinia.js',
     { src: '~/plugins/fusioncharts.js', mode: 'client' },
     { src: '~/plugins/apexcharts.js', mode: 'client' },
-    '~/plugins/idds.ts',
   ],
   build: {
     transpile: ['@idds/vue']
   }
 })
+
