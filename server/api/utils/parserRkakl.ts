@@ -45,6 +45,8 @@ export interface ParsedRow {
   jumlah: number;
   total: number;
   rowNumber: number;
+  isHeader?: boolean;
+  headerTotal?: number;
 }
 
 // ─────────────────────────────────
@@ -136,56 +138,157 @@ export function parseVolumeWithUnit(raw: any): { volume: number; satuan: string 
 }
 
 // ─────────────────────────────────
-// DETEKSI HIERARCHY LEVEL
+// DETEKSI HIERARCHY LEVEL - FIXED
 // ─────────────────────────────────
 function detectHierarchyLevel(kode: string): { type: string | null; value: string | null } {
   const cleanKode = cleanString(kode);
   if (!cleanKode) return { type: null, value: null };
   
-  if (/^\d{3}\.\d{2}(\.[A-Z]{2,3})?$/.test(cleanKode)) return { type: "program", value: cleanKode };
-  if (/^\d{4}$/.test(cleanKode)) return { type: "kegiatan", value: cleanKode };
-  if (/^\d{4}\.[A-Z]{3}$/.test(cleanKode)) return { type: "output", value: cleanKode };
-  if (/^\d{4}\.[A-Z]{3}\.\d{3}$/.test(cleanKode)) return { type: "suboutput", value: cleanKode };
-  if (/^\d{6}$/.test(cleanKode)) return { type: "akun", value: cleanKode };
-  if (/^\d{3}$/.test(cleanKode)) return { type: "komponen", value: cleanKode };
-  if (/^[A-Z]$/.test(cleanKode)) return { type: "subkomponen", value: cleanKode };
+  // Program: 086.01.CO atau 086.01.WA
+  if (/^\d{3}\.\d{2}\.[A-Z]{2,3}$/.test(cleanKode)) 
+    return { type: "program", value: cleanKode };
+  
+  // Kegiatan: 4 digit angka (7913, 7914, dll)
+  if (/^\d{4}$/.test(cleanKode)) 
+    return { type: "kegiatan", value: cleanKode };
+  
+  // Output: 4 digit + titik + 3 huruf (7913.ADI)
+  if (/^\d{4}\.[A-Z]{3}$/.test(cleanKode)) 
+    return { type: "output", value: cleanKode };
+  
+  // ✅ SUBOUTPUT: support alphanumeric di suffix (7915.FAN.ZZ1, 7913.ADI.001)
+  if (/^\d{4}\.[A-Z]{3}\.[A-Z0-9]{3}$/.test(cleanKode)) 
+    return { type: "suboutput", value: cleanKode };
+  
+  // ✅ KOMPONEN: support 3 digit ATAU 3 alphanumeric (051, ZZ1, dll)
+  if (/^[A-Z0-9]{3}$/.test(cleanKode)) 
+    return { type: "komponen", value: cleanKode };
+  
+  // Subkomponen: 1 huruf kapital
+  if (/^[A-Z]$/.test(cleanKode)) 
+    return { type: "subkomponen", value: cleanKode };
+  
+  // Akun: 6 digit angka
+  if (/^\d{6}$/.test(cleanKode)) 
+    return { type: "akun", value: cleanKode };
   
   return { type: null, value: null };
 }
 
 // ─────────────────────────────────
-// ✅ FIX: EXTRACT ITEM NAME (handle multi-column merged cells)
+// UPDATE HIERARCHY
+// ─────────────────────────────────
+function updateHierarchy(
+  hierarchy: HierarchyState, 
+  level: { type: string | null; value: string | null }, 
+  hierarchyName: string
+): HierarchyState {
+  const newHierarchy = { ...hierarchy };
+  switch (level.type) {
+    case "program":
+      return {
+        program: level.value,
+        program_nama: hierarchyName,
+        kegiatan: null, kegiatan_nama: null,
+        output: null, output_nama: null,
+        suboutput: null, suboutput_nama: null,
+        komponen: null, komponen_nama: null,
+        subkomponen: null, subkomponen_nama: null,
+        akun: null, akun_nama: null
+      };
+    case "kegiatan":
+      newHierarchy.kegiatan = level.value;
+      newHierarchy.kegiatan_nama = hierarchyName;
+      newHierarchy.output = null; newHierarchy.output_nama = null;
+      newHierarchy.suboutput = null; newHierarchy.suboutput_nama = null;
+      newHierarchy.komponen = null; newHierarchy.komponen_nama = null;
+      newHierarchy.subkomponen = null; newHierarchy.subkomponen_nama = null;
+      newHierarchy.akun = null; newHierarchy.akun_nama = null;
+      break;
+    case "output":
+      newHierarchy.output = level.value;
+      newHierarchy.output_nama = hierarchyName;
+      newHierarchy.suboutput = null; newHierarchy.suboutput_nama = null;
+      newHierarchy.komponen = null; newHierarchy.komponen_nama = null;
+      newHierarchy.subkomponen = null; newHierarchy.subkomponen_nama = null;
+      newHierarchy.akun = null; newHierarchy.akun_nama = null;
+      break;
+    case "suboutput":
+      newHierarchy.suboutput = level.value;
+      newHierarchy.suboutput_nama = hierarchyName;
+      newHierarchy.komponen = null; newHierarchy.komponen_nama = null;
+      newHierarchy.subkomponen = null; newHierarchy.subkomponen_nama = null;
+      newHierarchy.akun = null; newHierarchy.akun_nama = null;
+      break;
+    case "komponen":
+      newHierarchy.komponen = level.value;
+      newHierarchy.komponen_nama = hierarchyName;
+      newHierarchy.subkomponen = null; newHierarchy.subkomponen_nama = null;
+      newHierarchy.akun = null; newHierarchy.akun_nama = null;
+      break;
+    case "subkomponen":
+      newHierarchy.subkomponen = level.value;
+      newHierarchy.subkomponen_nama = hierarchyName;
+      newHierarchy.akun = null; newHierarchy.akun_nama = null;
+      break;
+    case "akun":
+      newHierarchy.akun = level.value;
+      newHierarchy.akun_nama = hierarchyName;
+      break;
+  }
+  return newHierarchy;
+}
+
+// ─────────────────────────────────
+// VALIDASI HIERARCHY - SUBOUTPUT OPTIONAL (FIXED)
+// ─────────────────────────────────
+function isValidForDetailFlexible(hierarchy: HierarchyState): { valid: boolean; missing: string[] } {
+  const missing: string[] = [];
+  
+  // Wajib: program, kegiatan, output, komponen, akun
+  if (!hierarchy.program) missing.push('program');
+  if (!hierarchy.kegiatan) missing.push('kegiatan');
+  if (!hierarchy.output) missing.push('output');
+  if (!hierarchy.komponen) missing.push('komponen');
+  if (!hierarchy.akun) missing.push('akun');
+  
+  // ✅ suboutput TIDAK wajib - ada kasus komponen langsung ke akun
+  // ✅ subkomponen juga tidak wajib
+  
+  return { valid: missing.length === 0, missing };
+}
+
+// ─────────────────────────────────
+// EXTRACT ITEM NAME
 // ─────────────────────────────────
 function extractItemName(
   colD: string, 
   colE: string, 
   colF: string
-): { name: string; indent: number } | null {
+): { name: string; indent: number; isHeader: boolean } | null {
   const d = cleanString(colD);
   const e = cleanString(colE);
   const f = cleanString(colF);
-  
-  // Cek apakah colD mengandung marker
-  const hasMarker = d === ">" || d === ">>" || d === "-" || d.startsWith("> ") || d.startsWith(">> ") || d.startsWith("- ");
-  
-  if (hasMarker) {
-    // Ambil nama dari colE (prioritas) atau colF (fallback)
-    const itemName = e || f || "";
+
+  // Skip jika ada marker header group
+  if (d === ">" || d === ">>" || d.startsWith("> ") || d.startsWith(">> ")) {
+    return { name: e || f || "", indent: d.startsWith(">>") ? 2 : 1, isHeader: true };
+  }
+
+  // Detail item: marker "-" atau tanpa marker, dan bukan baris lokasi/kppn
+  if (
+    d === "-" ||
+    d.startsWith("- ") ||
+    d === "" ||
+    d === null ||
+    (d && !["lokasi", "kppn"].some(k => d.toLowerCase().includes(k)))
+  ) {
+    const itemName = e || f || d;
     if (!itemName) return null;
-    
-    // Deteksi indent level dari colD
-    let indent = 0;
-    if (d.startsWith(">>")) indent = 2;
-    else if (d.startsWith(">") || d.startsWith("-")) indent = 1;
-    
-    return { name: itemName, indent };
+    const indent = d && d.startsWith("-") ? 2 : (d ? 1 : 0);
+    return { name: itemName, indent, isHeader: false };
   }
-  
-  // Jika colD tidak ada marker tapi ada isi, mungkin item tanpa indent
-  if (d && !["lokasi", "kppn"].some(k => d.toLowerCase().includes(k))) {
-    return { name: d, indent: 0 };
-  }
-  
+
   return null;
 }
 
@@ -199,16 +302,13 @@ function isBelanjaDetail(
   total: number,
   akunKode: string | null
 ): boolean {
-  // Prioritas: total > 0
   if (total > 0) return true;
-  
-  // Fallback: butuh akun + salah satu metrik
   if (!akunKode) return false;
   return volume > 0 || harga > 0 || jumlah > 0;
 }
 
 // ─────────────────────────────────
-// MAIN PARSER
+// MAIN PARSER - FIXED
 // ─────────────────────────────────
 export async function parseRkaklExcel(
   filePath: string,
@@ -234,86 +334,121 @@ export async function parseRkaklExcel(
   
   worksheet.eachRow((row, rowNumber) => {
     if (rowNumber < startRow) return;
-    
     try {
-      // ── KOLOM A: KODE ──
+      // KOLOM A: KODE
       const kode = cleanString(cellValue(row.getCell(1).value));
-      
-      // ── KOLOM D, E, F: URAIAN & NAMA ──
+      // KOLOM D, E, F: URAIAN & NAMA
       const colD = cellValue(row.getCell(4).value);
       const colE = cellValue(row.getCell(5).value);
       const colF = cellValue(row.getCell(6).value);
       
-      const cleanD = cleanString(colD);
-      const cleanE = cleanString(colE);
-      const cleanF = cleanString(colF);
+      // Skip baris benar-benar kosong
+      if (!kode && !colD && !colE && !colF) return;
       
-      // ── KOLOM G, H, I, J: NUMERIC ──
+      // KOLOM G, H, J: NUMERIC
       const volumeRaw = cellValue(row.getCell(7).value);
-      const harga = cellNumber(row.getCell(8).value);
-      const jumlah = cellNumber(row.getCell(9).value);
-      const total = cellNumber(row.getCell(10).value);
+      const hargaRaw = cellValue(row.getCell(8).value);
+      const totalRaw = cellValue(row.getCell(10).value);
       
-      if (!kode && !cleanD && !cleanE) return;
-      
-      // Debug
-      if (debug && rowNumber <= 25) {
-        console.log(`[ROW ${rowNumber}]`, {
-          kode, colD: cleanD.substring(0, 30), colE: cleanE.substring(0, 30),
-          volumeRaw, harga, jumlah, total,
-          akun: hierarchy.akun
-        });
-      }
-      
-      // ── UPDATE HIERARCHY ──
-      const level = detectHierarchyLevel(kode);
-      const hierarchyName = cleanE || cleanF || cleanD;
-      
-      if (level.type && hierarchyName && !hierarchyName.toLowerCase().includes("lokasi") && !hierarchyName.includes("KPPN")) {
-        switch (level.type) {
-          case "program":
-            hierarchy = { ...hierarchy, program: level.value, program_nama: hierarchyName, kegiatan: null, kegiatan_nama: null, output: null, output_nama: null, suboutput: null, suboutput_nama: null, komponen: null, komponen_nama: null, subkomponen: null, subkomponen_nama: null, akun: null, akun_nama: null };
-            if (debug) console.log(`[PROGRAM] ${level.value} | ${hierarchyName}`);
-            return;
-          case "kegiatan":
-            hierarchy = { ...hierarchy, kegiatan: level.value, kegiatan_nama: hierarchyName, output: null, output_nama: null, suboutput: null, suboutput_nama: null, komponen: null, komponen_nama: null, subkomponen: null, subkomponen_nama: null, akun: null, akun_nama: null };
-            if (debug) console.log(`[KEGIATAN] ${level.value} | ${hierarchyName}`);
-            return;
-          case "output":
-            hierarchy = { ...hierarchy, output: level.value, output_nama: hierarchyName, suboutput: null, suboutput_nama: null, komponen: null, komponen_nama: null, subkomponen: null, subkomponen_nama: null, akun: null, akun_nama: null };
-            return;
-          case "suboutput":
-            hierarchy = { ...hierarchy, suboutput: level.value, suboutput_nama: hierarchyName, komponen: null, komponen_nama: null, subkomponen: null, subkomponen_nama: null, akun: null, akun_nama: null };
-            return;
-          case "komponen":
-            hierarchy = { ...hierarchy, komponen: level.value, komponen_nama: hierarchyName, subkomponen: null, subkomponen_nama: null, akun: null, akun_nama: null };
-            return;
-          case "subkomponen":
-            hierarchy = { ...hierarchy, subkomponen: level.value, subkomponen_nama: hierarchyName, akun: null, akun_nama: null };
-            return;
-          case "akun":
-            hierarchy = { ...hierarchy, akun: level.value, akun_nama: hierarchyName };
-            if (debug) console.log(`[AKUN] ${level.value} | ${hierarchyName}`);
-            return; // ✅ Baris akun TIDAK PERNAH jadi detail
-        }
-      }
-      
-      // ── DETEKSI DETAIL BELANJA ──
-      const itemExtract = extractItemName(colD, colE, colF);
-      
-      // Skip jika tidak ada item name (bukan detail)
-      if (!itemExtract) return;
-      
-      const { name: itemName, indent } = itemExtract;
+      // Parse values
       const { volume, satuan } = parseVolumeWithUnit(volumeRaw);
+      const harga = cellNumber(hargaRaw);
+      const calculatedJumlah = volume * harga;
+      const totalFromExcel = cellNumber(totalRaw);
+      const finalTotal = totalFromExcel > 0 ? totalFromExcel : calculatedJumlah;
       
-      // Validasi numeric
-      if (!hierarchy.akun) return;
-      if (total <= 0 && volume <= 0 && harga <= 0 && jumlah <= 0) return;
+      // DETEKSI LEVEL HIERARCHY
+      const level = detectHierarchyLevel(kode);
+      const hierarchyName = colE || colF || colD;
       
-      const calculatedJumlah = jumlah > 0 ? jumlah : (volume * harga);
-      const calculatedTotal = total > 0 ? total : calculatedJumlah;
+      // Skip baris metadata (Lokasi/KPPN) TANPA mereset hierarchy
+      const lowerName = hierarchyName.toLowerCase();
+      if (lowerName.includes("lokasi") || lowerName.includes("kppn")) {
+        return; // Jangan update hierarchy, jangan reset state!
+      }
       
+      // UPDATE HIERARCHY jika ada level yang terdeteksi
+      if (level.type && hierarchyName) {
+        // ✅ CAPTURE MASTER TOTAL untuk hierarchy row dari kolom J (index 10)
+        const masterTotal = cellNumber(cellValue(row.getCell(10).value));
+
+        if (debug) {
+          console.log(`[ROW ${rowNumber}] Detected: ${level.type} = ${level.value} - ${hierarchyName} | Master Total: ${masterTotal}`);
+          console.log(`  Before: prog=${hierarchy.program}, subout=${hierarchy.suboutput}, komp=${hierarchy.komponen}`);
+        }
+
+        // Update hierarchy state
+        hierarchy = updateHierarchy(hierarchy, level, hierarchyName);
+
+        // ✅ Jika ada total di kolom J, simpan sebagai master record
+        if (masterTotal > 0) {
+          rows.push({
+            kode_program: hierarchy.program || "",
+            nama_program: hierarchy.program_nama || "",
+            kode_kegiatan: hierarchy.kegiatan || "",
+            nama_kegiatan: hierarchy.kegiatan_nama || "",
+            kode_output: hierarchy.output || "",
+            nama_output: hierarchy.output_nama || "",
+            kode_suboutput: hierarchy.suboutput || "",
+            nama_suboutput: hierarchy.suboutput_nama || "",
+            kode_komponen: hierarchy.komponen || "",
+            nama_komponen: hierarchy.komponen_nama || "",
+            kode_subkomponen: hierarchy.subkomponen || "",
+            nama_subkomponen: hierarchy.subkomponen_nama || "",
+            kode_akun: hierarchy.akun || "",
+            nama_akun: hierarchy.akun_nama || "",
+            uraian: hierarchyName,
+            uraian_lengkap: colD || colE,
+            indent_level: 0,
+            volume: 0,
+            satuan: "",
+            harga_satuan: 0,
+            jumlah: 0,
+            total: masterTotal,  // ✅ Gunakan total dari kolom J
+            rowNumber,
+            isHeader: true,     // ✅ Flag sebagai master record
+            headerTotal: masterTotal
+          });
+        }
+
+        if (debug) {
+          console.log(`  After:  prog=${hierarchy.program}, subout=${hierarchy.suboutput}, komp=${hierarchy.komponen}`);
+        }
+        return; // Baris hierarchy bukan detail belanja
+      }
+      
+      // DETEKSI DETAIL BELANJA
+      const itemExtract = extractItemName(colD, colE, colF);
+      if (!itemExtract || itemExtract.isHeader) return;
+      
+      // Validasi hierarchy flexible (suboutput optional)
+      const { valid, missing } = isValidForDetailFlexible(hierarchy);
+      if (!valid) {
+        if (debug && finalTotal > 0) {
+          console.log(`[DETAIL SKIPPED] Row ${rowNumber}: Missing: ${missing.join(', ')}`);
+          console.log(`  Item: ${itemExtract.name} | Hierarchy:`, {
+            program: hierarchy.program,
+            kegiatan: hierarchy.kegiatan,
+            output: hierarchy.output,
+            suboutput: hierarchy.suboutput,
+            komponen: hierarchy.komponen,
+            akun: hierarchy.akun
+          });
+        }
+        return;
+      }
+
+      // Fallback: jika suboutput kosong/null, gunakan output sebagai kode_suboutput
+      let kode_suboutput = hierarchy.suboutput || hierarchy.output || "";
+      let nama_suboutput = hierarchy.suboutput_nama || hierarchy.output_nama || "";
+      if (!hierarchy.suboutput && debug) {
+        console.warn(`[WARNING] Row ${rowNumber}: suboutput kosong, fallback ke output (${kode_suboutput})`);
+      }
+
+      // VALIDASI NILAI: harus ada nilai yang berarti
+      if (finalTotal <= 0 && volume <= 0 && harga <= 0) return;
+
+      // BUAT ROW DETAIL
       rows.push({
         kode_program: hierarchy.program || "",
         nama_program: hierarchy.program_nama || "",
@@ -321,36 +456,35 @@ export async function parseRkaklExcel(
         nama_kegiatan: hierarchy.kegiatan_nama || "",
         kode_output: hierarchy.output || "",
         nama_output: hierarchy.output_nama || "",
-        kode_suboutput: hierarchy.suboutput || "",
-        nama_suboutput: hierarchy.suboutput_nama || "",
+        kode_suboutput,
+        nama_suboutput,
         kode_komponen: hierarchy.komponen || "",
         nama_komponen: hierarchy.komponen_nama || "",
         kode_subkomponen: hierarchy.subkomponen || "",
         nama_subkomponen: hierarchy.subkomponen_nama || "",
         kode_akun: hierarchy.akun || "",
         nama_akun: hierarchy.akun_nama || "",
-        uraian: itemName,  // ✅ Sekarang dari colE/colF, bukan colD
-        uraian_lengkap: cleanD || cleanE,
-        indent_level: indent,
+        uraian: itemExtract.name,
+        uraian_lengkap: colD || colE,
+        indent_level: itemExtract.indent,
         volume,
         satuan,
         harga_satuan: harga,
         jumlah: calculatedJumlah,
-        total: calculatedTotal,
+        total: finalTotal,
         rowNumber
       });
-      
+
       if (debug && rows.length % 50 === 1) {
-        console.log(`[PARSED] Akun: ${hierarchy.akun} | Item: "${itemName}" | Vol: ${volume} | Harga: ${harga} | Total: ${calculatedTotal}`);
+        console.log(`[PARSED] Row ${rowNumber}: ${hierarchy.akun} | "${itemExtract.name.substring(0, 30)}..." | Rp ${finalTotal.toLocaleString()}`);
       }
-      
     } catch (error: any) {
       if (debug) console.error(`[ERROR] Row ${rowNumber}:`, error?.message || error);
     }
   });
   
   if (debug) {
-    console.log(`✅ Parsing complete: ${rows.length} rows parsed`);
+    console.log(`\n✅ Parsing complete: ${rows.length} rows parsed`);
   }
   
   return rows;

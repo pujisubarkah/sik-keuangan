@@ -3,7 +3,7 @@
   <SuboutputAlert :showAlert="showAlert" />
 
       <!-- Detail Suboutput Section -->
-      <Card class="mb-6">
+      <Card class="mb-0">
         <template #header>
           <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
         </template>
@@ -29,7 +29,7 @@
     <SuboutputRekap :stats="stats" :formatCurrency="formatCurrency" />
 
    
-    <div class="pt-14 flex flex-col gap-6">
+    <div class="pt-4 flex flex-col gap-4">
       <!-- Chart Section Sejajar -->
       <div class="flex flex-col md:flex-row gap-4">
         <!-- Chart Penyerapan -->
@@ -83,70 +83,16 @@
       </div>
 
 <!-- 4. Rincian Anggaran (Tabel) -->
+      <!-- Rincian Anggaran (RKAKL) pakai komponen -->
       <div class="row">
         <div class="col-sm-12">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-bar-list"></i> Rincian Anggaran</h3>
-            </div>
-            <div class="box-body">
-              <div class="flex flex-wrap gap-2 mb-4">
-                <button class="btn btn-success btn-flat shadow-lg hover:scale-105 transition-transform duration-200 flex items-center gap-2 px-5 py-2 text-white bg-gradient-to-r from-green-500 via-green-400 to-green-600 border-0 rounded-xl font-poppins" @click="exportExcel">
-                  <i class="mdi mdi-file-excel text-2xl"></i>
-                  <span class="font-semibold tracking-wide">Export ke Excel</span>
-                </button>
-                <button class="btn btn-primary btn-flat shadow-lg hover:scale-105 transition-transform duration-200 flex items-center gap-2 px-5 py-2 text-white bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 border-0 rounded-xl font-poppins" @click="tambahAnggaran">
-                  <i class="mdi mdi-plus text-2xl"></i>
-                  <span class="font-semibold tracking-wide">Tambah Anggaran</span>
-                </button>
-              </div>
-              
-              <table class="table table-hover table-condensed">
-                <thead>
-                  <tr>
-                    <th>Kode</th>
-                    <th>Uraian</th>
-                    <th style="text-align:center">Rev</th>
-                    <th style="text-align:center">Volume</th>
-                    <th style="text-align:center">Satuan</th>
-                    <th style="text-align:center">Harga Satuan</th>
-                    <th style="text-align:center">Jumlah</th>
-                    <th style="text-align:center">Perencanaan</th>
-                    <th style="text-align:center">Selisih</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(item, index) in budgetItems" :key="item.id">
-                    <td>{{ item.kode }}</td>
-                    <td :style="{ paddingLeft: (item.level * 15) + 'px' }">
-                      <div class="btn-group btn-flat">
-                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#" @click.prevent="inputPerencanaan(item.id)">Input Perencanaan</a></li>
-                        </ul>
-                      </div> &nbsp;
-                      <span :title="item.uraianFull">{{ item.uraian }}</span>
-                    </td>
-                    <td style="text-align:center">{{ item.rev }}</td>
-                    <td style="text-align:center">{{ item.volume }}</td>
-                    <td style="text-align:center">{{ item.satuan }}</td>
-                    <td style="text-align:right">{{ formatCurrency(item.hargaSatuan) }}</td>
-                    <td style="text-align:right"><span class="label label-primary">{{ formatCurrency(item.jumlah) }}</span></td>
-                    <td style="text-align:right"><span class="label label-danger">{{ formatCurrency(item.perencanaan) }}</span></td>
-                    <td style="text-align:right"><span class="label label-warning">{{ formatCurrency(item.selisih) }}</span></td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div>&nbsp;</div>
-              <div class="box-footer with-border" style="text-align:left">
-              </div>
-            </div>
-          </div>
+          <SuboutputRkakl :data="rkaklDetail" />
         </div>
       </div>
+
+ 
+
+ 
     </div>
 </template>
 
@@ -158,10 +104,13 @@ import { navigateTo } from '#app';
 import { useRoute, useRouter } from 'vue-router';
 import { $fetch } from 'ofetch';
 import { ref, reactive } from 'vue';
-import { IconAlertCircle, IconPencil, IconCash, IconShoppingCart, IconArrowUpCircle, IconCalendar, IconCopy, IconRefresh, IconTags, IconCircle, IconChartBar, IconChartLine } from '@tabler/icons-vue';
+import { IconChartBar, IconChartLine } from '@tabler/icons-vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
-
+import SuboutputRkakl from '@/components/SuboutputRkakl.vue';
+// State untuk data RKAKL detail
+const rkaklDetail = ref(null);
 import SuboutputActions from '@/components/SuboutputActions.vue';
+
 // Chart Penyerapan (ApexCharts)
 const chartPenyerapanOptions = {
   chart: {
@@ -237,7 +186,7 @@ const fetchSuboutput = async () => {
     subOutputData.satker = d.nama_satker;
     subOutputData.program = d.nama_program;
     subOutputData.kegiatan = d.nama_kegiatan;
-    subOutputData.output = d.nama_output;
+    subOutputData.kro = d.nama_output;
     subOutputData.tahun = d.tahun;
     subOutputData.programLink = '';
     subOutputData.kegiatanLink = '';
@@ -260,78 +209,22 @@ const stats = reactive({
 // Fetch data anggaran hierarkis dari API dan flatten untuk table
 const budgetItems = ref([]);
 
-const fetchBudgetItems = async () => {
+const fetchRkaklDetail = async () => {
   const token = localStorage.getItem('token');
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
   try {
     const res = await $fetch(`/api/rkakl_detail/${route.params.id}`, { headers });
-    const items = [];
-    if (res && res[0]) {
-      const sub = res[0];
-      // Isi detail untuk SuboutputDetail
-      subOutputData.kode = sub.kode_suboutput;
-      subOutputData.nama = sub.nama_suboutput;
-      // Tambahkan field lain jika perlu
-
-      // Level 0: Suboutput
-      items.push({
-        id: 'suboutput',
-        level: 0,
-        kode: sub.kode_suboutput,
-        uraian: sub.nama_suboutput,
-        uraianFull: sub.nama_suboutput,
-        rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
-      });
-      for (const komp of sub.komponen) {
-        // Level 1: Komponen
-        items.push({
-          id: 'komp-' + komp.kode_komponen,
-          level: 1,
-          kode: komp.kode_komponen,
-          uraian: komp.nama_komponen,
-          uraianFull: komp.nama_komponen,
-          rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
-        });
-        for (const subkomp of komp.subkomponen) {
-          // Level 2: Subkomponen
-          items.push({
-            id: 'subkomp-' + subkomp.kode_subkomponen,
-            level: 2,
-            kode: subkomp.kode_subkomponen,
-            uraian: subkomp.nama_subkomponen,
-            uraianFull: subkomp.nama_subkomponen,
-            rev: '-', volume: '-', satuan: '-', hargaSatuan: 0, jumlah: 0, perencanaan: 0, selisih: 0
-          });
-          for (const akun of subkomp.akun) {
-            // Level 3: Akun/Belanja
-            items.push({
-              id: akun.kode_akun + '-' + akun.created_at,
-              level: 3,
-              kode: akun.kode_akun,
-              uraian: akun.nama_akun,
-              uraianFull: akun.nama_akun,
-              rev: '-',
-              volume: akun.volume,
-              satuan: akun.satuan,
-              hargaSatuan: akun.harga_satuan,
-              jumlah: akun.jumlah,
-              perencanaan: 0,
-              selisih: 0
-            });
-          }
-        }
-      }
-    }
-    budgetItems.value = items;
+    console.log('API /api/rkakl_detail response:', res);
+    rkaklDetail.value = res && res[0] ? res[0] : null;
   } catch (err) {
-    console.error('Gagal fetch budget items', err);
-    budgetItems.value = [];
+    console.error('Gagal fetch RKAKL detail', err);
+    rkaklDetail.value = null;
   }
 };
 
 onMounted(() => {
   fetchSuboutput();
-  fetchBudgetItems();
+  fetchRkaklDetail();
 });
 
 // --- Methods ---

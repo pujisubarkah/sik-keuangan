@@ -123,129 +123,146 @@ export default defineEventHandler(async (event) => {
       const subkomponenId = maps.subkomponen[r.kode_subkomponen]
       const akunId = maps.akun[r.kode_akun]
 
+
       // ── AUTO-INSERT MASTER PROGRAM ──
       let programIdFixed = programId
       if (!programIdFixed && r.kode_program) {
+        const values: any = {
+          kode_program: r.kode_program,
+          nama_program: r.nama_program || r.kode_program,
+          created_at: new Date(),
+          updated_at: new Date(),
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterProgram)
-          .values({ 
-            kode_program: r.kode_program, 
-            nama_program: r.nama_program || r.kode_program,  // ✅ pakai nama_program
-            created_at: new Date(),
-            updated_at: new Date(),
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        programIdFixed = inserted[0]?.id || (await db.select().from(masterProgram).where(eq(masterProgram.kode_program, r.kode_program)))[0]?.id
-        maps.program[r.kode_program] = programIdFixed
+          .returning();
+        programIdFixed = inserted[0]?.id || (await db.select().from(masterProgram).where(eq(masterProgram.kode_program, r.kode_program)))[0]?.id;
+        maps.program[r.kode_program] = programIdFixed;
       }
 
       // ── AUTO-INSERT MASTER KEGIATAN ──
       let kegiatanIdFixed = kegiatanId
       if (!kegiatanIdFixed && r.kode_kegiatan) {
+        const values: any = {
+          kode_kegiatan: r.kode_kegiatan,
+          nama_kegiatan: r.nama_kegiatan || r.kode_kegiatan,
+          program_id: programIdFixed,
+          created_at: new Date(),
+          updated_at: new Date(),
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterKegiatan)
-          .values({ 
-            kode_kegiatan: r.kode_kegiatan, 
-            nama_kegiatan: r.nama_kegiatan || r.kode_kegiatan,  // ✅ FIX: pakai nama_kegiatan, BUKAN uraian
-            program_id: programIdFixed,
-            created_at: new Date(),
-            updated_at: new Date(),
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        kegiatanIdFixed = inserted[0]?.id || (await db.select().from(masterKegiatan).where(eq(masterKegiatan.kode_kegiatan, r.kode_kegiatan)))[0]?.id
-        maps.kegiatan[r.kode_kegiatan] = kegiatanIdFixed
+          .returning();
+        kegiatanIdFixed = inserted[0]?.id || (await db.select().from(masterKegiatan).where(eq(masterKegiatan.kode_kegiatan, r.kode_kegiatan)))[0]?.id;
+        maps.kegiatan[r.kode_kegiatan] = kegiatanIdFixed;
       }
 
       // ── AUTO-INSERT MASTER OUTPUT ──
       let outputIdFixed = outputId
       if (!outputIdFixed && r.kode_output) {
+        const values: any = {
+          kode_output: r.kode_output,
+          nama_output: r.nama_output || r.kode_output,
+          kegiatan_id: kegiatanIdFixed,
+          created_at: new Date(),
+          updated_at: new Date(),
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterOutput)
-          .values({ 
-            kode_output: r.kode_output, 
-            nama_output: r.nama_output || r.kode_output,  // ✅ pakai nama_output
-            kegiatan_id: kegiatanIdFixed,
-            created_at: new Date(),
-            updated_at: new Date(),
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        outputIdFixed = inserted[0]?.id || (await db.select().from(masterOutput).where(eq(masterOutput.kode_output, r.kode_output)))[0]?.id
-        maps.output[r.kode_output] = outputIdFixed
+          .returning();
+        outputIdFixed = inserted[0]?.id || (await db.select().from(masterOutput).where(eq(masterOutput.kode_output, r.kode_output)))[0]?.id;
+        maps.output[r.kode_output] = outputIdFixed;
       }
 
       // ── AUTO-INSERT MASTER SUBOUTPUT ──
       let suboutputIdFixed = suboutputId
       if (!suboutputIdFixed && r.kode_suboutput) {
+        const values: any = {
+          kode_suboutput: r.kode_suboutput,
+          nama_suboutput: r.nama_suboutput || r.kode_suboutput,
+          output_id: outputIdFixed,
+        };
+        if (r.isHeader) values.total = r.headerTotal != null ? String(r.headerTotal) : (r.total != null ? String(r.total) : "0");
         const inserted = await db.insert(masterSuboutput)
-          .values({ 
-            kode_suboutput: r.kode_suboutput, 
-            nama_suboutput: r.nama_suboutput || r.kode_suboutput,  // ✅ pakai nama_suboutput
-            output_id: outputIdFixed,
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        suboutputIdFixed = inserted[0]?.id || (await db.select().from(masterSuboutput).where(eq(masterSuboutput.kode_suboutput, r.kode_suboutput)))[0]?.id
-        maps.suboutput[r.kode_suboutput] = suboutputIdFixed
+          .returning();
+        suboutputIdFixed = inserted[0]?.id || (await db.select().from(masterSuboutput).where(eq(masterSuboutput.kode_suboutput, r.kode_suboutput)))[0]?.id;
+        maps.suboutput[r.kode_suboutput] = suboutputIdFixed;
       }
 
       // ── AUTO-INSERT MASTER KOMPONEN ──
       let komponenIdFixed = komponenId
       if (!komponenIdFixed && r.kode_komponen) {
+        const values: any = {
+          kode_komponen: r.kode_komponen,
+          nama_komponen: r.nama_komponen || r.kode_komponen,
+          suboutput_id: suboutputIdFixed,
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterKomponen)
-          .values({ 
-            kode_komponen: r.kode_komponen, 
-            nama_komponen: r.nama_komponen || r.kode_komponen,  // ✅ pakai nama_komponen
-            suboutput_id: suboutputIdFixed,
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        komponenIdFixed = inserted[0]?.id || (await db.select().from(masterKomponen).where(eq(masterKomponen.kode_komponen, r.kode_komponen)))[0]?.id
-        maps.komponen[r.kode_komponen] = komponenIdFixed
+          .returning();
+        komponenIdFixed = inserted[0]?.id || (await db.select().from(masterKomponen).where(eq(masterKomponen.kode_komponen, r.kode_komponen)))[0]?.id;
+        maps.komponen[r.kode_komponen] = komponenIdFixed;
       }
 
       // ── AUTO-INSERT MASTER SUBKOMPONEN ──
       let subkomponenIdFixed = subkomponenId
       if (!subkomponenIdFixed && r.kode_subkomponen) {
+        const values: any = {
+          kode_subkomponen: r.kode_subkomponen,
+          nama_subkomponen: r.nama_subkomponen || r.kode_subkomponen,
+          komponen_id: komponenIdFixed,
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterSubkomponen)
-          .values({ 
-            kode_subkomponen: r.kode_subkomponen, 
-            nama_subkomponen: r.nama_subkomponen || r.kode_subkomponen,  // ✅ pakai nama_subkomponen
-            komponen_id: komponenIdFixed,
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        subkomponenIdFixed = inserted[0]?.id || (await db.select().from(masterSubkomponen).where(eq(masterSubkomponen.kode_subkomponen, r.kode_subkomponen)))[0]?.id
-        maps.subkomponen[r.kode_subkomponen] = subkomponenIdFixed
+          .returning();
+        subkomponenIdFixed = inserted[0]?.id || (await db.select().from(masterSubkomponen).where(eq(masterSubkomponen.kode_subkomponen, r.kode_subkomponen)))[0]?.id;
+        maps.subkomponen[r.kode_subkomponen] = subkomponenIdFixed;
       }
 
       // ── AUTO-INSERT MASTER AKUN ──
       let akunIdFixed = akunId
       if (!akunIdFixed && r.kode_akun) {
+        const values: any = {
+          kode_akun: r.kode_akun,
+          nama_akun: r.nama_akun || r.kode_akun,
+          subkomponen_id: subkomponenIdFixed || null,
+        };
+        if (r.isHeader) values.total = r.total != null ? String(r.total) : "0";
         const inserted = await db.insert(masterAkun)
-          .values({ 
-            kode_akun: r.kode_akun, 
-            nama_akun: r.nama_akun || r.kode_akun,  // ✅ pakai nama_akun
-            subkomponen_id: subkomponenIdFixed || null,
-            total: r.total != null ? String(r.total) : "0"
-          })
+          .values(values)
           .onConflictDoNothing()
-          .returning()
-        akunIdFixed = inserted[0]?.id || (await db.select().from(masterAkun).where(eq(masterAkun.kode_akun, r.kode_akun)))[0]?.id
-        maps.akun[r.kode_akun] = akunIdFixed
+          .returning();
+        akunIdFixed = inserted[0]?.id || (await db.select().from(masterAkun).where(eq(masterAkun.kode_akun, r.kode_akun)))[0]?.id;
+        maps.akun[r.kode_akun] = akunIdFixed;
       }
 
-      // ── VALIDASI MASTER HIERARCHY ──
+
+      // ── VALIDASI MASTER HIERARCHY (suboutput optional, fallback ke output) ──
       const missingMasters = [];
       if (!programIdFixed) missingMasters.push('program');
       if (!kegiatanIdFixed) missingMasters.push('kegiatan');
       if (!outputIdFixed) missingMasters.push('output');
-      if (!suboutputIdFixed) missingMasters.push('suboutput');
+      // suboutput tidak wajib!
+
+      // Fallback: jika suboutputIdFixed null, gunakan outputIdFixed (atau null jika tidak ada)
+      let suboutputIdFinal = suboutputIdFixed || null;
+      if (!suboutputIdFinal && outputIdFixed) {
+        suboutputIdFinal = null; // Tidak force ke output, hanya biarkan null
+        // Jika ingin fallback ke output, bisa: suboutputIdFinal = outputIdFixed;
+        // Tapi biasanya suboutput_id di DB memang boleh null
+      }
 
       if (missingMasters.length > 0) {
         errors.push({
@@ -275,7 +292,7 @@ export default defineEventHandler(async (event) => {
         program_id: programIdFixed,
         kegiatan_id: kegiatanIdFixed,
         output_id: outputIdFixed,
-        suboutput_id: suboutputIdFixed,
+        suboutput_id: suboutputIdFinal, // gunakan hasil fallback
         komponen_id: komponenIdFixed || null,
         import_id: importId,
         status: "aktif",
