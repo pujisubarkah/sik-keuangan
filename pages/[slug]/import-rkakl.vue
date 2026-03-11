@@ -111,14 +111,16 @@ async function submitForm() {
       body: formData
     })
     const result = await res.json()
-    
-    if (!res.ok) throw new Error(result?.error || 'Impor gagal')
-    
+
+    if (!res.ok || !result.success || !result.inserted) {
+      uploadStatus.value = 'error'
+      console.error('❌ Backend error:', result)
+      alert('❌ Impor gagal: ' + (result?.error || (result?.errors?.[0]?.message ?? 'Tidak ada data yang berhasil diimpor')))
+      return
+    }
     uploadStatus.value = 'success'
-    alert('✅ Impor berhasil! Data RKAKL telah tersimpan.')
-    
-    // Optional: reset form after success
-    // clearFile()
+    alert(`✅ Impor berhasil! ${result.inserted} data RKAKL tersimpan.`)
+    clearFile()
   } catch (err) {
     console.error('Import error:', err)
     uploadStatus.value = 'error'
@@ -383,20 +385,21 @@ async function submitForm() {
 </template>
 
 <style scoped>
-/* Smooth transitions for all interactive elements */
-button, input, select, .border-dashed {
-  @apply transition-all duration-200;
-}
 
 /* Custom scrollbar for preview table */
 .overflow-x-auto::-webkit-scrollbar {
   height: 6px;
 }
 .overflow-x-auto::-webkit-scrollbar-track {
-  @apply bg-gray-50 rounded-full;
+  background: #f9fafb;
+  border-radius: 9999px;
 }
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 /* Glow effect on focus for inputs */

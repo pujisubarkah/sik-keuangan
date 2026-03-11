@@ -53,8 +53,8 @@ export default defineEventHandler(async (event) => {
     fs.writeFileSync(filePath,file.data)
 
 
-    // PARSE EXCEL
-    const rows = await parseRkaklExcel(file.filename, { debug: true })
+  // PARSE EXCEL
+  const rows = await parseRkaklExcel(filePath, { debug: true })
 
     // Create import log entry and get importId
     const importLog = await db.insert(rkaklImportLog)
@@ -101,7 +101,8 @@ export default defineEventHandler(async (event) => {
     const dataInsert: any[] = [];
     // Error logs
     const errors: any[] = [];
-    // ...existing code...
+    // Untuk batch insert anggaranSuboutput unik
+    const suboutputBudgets = new Map<string, { suboutput_id: number; satker_id: number; unit_id: number; tahun_anggaran_id: number; anggaran: string }>();
 
     for (const r of rows) {
       let programId = maps.program[r.kode_program]
@@ -239,56 +240,68 @@ export default defineEventHandler(async (event) => {
         maps.akun[r.kode_akun] = akunIdFixed
       }
 
-      // ── PUSH KE DATA INSERT (HANYA JIKA SEMUA MASTER ADA) ──
-      if (programIdFixed && kegiatanIdFixed && outputIdFixed && suboutputIdFixed) {
-        dataInsert.push({
-          id: undefined, // auto increment
-          sub_komponen_id: subkomponenIdFixed || null,
-          akun_id: akunIdFixed || null,
-          volume: r.volume,
-          satuan: r.satuan,
-          harga_satuan: r.harga_satuan,
-          jumlah: r.jumlah,
-          tahun,
-          created_at: new Date(),
-          program_id: programIdFixed,
-          kegiatan_id: kegiatanIdFixed,
-          output_id: outputIdFixed,
-          suboutput_id: suboutputIdFixed,
-          komponen_id: komponenIdFixed || null,
-          import_id: importId,
-          status: "aktif",
-          updated_at: new Date(),
-          satker_id: satkerId,
-          uraian: r.uraian,
-        });
+      // ── VALIDASI MASTER HIERARCHY ──
+      const missingMasters = [];
+      if (!programIdFixed) missingMasters.push('program');
+      if (!kegiatanIdFixed) missingMasters.push('kegiatan');
+      if (!outputIdFixed) missingMasters.push('output');
+      if (!suboutputIdFixed) missingMasters.push('suboutput');
 
-        // Insert to anggaranSuboutput as well
-        await db.insert(anggaranSuboutput).values({
-          suboutput_id: suboutputIdFixed,
-          satker_id: satkerId != null ? Number(satkerId) : 0,
-          unit_id: 0, // required by schema, set to 0 if not available
-          tahun_anggaran_id: tahunAnggaranId, // ambil dari tabel tahun_anggaran
-          anggaran: r.total != null ? String(r.total) : "0"
-        }).onConflictDoNothing();
-      } else {
-        // Log error jika ada master yang masih null
+      if (missingMasters.length > 0) {
         errors.push({
           rowNumber: r.rowNumber,
-          kode_program: r.kode_program,
-          kode_kegiatan: r.kode_kegiatan,
-          message: "Master hierarchy tidak lengkap"
+          message: `Master hierarchy tidak lengkap: ${missingMasters.join(', ')}`,
+          codes: {
+            program: r.kode_program,
+            kegiatan: r.kode_kegiatan,
+            output: r.kode_output,
+            suboutput: r.kode_suboutput
+          }
+        });
+        continue; // Skip insert detail
+      }
+
+      // ── PUSH KE DATA INSERT (SEMUA MASTER ADA) ──
+      dataInsert.push({
+        id: undefined, // auto increment
+        sub_komponen_id: subkomponenIdFixed || null,
+        akun_id: akunIdFixed || null,
+        volume: r.volume,
+        satuan: r.satuan,
+        harga_satuan: r.harga_satuan,
+        jumlah: r.jumlah,
+        tahun,
+        created_at: new Date(),
+        program_id: programIdFixed,
+        kegiatan_id: kegiatanIdFixed,
+        output_id: outputIdFixed,
+        suboutput_id: suboutputIdFixed,
+        komponen_id: komponenIdFixed || null,
+        import_id: importId,
+        status: "aktif",
+        updated_at: new Date(),
+        satker_id: satkerId,
+        uraian: r.uraian,
+      });
+
+      // Kumpulkan unique suboutput-satker-tahun
+      if (suboutputIdFixed && !suboutputBudgets.has(`${suboutputIdFixed}_${satkerId}`)) {
+        suboutputBudgets.set(`${suboutputIdFixed}_${satkerId}`, {
+          suboutput_id: suboutputIdFixed,
+          satker_id: satkerId != null ? Number(satkerId) : 0,
+          unit_id: 0,
+          tahun_anggaran_id: tahunAnggaranId,
+          anggaran: r.total != null ? String(r.total) : "0"
         });
       }
 
     }
     // ...existing code...
 
+
     // INSERT BATCH
     const batchSize = 500
     let success = 0
-
-
     let result: any[] = []
     for (let i=0;i<dataInsert.length;i+=batchSize){
       const batch = dataInsert.slice(i,i+batchSize)
@@ -297,6 +310,14 @@ export default defineEventHandler(async (event) => {
         .returning()
       result = result.concat(inserted)
       success += inserted.length
+    }
+
+
+    // Batch insert anggaranSuboutput unik sekali di akhir
+    if (suboutputBudgets.size > 0) {
+      await db.insert(anggaranSuboutput)
+        .values(Array.from(suboutputBudgets.values()))
+        .onConflictDoNothing();
     }
 
     console.log('✅ Result:', result)

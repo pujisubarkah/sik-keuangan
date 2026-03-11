@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
     status: rkaklDetail.status,
     updated_at: rkaklDetail.updated_at,
     satker_id: rkaklDetail.satker_id,
+    uraian: rkaklDetail.uraian,
     kode_suboutput: masterSuboutput.kode_suboutput,
     nama_suboutput: masterSuboutput.nama_suboutput,
     kode_komponen: masterKomponen.kode_komponen,
@@ -89,7 +90,8 @@ export default defineEventHandler(async (event) => {
       import_id: row.import_id,
       status: row.status,
       updated_at: row.updated_at,
-      satker_id: row.satker_id
+      satker_id: row.satker_id,
+      uraian: row.uraian
     });
   }
 
