@@ -1,90 +1,102 @@
 <template>
-  <div class="content-wrapper bg-gray-100 min-h-screen font-sans pt-24">
+  <div class="content-wrapper min-h-screen pt-24">
+
+    <!-- Alert -->
     <section class="content-header">
-      <div class="alert alert-error shadow-lg mb-6 flex items-center gap-3">
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat 41 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/index.php?r=pekerjaan/admin&id_unit=null" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
+      <div class="alert-wide-wrapper">
+        <SuboutputAlert :showAlert="true" />
       </div>
     </section>
 
-    <section class="content-header">
-      <h1 class="text-2xl font-bold text-gray-800 mb-2">Detail Program</h1>
+    <!-- Header -->
+    <section class="content-header max-w-5xl mx-auto px-4">
+      <h1 class="text-3xl font-semibold text-slate-800 tracking-tight mb-3">
+        Detail Program
+      </h1>
+
       <!-- Breadcrumb -->
       <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=/site/index"><i class="fa fa-dashboard"></i></NuxtLink></li>
+        <li><NuxtLink to="/index.php?r=/site/index">Dashboard</NuxtLink></li>
+        <li>/</li>
         <li><NuxtLink to="/index.php?r=program/index">Programs</NuxtLink></li>
-        <li><span>242</span></li>
+        <li>/</li>
+        <li class="font-medium text-slate-700">242</li>
       </ul>
     </section>
 
     <!-- Main content -->
-    <section class="content">
-      <div class="max-w-2xl mx-auto">
-        <div class="box box-primary rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-          <div class="box-body p-6">
-            <table class="w-full table-auto detail-view table-striped table-condensed">
+    <section class="content mt-6">
+      <div class="max-w-5xl mx-auto px-4 space-y-6">
+
+        <!-- Program Info Card -->
+        <div class="box">
+          <div class="box-body">
+            <table class="w-full detail-view">
               <tbody>
-                <tr class="odd">
-                  <th class="text-left w-1/3 py-2 text-gray-600">Tahun</th>
-                  <td class="py-2">2026</td>
+                <tr>
+                  <th>Tahun</th>
+                  <td>2026</td>
                 </tr>
-                <tr class="even">
-                  <th class="text-left py-2 text-gray-600">Satker</th>
-                  <td class="py-2">LAN JAKARTA</td>
+                <tr>
+                  <th>Satker</th>
+                  <td>LAN JAKARTA</td>
                 </tr>
-                <tr class="odd">
-                  <th class="text-left py-2 text-gray-600">Kode</th>
-                  <td class="py-2">086.01.CO</td>
+                <tr>
+                  <th>Kode</th>
+                  <td>086.01.CO</td>
                 </tr>
-                <tr class="even">
-                  <th class="text-left py-2 text-gray-600">Nama</th>
-                  <td class="py-2">Program Kebijakan, Pembinaan Profesi, dan Tata Kelola ASN</td>
+                <tr>
+                  <th>Nama</th>
+                  <td>Program Kebijakan, Pembinaan Profesi, dan Tata Kelola ASN</td>
                 </tr>
-                <tr class="odd">
-                  <th class="text-left py-2 text-gray-600">Jumlah</th>
-                  <td class="py-2">Rp 11.498.813.000</td>
+                <tr>
+                  <th>Jumlah</th>
+                  <td class="text-right">Rp 11.498.813.000</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <div class="box box-primary rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="box-body p-6">
-            <table class="w-full table-auto table-hover table-striped">
+        <!-- Suboutput Table -->
+        <div class="box">
+          <div class="box-body">
+            <table class="w-full main-table">
               <thead>
-                <tr class="bg-gray-50">
-                  <th class="py-2 px-2 text-left">No</th>
-                  <th class="py-2 px-2 text-left">Suboutput</th>
-                  <th class="py-2 px-2 text-right">Pagu Anggaran</th>
+                <tr>
+                  <th class="w-16">No</th>
+                  <th>Suboutput</th>
+                  <th class="text-right">Pagu Anggaran</th>
                 </tr>
               </thead>
+
               <tbody>
-                <tr v-for="(item, idx) in suboutputs" :key="idx" :class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
-                  <td class="py-2 px-2">{{ idx + 1 }}</td>
-                  <td class="py-2 px-2">{{ item.nama }}</td>
-                  <td class="py-2 px-2 text-right">{{ item.pagu }}</td>
+                <tr
+                  v-for="(item, idx) in suboutputs"
+                  :key="idx"
+                >
+                  <td>{{ idx + 1 }}</td>
+                  <td>{{ item.nama }}</td>
+                  <td class="text-right">{{ item.pagu }}</td>
                 </tr>
-                <tr class="font-bold border-t">
-                  <th class="py-2 px-2 text-right" colspan="2">Total</th>
-                  <th class="py-2 px-2 text-right">11.747.761.000</th>
+
+                <tr class="total-row">
+                  <th colspan="2" class="text-right">Total</th>
+                  <th class="text-right">11.747.761.000</th>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { NuxtLink } from '#components';
-import Icon from '~/components/Icon.vue';
+import { NuxtLink } from '#components'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 const suboutputs = [
   { nama: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN', pagu: '1.076.950.000' },
@@ -97,16 +109,114 @@ const suboutputs = [
   { nama: 'Pelatihan Teknis dan Fungsional', pagu: '2.360.835.000' },
   { nama: 'Pelatihan Kebahasaan', pagu: '554.115.000' },
   { nama: 'Akreditasi Pelatihan ASN', pagu: '1.272.228.000' },
-  { nama: 'Pengembangan Teknologi dan Digitalisasi Pembelajaran Aparatur Sipil Negara', pagu: '75.000.000' },
-];
+  { nama: 'Pengembangan Teknologi dan Digitalisasi Pembelajaran ASN', pagu: '75.000.000' },
+]
 </script>
 
 <style scoped>
-.table-striped tbody tr:nth-of-type(odd) { background-color: #f9f9f9; }
-.table-hover tbody tr:hover { background-color: #f1f5f9; }
-.box { background: #fff; border-top: 3px solid #3b82f6; margin-bottom: 20px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); border-radius: 12px; }
-.box-body { padding: 10px; }
-.breadcrumb { background: #fff; padding: 10px; list-style: none; border-radius: 4px; margin-bottom: 20px; }
-.breadcrumb li { display: inline; }
-.alert-error { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; border-radius: 8px; padding: 12px 18px; }
+
+/* ===== Background ===== */
+.content-wrapper {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+/* ===== Breadcrumb ===== */
+.breadcrumb {
+  background: #ffffff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* ===== Card / Box ===== */
+.box {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.05);
+  transition: 0.25s;
+}
+
+.box:hover {
+  box-shadow: 0 14px 40px rgba(0,0,0,0.08);
+}
+
+.box-body {
+  padding: 22px;
+}
+
+/* ===== Detail Table ===== */
+.detail-view th {
+  width: 30%;
+  text-align: left;
+  padding: 10px 8px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.detail-view td {
+  padding: 10px 8px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.detail-view tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* ===== Main Table ===== */
+.main-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.main-table thead th {
+  text-align: left;
+  padding: 12px 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.main-table tbody td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.main-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+/* Zebra */
+.main-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+/* ===== Total Row ===== */
+.total-row {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ===== Angka ===== */
+.text-right {
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+}
+
+/* ===== Alert Wrapper ===== */
+.alert-wide-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 </style>
