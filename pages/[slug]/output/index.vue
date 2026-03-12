@@ -127,10 +127,10 @@
                 <td class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">{{ formatCurrency(item.jumlah) }}</td>
                 <td class="px-3 py-2 text-right align-middle">
                   <div class="flex justify-end space-x-2">
-                    <NuxtLink :to="`/output/view?id=${item.output_id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+                    <NuxtLink :to="`/${$route.params.slug}/output/view/${item.output_id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
                       <IconEye class="h-4 w-4" />
                     </NuxtLink>
-                    <NuxtLink :to="`/output/update?id=${item.output_id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+                    <NuxtLink :to="`/${$route.params.slug}/output/update/${item.output_id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
                       <IconPencil class="h-4 w-4" />
                     </NuxtLink>
                     <button @click="confirmDelete(item.output_id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
