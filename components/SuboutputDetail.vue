@@ -1,4 +1,5 @@
 
+
 <template>
   <div class="mb-0 shadow-none rounded-none border-0">
     <div class="flex items-center gap-2 mb-2">
@@ -8,7 +9,7 @@
       </svg>
       <h3 class="text-xl font-bold text-blue-700">Detail RO</h3>
     </div>
-    <div class="pt-2 pb-0 px-4 border-t-4 border-b-4 border-blue-400 bg-white">
+    <div class="pt-2 pb-1 px-4 border-t-4 border-b-4 border-blue-400 bg-white">
       <div v-if="data.nama" class="mb-2 text-xl font-bold text-purple-700">{{ data.nama }}</div>
       <div class="flex flex-col gap-3 max-w-xl">
         <div v-for="field in fields" :key="field.key" class="flex flex-row items-start gap-2 py-1">
@@ -23,6 +24,10 @@
             <span v-else class="text-base font-medium text-gray-800">{{ data?.[field.key] }}</span>
           </div>
         </div>
+      </div>
+      <!-- SuboutputActions dipindah ke bawah tabel -->
+      <div class="mt-4">
+        <SuboutputActions v-if="data" :stats="data.stats || {}" />
       </div>
     </div>
   </div>
@@ -42,4 +47,6 @@ const fields = [
   { key: 'nama', label: 'RO' },
   { key: 'tahun', label: 'Tahun' },
 ]
+
+import SuboutputActions from './SuboutputActions.vue'
 </script>

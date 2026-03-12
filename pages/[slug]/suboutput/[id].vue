@@ -3,33 +3,19 @@
   <SuboutputAlert :showAlert="showAlert" />
 
       <!-- Detail Suboutput Section -->
-      <Card class="mb-0">
+      <Card class="mb-0 p-0">
         <template #header>
           <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
         </template>
-        <SuboutputDetail :data="subOutputData" />
+        <SuboutputDetail :data="subOutputData" class="pb-0" />
       </Card>
 
-      <!-- Tombol Aksi Section -->
-      <SuboutputActions
-        :stats="stats"
-        :showDropdown="showDropdown"
-        @edit="handleEdit"
-        @anggaran="handleAnggaran"
-        @pengeluaran="handlePengeluaran"
-        @pengajuan="handlePengajuan"
-        @perencanaan="handlePerencanaan"
-        @salin="handleSalin"
-        @toggleDropdown="() => showDropdown = !showDropdown"
-        @refresh="refreshData"
-      />
 
 
     <!-- Rekap Perencanaan Section diganti dengan komponen -->
     <SuboutputRekap :stats="stats" :formatCurrency="formatCurrency" />
 
-   
-    <div class="pt-4 flex flex-col gap-4">
+    <div class="pt-2 flex flex-col gap-2">
       <!-- Chart Section Sejajar -->
       <div class="flex flex-col md:flex-row gap-4">
         <!-- Chart Penyerapan -->

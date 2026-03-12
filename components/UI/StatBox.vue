@@ -40,13 +40,13 @@ const props = defineProps({
 })
 const bgColor = computed(() => {
   switch (props.color) {
-    case 'green': return 'bg-green-600 text-white';
-    case 'red': return 'bg-red-600 text-white';
-    case 'yellow': return 'bg-yellow-400 text-black';
-    case 'aqua': return 'bg-cyan-500 text-white';
-    case 'olive': return 'bg-lime-600 text-white';
-    case 'orange': return 'bg-orange-500 text-white';
-    default: return 'bg-blue-600 text-white';
+    case 'green': return 'bg-green-400 text-white';
+    case 'red': return 'bg-red-400 text-white';
+    case 'yellow': return 'bg-yellow-300 text-black';
+    case 'aqua': return 'bg-cyan-300 text-black';
+    case 'olive': return 'bg-lime-300 text-black';
+    case 'orange': return 'bg-orange-300 text-black';
+    default: return 'bg-blue-400 text-white';
   }
 })
 </script>
