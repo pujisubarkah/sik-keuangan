@@ -17,7 +17,7 @@
             <th class="px-3 py-3 text-left font-bold text-blue-900 border-b-2 border-blue-200 w-20">Satuan</th>
             <th class="px-3 py-3 text-right font-bold text-blue-900 border-b-2 border-blue-200 w-32">Harga Satuan</th>
             <th class="px-3 py-3 text-right font-bold text-blue-900 border-b-2 border-blue-200 w-32">Jumlah</th>
-            <th class="px-3 py-3 text-center font-bold text-blue-900 border-b-2 border-blue-200 w-16">Ket</th>
+            <th class="px-3 py-3 text-center font-bold text-blue-900 border-b-2 border-blue-200 w-16">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -80,7 +80,11 @@
                     {{ formatCurrency(item.jumlah) }}
                   </td>
                   <td class="px-3 py-2 text-center">
-                    <span v-if="item.status === 'aktif'" class="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal`" class="inline-flex items-center justify-center text-blue-500 hover:text-blue-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13h3l8-8a2.828 2.828 0 10-4-4l-8 8v3h3z" />
+                      </svg>
+                    </NuxtLink>
                   </td>
                 </tr>
               </template>
@@ -109,6 +113,9 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
+import { NuxtLink } from '#components'
+const $route = useRoute()
 const props = defineProps({
   data: Object
 })
