@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <!-- Table Wrapper: overflow-x-auto harus membungkus TABLE, bukan div di dalamnya -->
+        <!-- Table Wrapper -->
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200 text-sm">
             <thead class="bg-blue-100 sticky top-0 z-10">
@@ -87,9 +87,7 @@
                 </td>
               </tr>
             </thead>
-            <!-- tbody harus langsung child dari table -->
             <tbody class="divide-y divide-gray-100 bg-white">
-              
               <!-- Loading State -->
               <tr v-if="loading">
                 <td colspan="9" class="px-6 py-8 text-center text-gray-500">Memuat data...</td>
@@ -151,6 +149,23 @@
         </div>
       </div>
     </div>
+
+    <!-- ✅ Modal Konfirmasi Hapus - NOW INSIDE TEMPLATE -->
+    <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full animate-fadein">
+        <h2 class="text-xl font-bold text-red-700 mb-3">Konfirmasi Hapus</h2>
+        <p class="mb-4 text-gray-700">Apakah anda yakin akan menghapus program ini?</p>
+        <div v-if="deleteError" class="mb-2 text-red-600">{{ deleteError }}</div>
+        <div v-if="deleteSuccess" class="mb-2 text-green-600">Data berhasil dihapus.</div>
+        <div class="flex justify-end gap-3 mt-4">
+          <button @click="showDeleteModal = false" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+          <button @click="doDelete" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
+            <span v-if="deleteLoading" class="loader mr-2"></span>
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -160,6 +175,13 @@ import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import { useUserStore } from '~/stores/user'
 
 definePageMeta({ layout: 'default' })
+
+// Modal state
+const showDeleteModal = ref(false)
+const deleteId = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
 
 const showAlert = ref(true)
 const userStore = useUserStore()
@@ -235,7 +257,6 @@ const visiblePages = computed(() => {
   const start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
   const end = Math.min(total, start + maxVisible - 1)
   const adjustedStart = Math.max(1, end - maxVisible + 1)
-
   return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index)
 })
 
@@ -245,7 +266,6 @@ function goToPage(page) {
   }
 }
 
-// Reset ke halaman 1 jika data hasil filter berubah
 watch(filteredData, () => {
   if (currentPage.value > totalPages.value) {
     currentPage.value = totalPages.value
@@ -255,23 +275,66 @@ watch(filteredData, () => {
   }
 })
 
-// Reset ke halaman 1 jika page size berubah
 watch(pageSize, () => {
   currentPage.value = 1
 })
 
-// Fungsi filter (opsional, karena filtering sudah reactive via computed)
 const filterData = () => {
   currentPage.value = 1
-  // Filtering sudah otomatis berjalan melalui computed property filteredData
 }
 
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(Number(amount || 0))
 
-const confirmDelete = (id) => { 
-  if (confirm('Yakin akan menghapus data?')) { 
-    // Implement delete logic here
-    console.log('Delete ID:', id)
-  } 
+const confirmDelete = (id) => {
+  deleteId.value = id
+  showDeleteModal.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+const doDelete = async () => {
+  if (!deleteId.value) return
+  deleteLoading.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch(`/api/anggaran_program/by-program/${deleteId.value}.delete`, {
+      method: 'DELETE',
+      headers
+    })
+    const json = await res.json()
+    if (json.success) {
+      deleteSuccess.value = true
+      await fetchProgram()
+      setTimeout(() => {
+        showDeleteModal.value = false
+        deleteId.value = null
+      }, 1200)
+    } else {
+      deleteError.value = json.message || 'Gagal menghapus data.'
+    }
+  } catch (e) {
+    deleteError.value = 'Gagal menghapus data.'
+  } finally {
+    deleteLoading.value = false
+  }
 }
 </script>
+
+<style scoped>
+.loader {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #e53e3e;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>

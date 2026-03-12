@@ -20,7 +20,7 @@
         <li>/</li>
         <li><NuxtLink to="/index.php?r=program/index">Programs</NuxtLink></li>
         <li>/</li>
-        <li class="font-medium text-slate-700">242</li>
+        <li class="font-medium text-slate-700">{{ programInfo.program_nama }}</li>
       </ul>
     </section>
 
@@ -35,23 +35,23 @@
               <tbody>
                 <tr>
                   <th>Tahun</th>
-                  <td>2026</td>
+                  <td>{{ programInfo.tahun_anggaran }}</td>
                 </tr>
                 <tr>
                   <th>Satker</th>
-                  <td>LAN JAKARTA</td>
+                  <td>{{ programInfo.satker_name }}</td>
                 </tr>
                 <tr>
                   <th>Kode</th>
-                  <td>086.01.CO</td>
+                  <td>{{ programInfo.program_kode }}</td>
                 </tr>
                 <tr>
                   <th>Nama</th>
-                  <td>Program Kebijakan, Pembinaan Profesi, dan Tata Kelola ASN</td>
+                  <td>{{ programInfo.program_nama }}</td>
                 </tr>
                 <tr>
                   <th>Jumlah</th>
-                  <td class="text-right">Rp 11.498.813.000</td>
+                  <td class="text-right">Rp {{ programInfo.total_anggaran }}</td>
                 </tr>
               </tbody>
             </table>
@@ -82,7 +82,7 @@
 
                 <tr class="total-row">
                   <th colspan="2" class="text-right">Total</th>
-                  <th class="text-right">11.747.761.000</th>
+                  <th class="text-right">{{ programInfo.total_anggaran }}</th>
                 </tr>
               </tbody>
             </table>
@@ -98,19 +98,47 @@
 import { NuxtLink } from '#components'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
-const suboutputs = [
-  { nama: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN', pagu: '1.076.950.000' },
-  { nama: 'Penguatan Kapasitas Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN', pagu: '270.776.000' },
-  { nama: 'Evaluasi Tata Kelola Kebijakan Instansi Pemerintah', pagu: '123.703.000' },
-  { nama: 'Penerapan Sistem Pembelajaran Terintegrasi', pagu: '125.101.000' },
-  { nama: 'Pemenuhan Prioritas Direktif Presiden', pagu: '1.367.623.000' },
-  { nama: 'Pelatihan Struktural Kepemimpinan', pagu: '3.448.390.000' },
-  { nama: 'Pelatihan Dasar CPNS', pagu: '1.073.040.000' },
-  { nama: 'Pelatihan Teknis dan Fungsional', pagu: '2.360.835.000' },
-  { nama: 'Pelatihan Kebahasaan', pagu: '554.115.000' },
-  { nama: 'Akreditasi Pelatihan ASN', pagu: '1.272.228.000' },
-  { nama: 'Pengembangan Teknologi dan Digitalisasi Pembelajaran ASN', pagu: '75.000.000' },
-]
+
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const suboutputs = ref([])
+const programInfo = ref({
+  tahun_anggaran: '',
+  satker_name: '',
+  program_kode: '',
+  program_nama: '',
+  total_anggaran: 0
+})
+
+const route = useRoute()
+
+async function fetchProgramDetail() {
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  const id = route.params.id
+  try {
+    const res = await fetch(`/api/anggaran_program/by-program/${id}`, { headers })
+    const json = await res.json()
+    if (json.success) {
+      suboutputs.value = (json.data || []).map(item => ({
+        nama: item.suboutput_nama,
+        pagu: Number(item.anggaran).toLocaleString('id-ID')
+      }))
+      programInfo.value = {
+        tahun_anggaran: json.tahun_anggaran,
+        satker_name: json.satker_name,
+        program_kode: json.program_kode,
+        program_nama: json.program_nama,
+        total_anggaran: Number(json.total_anggaran).toLocaleString('id-ID')
+      }
+    }
+  } catch (e) {
+    // handle error
+  }
+}
+
+onMounted(fetchProgramDetail)
 </script>
 
 <style scoped>

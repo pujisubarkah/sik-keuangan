@@ -1,82 +1,67 @@
 <template>
-  <div class="content-wrapper min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-8">
-    <!-- Alert -->
-    <section v-if="unassignedCount > 0" class="mb-6">
-      <div class="alert alert-error shadow-lg animate-fade-in">
-        <div class="flex items-center gap-3">
-          <Icon icon="tabler:alert-circle" class="w-6 h-6 text-red-500" />
-          <span>
-            Terdapat {{ unassignedCount }} Sub Output yang belum ditentukan unitnya.
-            Silahkan
-            <NuxtLink to="/index.php?r=pekerjaan/admin&id_unit=null" class="link link-hover underline font-semibold">klik di sini</NuxtLink>
-            untuk memperbaiki.
-          </span>
-        </div>
+  <div class="content-wrapper min-h-screen font-sans pt-24 bg-gray-100">
+    <transition name="fade">
+      <div v-if="showToast" class="fixed top-6 right-6 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 animate-fadein">
+        <Icon icon="mdi:check-circle" class="w-6 h-6" />
+        Data berhasil diupdate!
+      </div>
+    </transition>
+    <section class="content-header">
+      <div class="alert-wide-wrapper">
+        <SuboutputAlert :showAlert="true" />
       </div>
     </section>
 
-    <!-- Header & Breadcrumb -->
-    <section class="mb-6">
-      <div class="flex items-center justify-between mb-2">
-        <h1 class="text-2xl font-bold text-blue-800 flex items-center gap-2">
-          <Icon icon="tabler:edit" class="w-7 h-7 text-blue-500" />
-          SIK - Update Kegiatan
-        </h1>
+    <section class="content-header">
+      <div class="flex items-center gap-4 mb-2">
+        <Icon icon="mdi:clipboard-edit-outline" class="w-12 h-12 text-blue-500 bg-white rounded-full shadow p-2" />
+        <div>
+          <h1 class="text-3xl font-bold text-blue-700 mb-1">Update Kegiatan</h1>
+          <p class="text-gray-500 text-base">Perbarui data kegiatan sesuai kebutuhan Anda.</p>
+        </div>
       </div>
-      <ul class="breadcrumb bg-white shadow rounded-lg px-4 py-2 flex gap-2 items-center">
-        <li>
-          <NuxtLink to="/index.php?r=/site/index">
-            <Icon icon="tabler:home" class="w-5 h-5 text-gray-500" />
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/index.php?r=kegiatan/index" class="text-blue-600 hover:underline">Kegiatans</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="`/kegiatan/view/${id}`" class="text-blue-600 hover:underline">{{ id }}</NuxtLink>
-        </li>
-        <li><span class="text-gray-700 font-semibold">Update</span></li>
+      <!-- Breadcrumb -->
+      <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
+        <li><NuxtLink to="/index.php?r=kegiatan/index">Kegiatans</NuxtLink></li>
+        <li>/</li>
+        <li>Kegiatan</li>
+        <li>/</li>
+        <li>Update</li>
+        <li>/</li>
+        <li class="font-medium text-slate-700">{{ form.nama }}</li>
       </ul>
     </section>
 
-    <!-- Main Content -->
-    <section>
-      <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 border border-blue-200">
-        <h2 class="text-xl font-bold text-blue-700 mb-6 flex items-center gap-2">
-          <Icon icon="tabler:edit-circle" class="w-6 h-6 text-blue-400" />
-          Update Kegiatan <span class="font-mono text-blue-600">#{{ id }}</span>
-        </h2>
-        <form class="space-y-5" @submit.prevent="handleSubmit">
-          <p class="help-block text-gray-500 mb-2">Fields with <span class="required">*</span> are required.</p>
-          <div class="form-group">
-            <label class="block font-semibold mb-1" for="tahun">Tahun <span class="required">*</span></label>
-            <input v-model="form.tahun" class="input input-bordered w-full" maxlength="4" placeholder="Tahun" id="tahun" type="text" required />
+    <section class="content">
+      <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden animate-fadein">
+        <div class="px-12 pt-10 pb-5 border-b border-blue-100 text-center bg-gradient-to-r from-blue-50 to-blue-100">
+          <h2 class="text-2xl font-bold text-blue-700 mb-1 flex items-center justify-center gap-2">
+            <Icon icon="mdi:clipboard-edit-outline" class="w-8 h-8 text-blue-500" />
+            Formulir Update Kegiatan
+          </h2>
+          <p class="text-gray-500 text-sm">Fields with <span class="text-red-500">*</span> are required.</p>
+        </div>
+        <form class="px-12 py-10" @submit.prevent="handleSubmit">
+          <div class="mb-6 flex items-center gap-4">
+            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="tahun">Tahun</label>
+            <input v-model="form.tahun" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="tahun" type="text" maxlength="4" placeholder="Tahun" />
           </div>
-          <div class="form-group">
-            <label class="block font-semibold mb-1" for="id_program">Id Program <span class="required">*</span></label>
-            <input v-model="form.id_program" class="input input-bordered w-full" placeholder="Id Program" id="id_program" type="text" required />
+          <div class="mb-6 flex items-center gap-4">
+            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="kode">Kode</label>
+            <input v-model="form.kode" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="kode" type="text" maxlength="255" placeholder="Kode" />
           </div>
-          <div class="form-group">
-            <label class="block font-semibold mb-1" for="kode">Kode <span class="required">*</span></label>
-            <input v-model="form.kode" class="input input-bordered w-full" maxlength="255" placeholder="Kode" id="kode" type="text" required />
+          <div class="mb-6 flex items-center gap-4">
+            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="nama">Nama</label>
+            <input v-model="form.nama" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="nama" type="text" maxlength="255" placeholder="Nama" />
           </div>
-          <div class="form-group">
-            <label class="block font-semibold mb-1" for="nama">Nama <span class="required">*</span></label>
-            <input v-model="form.nama" class="input input-bordered w-full" maxlength="255" placeholder="Nama" id="nama" type="text" required />
+          <div class="mb-6 flex items-center gap-4">
+            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="jumlah">Jumlah</label>
+            <input v-model="form.jumlah" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
           </div>
-          <div class="form-group">
-            <label class="block font-semibold mb-1" for="jumlah">Jumlah <span class="required">*</span></label>
-            <input v-model="form.jumlah" class="input input-bordered w-full" maxlength="20" placeholder="Jumlah" id="jumlah" type="text" required />
-          </div>
-          <div class="form-actions flex justify-end gap-2 mt-6">
-            <button class="btn btn-primary px-6 py-2 rounded-lg shadow" type="submit">
-              <Icon icon="tabler:device-floppy" class="w-5 h-5 mr-2" />
-              Simpan
-            </button>
-            <NuxtLink :to="`/${$route.params.slug}/kegiatan/view/${id}`" class="btn btn-ghost px-6 py-2 rounded-lg">
-              <Icon icon="tabler:arrow-back-up" class="w-5 h-5 mr-2" />
-              Batal
-            </NuxtLink>
+          <div class="flex justify-end bg-blue-50 border-t border-blue-100 pt-7 pb-3">
+            <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-blue-500 text-white hover:bg-blue-600" native-type="submit">
+              <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Update
+            </Button>
           </div>
         </form>
       </div>
@@ -85,36 +70,91 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { Button } from '@idds/vue'
+import { onMounted, ref } from 'vue'
+import { NuxtLink } from '#components';
+import Icon from '~/components/Icon.vue';
+import SuboutputAlert from '~/components/SuboutputAlert.vue';
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
-const id = route.params.id
-const unassignedCount = 41
+const showToast = ref(false)
 
 const form = ref({
-  tahun: '2026',
-  id_program: '242',
-  kode: '7917',
-  nama: 'Penjaminan Mutu Pengembangan Kapasitas dan Pembelajaran Aparatur Sipil Negara',
-  jumlah: '1272228000'
+  tahun: '',
+  kode: '',
+  nama: '',
+  jumlah: ''
 })
 
-function handleSubmit() {
-  alert('Data berhasil disimpan:\n' + JSON.stringify(form.value, null, 2))
+const route = useRoute()
+
+async function fetchKegiatan() {
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  const id = route.params.id
+  try {
+    const res = await fetch(`/api/anggaran_kegiatan/by-kegiatan/${id}`, { headers })
+    const json = await res.json()
+    if (json.success) {
+      form.value = {
+        tahun: json.tahun_anggaran || '',
+        kode: json.kegiatan_kode || '',
+        nama: json.kegiatan_nama || '',
+        jumlah: json.total_anggaran ? String(json.total_anggaran) : ''
+      }
+    }
+  } catch (e) {}
 }
+
+async function handleSubmit() {
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  }
+  const id = route.params.id
+  try {
+    const res = await fetch(`/api/anggaran_kegiatan/by-kegiatan/${id}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        program_nama: form.value.nama,
+        program_kode: form.value.kode,
+        tahun_anggaran: form.value.tahun
+        // total_anggaran tidak diupdate via PUT, hanya info summary
+      })
+    })
+    const json = await res.json()
+    if (json.success) {
+      showToast.value = true
+      setTimeout(() => { showToast.value = false }, 2000)
+    } else {
+      alert(json.message || 'Gagal menyimpan data!')
+    }
+  } catch (e) {
+    alert('Gagal menyimpan data!')
+  }
+}
+
+onMounted(fetchKegiatan)
 </script>
 
 <style scoped>
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(-10px);}
-  to { opacity: 1; transform: translateY(0);}
+input.form-control {
+  border: 1.5px solid #cbd5e1;
+  outline: none;
+  transition: border-color 0.2s;
 }
-.animate-fade-in { animation: fade-in 0.5s ease-out; }
-.required { color: #e53e3e; }
-.input { border-radius: 0.5rem; border: 1px solid #cbd5e1; padding: 0.5rem 1rem; }
-.input:focus { border-color: #3b82f6; outline: none; }
-.btn-primary { background: linear-gradient(90deg,#2563eb,#1e40af); color: #fff; }
-.btn-ghost { background: #f3f4f6; color: #374151; }
-.breadcrumb { font-size: 0.95rem; }
+input.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}
+.box { background: #fff; border-top: 3px solid #3b82f6; margin-bottom: 20px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); border-radius: 12px; }
+.breadcrumb { background: #fff; padding: 10px; list-style: none; border-radius: 4px; margin-bottom: 20px; }
+.breadcrumb li { display: inline; }
+.animate-fadein { animation: fadein 0.7s; }
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
 </style>
