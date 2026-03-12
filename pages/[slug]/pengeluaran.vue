@@ -1,24 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div v-if="showAlert" class="mb-6 rounded-md bg-red-50 p-4 border border-red-200">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium text-red-800">Perhatian: Data Belum Lengkap</h3>
-            <div class="mt-2 text-sm text-red-700">
-              <p>
-                Terdapat <span class="font-bold">41 Sub Output</span> yang belum ditentukan unitnya.
-                <NuxtLink to="/admin/suboutput" class="font-medium underline hover:text-red-900">Klik di sini untuk memperbaiki</NuxtLink>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SuboutputAlert :showAlert="showAlert" />
 
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
@@ -91,89 +74,102 @@
           </div>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 pengeluaran-table">
-            <thead class="bg-gray-50">
+        <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
+            <thead class="bg-blue-100 sticky top-0 z-10">
               <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">No</th>
-                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Kode Suboutput</th>
-                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Suboutput</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Komp</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Sub Komp</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Akun</th>
-                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Uraian</th>
-                <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Jumlah</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Tanggal Pengajuan</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Pencairan Bendahara</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Status PJ</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">SP2D</th>
-                <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Ket</th>
-                <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Jumlah Data Dukung</th>
-                <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Aksi</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode Suboutput</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Komp</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Sub Komp</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Akun</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Uraian</th>
+                <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">Jumlah</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Tanggal Pengajuan</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pencairan Bendahara</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Status PJ</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">SP2D</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Ket</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
+                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
               <tr>
-                <td class="px-4 py-3 bg-white"></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_pekerjaan_kode" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Kode" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_pekerjaan_nama" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Suboutput" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_komponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Komp" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_subkomponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Sub Komp" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.kode_akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Akun" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.id_anggaran" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Uraian" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.jumlah" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Jumlah" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.tanggal_pengajuan" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.tanggal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.status_pertanggungjawaban" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Status PJ" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.status_sp2d" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="SP2D" /></td>
-                <td class="px-4 py-3 bg-white"><input v-model="filterForm.keterangan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Ket" /></td>
-                <td class="px-4 py-3 bg-white"></td>
-                <td class="px-4 py-3 bg-white text-right">
+                <td class="px-3 py-2 bg-white"></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_pekerjaan_kode" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Kode" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_pekerjaan_nama" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Suboutput" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_komponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Komp" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_subkomponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Sub Komp" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Akun" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_anggaran" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Uraian" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.jumlah" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Jumlah" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.tanggal_pengajuan" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.tanggal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.status_pertanggungjawaban" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Status PJ" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.status_sp2d" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="SP2D" /></td>
+                <td class="px-3 py-2 bg-white"><input v-model="filterForm.keterangan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Ket" /></td>
+                <td class="px-3 py-2 bg-white"></td>
+                <td class="px-3 py-2 bg-white text-right">
                   <button @click="filterData" type="button" class="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">
                     <span>Filter</span>
                   </button>
                 </td>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-gray-50 transition-colors duration-150">
-                <td class="px-4 py-4 text-sm text-gray-500 text-center">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
-                <td class="px-4 py-4 text-sm font-medium text-gray-900">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="text-indigo-600 hover:text-indigo-900">
+            <tbody class="divide-y divide-gray-100">
+              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+                <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+                <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
+                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_kode }}
                   </NuxtLink>
                 </td>
-                <td class="px-4 py-4 text-sm text-gray-900">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="text-indigo-600 hover:text-indigo-900">
+                <td class="px-3 py-2 align-middle">
+                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_nama }}
                   </NuxtLink>
                 </td>
-                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_komponen }}</td>
-                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_subkomponen }}</td>
-                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ item.kode_akun }}</td>
-                <td class="px-4 py-4 text-sm text-gray-900">{{ item.id_anggaran }}</td>
-                <td class="px-4 py-4 text-sm text-right font-medium text-gray-900 pengeluaran-jumlah-cell">{{ formatCurrency(item.jumlah) }}</td>
-                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ formatDate(item.tanggal_pengajuan) }}</td>
-                <td class="px-4 py-4 text-sm text-center text-gray-500">{{ formatDate(item.tanggal) }}</td>
-                <td class="px-4 py-4 text-center">
-                  <span v-if="item.status_pertanggungjawaban" class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ formatDate(item.status_pertanggungjawaban) }}</span>
+                <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
+                <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>
+                <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_akun }}</td>
+                <td class="px-3 py-2 text-blue-700 align-middle">{{ item.id_anggaran }}</td>
+                <td class="px-3 py-2 text-right align-middle">
+                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.jumlah) }}</span>
                 </td>
-                <td class="px-4 py-4 text-center">
-                  <span v-if="item.status_sp2d" class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ formatDate(item.status_sp2d) }}</span>
+                <td class="px-3 py-2 text-center align-middle">{{ formatDate(item.tanggal_pengajuan) }}</td>
+                <td class="px-3 py-2 text-center align-middle">{{ formatDate(item.tanggal) }}</td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span v-if="item.status_pertanggungjawaban" class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatDate(item.status_pertanggungjawaban) }}</span>
                 </td>
-                <td class="px-4 py-4 text-sm text-gray-900">{{ item.keterangan }}</td>
-                <td class="px-4 py-4 text-center">
-                  <span class="inline-flex rounded-full border border-green-200 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ item.jumlah_data_dukung }}</span>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span v-if="item.status_sp2d" class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatDate(item.status_sp2d) }}</span>
                 </td>
-                <td class="px-4 py-4 text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Berkas">
-                      <IconEye class="h-4 w-4" />
+                <td class="px-3 py-2 align-middle">{{ item.keterangan }}</td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
+                </td>
+                <td class="px-3 py-2 text-right align-middle">
+                  <div class="flex gap-2 justify-end">
+                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Sunting">
-                      <IconPencil class="h-4 w-4" />
+                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
-                      <IconTrash class="h-4 w-4" />
+                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
                     </button>
+                  </div>
+                </td>
+              </tr>
+              <!-- Empty State -->
+              <tr v-if="paginatedData.length === 0">
+                <td colspan="15" class="px-6 py-10 text-center text-gray-500">
+                  <div class="flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm">Tidak ada data ditemukan.</p>
                   </div>
                 </td>
               </tr>
@@ -218,10 +214,12 @@
   </div>
 </template>
 
+
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { IconSearch, IconRefresh, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
 import { NuxtLink } from '#components'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' })
 const showAlert = ref(true)

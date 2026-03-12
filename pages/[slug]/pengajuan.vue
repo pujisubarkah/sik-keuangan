@@ -1,16 +1,6 @@
 <template>
   <div class="pt-14">
-    <!-- Alert -->
-    <div v-if="showAlert" class="alert shadow-lg mb-6 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat 1 Sub Output yang belum ditentukan unitnya. Silahkan
-          <NuxtLink to="/admin/suboutput" class="link link-hover underline">klik di sini</NuxtLink>
-          untuk memperbaiki.
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert :showAlert="showAlert" />
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengajuan Tahun 2026</h1>
     <!-- Filter Form -->
     <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
@@ -91,83 +81,110 @@
         </form>
       </template>
     </Card>
-    <!-- Data Table -->
-    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <template #default>
-        <div class="text-sm mb-4 text-blue-700 font-semibold">
-          Menampilkan <span class="font-bold">{{ startIndex }}-{{ endIndex }}</span> dari <span class="font-bold">{{ tableData.length }}</span> hasil.
-        </div>
-        <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th class="text-center">Kode Suboutput</th>
-                <th class="text-center">Suboutput</th>
-                <th class="text-center">Komp</th>
-                <th class="text-center">Sub<br>Komp</th>
-                <th class="text-center">Akun</th>
-                <th>Detil</th>
-                <th class="text-center">Tanggal Pengajuan</th>
-                <th class="text-center">Jumlah Pengajuan</th>
-                <th class="text-center">Sisa Anggaran</th>
-                <th class="text-center">Jumlah Data Dukung</th>
-                <th class="text-center rounded-tr-xl">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-blue-50 transition-all duration-150">
-                <td class="text-center font-bold text-blue-700">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
-                <td class="text-center">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="link link-primary font-semibold">
-                    {{ item.kode_suboutput }}
+    <!-- Data Table (Styled like perencanaan.vue) -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
+      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+        <span class="text-sm text-gray-500 font-medium">
+          Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ tableData.length }} hasil.
+        </span>
+      </div>
+      <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
+          <thead class="bg-blue-100 sticky top-0 z-10">
+            <tr>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode Suboutput</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Komp</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Sub Komp</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Akun</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Detil</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Tanggal Pengajuan</th>
+              <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">Jumlah Pengajuan</th>
+              <th class="px-3 py-2 text-right font-semibold text-red-700 align-middle">Sisa Anggaran</th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <!-- Loading State (optional) -->
+            <!-- <tr v-if="loading">
+              <td colspan="12" class="px-6 py-8 text-center text-gray-500">
+                <div class="flex justify-center items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  <span class="ml-2 text-sm">Memuat data...</span>
+                </div>
+              </td>
+            </tr> -->
+            <!-- Data Rows -->
+            <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+              <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+              <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
+                <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  {{ item.kode_suboutput }}
+                </NuxtLink>
+              </td>
+              <td class="px-3 py-2 align-middle">
+                <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  {{ item.suboutput }}
+                </NuxtLink>
+              </td>
+              <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
+              <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>
+              <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_akun }}</td>
+              <td class="px-3 py-2 text-blue-700 align-middle">{{ item.detil }}</td>
+              <td class="px-3 py-2 text-blue-700 font-semibold align-middle">{{ item.tanggal_pengajuan }}</td>
+              <td class="px-3 py-2 text-right align-middle">
+                <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.jumlah_pengajuan) }}</span>
+              </td>
+              <td class="px-3 py-2 text-right align-middle">
+                <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.sisa_anggaran) }}</span>
+              </td>
+              <td class="px-3 py-2 text-center align-middle">
+                <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
+              </td>
+              <td class="px-3 py-2 text-center align-middle">
+                <div class="flex gap-2 justify-center">
+                  <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                    <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
-                </td>
-                <td class="text-left">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="link link-primary font-semibold">
-                    {{ item.suboutput }}
+                  <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
+                    <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
-                </td>
-                <td class="text-center text-blue-600 font-semibold">{{ item.kode_komponen }}</td>
-                <td class="text-center text-blue-600 font-semibold">{{ item.kode_subkomponen }}</td>
-                <td class="text-center text-blue-600 font-semibold">{{ item.kode_akun }}</td>
-                <td class="text-blue-700">{{ item.detil }}</td>
-                <td class="text-center text-blue-700 font-semibold">{{ item.tanggal_pengajuan }}</td>
-                <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah_pengajuan) }}</td>
-                <td class="text-right text-red-700 font-bold">{{ formatCurrency(item.sisa_anggaran) }}</td>
-                <td class="text-center">
-                  <span class="badge badge-error badge-lg text-white font-bold">{{ item.jumlah_data_dukung }}</span>
-                </td>
-                <td class="text-center">
-                  <div class="flex gap-2 justify-center">
-                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
-                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
-                      <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                    <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  </NuxtLink>
+                  <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+                    <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <!-- Empty State -->
+            <tr v-if="paginatedData.length === 0">
+              <td colspan="12" class="px-6 py-10 text-center text-gray-500">
+                <div class="flex flex-col items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p class="text-sm">Tidak ada data ditemukan.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="flex justify-center mt-4">
+        <div class="btn-group">
+          <Button size="sm" :disabled="currentPage === 1" @click="currentPage--">«</Button>
+          <Button size="sm">Page {{ currentPage }} of {{ totalPages }}</Button>
+          <Button size="sm" :disabled="currentPage === totalPages" @click="currentPage++">»</Button>
         </div>
-        <!-- Pagination -->
-        <div class="flex justify-center mt-4">
-          <div class="btn-group">
-            <Button size="sm" :disabled="currentPage === 1" @click="currentPage--">«</Button>
-            <Button size="sm">Page {{ currentPage }} of {{ totalPages }}</Button>
-            <Button size="sm" :disabled="currentPage === totalPages" @click="currentPage++">»</Button>
-          </div>
-        </div>
-      </template>
-    </Card>
+      </div>
+    </div>
     <!-- Rekap Data Pengajuan -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
       <!-- Jumlah Pengajuan -->
@@ -194,10 +211,12 @@
   </div>
 </template>
 
+
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
 import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash } from '@tabler/icons-vue';
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' });
 

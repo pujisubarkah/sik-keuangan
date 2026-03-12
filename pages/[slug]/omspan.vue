@@ -61,84 +61,58 @@ const formatCurrency = (value) =>
         </div>
 
         <!-- TABLE -->
-        <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th>Satker</th>
-                <th class="text-right">Realisasi SIK</th>
-                <th class="text-right">Realisasi OMSPAN</th>
-                <th class="text-right">Selisih</th>
-                <th class="text-center">Aksi</th>
-                <th class="text-center">Email Terakhir</th>
-                <th class="text-center">Status</th>
-                <th class="rounded-tr-xl">Email Penerima</th>
+        <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
+            <thead class="bg-blue-100 sticky top-0 z-10">
+              <tr>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Satker</th>
+                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Realisasi SIK</th>
+                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Realisasi OMSPAN</th>
+                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Selisih</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Email Terakhir</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Status</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Email Penerima</th>
               </tr>
             </thead>
-
-            <tbody>
-              <tr
-                v-for="(row, idx) in tableData"
-                :key="row.id"
-                class="hover:bg-blue-50 transition"
-              >
-                <td class="text-center font-bold text-blue-700">{{ idx + 1 }}</td>
-                <td class="font-semibold text-blue-700">{{ row.satker }}</td>
-                <td class="text-right text-blue-700 font-semibold">
-                  {{ formatCurrency(row.realisasi_sik) }}
-                </td>
-                <td class="text-right font-semibold text-indigo-700">
-                  {{ formatCurrency(row.realisasi_omspan) }}
-                </td>
-                <td
-                  class="text-right font-bold"
-                  :class="row.selisih < 0 ? 'text-red-600' : 'text-green-600'"
-                >
-                  {{ formatCurrency(row.selisih) }}
-                </td>
-
-                <!-- ACTION -->
-                <td class="text-center">
+            <tbody class="divide-y divide-gray-100">
+              <tr v-for="(row, idx) in tableData" :key="row.id" class="hover:bg-yellow-50 align-middle">
+                <td class="px-3 py-2 text-center align-middle">{{ idx + 1 }}</td>
+                <td class="px-3 py-2 font-semibold text-blue-700 align-middle">{{ row.satker }}</td>
+                <td class="px-3 py-2 text-right text-blue-700 font-semibold align-middle">{{ formatCurrency(row.realisasi_sik) }}</td>
+                <td class="px-3 py-2 text-right font-semibold text-indigo-700 align-middle">{{ formatCurrency(row.realisasi_omspan) }}</td>
+                <td class="px-3 py-2 text-right font-bold align-middle" :class="row.selisih < 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrency(row.selisih) }}</td>
+                <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-2">
-                    <NuxtLink
-                      :to="`/admin/omspan/preview/${row.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="Preview"
-                    >
+                    <NuxtLink :to="`/admin/omspan/preview/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Preview">
                       <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-
-                    <NuxtLink
-                      :to="`/admin/omspan/sendEmail/${row.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="Kirim Email"
-                    >
+                    <NuxtLink :to="`/admin/omspan/sendEmail/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Kirim Email">
                       <Icon icon="mdi:send" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-
-                    <NuxtLink
-                      :to="`/admin/omspan/update/${row.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="Penerima Email"
-                    >
+                    <NuxtLink :to="`/admin/omspan/update/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Penerima Email">
                       <Icon icon="mdi:account" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                   </div>
                 </td>
-
-                <td class="text-center text-sm">{{ row.email_terakhir }}</td>
-
-                <td class="text-center">
-                  <span
-                    class="badge badge-success badge-lg text-white font-bold"
-                    v-if="row.status_alert === 'Aktif'"
-                  >
-                    Aktif
-                  </span>
-                  <span class="badge badge-error badge-lg" v-else>
-                    Nonaktif
-                  </span>
+                <td class="px-3 py-2 text-center text-sm align-middle">{{ row.email_terakhir }}</td>
+                <td class="px-3 py-2 text-center align-middle">
+                  <span v-if="row.status_alert === 'Aktif'" class="inline-block bg-green-500 text-white rounded px-2 py-1 font-bold">Aktif</span>
+                  <span v-else class="inline-block bg-red-500 text-white rounded px-2 py-1 font-bold">Nonaktif</span>
                 </td>
-
-                <td class="text-sm">{{ row.email_penerima }}</td>
+                <td class="px-3 py-2 text-sm align-middle">{{ row.email_penerima }}</td>
+              </tr>
+              <!-- Empty State -->
+              <tr v-if="tableData.length === 0">
+                <td colspan="9" class="px-6 py-10 text-center text-gray-500">
+                  <div class="flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm">Tidak ada data ditemukan.</p>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
