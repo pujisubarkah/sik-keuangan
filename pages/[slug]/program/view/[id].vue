@@ -164,6 +164,8 @@ onMounted(fetchProgramDetail)
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
   transition: 0.25s;
+  border-top: 4px solid #60a5fa; /* border-blue-400 */
+  border-bottom: none;
 }
 
 .box:hover {

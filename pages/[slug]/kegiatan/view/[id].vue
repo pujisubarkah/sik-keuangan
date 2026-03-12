@@ -147,9 +147,12 @@ onMounted(fetchKegiatanDetail)
 }
 
 /* ===== Card / Box ===== */
+
 .box {
   background: #ffffff;
   border: 1px solid #e5e7eb;
+  border-top: 4px solid #60a5fa; /* outline biru di atas */
+  border-bottom: none;
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
   transition: 0.25s;

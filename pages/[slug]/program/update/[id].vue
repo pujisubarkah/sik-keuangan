@@ -33,33 +33,38 @@
     </section>
 
     <section class="content">
-      <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden animate-fadein">
-        <div class="px-12 pt-10 pb-5 border-b border-blue-100 text-center bg-gradient-to-r from-blue-50 to-blue-100">
-          <h2 class="text-2xl font-bold text-blue-700 mb-1 flex items-center justify-center gap-2">
+      <div class="max-w-2xl mx-auto rounded-3xl shadow-2xl border border-blue-200 overflow-hidden animate-fadein glass-card relative">
+        <div class="absolute -top-8 left-1/2 -translate-x-1/2 z-10">
+          <div class="bg-gradient-to-tr from-blue-400 to-blue-600 p-2 rounded-full shadow-lg border-4 border-white">
+            <Icon icon="mdi:star-circle" class="w-16 h-16 text-white drop-shadow-lg" />
+          </div>
+        </div>
+        <div class="px-12 pt-20 pb-5 border-b border-blue-100 text-center bg-gradient-to-r from-blue-50/80 to-blue-100/80 backdrop-blur-md">
+          <h2 class="text-2xl font-extrabold text-blue-700 mb-1 flex items-center justify-center gap-2 tracking-tight">
             <Icon icon="mdi:clipboard-edit-outline" class="w-8 h-8 text-blue-500" />
             Formulir Update Program
           </h2>
           <p class="text-gray-500 text-sm">Fields with <span class="text-red-500">*</span> are required.</p>
         </div>
         <form class="px-12 py-10" @submit.prevent="handleSubmit">
-          <div class="mb-6 flex items-center gap-4">
-            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="tahun">Tahun</label>
-            <input v-model="form.tahun" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="tahun" type="text" maxlength="4" placeholder="Tahun" />
+          <div class="mb-7 flex items-center gap-4">
+            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="tahun">Tahun</label>
+            <input v-model="form.tahun" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="tahun" type="text" maxlength="4" placeholder="Tahun" />
           </div>
-          <div class="mb-6 flex items-center gap-4">
-            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="kode">Kode</label>
-            <input v-model="form.kode" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="kode" type="text" maxlength="255" placeholder="Kode" />
+          <div class="mb-7 flex items-center gap-4">
+            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="kode">Kode</label>
+            <input v-model="form.kode" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="kode" type="text" maxlength="255" placeholder="Kode" />
           </div>
-          <div class="mb-6 flex items-center gap-4">
-            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="nama">Nama</label>
-            <input v-model="form.nama" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="nama" type="text" maxlength="255" placeholder="Nama" />
+          <div class="mb-7 flex items-start gap-4">
+            <label class="block font-semibold text-blue-700 w-32 text-right pr-2 pt-2" for="nama">Nama</label>
+            <textarea v-model="form.nama" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300 min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
           </div>
-          <div class="mb-6 flex items-center gap-4">
-            <label class="block font-medium text-gray-700 w-32 text-right pr-2" for="jumlah">Jumlah</label>
-            <input v-model="form.jumlah" class="form-control flex-1 rounded-xl border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
+          <div class="mb-7 flex items-center gap-4">
+            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="jumlah">Jumlah</label>
+            <input v-model="form.jumlah" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
           </div>
-          <div class="flex justify-end bg-blue-50 border-t border-blue-100 pt-7 pb-3">
-            <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-blue-500 text-white hover:bg-blue-600" native-type="submit">
+          <div class="flex justify-end bg-gradient-to-r from-blue-50/80 to-blue-100/80 border-t border-blue-100 pt-7 pb-3 rounded-b-3xl">
+            <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
               <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Update
             </Button>
           </div>
@@ -147,14 +152,40 @@ onMounted(fetchProgram)
 input.form-control {
   border: 1.5px solid #cbd5e1;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: transparent;
+  font-size: 1.08rem;
+  padding: 0.7rem 1.1rem;
 }
 input.form-control:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px #bfdbfe;
+  box-shadow: 0 0 0 3px #bfdbfe66;
+  background: #f0f9ff;
 }
-.box { background: #fff; border-top: 3px solid #3b82f6; margin-bottom: 20px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); border-radius: 12px; }
-.breadcrumb { background: #fff; padding: 10px; list-style: none; border-radius: 4px; margin-bottom: 20px; }
+.glass-card {
+  background: linear-gradient(120deg, #f0f9ffcc 60%, #e0e7efcc 100%);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+  border-top: 5px solid #3b82f6;
+  border-bottom: none;
+  position: relative;
+}
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  pointer-events: none;
+  box-shadow: 0 2px 24px 0 rgba(59,130,246,0.08);
+}
+.breadcrumb {
+  background: #fff;
+  padding: 10px;
+  list-style: none;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
 .breadcrumb li { display: inline; }
 .animate-fadein { animation: fadein 0.7s; }
 @keyframes fadein {
