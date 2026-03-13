@@ -3,6 +3,8 @@
 import { ref } from 'vue'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
+import VButton from '~/components/UI/v-button.vue'
+import { IconPlus } from '@tabler/icons-vue'
 
 const showAlert = ref(true)
 const filter = ref({ kode_akun: '', nama_berkas: '', kata_kunci: '' })
@@ -47,12 +49,15 @@ const berkasList = ref([
       <div class="card-body">
         <!-- ACTION -->
         <div class="mb-4">
-          <NuxtLink
-            to="/admin/berkas/create"
-            class="btn btn-primary"
-          >
-            <Icon icon="mdi:plus" class="w-5 h-5 mr-2" />
-            Tambah Berkas
+          <NuxtLink to="/admin/berkas/create">
+            <VButton
+              variant="primary"
+              size="md"
+              :prependIcon="IconPlus"
+              class="w-fit"
+            >
+              Tambah Berkas
+            </VButton>
           </NuxtLink>
         </div>
         <div class="text-sm mb-4 text-blue-700 font-semibold">

@@ -155,11 +155,15 @@ const fetchSatker = async () => {
 onMounted(fetchSatker)
 
 const viewSatker = (id) => {
-  window.location.href = `/satker/${id}`
+  // Ganti navigasi ke NuxtLink agar mendukung dynamic slug
+  const slug = window.location.pathname.split('/')[1] || ''
+  window.location.href = `/${slug}/satker/view/${id}`
 }
 
 const editSatker = (id) => {
-  window.location.href = `/satker/edit/${id}`
+  // Ganti navigasi ke NuxtLink agar mendukung dynamic slug
+  const slug = window.location.pathname.split('/')[1] || ''
+  window.location.href = `/${slug}/satker/updater/update/${id}`
 }
 
 const deleteSatker = (id) => {

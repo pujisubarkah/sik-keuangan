@@ -1,8 +1,10 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { IconAlertCircle, IconHome, IconPlus, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
+import VButton from '~/components/UI/v-button.vue'
+import VTable from '~/components/UI/v-table.vue'
 
 const showAlert = ref(true)
 const filter = ref({ judul: '', berkas: '', user_pembuat: '', waktu_dibuat: '' })
@@ -16,6 +18,26 @@ const laporanList = ref([
     waktu_dibuat: '',
   },
 ])
+
+const headers = [
+  { text: 'No', value: 'no', center: true },
+  { text: 'Judul', value: 'judul', center: true },
+  { text: 'Berkas', value: 'berkas', center: true },
+  { text: 'User Pembuat', value: 'user_pembuat', center: true },
+  { text: 'Waktu Dibuat', value: 'waktu_dibuat', center: true },
+  { text: 'Pilihan', value: 'aksi', center: true }
+]
+
+const filteredLaporanList = computed(() =>
+  laporanList.value
+    .filter(l =>
+      l.judul.toLowerCase().includes(filter.value.judul.toLowerCase()) &&
+      l.berkas.toLowerCase().includes(filter.value.berkas.toLowerCase()) &&
+      l.user_pembuat.toLowerCase().includes(filter.value.user_pembuat.toLowerCase()) &&
+      l.waktu_dibuat.toLowerCase().includes(filter.value.waktu_dibuat.toLowerCase())
+    )
+    .map((l, i) => ({ ...l, no: i + 1 }))
+)
 </script>
 
 <template>
@@ -44,105 +66,73 @@ const laporanList = ref([
       <div class="card-body">
         <!-- ACTION -->
         <div class="mb-4">
-          <NuxtLink
-            to="/admin/berkas-laporan/create"
-            class="btn btn-primary"
-          >
-            <IconPlus class="w-5 h-5 mr-2 text-blue-600" />
-            Tambah Berkas Laporans
+          <NuxtLink to="/admin/berkas-laporan/create">
+            <VButton
+              variant="primary"
+              size="md"
+              :prependIcon="IconPlus"
+              class="w-fit"
+            >
+              Tambah Berkas Laporans
+            </VButton>
           </NuxtLink>
         </div>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
           Menampilkan <b>{{ laporanList.length }}</b> data
         </div>
-        <!-- TABLE -->
-        <div class="overflow-x-auto">
-          <table class="table table-md w-full rounded-xl overflow-hidden">
-            <thead>
-              <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th class="text-center">Judul</th>
-                <th class="text-center">Berkas</th>
-                <th class="text-center">User Pembuat</th>
-                <th class="text-center">Waktu Dibuat</th>
-                <th class="text-center rounded-tr-xl">Pilihan</th>
-              </tr>
-              <tr class="bg-blue-50">
-                <td></td>
-                <td>
-                  <input
-                    v-model="filter.judul"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Judul"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model="filter.berkas"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Berkas"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model="filter.user_pembuat"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="User Pembuat"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model="filter.waktu_dibuat"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Waktu Dibuat"
-                  />
-                </td>
-                <td></td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(lap, i) in laporanList.filter(l =>
-                  l.judul.toLowerCase().includes(filter.judul.toLowerCase()) &&
-                  l.berkas.toLowerCase().includes(filter.berkas.toLowerCase()) &&
-                  l.user_pembuat.toLowerCase().includes(filter.user_pembuat.toLowerCase()) &&
-                  l.waktu_dibuat.toLowerCase().includes(filter.waktu_dibuat.toLowerCase())
-                )"
-                :key="lap.id"
-                class="hover:bg-blue-50 transition"
-              >
-                <td class="text-center font-bold text-blue-700">{{ i + 1 }}</td>
-                <td class="text-center font-semibold text-blue-700">{{ lap.judul }}</td>
-                <td class="text-center">{{ lap.berkas }}</td>
-                <td class="text-center">{{ lap.user_pembuat }}</td>
-                <td class="text-center">{{ lap.waktu_dibuat }}</td>
-                <td class="text-center">
-                  <div class="flex justify-center gap-2">
-                    <NuxtLink
-                      :to="`/admin/berkas-laporan/view/${lap.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="View"
-                    >
-                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </NuxtLink>
-                    <NuxtLink
-                      :to="`/admin/berkas-laporan/update/${lap.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="Update"
-                    >
-                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                    </NuxtLink>
-                    <button
-                      class="hover:text-red-600 transition tooltip" data-tip="Delete"
-                      @click="confirm('Yakin hapus berkas laporan ini?')"
-                      style="background:none;border:none;padding:0;"
-                    >
-                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <!-- TABLE: VTable -->
+        <VTable :headers="headers" :items="filteredLaporanList">
+          <template #judul="{ item }">
+            <span class="font-semibold text-blue-700">{{ item.judul }}</span>
+          </template>
+          <template #berkas="{ item }">
+            <span>{{ item.berkas }}</span>
+          </template>
+          <template #user_pembuat="{ item }">
+            <span>{{ item.user_pembuat }}</span>
+          </template>
+          <template #waktu_dibuat="{ item }">
+            <span>{{ item.waktu_dibuat }}</span>
+          </template>
+          <template #aksi="{ item }">
+            <div class="flex justify-center gap-2">
+              <NuxtLink :to="`/admin/berkas-laporan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
+                <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+              </NuxtLink>
+              <NuxtLink :to="`/admin/berkas-laporan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
+                <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+              </NuxtLink>
+              <button class="hover:text-red-600 transition tooltip" data-tip="Delete" @click="confirm('Yakin hapus berkas laporan ini?')" style="background:none;border:none;padding:0;">
+                <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+              </button>
+            </div>
+          </template>
+          <template #no="{ index }">
+            <span class="text-center font-bold text-blue-700">{{ index + 1 }}</span>
+          </template>
+          <template #empty>
+            <span class="text-gray-400">Tidak ada data</span>
+          </template>
+          <!-- Filter Row -->
+          <template #thead>
+            <tr class="bg-blue-50">
+              <td></td>
+              <td>
+                <input v-model="filter.value.judul" class="input input-bordered input-xs w-full text-center" placeholder="Judul" />
+              </td>
+              <td>
+                <input v-model="filter.value.berkas" class="input input-bordered input-xs w-full text-center" placeholder="Berkas" />
+              </td>
+              <td>
+                <input v-model="filter.value.user_pembuat" class="input input-bordered input-xs w-full text-center" placeholder="User Pembuat" />
+              </td>
+              <td>
+                <input v-model="filter.value.waktu_dibuat" class="input input-bordered input-xs w-full text-center" placeholder="Waktu Dibuat" />
+              </td>
+              <td></td>
+            </tr>
+          </template>
+        </VTable>
       </div>
     </div>
   </div>

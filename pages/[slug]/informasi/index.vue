@@ -53,12 +53,15 @@
 
       <!-- Button -->
       <div class="mb-6">
-        <NuxtLink
-          :to="`/${route.params.slug}/informasi/create`"
-          class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-green-800"
-        >
-          <IconPlus class="h-4 w-4" />
-          Informasi Baru
+        <NuxtLink :to="`/${route.params.slug}/informasi/create`">
+          <VButton
+            variant="primary"
+            size="md"
+            :prependIcon="IconPlus"
+            class="w-fit"
+          >
+            Informasi Baru
+          </VButton>
         </NuxtLink>
       </div>
 
@@ -170,6 +173,7 @@ import {
   IconPencil,
   IconTrash
 } from '@tabler/icons-vue'
+import VButton from '~/components/UI/v-button.vue'
 
 definePageMeta({
   layout: 'default'

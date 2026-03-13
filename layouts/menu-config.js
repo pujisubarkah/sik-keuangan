@@ -151,18 +151,18 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
       group: 'admin',
       children: [
         { title: 'Admin', icon: 'tabler:user', to: `/${effectiveSlug}/users` },
-        { title: 'Admin Satker', icon: 'tabler:user', to: `/${effectiveSlug}/admin-satker` },
-        { title: 'Verifikator', icon: 'tabler:user', to: `/${effectiveSlug}/verifikator` },
-        { title: 'PUMK', icon: 'tabler:user', to: `/${effectiveSlug}/pumk` },
-        { title: 'Karo Umum/Kabag Keu', icon: 'tabler:user', to: `/${effectiveSlug}/karo-umum` },
-        { title: 'Kabagmin/Kabag', icon: 'tabler:user', to: `/${effectiveSlug}/kabagmin` },
-        { title: 'PPK', icon: 'tabler:user', to: `/${effectiveSlug}/ppk` },
-        { title: 'Bendahara Penerima', icon: 'tabler:user', to: `/${effectiveSlug}/bendahara-penerima` },
-        { title: 'Deputi', icon: 'tabler:user', to: `/${effectiveSlug}/deputi` },
-        { title: 'Kepala LAN', icon: 'tabler:user', to: `/${effectiveSlug}/kepala-lan` },
-        { title: 'Kepala Satker', icon: 'tabler:user', to: `/${effectiveSlug}/kepala-satker` },
-        { title: 'Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan-unit` },
-        { title: 'Admin OMSPAN', icon: 'tabler:user', to: `/${effectiveSlug}/admin-omspan` }
+        { title: 'Admin Satker', icon: 'tabler:user', to: `/${effectiveSlug}/users/admin-satker` },
+        { title: 'Verifikator', icon: 'tabler:user', to: `/${effectiveSlug}/users/verifikator` },
+        { title: 'PUMK', icon: 'tabler:user', to: `/${effectiveSlug}/users/pumk` },
+        { title: 'Karo Umum/Kabag Keu', icon: 'tabler:user', to: `/${effectiveSlug}/users/karo-umum` },
+        { title: 'Kabagmin/Kabag', icon: 'tabler:user', to: `/${effectiveSlug}/users/kabagmin` },
+        { title: 'PPK', icon: 'tabler:user', to: `/${effectiveSlug}/users/ppk` },
+        { title: 'Bendahara Penerima', icon: 'tabler:user', to: `/${effectiveSlug}/users/bendahara-penerima` },
+        { title: 'Deputi', icon: 'tabler:user', to: `/${effectiveSlug}/users/deputi` },
+        { title: 'Kepala LAN', icon: 'tabler:user', to: `/${effectiveSlug}/users/kepala-lan` },
+        { title: 'Kepala Satker', icon: 'tabler:user', to: `/${effectiveSlug}/users/kepala-satker` },
+        { title: 'Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/users/persediaan-unit` },
+        { title: 'Admin OMSPAN', icon: 'tabler:user', to: `/${effectiveSlug}/users/admin-omspan` }
       ]
     },
     {
@@ -171,9 +171,9 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
       to: `/${effectiveSlug}/persediaan`,
       group: 'admin',
       children: [
-        { title: 'Admin Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/admin` },
-        { title: 'Admin Satker Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/admin-satker` },
-        { title: 'Operator Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/operator-unit` }
+        { title: 'Admin Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/users/admin` },
+        { title: 'Admin Satker Persediaan', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/users/admin-satker` },
+        { title: 'Operator Persediaan Unit', icon: 'tabler:user', to: `/${effectiveSlug}/persediaan/users/operator-unit` }
       ]
     },
     {
