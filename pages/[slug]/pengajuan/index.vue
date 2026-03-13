@@ -147,13 +147,13 @@
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <div class="flex gap-2 justify-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                  <NuxtLink :to="`/${$route.params.slug}/pengajuan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
                     <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                   <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
                     <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
-                  <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                  <NuxtLink :to="`/${$route.params.slug}/pengajuan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
                     <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                   <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
