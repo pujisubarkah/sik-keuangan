@@ -112,4 +112,8 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    'w-4', 'w-5', 'w-6', 'h-4', 'h-5', 'h-6',
+    'text-blue-600', 'text-yellow-900', 'text-gray-800', 'text-yellow-800', 'text-gray-900'
+  ],
 }

@@ -6,6 +6,25 @@
       <p class="text-blue-100 text-sm mt-1">{{ data.nama_suboutput || '-' }}</p>
     </div>
 
+    <!-- Action Buttons -->
+    <div class="flex gap-2 justify-end px-6 py-4">
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
+        @click="$emit('tambah-anggaran')"
+      >
+        <IconPlus class="w-4 h-4" />
+        Tambah Anggaran
+      </button>
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
+        @click="$emit('ekspor-excel')"
+      >
+        <IconFileSpreadsheet class="w-4 h-4" />
+        Ekspor ke Excel
+      </button>
+    </div>
     <!-- Table -->
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
@@ -115,6 +134,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { NuxtLink } from '#components'
+import { IconPlus, IconFileSpreadsheet } from '@tabler/icons-vue'
 const $route = useRoute()
 const props = defineProps({
   data: Object

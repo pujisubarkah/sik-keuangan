@@ -1,79 +1,92 @@
-<!-- filepath: c:\Users\user\Documents\sik-keuangan\components\UI\v-button.vue -->
 <template>
-  <button
-    class="btn"
-    :class="buttonClass"
+  <component
+    :is="as"
+    :type="type"
     :disabled="disabled || loading"
-    @click="$emit('click')"
+    :class="buttonClasses"
+    @click="$emit('click', $event)"
   >
-    <span v-if="loading" class="loading loading-spinner loading-sm"></span>
-    <component v-if="prependIcon && !loading" :is="prependIcon" class="w-4 h-4 mr-2" />
-    {{ text }}
-    <component v-if="appendIcon && !loading" :is="appendIcon" class="w-4 h-4 ml-2" />
-  </button>
+    <!-- Loading Spinner -->
+    <svg 
+      v-if="loading" 
+      class="animate-spin -ml-1 mr-2 h-4 w-4" 
+      xmlns="http://www.w3.org/2000/svg" 
+      fill="none" 
+      viewBox="0 0 24 24"
+    >
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+    </svg>
+
+    <!-- Prepend Icon -->
+    <component 
+      v-if="prependIcon && !loading" 
+      :is="prependIcon" 
+      class="w-4 h-4" 
+    />
+
+    <span class="flex-1 text-center" v-if="$slots.default">
+      <slot />
+    </span>
+    <span v-else>{{ text }}</span>
+
+    <!-- Append Icon -->
+    <component 
+      v-if="appendIcon && !loading" 
+      :is="appendIcon" 
+      class="w-4 h-4" 
+    />
+  </component>
 </template>
 
-<script>
-export default {
-  name: 'DaisyButton',
-  props: {
-    text: {
-      type: String,
-      default: 'Button'
-    },
-    color: {
-      type: String,
-      default: 'primary',
-      validator: (value) => ['primary', 'secondary', 'accent', 'neutral', 'ghost', 'outline'].includes(value)
-    },
-    variant: {
-      type: String,
-      default: 'filled',
-      validator: (value) => ['filled', 'outline', 'ghost'].includes(value)
-    },
-    size: {
-      type: String,
-      default: 'md',
-      validator: (value) => ['xs', 'sm', 'md', 'lg'].includes(value)
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    prependIcon: {
-      type: [String, Object],
-      default: ''
-    },
-    appendIcon: {
-      type: [String, Object],
-      default: ''
+    <script setup>
+    import { computed } from 'vue'
+
+    const props = defineProps({
+      as: { type: String, default: 'button' }, // 'button', 'a', 'router-link', dll
+      type: { type: String, default: 'button' },
+      text: { type: String, default: '' },
+      // Variant warna
+      variant: { 
+        type: String, 
+        default: 'primary',
+        validator: (v) => ['primary', 'secondary', 'success', 'danger', 'outline'].includes(v)
+      },
+      // Ukuran
+      size: { 
+        type: String, 
+        default: 'md',
+        validator: (v) => ['sm', 'md', 'lg'].includes(v)
+      },
+      disabled: { type: Boolean, default: false },
+      loading: { type: Boolean, default: false },
+      prependIcon: { type: [Object, String], default: null },
+      appendIcon: { type: [Object, String], default: null },
+      fullWidth: { type: Boolean, default: false }
+    })
+
+    defineEmits(['click'])
+
+    // Map variant ke class Tailwind
+    const variantClasses = {
+      primary: 'border-green-800 bg-green-700 text-white hover:bg-green-800 hover:shadow-lg',
+      secondary: 'border-gray-600 bg-gray-600 text-white hover:bg-gray-700 hover:shadow-lg',
+      success: 'border-emerald-800 bg-emerald-700 text-white hover:bg-emerald-800 hover:shadow-lg',
+      danger: 'border-red-800 bg-red-700 text-white hover:bg-red-800 hover:shadow-lg',
+      outline: 'border-green-800 bg-transparent text-green-700 hover:bg-green-50 hover:shadow-md'
     }
-  },
-  emits: ['click'],
-  computed: {
-    buttonClass() {
-      let classes = ['btn']
 
-      // Size
-      if (this.size !== 'md') {
-        classes.push(`btn-${this.size}`)
-      }
-
-      // Variant and Color
-      if (this.variant === 'outline') {
-        classes.push(`btn-outline btn-${this.color}`)
-      } else if (this.variant === 'ghost') {
-        classes.push(`btn-ghost`)
-      } else {
-        classes.push(`btn-${this.color}`)
-      }
-
-      return classes.join(' ')
+    const sizeClasses = {
+      sm: 'px-3 py-1.5 text-xs',
+      md: 'px-4 py-2 text-sm',
+      lg: 'px-6 py-3 text-base'
     }
-  }
-}
-</script>
+
+    const buttonClasses = computed(() => [
+      'inline-flex items-center gap-2 rounded-md border font-semibold shadow-md transition-all',
+      'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-md',
+      variantClasses[props.variant],
+      sizeClasses[props.size],
+      props.fullWidth ? 'w-full justify-center' : ''
+    ])
+    </script>

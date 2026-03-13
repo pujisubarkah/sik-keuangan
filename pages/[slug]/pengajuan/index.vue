@@ -147,7 +147,7 @@
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <div class="flex gap-2 justify-center">
-                  <NuxtLink :to="`/${$route.params.slug}/pengajuan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
                     <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                   <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
