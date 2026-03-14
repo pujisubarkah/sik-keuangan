@@ -1,13 +1,13 @@
 import { db } from "@/server/database";
-import { masterSuboutput } from "@/server/database/schema/master_suboutput";
+import { masterOutput } from "@/server/database/schema/master_output";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let where = undefined;
-  if (query.output_id) {
-    where = (row: typeof masterSuboutput.$inferSelect) => row.output_id === Number(query.output_id);
+  if (query.kegiatan_id) {
+    where = (row: any) => row.kegiatan_id === Number(query.kegiatan_id);
   }
-  const data = await db.select().from(masterSuboutput);
+  const data = await db.select().from(masterOutput);
   const result = where ? data.filter(where) : data;
   return result;
 });

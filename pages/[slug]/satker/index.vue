@@ -163,7 +163,7 @@ const viewSatker = (id) => {
 const editSatker = (id) => {
   // Ganti navigasi ke NuxtLink agar mendukung dynamic slug
   const slug = window.location.pathname.split('/')[1] || ''
-  window.location.href = `/${slug}/satker/updater/update/${id}`
+  window.location.href = `/${slug}/satker/update/${id}`
 }
 
 const deleteSatker = (id) => {

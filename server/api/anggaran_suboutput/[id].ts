@@ -8,50 +8,58 @@ import { satker } from '../../database/schema/satker'
 import { tahunAnggaran } from '../../database/schema/tahun_anggaran'
 import { unit } from '../../database/schema/unit_kerja'
 import { db } from '../../database'
+import { readBody, sendError, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id
-  if (!id) return { error: 'suboutput id is required' }
+  if (!id) return { error: 'id is required' }
+
+  if (event.method === 'GET') {
+    // GET by id
+    const result = await db
+      .select({
+        anggaranSuboutput,
+        kode: masterSuboutput.kode_suboutput,
+        nama_suboutput: masterSuboutput.nama_suboutput,
+        nama_satker: satker.name,
+        nama_unit: unit.name,
+        tahun: tahunAnggaran.tahun,
+        nama_output: masterOutput.nama_output,
+        nama_kegiatan: masterKegiatan.nama_kegiatan,
+        nama_program: masterProgram.nama_program
+      })
+      .from(anggaranSuboutput)
+      .innerJoin(masterSuboutput, eq(anggaranSuboutput.suboutput_id, masterSuboutput.id))
+      .innerJoin(masterOutput, eq(masterSuboutput.output_id, masterOutput.id))
+      .innerJoin(masterKegiatan, eq(masterOutput.kegiatan_id, masterKegiatan.id))
+      .innerJoin(masterProgram, eq(masterKegiatan.program_id, masterProgram.id))
+      .innerJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
+      .leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
+      .innerJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id))
+      .where(eq(anggaranSuboutput.id, Number(id)))
+      .orderBy(anggaranSuboutput.id)
+    return result[0] || null
+  }
 
   if (event.method === 'PUT') {
     const body = await readBody(event)
-    // Contoh: update anggaran
     const updateData: Record<string, any> = {}
     if (body.anggaran !== undefined) updateData.anggaran = body.anggaran
     // Tambahkan field lain sesuai kebutuhan
     if (Object.keys(updateData).length === 0) {
-      return { error: 'No valid fields to update' }
+      return sendError(event, createError({ statusCode: 400, statusMessage: 'No valid fields to update' }))
     }
     const updated = await db.update(anggaranSuboutput)
       .set(updateData)
-      .where(eq(anggaranSuboutput.suboutput_id, Number(id)))
+      .where(eq(anggaranSuboutput.id, Number(id)))
       .returning()
     return { success: true, data: updated }
   }
 
-  // Ambil satu data anggaran_suboutput pertama yang cocok
-  const result = await db
-    .select({
-      anggaranSuboutput,
-      kode: masterSuboutput.kode_suboutput,
-      nama_suboutput: masterSuboutput.nama_suboutput,
-      nama_satker: satker.name,
-      nama_unit: unit.name,
-      tahun: tahunAnggaran.tahun,
-      nama_output: masterOutput.nama_output,
-      nama_kegiatan: masterKegiatan.nama_kegiatan,
-      nama_program: masterProgram.nama_program
-    })
-    .from(anggaranSuboutput)
-    .innerJoin(masterSuboutput, eq(anggaranSuboutput.suboutput_id, masterSuboutput.id))
-    .innerJoin(masterOutput, eq(masterSuboutput.output_id, masterOutput.id))
-    .innerJoin(masterKegiatan, eq(masterOutput.kegiatan_id, masterKegiatan.id))
-    .innerJoin(masterProgram, eq(masterKegiatan.program_id, masterProgram.id))
-    .innerJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
-    .leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
-    .innerJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id))
-    .where(eq(anggaranSuboutput.suboutput_id, Number(id)))
-    .orderBy(anggaranSuboutput.id)
-
-  return result[0] || null
+  if (event.method === 'DELETE') {
+    const deleted = await db.delete(anggaranSuboutput)
+      .where(eq(anggaranSuboutput.id, Number(id)))
+      .returning()
+    return { success: true, data: deleted }
+  }
 })

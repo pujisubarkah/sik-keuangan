@@ -74,6 +74,8 @@
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Tahun</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Jumlah</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Unit</th>
+                                                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Satker</th>
+                                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Output</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
               <!-- Filter Row -->
@@ -134,11 +136,20 @@
                   <span v-if="item.unit_name" class="inline-block bg-gray-100 text-gray-700 rounded px-2 py-1 font-semibold">{{ item.unit_name }}</span>
                   <span v-else class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">-</span>
                 </td>
+                <td class="px-3 py-2 align-middle">
+                  <span v-if="item.satker_name" class="inline-block bg-gray-100 text-gray-700 rounded px-2 py-1 font-semibold">{{ item.satker_name }}</span>
+                  <span v-else class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">-</span>
+                </td>
+                <td class="px-3 py-2 align-middle">
+                  <span v-if="item.output_name" class="inline-block bg-gray-100 text-gray-700 rounded px-2 py-1 font-semibold">{{ item.output_name }}</span>
+                  <span v-else class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">-</span>
+                </td>
                 <td class="px-3 py-2 text-right align-middle">
                   <div class="flex justify-end space-x-2">
                     <NuxtLink :to="`/${$route.params.slug}/suboutput/view/${item.id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
                       <IconEye class="h-4 w-4" />
                     </NuxtLink>
+                    <!-- id di sini adalah id dari anggaran_suboutput, dipakai untuk update by id -->
                     <NuxtLink :to="`/${$route.params.slug}/suboutput/update/${item.id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
                       <IconPencil class="h-4 w-4" />
                     </NuxtLink>

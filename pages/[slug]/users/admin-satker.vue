@@ -1,4 +1,21 @@
 <script setup>
+const showLoginHistoryModal = ref(false)
+const selectedUser = ref(null)
+const loginHistory = ref([])
+function openLoginHistoryModal(user) {
+  selectedUser.value = { ...user }
+  // TODO: Replace with real login history fetch if available
+  loginHistory.value = [
+    { waktu: '2026-03-14 09:00', device: 'Chrome (Windows)' },
+    { waktu: '2026-03-13 20:15', device: 'Mobile Safari (iOS)' }
+  ]
+  showLoginHistoryModal.value = true
+}
+function closeLoginHistoryModal() {
+  showLoginHistoryModal.value = false
+  selectedUser.value = null
+  loginHistory.value = []
+}
 
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed } from 'vue'
@@ -148,11 +165,37 @@ const totalPage = ref(2)
           </template>
           <template #aksi="{ item }">
             <div class="flex justify-center gap-1">
-              <NuxtLink :to="`/admin/user/view/${item.id}`" data-tip="View">
-                <Button type="info" size="sm" circle>
-                  <IconEye class="w-4 h-4" />
-                </Button>
-              </NuxtLink>
+              <Button type="info" size="sm" circle @click="openLoginHistoryModal(item)">
+                <IconEye class="w-4 h-4" />
+              </Button>
+                  <!-- Modal Riwayat Login -->
+                  <div v-if="showLoginHistoryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
+                    <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+                      <button @click="closeLoginHistoryModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+                      <h3 class="text-xl font-bold text-blue-700 mb-6 text-center">Riwayat Login</h3>
+                      <div v-if="selectedUser" class="mb-4 text-center font-semibold text-gray-700">{{ selectedUser.nama }}</div>
+                      <div v-if="loginHistory.length > 0">
+                        <table class="w-full text-sm border">
+                          <thead>
+                            <tr class="bg-blue-50">
+                              <th class="py-2 px-3 border-b text-left">Waktu</th>
+                              <th class="py-2 px-3 border-b text-left">Device</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(log, idx) in loginHistory" :key="idx">
+                              <td class="py-2 px-3 border-b">{{ log.waktu }}</td>
+                              <td class="py-2 px-3 border-b">{{ log.device }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div v-else class="text-gray-400 text-center">Belum ada riwayat login.</div>
+                      <div class="flex justify-end mt-8">
+                        <Button type="secondary" @click="closeLoginHistoryModal">Tutup</Button>
+                      </div>
+                    </div>
+                  </div>
               <NuxtLink :to="`/admin/user/update/${item.id}`" data-tip="Update">
                 <Button type="warning" size="sm" circle>
                   <IconPencil class="w-4 h-4" />
