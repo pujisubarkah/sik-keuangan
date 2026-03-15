@@ -1,76 +1,57 @@
 <template>
-  <div class="content-wrapper min-h-screen font-sans pt-24 bg-gray-100">
-    <transition name="fade">
-      <div v-if="showToast" class="fixed top-6 right-6 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 animate-fadein">
-        <Icon icon="mdi:check-circle" class="w-6 h-6" />
-        Data berhasil diupdate!
-      </div>
-    </transition>
-    <section class="content-header">
-      <div class="alert-wide-wrapper">
-        <SuboutputAlert :showAlert="true" />
-      </div>
-    </section>
-
-    <section class="content-header">
-      <div class="flex items-center gap-4 mb-2">
-        <Icon icon="mdi:clipboard-edit-outline" class="w-12 h-12 text-blue-500 bg-white rounded-full shadow p-2" />
-        <div>
-          <h1 class="text-3xl font-bold text-blue-700 mb-1">Update Program</h1>
-          <p class="text-gray-500 text-base">Perbarui data program sesuai kebutuhan Anda.</p>
+  <div class="bg-gray-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto">
+      <transition name="fade-toast">
+        <div v-if="showToast" class="fixed top-8 right-8 z-[9999] bg-green-600 text-white px-7 py-4 rounded-2xl shadow-2xl shadow-green-400/40 flex items-center gap-3 animate-fadein-toast border-2 border-green-300/60">
+          <Icon icon="mdi:check-circle" class="w-7 h-7 text-white drop-shadow" />
+          <span class="font-semibold text-lg tracking-wide">Data berhasil diupdate!</span>
         </div>
-      </div>
-      <!-- Breadcrumb -->
-      <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=program/index">Programs</NuxtLink></li>
-        <li>/</li>
-        <li>Program</li>
-        <li>/</li>
-        <li>Update</li>
-        <li>/</li>
-        <li class="font-medium text-slate-700">{{ form.nama }}</li>
-      </ul>
-    </section>
-
-    <section class="content">
-      <div class="max-w-2xl mx-auto rounded-3xl shadow-2xl border border-blue-200 overflow-hidden animate-fadein glass-card relative">
-        <div class="absolute -top-8 left-1/2 -translate-x-1/2 z-10">
-          <div class="bg-gradient-to-tr from-blue-400 to-blue-600 p-2 rounded-full shadow-lg border-4 border-white">
-            <Icon icon="mdi:star-circle" class="w-16 h-16 text-white drop-shadow-lg" />
-          </div>
+      </transition>
+      <SuboutputAlert class="mb-6" :showAlert="true" />
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+        <div class="px-8 pt-6 pb-4 border-b border-gray-200">
+          <h1 class="text-2xl font-bold text-gray-800">Ubah Program</h1>
+          <p class="text-gray-500 text-sm mt-1">Perbarui detail program di bawah ini.</p>
         </div>
-        <div class="px-12 pt-20 pb-5 border-b border-blue-100 text-center bg-gradient-to-r from-blue-50/80 to-blue-100/80 backdrop-blur-md">
-          <h2 class="text-2xl font-extrabold text-blue-700 mb-1 flex items-center justify-center gap-2 tracking-tight">
-            <Icon icon="mdi:clipboard-edit-outline" class="w-8 h-8 text-blue-500" />
-            Formulir Update Program
-          </h2>
-          <p class="text-gray-500 text-sm">Fields with <span class="text-red-500">*</span> are required.</p>
-        </div>
-        <form class="px-12 py-10" @submit.prevent="handleSubmit">
-          <div class="mb-7 flex items-center gap-4">
-            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="tahun">Tahun</label>
-            <input v-model="form.tahun" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="tahun" type="text" maxlength="4" placeholder="Tahun" />
+        <form class="px-8 py-8" @submit.prevent="handleSubmit">
+          <div class="space-y-6">
+            <!-- Tahun -->
+            <div class="grid grid-cols-12 items-center gap-4">
+              <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun</label>
+              <div class="col-span-9">
+                <input v-model="form.tahun" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="tahun" type="text" maxlength="4" placeholder="Tahun" />
+              </div>
+            </div>
+            <!-- Kode -->
+            <div class="grid grid-cols-12 items-center gap-4">
+              <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode</label>
+              <div class="col-span-9">
+                <input v-model="form.kode" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="kode" type="text" maxlength="255" placeholder="Kode" />
+              </div>
+            </div>
+            <!-- Nama -->
+            <div class="grid grid-cols-12 items-start gap-4">
+              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
+              <div class="col-span-9">
+                <textarea v-model="form.nama" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
+              </div>
+            </div>
+            <!-- Jumlah -->
+            <div class="grid grid-cols-12 items-center gap-4">
+              <label class="col-span-3 text-right font-semibold text-gray-700" for="jumlah">Jumlah</label>
+              <div class="col-span-9">
+                <input v-model="form.jumlah" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
+              </div>
+            </div>
           </div>
-          <div class="mb-7 flex items-center gap-4">
-            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="kode">Kode</label>
-            <input v-model="form.kode" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="kode" type="text" maxlength="255" placeholder="Kode" />
-          </div>
-          <div class="mb-7 flex items-start gap-4">
-            <label class="block font-semibold text-blue-700 w-32 text-right pr-2 pt-2" for="nama">Nama</label>
-            <textarea v-model="form.nama" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300 min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
-          </div>
-          <div class="mb-7 flex items-center gap-4">
-            <label class="block font-semibold text-blue-700 w-32 text-right pr-2" for="jumlah">Jumlah</label>
-            <input v-model="form.jumlah" class="form-control flex-1 rounded-xl border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all duration-150 bg-white/70 shadow-inner placeholder:text-blue-300" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
-          </div>
-          <div class="flex justify-end bg-gradient-to-r from-blue-50/80 to-blue-100/80 border-t border-blue-100 pt-7 pb-3 rounded-b-3xl">
+          <div class="flex justify-end mt-10">
             <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
               <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Update
             </Button>
           </div>
         </form>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -188,8 +169,19 @@ input.form-control:focus {
 }
 .breadcrumb li { display: inline; }
 .animate-fadein { animation: fadein 0.7s; }
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(30px); }
+@keyframes fadein-toast {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
   to { opacity: 1; transform: none; }
+}
+.fade-toast-enter-active, .fade-toast-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+.fade-toast-enter-from, .fade-toast-leave-to {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+}
+.fade-toast-enter-to, .fade-toast-leave-from {
+  opacity: 1;
+  transform: none;
 }
 </style>

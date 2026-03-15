@@ -11,6 +11,10 @@ const kode = ref('')
 const unit = ref('')
 const tahun = ref('2026')
 
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref('success') // 'success' | 'error'
+
 import { onMounted } from 'vue'
 const satkerList = ref([{ value: '', label: '- Pilih Satker -' }])
 
@@ -158,6 +162,7 @@ async function submitForm() {
   const kodeOutput = selectedOutput ? selectedOutput.kode : '';
   const kodeSuboutput = kodeOutput && kode.value ? `${kodeOutput}.${kode.value}` : kode.value;
   try {
+    // 1. POST ke /api/suboutput
     const response = await fetch('/api/suboutput', {
       method: 'POST',
       headers,
@@ -165,15 +170,61 @@ async function submitForm() {
         kode_suboutput: kodeSuboutput,
         nama_suboutput: suboutput.value,
         output_id: output.value,
-        total: '0', // atau bisa diisi sesuai kebutuhan
+        total: '0',
       })
     });
     const data = await response.json();
-    if (response.ok && !data.error) {
-      if (window.$toast) {
-        window.$toast.success('Suboutput berhasil disimpan!');
+    if (response.ok && data && data.id) {
+      // 2. Cari tahun_anggaran_id dari tahun
+      let tahunAnggaranId = null;
+      try {
+        // Ambil list tahun_anggaran dari /api/anggaran_suboutput, lalu cari id berdasarkan tahun
+        const tahunRes = await fetch(`/api/anggaran_suboutput`, { headers });
+        const tahunData = await tahunRes.json();
+        if (tahunRes.ok && Array.isArray(tahunData)) {
+          const found = tahunData.find(item => String(item.tahun) === String(tahun.value));
+          if (found && found.tahun_anggaran_id) tahunAngGaranId = found.tahun_anggaran_id;
+        }
+      } catch (e) {}
+      // Fallback: jika tidak ketemu, coba fetch ke endpoint tahun_anggaran
+      if (!tahunAngGaranId) {
+        try {
+          const tahunRes = await fetch(`/api/tahun_anggaran`, { headers });
+          const tahunData = await tahunRes.json();
+          if (tahunRes.ok && Array.isArray(tahunData)) {
+            const found = tahunData.find(item => String(item.tahun) === String(tahun.value));
+            if (found && found.id) tahunAngGaranId = found.id;
+          }
+        } catch (e) {}
+      }
+      if (!tahunAngGaranId) {
+        toastType.value = 'error';
+        toastMessage.value = 'Gagal mendapatkan tahun_anggaran_id, data anggaran_suboutput tidak dikirim.';
+        showToast.value = true;
+        setTimeout(() => { showToast.value = false }, 2500);
       } else {
-        alert('Suboutput berhasil disimpan!');
+        // 3. POST ke /api/anggaran_suboutput
+        const anggaranPayload = {
+          suboutput_id: data.id,
+          satker_id: satker.value,
+          unit_id: unit.value,
+          tahun_anggaran_id: tahunAngGaranId,
+          anggaran: '0'
+        };
+        console.log('POST /api/anggaran_suboutput payload:', anggaranPayload);
+        const anggaranRes = await fetch('/api/anggaran_suboutput', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(anggaranPayload)
+        });
+        const anggaranData = await anggaranRes.json();
+        console.log('POST /api/anggaran_suboutput response:', anggaranData);
+        if ((anggaranRes.ok && !anggaranData.error) || (anggaranData && anggaranData.success)) {
+          toastType.value = 'success';
+          toastMessage.value = 'data berhasil RO berhasil ditambahkan';
+          showToast.value = true;
+          setTimeout(() => { showToast.value = false }, 2000);
+        }
       }
       // Redirect ke halaman suboutput setelah berhasil
       if (router && route) {
@@ -185,14 +236,16 @@ async function submitForm() {
         }
       }
     } else {
-      if (window.$toast) {
-        window.$toast.error(data.error || 'Gagal menyimpan suboutput');
-      } else {
-        alert(data.error || 'Gagal menyimpan suboutput');
-      }
+      toastType.value = 'error';
+      toastMessage.value = data.error || 'Gagal menyimpan suboutput';
+      showToast.value = true;
+      setTimeout(() => { showToast.value = false }, 2500);
     }
   } catch (err) {
-    alert('Terjadi kesalahan saat menyimpan suboutput');
+    toastType.value = 'error';
+    toastMessage.value = 'Terjadi kesalahan saat menyimpan suboutput';
+    showToast.value = true;
+    setTimeout(() => { showToast.value = false }, 2500);
   } finally {
     isSubmitting.value = false;
   }
@@ -201,6 +254,12 @@ async function submitForm() {
 
 <template>
   <div class="pt-14">
+    <transition name="fade-toast">
+      <div v-if="showToast" :class="['fixed top-8 right-8 z-[9999] px-7 py-4 rounded-2xl flex items-center gap-3 animate-fadein-toast border-2', toastType === 'success' ? 'bg-green-600 text-white shadow-2xl shadow-green-400/40 border-green-300/60' : 'bg-red-600 text-white shadow-2xl shadow-red-400/40 border-red-300/60']">
+        <Icon :icon="toastType === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle'" class="w-7 h-7 text-white drop-shadow" />
+        <span class="font-semibold text-lg tracking-wide">{{ toastMessage }}</span>
+      </div>
+    </transition>
     <!-- ALERT -->
     <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
       <div>
@@ -282,3 +341,21 @@ async function submitForm() {
     </Card>
   </div>
 </template>
+
+<style scoped>
+@keyframes fadein-toast {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.fade-toast-enter-active, .fade-toast-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+.fade-toast-enter-from, .fade-toast-leave-to {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+}
+.fade-toast-enter-to, .fade-toast-leave-from {
+  opacity: 1;
+  transform: none;
+}
+</style>
