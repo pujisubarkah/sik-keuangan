@@ -9,5 +9,6 @@
         "idds",
         "nuxtjs",
         "saat"
-    ]
+    ],
+    "deepscan.enable": true
 }
