@@ -44,11 +44,11 @@ onMounted(async () => {
   try {
     const response = await fetch('/api/satker', { headers });
     if (!response.ok) throw new Error('Gagal mengambil data satker');
-    const data = await response.json();
-    if (Array.isArray(data)) {
+    const json = await response.json();
+    if (json.success && Array.isArray(json.data)) {
       satkerList.value = [
         { value: '', label: '- Pilih Satker -' },
-        ...data.map(item => ({ value: String(item.id), label: item.name }))
+        ...json.data.map(item => ({ value: String(item.id), label: item.name }))
       ];
     }
   } catch (err) {
@@ -260,21 +260,7 @@ async function submitForm() {
         <span class="font-semibold text-lg tracking-wide">{{ toastMessage }}</span>
       </div>
     </transition>
-    <!-- ALERT -->
-    <div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
-      <div>
-        <Icon icon="mdi:alert" class="w-6 h-6" />
-        <span>
-          Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
-          <NuxtLink
-            to="/admin/suboutput"
-            class="link link-hover underline ml-1"
-          >
-            Klik di sini
-          </NuxtLink>
-        </span>
-      </div>
-    </div>
+    <SuboutputAlert class="mb-6" :showAlert="showAlert" />
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
@@ -292,53 +278,69 @@ async function submitForm() {
       Tambah Suboutput
     </h1>
 
-    <!-- CARD -->
-    <Card class="bg-white shadow-xl rounded-xl border border-blue-100">
-      <template #default>
-        <h3 class="text-xl font-bold mb-6">Form Suboutput</h3>
-        <form @submit.prevent="submitForm" class="space-y-4">
-          <div class="flex flex-col gap-4">
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="satker">Satker</label>
-              <select v-model="satker" id="satker" class="select select-bordered flex-1">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+      <div class="px-8 pt-6 pb-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-800">Tambah Suboutput</h1>
+        <p class="text-gray-500 text-sm mt-1">Lengkapi detail suboutput di bawah ini.</p>
+      </div>
+      <form class="px-8 py-8" @submit.prevent="submitForm">
+        <div class="space-y-6">
+          <!-- Satker -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="satker">Satker</label>
+            <div class="col-span-9">
+              <select v-model="satker" id="satker" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
                 <option v-for="s in satkerList" :key="s.value" :value="s.value">{{ s.label }}</option>
               </select>
             </div>
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="output">Output <span class="text-red-500">*</span></label>
-              <select v-model="output" id="output" class="select select-bordered flex-1" required>
+          </div>
+          <!-- Output -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="output">Output <span class="text-red-500">*</span></label>
+            <div class="col-span-9">
+              <select v-model="output" id="output" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" required>
                 <option v-for="o in outputList" :key="o.value" :value="o.value">{{ o.label }}</option>
               </select>
             </div>
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="suboutput">Suboutput <span class="text-red-500">*</span></label>
-              <textarea v-model="suboutput" id="suboutput" rows="3" class="textarea textarea-bordered flex-1" placeholder="Suboutput" required></textarea>
-            </div>
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="kode">Kode <span class="text-red-500">*</span></label>
-              <TextField v-model="kode" id="kode" type="text" class="flex-1" placeholder="Kode" required maxlength="255" />
-            </div>
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="unit">Unit</label>
-              <div class="flex-1">
-                <select v-model="unit" id="unit" class="select select-bordered w-full">
-                  <option v-for="u in unitList" :key="u.value" :value="u.value">{{ u.label }}</option>
-                </select>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <label class="w-40 font-semibold mb-0" for="tahun">Tahun <span class="text-red-500">*</span></label>
-              <TextField v-model="tahun" id="tahun" type="text" class="flex-1" placeholder="Tahun" readonly required />
+          </div>
+          <!-- Suboutput -->
+          <div class="grid grid-cols-12 items-start gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Suboutput <span class="text-red-500">*</span></label>
+            <div class="col-span-9">
+              <textarea v-model="suboutput" id="suboutput" rows="3" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" placeholder="Suboutput" required></textarea>
             </div>
           </div>
-          <div class="mt-6">
-            <Button type="success" native-type="submit">
-              <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Simpan
-            </Button>
+          <!-- Kode -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode <span class="text-red-500">*</span></label>
+            <div class="col-span-9">
+              <TextField v-model="kode" id="kode" type="text" class="w-full" placeholder="Kode" required maxlength="255" />
+            </div>
           </div>
-        </form>
-      </template>
-    </Card>
+          <!-- Unit -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="unit">Unit</label>
+            <div class="col-span-9">
+              <select v-model="unit" id="unit" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+                <option v-for="u in unitList" :key="u.value" :value="u.value">{{ u.label }}</option>
+              </select>
+            </div>
+          </div>
+          <!-- Tahun -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun <span class="text-red-500">*</span></label>
+            <div class="col-span-9">
+              <TextField v-model="tahun" id="tahun" type="text" class="w-full" placeholder="Tahun" readonly required />
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end mt-10">
+          <Button type="success" native-type="submit">
+            <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Simpan
+          </Button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

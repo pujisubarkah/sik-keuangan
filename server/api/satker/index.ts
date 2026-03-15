@@ -9,7 +9,10 @@ export default defineEventHandler(async (event) => {
     case 'GET':
       // Get all satker
       const all = await db.select().from(satker);
-      return all;
+      return {
+        success: true,
+        data: all
+      };
 
     case 'POST':
       // Create new satker

@@ -1,89 +1,247 @@
+
 <template>
-  <section class="content">
-    <SuboutputAlert :showAlert="true" />
-    <form class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden mt-8" @submit.prevent="handleSubmit">
-      <div class="px-8 pt-8 pb-4 border-b border-blue-100 bg-gradient-to-r from-blue-100 to-blue-50">
-        <h3 class="text-xl font-bold text-blue-800 mb-1">Form Output</h3>
+  <div class="pt-14">
+    <transition name="fade-toast">
+      <div v-if="showToast" class="fixed top-8 right-8 z-[9999] bg-green-600 text-white px-7 py-4 rounded-2xl shadow-2xl shadow-green-400/40 flex items-center gap-3 animate-fadein-toast border-2 border-green-300/60">
+        <Icon icon="mdi:check-circle" class="w-7 h-7 text-white drop-shadow" />
+        <span class="font-semibold text-lg tracking-wide">Data berhasil disimpan!</span>
       </div>
-      <div class="px-8 py-10">
-        <div class="grid grid-cols-1 gap-6">
+    </transition>
+    <SuboutputAlert class="mb-6" :showAlert="true" />
+    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
+      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
+        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      </NuxtLink>
+      <span>/</span>
+      <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
+      <span>/</span>
+      <span class="font-bold text-blue-700">Update</span>
+    </div>
+    <h1 class="text-3xl font-bold text-blue-700 mb-6">
+      SIK - Update Output
+    </h1>
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+      <div class="px-8 pt-6 pb-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-800">Edit Output</h1>
+        <p class="text-gray-500 text-sm mt-1">Ubah detail output di bawah ini.</p>
+      </div>
+      <form class="px-8 py-8" @submit.prevent="submitForm">
+        <div class="space-y-6">
           <!-- Kegiatan -->
-          <div class="grid grid-cols-12 items-center gap-2">
-            <label class="col-span-3 font-semibold text-blue-700 text-right pr-4" for="kegiatan">Kegiatan</label>
-            <select v-model="form.kegiatan" class="col-span-9 form-control w-full rounded-xl border-blue-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition" id="kegiatan">
-              <option value="">- Pilih Kegiatan -</option>
-              <option v-for="k in kegiatanOptions" :key="k.value" :value="k.value">{{ k.label }}</option>
-            </select>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="kegiatan">Kegiatan</label>
+            <div class="col-span-9">
+              <select v-model="kegiatan" id="kegiatan" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+                <option v-for="k in kegiatanList" :key="k.value" :value="k.value">{{ k.label }}</option>
+              </select>
+            </div>
           </div>
-          <!-- Id Satker -->
-          <div class="grid grid-cols-12 items-center gap-2">
-            <label class="col-span-3 font-semibold text-blue-700 text-right pr-4" for="id_satker">Id Satker</label>
-            <select v-model="form.id_satker" class="col-span-9 form-control w-full rounded-xl border-blue-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition" id="id_satker">
-              <option value="">- Pilih Satker -</option>
-              <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.label }}</option>
-            </select>
+          <!-- Satker -->
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="satker">Satker</label>
+            <div class="col-span-9">
+              <select v-model="satker" id="satker" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+                <option v-for="s in satkerList" :key="s.value" :value="s.value">{{ s.label }}</option>
+              </select>
+            </div>
           </div>
           <!-- Kode -->
-          <div class="grid grid-cols-12 items-center gap-2">
-            <label class="col-span-3 font-semibold text-blue-700 text-right pr-4" for="kode">Kode</label>
-            <input v-model="form.kode" class="col-span-9 form-control w-full rounded-xl border-blue-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition" id="kode" type="text" maxlength="255" placeholder="Kode" />
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode</label>
+            <div class="col-span-9">
+              <input v-model="kode" id="kode" type="text" maxlength="255" placeholder="Kode" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+            </div>
           </div>
           <!-- Nama -->
-          <div class="grid grid-cols-12 items-center gap-2">
-            <label class="col-span-3 font-semibold text-blue-700 text-right pr-4" for="nama">Nama</label>
-            <input v-model="form.nama" class="col-span-9 form-control w-full rounded-xl border-blue-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition" id="nama" type="text" maxlength="255" placeholder="Nama" />
+          <div class="grid grid-cols-12 items-start gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
+            <div class="col-span-9">
+              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words"></textarea>
+            </div>
           </div>
           <!-- Tahun -->
-          <div class="grid grid-cols-12 items-center gap-2">
-            <label class="col-span-3 font-semibold text-blue-700 text-right pr-4" for="tahun">Tahun</label>
-            <input v-model="form.tahun" class="col-span-9 form-control w-full rounded-xl border-blue-200 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition" id="tahun" type="text" maxlength="255" placeholder="Tahun" />
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun</label>
+            <div class="col-span-9">
+              <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="flex justify-end px-8 pb-8">
-        <button type="submit" class="btn btn-success rounded-xl shadow-lg hover:scale-105 transition-transform duration-200 flex items-center gap-2 px-8 py-3 font-bold text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800">
-          <span class="glyphicon glyphicon-ok"></span> Simpan
-        </button>
-      </div>
-    </form>
-  </section>
+        <div class="flex justify-end mt-10">
+          <button type="submit" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800">
+            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import Icon from '~/components/Icon.vue'
 import SuboutputAlert from '@/components/SuboutputAlert.vue'
-import { ref } from 'vue';
 
-const kegiatanOptions = [
-  { value: '109', label: '3577 - Peningkatan Koordinasi Perencanaan, Hukum, Humas Dan Keprotokolan Dalam Lingkup LAN' },
-  { value: '110', label: '3578 - Pembinaan Administrasi dan Pengelolaan Pelayanan Penunjang Pelaksanaan Tupoksi Biro Umum LAN' },
-  { value: '111', label: '3579 - Pengawasan dalam Rangka Akuntabilitas Publik' },
-  // ...tambahkan semua opsi lain sesuai kebutuhan
-  { value: '659', label: '7913 - Penguatan Kapasitas Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran Aparatur Sipil Negara' },
-  { value: '660', label: '7914 - Peningkatan Kualitas Kebijakan Administrasi Negara' },
-  // dst.
-];
 
-const satkerOptions = [
-  { value: '1', label: 'LAN JAKARTA' },
-  { value: '2', label: 'PUSJAR SKTASN NAS' },
-  { value: '3', label: 'PUSJAR SKMP' },
-  { value: '4', label: 'PUSJAR SKPP' },
-  { value: '5', label: 'PUSJAR SKMK' },
-  { value: '6', label: 'STIA LAN BANDUNG' },
-  { value: '7', label: 'STIA LAN JAKARTA' },
-  { value: '8', label: 'STIA MAKASSAR' },
-];
+const showToast = ref(false)
+const kegiatan = ref('')
+const satker = ref('1')
+const kode = ref('')
+const nama = ref('')
+const tahun = ref('2026')
+const total = ref(null)
+const kegiatanList = ref([{ value: '', label: '- Pilih Kegiatan -' }])
+const satkerList = ref([{ value: '', label: '- Pilih Satker -' }])
 
-const form = ref({
-  kegiatan: '',
-  id_satker: '',
-  kode: '',
-  nama: '',
-  tahun: ''
-});
+// State untuk data asli hasil GET by id
+const originalData = ref(null)
+// Ambil data output by id saat halaman dibuka
+onMounted(async () => {
+  // Fetch kegiatan
+  try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch('/api/kegiatan', { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      kegiatanList.value = [
+        { value: '', label: '- Pilih Kegiatan -' },
+        ...json.data.map(item => ({
+          value: item.id,
+          label: `${item.kode_kegiatan} - ${item.nama_kegiatan}`
+        }))
+      ]
+    }
+  } catch (e) {}
+  // Fetch satker
+  try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch('/api/satker', { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      satkerList.value = [
+        { value: '', label: '- Pilih Satker -' },
+        ...json.data.map(item => ({
+          value: item.id,
+          label: item.name
+        }))
+      ]
+    }
+  } catch (e) {}
 
-function handleSubmit() {
-  // Proses simpan data di sini
-  alert('Data berhasil disimpan!');
+  // Fetch data output by id
+  try {
+    const id = window.location.pathname.split('/').pop()
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch(`/api/output/${id}`, { headers })
+    const json = await res.json()
+    if (json.success && json.data) {
+      originalData.value = json.data
+      // Isi field form dari data output
+      kode.value = json.data.kode_output || ''
+      nama.value = json.data.nama_output || ''
+      tahun.value = json.data.tahun_anggaran || ''
+      kegiatan.value = json.data.kegiatan_id ? String(json.data.kegiatan_id) : ''
+      satker.value = json.data.satker_id ? String(json.data.satker_id) : ''
+      total.value = json.data.total ?? null
+    }
+  } catch (e) {}
+})
+
+onMounted(async () => {
+  // Fetch kegiatan
+  try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch('/api/kegiatan', { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      kegiatanList.value = [
+        { value: '', label: '- Pilih Kegiatan -' },
+        ...json.data.map(item => ({
+          value: item.id,
+          label: `${item.kode_kegiatan} - ${item.nama_kegiatan}`
+        }))
+      ]
+    }
+  } catch (e) {}
+  // Fetch satker
+  try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch('/api/satker', { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      satkerList.value = [
+        { value: '', label: '- Pilih Satker -' },
+        ...json.data.map(item => ({
+          value: item.id,
+          label: item.name
+        }))
+      ]
+    }
+  } catch (e) {}
+})
+
+async function submitForm() {
+  // Simpan data ke backend (PUT)
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  }
+  try {
+    // Cari kode_kegiatan dari kegiatan terpilih
+    const selectedKegiatan = kegiatanList.value.find(k => k.value == kegiatan.value)
+    let kodeKegiatan = ''
+    if (selectedKegiatan && selectedKegiatan.label) {
+      kodeKegiatan = selectedKegiatan.label.split(' - ')[0]
+    }
+    // Pastikan kode_output hanya 7918.EBA (kode_kegiatan.kode_input), bukan 7918.EBA.EBA
+    let kodeInput = kode.value
+    // Jika kode.value sudah mengandung titik dan kode_kegiatan, ambil hanya bagian setelah titik terakhir
+    if (kodeInput.includes('.')) {
+      const parts = kodeInput.split('.')
+      kodeInput = parts[parts.length - 1]
+    }
+    const kodeOutputGabungan = kodeKegiatan && kodeInput ? `${kodeKegiatan}.${kodeInput}` : kodeInput
+    // Ambil id dari URL
+    const id = window.location.pathname.split('/').pop()
+    // Gabungkan data hasil GET by id dengan perubahan form
+    const updatePayload = {
+      ...originalData.value,
+      kode_output: kodeOutputGabungan,
+      nama_output: nama.value,
+      kegiatan_id: kegiatan.value,
+      satker_id: satker.value,
+      total: total.value
+    }
+    // Hapus field yang tidak boleh dikirim (id, created_at, updated_at, tahun_anggaran, program, kegiatan, satker, tahun_anggaran_id, dst)
+    delete updatePayload.id
+    delete updatePayload.created_at
+    delete updatePayload.updated_at
+    delete updatePayload.program
+    delete updatePayload.kegiatan
+    delete updatePayload.satker
+    delete updatePayload.tahun_anggaran
+    delete updatePayload.tahun_anggaran_id
+    // Kirim PUT
+    const res = await fetch(`/api/output/${id}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(updatePayload)
+    })
+    const json = await res.json()
+    if (json.success) {
+      showToast.value = true
+      setTimeout(() => { showToast.value = false }, 2000)
+    } else {
+      alert(json.message || 'Gagal menyimpan output!')
+    }
+  } catch (e) {
+    alert('Gagal menyimpan output!')
+  }
 }
 </script>

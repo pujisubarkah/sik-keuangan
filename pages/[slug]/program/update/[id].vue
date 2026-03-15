@@ -83,14 +83,14 @@ async function fetchProgram() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   const id = route.params.id
   try {
-    const res = await fetch(`/api/anggaran_program/by-program/${id}`, { headers })
+    const res = await fetch(`/api/program/${id}`, { headers })
     const json = await res.json()
-    if (json.success) {
+    if (json.success && json.data) {
       form.value = {
-        tahun: json.tahun_anggaran || '',
-        kode: json.program_kode || '',
-        nama: json.program_nama || '',
-        jumlah: json.total_anggaran ? String(json.total_anggaran) : ''
+        tahun: json.data.created_at ? new Date(json.data.created_at).getFullYear().toString() : '',
+        kode: json.data.kode_program || '',
+        nama: json.data.nama_program || '',
+        jumlah: json.data.total !== undefined && json.data.total !== null ? String(json.data.total) : ''
       }
     }
   } catch (e) {}

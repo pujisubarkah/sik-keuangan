@@ -1,4 +1,5 @@
 import VTable from '~/components/UI/v-table.vue'
+import SuboutputAlert from '@/components/SuboutputAlert.vue'
 <!-- filepath: c:\Users\user\Documents\sik-keuangan2\pages\[slug]\perencanaan.vue -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
@@ -373,7 +374,7 @@ const filterData = async () => {
     // Map response sesuai struktur API
     suboutputData.value = dataArray.map(item => {
       const pagu = Number(item.total) || 0
-      const perencanaan = 0 // Sesuaikan dengan logic backend
+      const perencanaan = Number(item.perencanaan) || 0 // Diambil dari API
       const selisih = pagu - perencanaan
       return {
         id: item.id,
@@ -424,7 +425,8 @@ onMounted(async () => {
   try {
     // 1. Fetch satker options
     const satkerRes = await $fetch('/api/satker', { headers })
-    satkerOptions.value = satkerRes.map(item => ({ text: item.name, value: item.id }))
+    const satkerData = Array.isArray(satkerRes) ? satkerRes : satkerRes.data || []
+    satkerOptions.value = satkerData.map(item => ({ text: item.name, value: item.id }))
     
     // 2. Jika hanya ada 1 satker, auto-select (opsional)
     if (satkerOptions.value.length === 1) {

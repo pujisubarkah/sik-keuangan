@@ -2,7 +2,7 @@
 	<div class="box box-primary">
 		<div class="box-header with-border flex items-center justify-between">
 			<h3 class="box-title text-lg font-bold">Daftar Suboutput</h3>
-			<NuxtLink :to="addUrl" class="btn-flat btn btn-success bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
+			<NuxtLink :to="computedAddUrl" class="btn-flat btn btn-success bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
 				<span class="icon-plus">+</span> Tambah Suboutput
 			</NuxtLink>
 		</div>
@@ -57,15 +57,15 @@
 
 <script setup>
 import { computed } from 'vue'
-import { NuxtLink } from '#components'
+import { NuxtLink, useRoute } from '#imports'
+
+const route = useRoute()
+const slug = computed(() => route.params.slug)
+const computedAddUrl = computed(() => `/${slug.value}/suboutput/create`)
 const props = defineProps({
 	items: {
 		type: Array,
 		default: () => []
-	},
-	addUrl: {
-		type: String,
-		default: '/pekerjaan/create'
 	}
 })
 

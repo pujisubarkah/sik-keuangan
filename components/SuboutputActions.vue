@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap gap-3 items-center mb-6">
+  <div class="flex gap-3 items-center mb-6 overflow-x-auto py-2">
     <button class="btn px-4 py-2 rounded-lg font-semibold shadow hover:scale-105 transition-all duration-200 bg-blue-400 hover:bg-blue-500 text-white flex items-center gap-2" @click="onEdit">
       <IconPencil class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting</span>
     </button>

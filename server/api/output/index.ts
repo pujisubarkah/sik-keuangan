@@ -5,6 +5,25 @@ import { masterKegiatan } from "@/server/database/schema/master_kegiatan";
 import { masterProgram } from "@/server/database/schema/master_program";
 
 export default defineEventHandler(async (event) => {
+  if (event.node.req.method === 'POST') {
+    const body = await readBody(event);
+    if (!body.kode_output || !body.nama_output || !body.kegiatan_id || !body.satker_id) {
+      return { success: false, message: 'kode_output, nama_output, kegiatan_id, dan satker_id wajib diisi' };
+    }
+    const now = new Date();
+    const inserted = await db.insert(masterOutput).values({
+      kode_output: body.kode_output,
+      nama_output: body.nama_output,
+      kegiatan_id: Number(body.kegiatan_id),
+      created_at: now,
+      updated_at: now,
+      total: body.total ?? null,
+      satker_id: Number(body.satker_id),
+    }).returning();
+    return { success: true, data: inserted[0] };
+  }
+
+  // GET
   const query = getQuery(event);
   let where = undefined;
   if (query.kegiatan_id) {
@@ -26,16 +45,30 @@ export default defineEventHandler(async (event) => {
     // Cari tahun anggaran dari program terkait
     const kegiatan = kegiatans.find(k => k.id === item.kegiatan_id);
     let tahun_anggaran = null;
+    let program = null;
+    let kegiatanObj = null;
     if (kegiatan) {
-      const program = programs.find(p => p.id === kegiatan.program_id);
-      if (program && program.created_at) {
-        tahun_anggaran = new Date(program.created_at).getFullYear();
+      kegiatanObj = {
+        id: kegiatan.id,
+        kode_kegiatan: kegiatan.kode_kegiatan,
+        nama_kegiatan: kegiatan.nama_kegiatan
+      };
+      const prog = programs.find(p => p.id === kegiatan.program_id);
+      if (prog && prog.created_at) {
+        tahun_anggaran = new Date(prog.created_at).getFullYear();
+        program = {
+          id: prog.id,
+          kode_program: prog.kode_program,
+          nama_program: prog.nama_program
+        };
       }
     }
     return {
       ...item,
       jumlah_suboutput: suboutputCountMap[item.id] || 0,
       tahun_anggaran,
+      program,
+      kegiatan: kegiatanObj,
     };
   });
   return result;
