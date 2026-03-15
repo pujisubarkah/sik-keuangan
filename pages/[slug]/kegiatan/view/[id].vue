@@ -35,8 +35,8 @@
                   <td>{{ kegiatanInfo.tahun_anggaran }}</td>
                 </tr>
                 <tr>
-                  <th>Satker</th>
-                  <td>{{ kegiatanInfo.satker_name }}</td>
+                  <th>Program</th>
+                  <td>{{ kegiatanInfo.nama_program }}</td>
                 </tr>
                 <tr>
                   <th>Kode</th>
@@ -56,30 +56,7 @@
         </div>
 
         <!-- Suboutput Table -->
-        <div class="box">
-          <div class="box-body">
-            <table class="w-full main-table">
-              <thead>
-                <tr>
-                  <th class="w-16">No</th>
-                  <th>Suboutput</th>
-                  <th class="text-right">Pagu Anggaran</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, idx) in suboutputs" :key="idx">
-                  <td>{{ idx + 1 }}</td>
-                  <td>{{ item.nama }}</td>
-                  <td class="text-right">{{ item.pagu }}</td>
-                </tr>
-                <tr class="total-row">
-                  <th colspan="2" class="text-right">Total</th>
-                  <th class="text-right">{{ kegiatanInfo.total_anggaran }}</th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <!-- Removed Suboutput Table -->
       </div>
     </section>
   </div>
@@ -94,7 +71,7 @@ import { useRoute } from 'vue-router'
 const suboutputs = ref([])
 const kegiatanInfo = ref({
   tahun_anggaran: '',
-  satker_name: '',
+  nama_program: '',
   kegiatan_kode: '',
   kegiatan_nama: '',
   total_anggaran: 0
@@ -107,19 +84,15 @@ async function fetchKegiatanDetail() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   const id = route.params.id
   try {
-    const res = await fetch(`/api/anggaran_kegiatan/by-kegiatan/${id}`, { headers })
+    const res = await fetch(`/api/kegiatan/${id}`, { headers })
     const json = await res.json()
-    if (json.success) {
-      suboutputs.value = (json.data || []).map(item => ({
-        nama: item.suboutput_nama,
-        pagu: Number(item.anggaran).toLocaleString('id-ID')
-      }))
+    if (json.success && json.data) {
       kegiatanInfo.value = {
-        tahun_anggaran: json.tahun_anggaran,
-        satker_name: json.satker_name,
-        kegiatan_kode: json.kegiatan_kode,
-        kegiatan_nama: json.kegiatan_nama,
-        total_anggaran: Number(json.total_anggaran).toLocaleString('id-ID')
+        tahun_anggaran: json.data.tahun_anggaran,
+        nama_program: json.data.nama_program || '',
+        kegiatan_kode: json.data.kode_kegiatan,
+        kegiatan_nama: json.data.nama_kegiatan,
+        total_anggaran: json.data.total ? Number(json.data.total).toLocaleString('id-ID') : ''
       }
     }
   } catch (e) {

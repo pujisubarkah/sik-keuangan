@@ -50,8 +50,8 @@
                   <td>{{ programInfo.program_nama }}</td>
                 </tr>
                 <tr>
-                  <th>Jumlah</th>
-                  <td class="text-right">Rp {{ programInfo.total_anggaran }}</td>
+                  <th>Jumlah (Master Program)</th>
+                  <td class="text-right" :class="{'bg-yellow-100 text-yellow-800 font-bold': showMismatch}">Rp {{ masterTotal ?? '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -89,6 +89,12 @@
           </div>
         </div>
 
+        <!-- Mismatch Alert -->
+        <div v-if="showMismatch" class="mb-4 p-4 rounded-xl bg-yellow-100 border border-yellow-300 text-yellow-800 font-semibold">
+          <span class="mr-2">⚠️</span>
+          Jumlah anggaran di Master Program dan Total Suboutput tidak sama!
+        </div>
+
       </div>
     </section>
   </div>
@@ -110,6 +116,8 @@ const programInfo = ref({
   program_nama: '',
   total_anggaran: 0
 })
+const masterTotal = ref(null)
+const showMismatch = ref(false)
 
 const route = useRoute()
 
@@ -118,21 +126,36 @@ async function fetchProgramDetail() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   const id = route.params.id
   try {
+    // Ambil summary anggaran_program
     const res = await fetch(`/api/anggaran_program/by-program/${id}`, { headers })
     const json = await res.json()
+    let totalSuboutput = 0
     if (json.success) {
       suboutputs.value = (json.data || []).map(item => ({
         nama: item.suboutput_nama,
         pagu: Number(item.anggaran).toLocaleString('id-ID')
       }))
+      totalSuboutput = Number(json.total_anggaran)
       programInfo.value = {
         tahun_anggaran: json.tahun_anggaran,
         satker_name: json.satker_name,
         program_kode: json.program_kode,
         program_nama: json.program_nama,
-        total_anggaran: Number(json.total_anggaran).toLocaleString('id-ID')
+        total_anggaran: totalSuboutput.toLocaleString('id-ID')
       }
     }
+    // Ambil total dari master_program
+    const res2 = await fetch(`/api/program/${id}`, { headers })
+    const json2 = await res2.json()
+    let totalMaster = null
+    if (json2.success && json2.data && json2.data.total !== undefined && json2.data.total !== null) {
+      totalMaster = Number(json2.data.total)
+      masterTotal.value = totalMaster.toLocaleString('id-ID')
+    } else {
+      masterTotal.value = null
+    }
+    // Cek mismatch
+    showMismatch.value = (totalMaster !== null && totalSuboutput !== null && totalMaster !== totalSuboutput)
   } catch (e) {
     // handle error
   }

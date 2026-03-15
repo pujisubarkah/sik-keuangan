@@ -119,11 +119,14 @@ export default defineEventHandler(async (event) => {
     tahun_anggaran = data[0]?.tahun_anggaran ?? null;
   }
 
-  // Map data hanya ke suboutput_nama dan anggaran
-  const suboutputs = data.map(item => ({
-    suboutput_nama: item.suboutput_nama,
-    anggaran: item.anggaran
-  }));
+  // Map data hanya ke suboutput_nama dan anggaran, lalu urutkan berdasarkan id
+  const suboutputs = data
+    .map(item => ({
+      id: item.id,
+      suboutput_nama: item.suboutput_nama,
+      anggaran: item.anggaran
+    }))
+    .sort((a, b) => a.id - b.id);
 
   return {
     success: true,

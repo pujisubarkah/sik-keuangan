@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 min-h-screen py-12">
+  <div class="bg-gray-50 min-h-screen py-12 pt-16">
     <div class="max-w-4xl mx-auto">
       <transition name="fade-toast">
         <div v-if="showToast" class="fixed top-8 right-8 z-[9999] bg-green-600 text-white px-7 py-4 rounded-2xl shadow-2xl shadow-green-400/40 flex items-center gap-3 animate-fadein-toast border-2 border-green-300/60">
@@ -104,6 +104,7 @@ async function handleSubmit() {
   }
   const id = route.params.id
   try {
+    // Update anggaran_program
     const res = await fetch(`/api/anggaran_program/by-program/${id}`, {
       method: 'PUT',
       headers,
@@ -115,13 +116,29 @@ async function handleSubmit() {
       })
     })
     const json = await res.json()
-    if (json.success) {
+    // Update master_program juga
+    const res2 = await fetch('/api/program', {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        id: Number(id),
+        kode_program: form.value.kode,
+        nama_program: form.value.nama,
+        total: form.value.jumlah ? Number(form.value.jumlah) : null
+      })
+    })
+    const json2 = await res2.json()
+    if (json.success && json2.success) {
       showToast.value = true
       setTimeout(() => { showToast.value = false }, 2000)
+      await fetchProgram()
     } else {
-      alert(json.message || 'Gagal menyimpan data!')
+      if (!json.success) console.error('Update anggaran_program gagal:', json)
+      if (!json2.success) console.error('Update master_program gagal:', json2)
+      alert((json.message || json2.message) || 'Gagal menyimpan data!')
     }
   } catch (e) {
+    console.error('Exception saat update:', e)
     alert('Gagal menyimpan data!')
   }
 }

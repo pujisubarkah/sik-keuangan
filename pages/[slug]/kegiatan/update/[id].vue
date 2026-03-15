@@ -79,14 +79,15 @@ async function fetchKegiatan() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   const id = route.params.id
   try {
-    const res = await fetch(`/api/anggaran_kegiatan/by-kegiatan/${id}`, { headers })
+    const res = await fetch(`/api/kegiatan/${id}`, { headers })
     const json = await res.json()
-    if (json.success) {
+    if (json.success && json.data) {
       form.value = {
-        tahun: json.tahun_anggaran || '',
-        kode: json.kegiatan_kode || '',
-        nama: json.kegiatan_nama || '',
-        jumlah: json.total_anggaran ? String(json.total_anggaran) : ''
+        tahun: json.data.tahun_anggaran || '',
+        id_program: json.data.program_id || '',
+        kode: json.data.kode_kegiatan || '',
+        nama: json.data.nama_kegiatan || '',
+        jumlah: json.data.total ? String(json.data.total) : ''
       }
     }
   } catch (e) {}
@@ -100,14 +101,14 @@ async function handleSubmit() {
   }
   const id = route.params.id
   try {
-    const res = await fetch(`/api/anggaran_kegiatan/by-kegiatan/${id}`, {
+    const res = await fetch(`/api/kegiatan/${id}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({
-        program_nama: form.value.nama,
-        program_kode: form.value.kode,
-        tahun_anggaran: form.value.tahun
-        // total_anggaran tidak diupdate via PUT, hanya info summary
+        kode_kegiatan: form.value.kode,
+        nama_kegiatan: form.value.nama,
+        program_id: form.value.id_program,
+        total: form.value.jumlah ? Number(form.value.jumlah) : null
       })
     })
     const json = await res.json()
@@ -115,11 +116,9 @@ async function handleSubmit() {
       showToast.value = true
       setTimeout(() => { showToast.value = false }, 2000)
     } else {
-      // Optionally: show error toast here
       alert(json.message || 'Gagal menyimpan data!')
     }
   } catch (e) {
-    // Optionally: show error toast here
     alert('Gagal menyimpan data!')
   }
 }
