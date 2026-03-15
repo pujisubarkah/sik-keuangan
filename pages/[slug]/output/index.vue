@@ -192,7 +192,7 @@ const fetchOutput = async () => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
   try {
-    const response = await fetch('/api/anggaran_suboutput/by-output', { headers })
+    const response = await fetch('/api/output', { headers })
 
     if (response.status === 401) {
       localStorage.removeItem('token')
@@ -205,7 +205,19 @@ const fetchOutput = async () => {
       throw new Error(`HTTP ${response.status}`)
     }
 
-    outputData.value = await response.json()
+    const result = await response.json()
+    // result adalah array dari master_output + join info
+    outputData.value = (result || []).map(item => ({
+      output_id: item.id,
+      kode: item.kode_output,
+      nama_output: item.nama_output,
+      kegiatan_id: item.kegiatan_id,
+      created_at: item.created_at,
+      updated_at: item.updated_at,
+      jumlah: item.total ?? 0,
+      suboutput: item.jumlah_suboutput ?? 0,
+      tahun: item.tahun_anggaran,
+    }))
   } catch (error) {
     console.error('Gagal mengambil data output', error)
   } finally {
