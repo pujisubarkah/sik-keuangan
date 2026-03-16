@@ -32,49 +32,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           
-          <!-- Pengajuan Baru Dropdown -->
-          <li class="dropdown notifications-menu" ref="pengajuanRef">
-            <button
-              class="dropdown-toggle"
-              @click.stop="togglePengajuan"
-              :aria-expanded="isPengajuanOpen"
-              aria-haspopup="true"
-              aria-controls="pengajuan-menu"
-              type="button"
-            >
-              <i class="idds idds-shopping-cart"></i>
-              <span class="hidden-sm hidden-xs">Pengajuan Baru</span>
-              <span v-if="pengajuanCount > 0" class="badge-notification">{{ pengajuanCount }}</span>
-            </button>
-            
-            <ul 
-              v-show="isPengajuanOpen"
-              id="pengajuan-menu"
-              class="dropdown-menu"
-              role="menu"
-            >
-              <li>
-                <NuxtLink 
-                  to="/pengajuan/baru" 
-                  @click="closePengajuan"
-                  role="menuitem"
-                >
-                    <Icon icon="tabler:shopping-cart" class="dropdown-link-icon" />
-                  <span>Pengajuan Baru</span>
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink 
-                  to="/pengajuan" 
-                  @click="closePengajuan"
-                  role="menuitem"
-                >
-                    <Icon icon="tabler:shopping-cart" class="dropdown-link-icon" />
-                  <span>Pengajuan Total</span>
-                </NuxtLink>
-              </li>
-            </ul>
-          </li>
+          <!-- ...existing code... -->
 
           <!-- User Account Dropdown -->
           <li class="dropdown user-menu" ref="userRef">
@@ -142,6 +100,7 @@
 </template>
 
 <script setup>
+
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useUserStore } from '~/stores/user'
 
@@ -149,10 +108,6 @@ const props = defineProps({
   rail: { 
     type: Boolean, 
     default: false 
-  },
-  pengajuanCount: {
-    type: Number,
-    default: 0
   }
 })
 

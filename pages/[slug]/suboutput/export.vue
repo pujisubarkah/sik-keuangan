@@ -86,7 +86,7 @@ async function submitForm() {
       <div>
         <Icon icon="mdi:alert" class="w-6 h-6" />
         <span>
-          Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
+          Terdapat <b>41 Rincian Ouput</b> yang belum ditentukan unitnya.
           <NuxtLink
             to="/admin/suboutput"
             class="link link-hover underline ml-1"

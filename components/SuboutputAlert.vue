@@ -8,7 +8,7 @@
         <h3 class="text-sm font-medium text-red-800">Perhatian: Data Belum Lengkap</h3>
         <div class="mt-2 text-sm text-red-700">
           <p>
-            Terdapat <span class="font-bold">41 Sub Output</span> yang belum ditentukan unitnya.
+            Terdapat <span class="font-bold">41 Rincian Ouput</span> yang belum ditentukan unitnya.
             <NuxtLink to="/admin/suboutput" class="font-medium underline hover:text-red-900">Klik di sini untuk memperbaiki</NuxtLink>.
           </p>
         </div>

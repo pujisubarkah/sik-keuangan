@@ -305,7 +305,7 @@ async function submitForm() {
           </div>
           <!-- Suboutput -->
           <div class="grid grid-cols-12 items-start gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Suboutput <span class="text-red-500">*</span></label>
+            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput<span class="text-red-500">*</span></label>
             <div class="col-span-9">
               <textarea v-model="suboutput" id="suboutput" rows="3" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" placeholder="Suboutput" required></textarea>
             </div>

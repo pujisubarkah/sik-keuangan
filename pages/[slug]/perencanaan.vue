@@ -140,10 +140,10 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
-                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Pagu</th>
-                <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">Perencanaan</th>
-                <th class="px-3 py-2 text-right font-semibold text-red-700 align-middle">Selisih</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Output</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pagu</th>
+                <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">Perencanaan</th>
+                <th class="px-3 py-2 text-center font-semibold text-red-700 align-middle">Selisih</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -173,13 +173,13 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
                     <span class="text-gray-400">{{ item.suboutput }}</span>
                   </template>
                 </td>
-                <td class="px-3 py-2 text-right align-middle">
+                <td class="px-3 py-2 text-center align-middle">
                   <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.pagu) }}</span>
                 </td>
-                <td class="px-3 py-2 text-right align-middle">
+                <td class="px-3 py-2 text-center align-middle">
                   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.perencanaan) }}</span>
                 </td>
-                <td class="px-3 py-2 text-right align-middle">
+                <td class="px-3 py-2 text-center align-middle">
                   <span :class="item.selisih >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
                     {{ formatCurrency(item.selisih) }}
                   </span>
@@ -214,18 +214,18 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
         <table class="min-w-full text-xs">
           <tbody>
             <tr class="bg-blue-50 font-bold">
-              <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
-              <td class="px-3 py-2 text-right align-middle">
+              <td colspan="3" class="px-3 py-2 text-center align-middle">TOTAL</td>
+              <td class="px-3 py-2 text-center align-middle">
                 <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
                 </span>
               </td>
-              <td class="px-3 py-2 text-right align-middle">
+              <td class="px-3 py-2 text-center align-middle">
                 <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
                 </span>
               </td>
-              <td class="px-3 py-2 text-right align-middle">
+              <td class="px-3 py-2 text-center align-middle">
                 <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
                 </span>

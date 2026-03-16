@@ -16,7 +16,7 @@
       <IconCalendar class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Perencanaan</span>
     </button>
     <button class="btn px-4 py-2 rounded-lg font-semibold shadow hover:scale-105 transition-all duration-200  bg-red-300 hover:bg-red-500 text-white flex items-center gap-2" @click="onSalin">
-      <IconCopy class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Suboutput</span>
+      <IconCopy class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Salin Rincian Ouput</span>
     </button>
     <div class="relative inline-block">
       <button class="btn px-4 py-2 rounded-lg font-semibold shadow hover:scale-105 transition-all duration-200 bg-blue-200 hover:bg-blue-400 text-white flex items-center gap-2" @click="onToggleDropdown">

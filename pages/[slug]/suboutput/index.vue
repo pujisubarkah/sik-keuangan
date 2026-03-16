@@ -26,7 +26,7 @@
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
           <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-            Daftar Suboutput Tahun 2026
+            Daftar Rincian Ouput Tahun 2026
           </h2>
         </div>
       </div>
@@ -35,7 +35,7 @@
       <div class="mb-6 flex flex-wrap items-center gap-2">
         <NuxtLink to="/admin/suboutput/create" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
           <IconPlus class="h-4 w-4" />
-          <span>Tambah Suboutput</span>
+          <span>Tambah Rincian Ouput</span>
         </NuxtLink>
         <NuxtLink to="/admin/suboutput/export" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
           <IconDownload class="h-4 w-4" />
@@ -70,7 +70,7 @@
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle w-16">No</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Ouput</th>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Tahun</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Jumlah</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Unit</th>
