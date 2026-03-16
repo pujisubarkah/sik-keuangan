@@ -8,7 +8,7 @@
         Rekapitulasi Total Anggaran Semua Satker Tahun {{ currentYear }}
       </h2>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div v-show="!collapsed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="(card, idx) in cards" :key="idx"
         class="stat shadow-lg rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 bg-brandBlue-500 text-white"
       >

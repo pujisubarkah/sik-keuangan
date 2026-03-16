@@ -10,7 +10,7 @@
             Statistik Semua Satker Tahun {{ currentYear }}
           </h2>
         </div>
-        <div class="box-body">
+        <div class="box-body" v-show="!collapsed">
           <div class="flex flex-col md:flex-row gap-6">
             <!-- Absorption Chart -->
             <div class="flex-1">
