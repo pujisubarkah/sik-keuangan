@@ -3,10 +3,10 @@
     <SuboutputAlert :showAlert="true" />
     <!-- Konten detail suboutput di sini -->
     <div class="mt-8">
-      <SuboutputDetail :data="subOutputData" />
+      <SuboutputDetail :data="subOutputData ?? {}" />
       <SuboutputRekapan :stats="stats" />
       <SuboutputCharts
-        :tahun="subOutputData.tahun"
+        :tahun="subOutputData?.tahun ?? ''"
         :chartPenyerapanOptions="chartPenyerapanOptions"
         :chartPenyerapanSeries="chartPenyerapanSeries"
         :chartPengeluaranOptions="chartPengeluaranOptions"
@@ -77,15 +77,26 @@ const stats = {
   persenPenyerapanSp2d: 6.0
 }
 
-// Dummy data, ganti dengan fetch API jika perlu
-const subOutputData = {
-  kode: '001',
-  nama: 'Suboutput Contoh',
-  unit: 'Unit A',
-  satker: 'Satker B',
-  program: 'Program C',
-  kegiatan: 'Kegiatan D',
-  kro: 'KRO E',
-  tahun: 2026
-}
+
+const subOutputData = ref(null)
+const route = useRoute()
+
+onMounted(async () => {
+  const id = route.params.id
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch(`/api/suboutput/${id}`, { headers })
+    const json = await res.json()
+    console.log('API /api/suboutput/[id] response:', json)
+    // Jika respons API langsung objek, assign langsung
+    if (json && typeof json === 'object') {
+      subOutputData.value = json
+    } else {
+      console.error('API error:', json)
+    }
+  } catch (err) {
+    console.error('Fetch error:', err)
+  }
+})
 </script>

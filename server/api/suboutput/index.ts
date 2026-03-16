@@ -4,6 +4,8 @@ import { masterSuboutput } from "@/server/database/schema/master_suboutput";
 import { and, eq, sql } from 'drizzle-orm';
 import { anggaranSuboutput } from '../../database/schema/anggaran_suboutput';
 import { tahunAnggaran } from '../../database/schema/tahun_anggaran';
+import { satker } from '../../database/schema/satker';
+import { unit } from '../../database/schema/unit_kerja';
 
 export default defineEventHandler(async (event) => {
 	if (event.method === 'POST') {
@@ -34,8 +36,10 @@ export default defineEventHandler(async (event) => {
 		nama_suboutput: masterSuboutput.nama_suboutput,
 		output_id: masterSuboutput.output_id,
 		total: masterSuboutput.total,
-		// Coalesce ensures we get 0 instead of null if no budget is found
 		perencanaan: sql<number>`COALESCE(${anggaranSuboutput.anggaran}, 0)`.mapWith(Number),
+		satker_name: satker.name,
+		unit_name: unit.name,
+		tahun_anggaran: tahunAnggaran.tahun,
 	};
 
 	// Join with tahun_anggaran to filter by year.
@@ -71,12 +75,18 @@ export default defineEventHandler(async (event) => {
 			.select(selectColumns)
 			.from(masterSuboutput)
 			.where(and(...whereConditions))
-			.leftJoin(anggaranSuboutput, and(...joinConditions));
+			.leftJoin(anggaranSuboutput, and(...joinConditions))
+			.leftJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
+			.leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
+			.leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id));
 	} else {
 		dbQueryWithJoin = db
 			.select(selectColumns)
 			.from(masterSuboutput)
-			.leftJoin(anggaranSuboutput, and(...joinConditions));
+			.leftJoin(anggaranSuboutput, and(...joinConditions))
+			.leftJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
+			.leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
+			.leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id));
 	}
 
 	const result = await dbQueryWithJoin.orderBy(masterSuboutput.kode_suboutput);

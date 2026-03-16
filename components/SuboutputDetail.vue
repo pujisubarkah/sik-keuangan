@@ -27,9 +27,14 @@
               <input v-else type="text" v-model="data[field.key]" class="border rounded px-2 py-1 w-full max-w-xs" />
             </template>
             <template v-else>
-              <span v-if="field.key === 'kode'" class="inline-block bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded text-sm font-semibold">{{ data?.[field.key] }}</span>
-              <span v-else-if="field.key === 'tahun'" class="inline-block bg-yellow-200 text-yellow-800 font-bold px-2.5 py-0.5 rounded-full text-xs">{{ data?.[field.key] }}</span>
-              <span v-else class="text-base font-semibold text-gray-800">{{ data?.[field.key] }}</span>
+              <span v-if="field.key === 'satker'">{{ data.satker_name || '-' }}</span>
+              <span v-else-if="field.key === 'unit'">{{ data.unit_name || '-' }}</span>
+              <span v-else-if="field.key === 'program'">{{ data.program?.nama_program || data.program_name || '-' }}</span>
+              <span v-else-if="field.key === 'kegiatan'">{{ data.kegiatan?.nama_kegiatan || data.kegiatan_name || '-' }}</span>
+              <span v-else-if="field.key === 'output'">{{ data.output?.nama_output || data.output_name || '-' }}</span>
+              <span v-else-if="field.key === 'kode_suboutput'">{{ data.kode_suboutput || '-' }}</span>
+              <span v-else-if="field.key === 'nama_suboutput'">{{ data.nama_suboutput || '-' }}</span>
+              <span v-else-if="field.key === 'tahun'">{{ data.tahun_anggaran || '-' }}</span>
             </template>
           </dd>
         </div>
@@ -49,12 +54,13 @@ const props = defineProps({ data: Object })
 // 'nama' (RO) is now shown prominently in the header,
 // so we don't need to repeat it in the details list.
 const fields = [
-  { key: 'unit', label: 'Unit' },
   { key: 'satker', label: 'Satker' },
-  { key: 'program', label: 'Program' },
-  { key: 'kegiatan', label: 'Kegiatan' },
-  { key: 'kro', label: 'KRO' },
-  { key: 'kode', label: 'Kode' },
+  { key: 'unit', label: 'Unit' },
+  { key: 'program', label: 'Program', format: val => val ? `${val.kode_program} - ${val.nama_program}` : '-' },
+  { key: 'kegiatan', label: 'Kegiatan', format: val => val ? `${val.kode_kegiatan} - ${val.nama_kegiatan}` : '-' },
+  { key: 'output', label: 'Output', format: val => val ? `${val.kode_output} - ${val.nama_output}` : '-' },
+  { key: 'kode_suboutput', label: 'Kode' },
+  { key: 'nama_suboutput', label: 'Suboutput' },
   { key: 'tahun', label: 'Tahun' },
 ]
 
