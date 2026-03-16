@@ -9,9 +9,6 @@
             </span>
             Statistik Semua Satker Tahun {{ currentYear }}
           </h2>
-          <button class="btn btn-sm btn-outline" @click="collapsed = !collapsed">
-            <i :class="collapsed ? 'fa fa-plus' : 'fa fa-minus'" class="text-xl text-blue-700"></i>
-          </button>
         </div>
         <div class="box-body" v-show="!collapsed">
           <div class="flex flex-col md:flex-row gap-6">

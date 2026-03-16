@@ -87,14 +87,14 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
       children: []
     },
     {
-      title: 'KRO',
+      title: 'Output',
       icon: 'tabler:briefcase',
       to: `/${effectiveSlug}/output`,
       group: 'navigation',
       children: []
     },
     {
-      title: 'RO',
+      title: 'Rincian Output',
       icon: 'tabler:folder',
       to: `/${effectiveSlug}/suboutput`,
       group: 'navigation',
@@ -235,8 +235,8 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
     { title: 'Pengeluaran', icon: 'tabler:cash-banknote', to: `/${effectiveSlug}/pengeluaran`, group: 'navigation', children: [] },
     { title: 'Program', icon: 'tabler:star', to: `/${effectiveSlug}/program`, group: 'navigation', children: [] },
     { title: 'Kegiatan', icon: 'tabler:tag', to: `/${effectiveSlug}/kegiatan`, group: 'navigation', children: [] },
-    { title: 'KRO', icon: 'tabler:briefcase', to: `/${effectiveSlug}/kro`, group: 'navigation', children: [] },
-    { title: 'RO', icon: 'tabler:folder', to: `/${effectiveSlug}/ro`, group: 'navigation', children: [] },
+    { title: 'Output', icon: 'tabler:briefcase', to: `/${effectiveSlug}/kro`, group: 'navigation', children: [] },
+    { title: 'Rincian Output', icon: 'tabler:folder', to: `/${effectiveSlug}/ro`, group: 'navigation', children: [] },
     { title: 'PNBP', icon: 'tabler:folder-open', to: `/${effectiveSlug}/pnpb`, group: 'navigation', children: [] },
     { title: 'Informasi', icon: 'tabler:info-circle', to: `/${effectiveSlug}/informasi`, group: 'navigation', children: [] },
     { title: 'Ganti Password', icon: 'tabler:lock', to: `/${effectiveSlug}/ganti-password`, group: 'navigation', children: [] },

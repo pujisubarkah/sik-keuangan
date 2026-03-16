@@ -136,10 +136,10 @@
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
-                <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Pagu</th>
-                <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">Perencanaan</th>
-                <th class="px-3 py-2 text-right font-semibold text-red-700 align-middle">Selisih</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Output</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pagu</th>
+                <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">Perencanaan</th>
+                <th class="px-3 py-2 text-center font-semibold text-red-700 align-middle">Selisih</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -172,16 +172,13 @@
                   </template>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span class="inline-block rounded bg-blue-100 px-2 py-1 font-semibold text-blue-700">{{
-                    formatCurrency(item.pagu) }}</span>
+                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.pagu) }}</span>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span class="inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700">{{
-                    formatCurrency(item.perencanaan) }}</span>
+                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.perencanaan) }}</span>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span
-                    :class="item.selisih >= 0 ? 'inline-block rounded bg-red-100 px-2 py-1 font-semibold text-red-700' : 'inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700'">
+                  <span :class="item.selisih >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
                     {{ formatCurrency(item.selisih) }}
                   </span>
                 </td>
@@ -220,18 +217,17 @@
             <tr class="bg-blue-50 font-bold">
               <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block rounded bg-blue-100 px-2 py-1 font-semibold text-blue-700">
+                <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
                 </span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700">
+                <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
                 </span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span
-                  :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block rounded bg-red-100 px-2 py-1 font-semibold text-red-700' : 'inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700'">
+                <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
                 </span>
               </td>

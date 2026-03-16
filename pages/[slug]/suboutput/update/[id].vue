@@ -4,8 +4,8 @@
       <SuboutputAlert class="mb-6" :showAlert="true" />
       <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
         <div class="px-8 pt-6 pb-4 border-b border-gray-200">
-          <h1 class="text-2xl font-bold text-gray-800">Ubah Suboutput</h1>
-          <p class="text-gray-500 text-sm mt-1">Perbarui detail suboutput di bawah ini.</p>
+          <h1 class="text-2xl font-bold text-gray-800">Ubah Rincian Ouput</h1>
+          <p class="text-gray-500 text-sm mt-1">Perbarui detail Rincian Ouput di bawah ini.</p>
         </div>
         <form class="px-8 py-8" @submit.prevent="handleSubmit">
           <div class="space-y-6">
@@ -34,7 +34,7 @@
 
             <!-- Suboutput -->
             <div class="grid grid-cols-12 items-start gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Suboutput <span style="color: red;">*</span></label>
+              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput <span style="color: red;">*</span></label>
               <div class="col-span-9">
                 <textarea v-model="form.suboutput" rows="4" id="suboutput" placeholder="Deskripsi Suboutput" class="form-textarea w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm"></textarea>
               </div>

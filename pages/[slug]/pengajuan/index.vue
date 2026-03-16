@@ -11,10 +11,10 @@
         </h2>
       </template>
       <template #default>
-        <form @submit.prevent="filterData" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+        <form @submit.prevent="filterData" class="space-y-2">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
             <!-- Status Data Dukung -->
-            <div class="md:col-span-4">
+            <div class="md:col-span-4 flex flex-col justify-end">
               <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                 <IconFolderCheck class="w-4 h-4 text-blue-500" />
                 <span>Status Data Dukung</span>
@@ -35,20 +35,20 @@
               </div>
             </div>
             <!-- Tanggal Pengajuan Awal -->
-            <div class="md:col-span-3">
+            <div class="md:col-span-3 flex flex-col justify-end">
               <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
             </div>
             <div class="md:col-span-1 flex items-end justify-center">
-              <span class="pb-3">s/d</span>
+              <span class="pb-2">s/d</span>
             </div>
             <!-- Tanggal Pengajuan Akhir -->
-            <div class="md:col-span-3">
+            <div class="md:col-span-3 flex flex-col justify-end">
               <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
             <!-- Status Data -->
-            <div class="md:col-span-4">
+            <div class="md:col-span-4 flex flex-col justify-end">
               <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                 <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
                 <span>Status Data</span>
@@ -68,12 +68,12 @@
               </div>
             </div>
           </div>
-          <div class="flex gap-2">
-            <Button @click="filterData" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+          <div class="flex gap-2 mt-2">
+            <Button @click="filterData" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
               <IconSearch class="w-4 h-4" />
               <span>Filter Data</span>
             </Button>
-            <Button @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+            <Button @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
               <IconRefresh class="w-4 h-4" />
               <span>Reset</span>
             </Button>
@@ -93,8 +93,8 @@
           <thead class="bg-blue-100 sticky top-0 z-10">
             <tr>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
-              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode Suboutput</th>
-              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode RO</th>
+              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Output</th>
               <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Komp</th>
               <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Sub Komp</th>
               <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Akun</th>
@@ -177,11 +177,14 @@
         </table>
       </div>
       <!-- Pagination -->
-      <div class="flex justify-center mt-4">
-        <div class="btn-group">
-          <Button size="sm" :disabled="currentPage === 1" @click="currentPage--">«</Button>
-          <Button size="sm">Page {{ currentPage }} of {{ totalPages }}</Button>
-          <Button size="sm" :disabled="currentPage === totalPages" @click="currentPage++">»</Button>
+      <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <span class="text-sm text-gray-500 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
+        <div class="flex flex-wrap items-center gap-2 md:justify-end">
+          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(1)">Awal</button>
+          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</button>
+          <button v-for="page in visiblePages" :key="page" type="button" class="rounded-md border px-3 py-2 text-sm transition-colors" :class="page === currentPage ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'" @click="goToPage(page)">{{ page }}</button>
+          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(currentPage + 1)">Next</button>
+          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(totalPages)">Akhir</button>
         </div>
       </div>
     </div>
@@ -207,10 +210,10 @@
         <div class="text-sm mb-2">&nbsp;</div>
 
       </div>
+
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
@@ -219,7 +222,6 @@ import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconR
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' });
-
 
 // Reactive data
 const drawerOpen = ref(false)
@@ -321,6 +323,22 @@ const endIndex = computed(() => {
   const end = currentPage.value * itemsPerPage.value
   return end > tableData.value.length ? tableData.value.length : end
 })
+
+// Pagination for numbered buttons (like program)
+const visiblePages = computed(() => {
+  const maxVisible = 5
+  const total = totalPages.value
+  const start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
+  const end = Math.min(total, start + maxVisible - 1)
+  const adjustedStart = Math.max(1, end - maxVisible + 1)
+  return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index)
+})
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+  }
+}
 
 // Methods
 const toggleSidebar = () => {

@@ -2,21 +2,15 @@
 	<div class="mb-6">
 		<div class="flex items-center justify-between mb-4">
 			<h2 class="text-xl font-bold text-blue-700 flex items-center gap-3">
-				<span class="inline-flex items-center justify-center bg-blue-100 rounded-full p-2 mr-1">
-					<i class="fa fa-list text-2xl text-blue-600"></i>
-				</span>
+				<button class="btn btn-sm btn-outline flex items-center justify-center mr-2" @click="collapsed = !collapsed" :aria-label="collapsed ? 'Tampilkan' : 'Sembunyikan'">
+					<i :class="collapsed ? 'fa fa-chevron-down' : 'fa fa-chevron-up'" class="text-xl text-blue-700"></i>
+				</button>
 				Daftar Kegiatan Semua Satker Tahun 2026
 			</h2>
 			<div class="flex gap-2">
-				<button class="btn btn-sm btn-success" @click="collapsed = false">
-					<i class="fa fa-plus"></i> Tampilkan Kegiatan
-				</button>
 				<a class="btn btn-sm btn-success" href="/index.php?r=admin/index&export=1&exportObject=kegiatan">
 					<i class="fa fa-download"></i> Export Excel
 				</a>
-				<button class="btn btn-sm btn-outline" @click="collapsed = !collapsed">
-					<i :class="collapsed ? 'fa fa-plus' : 'fa fa-minus'" class="text-xl text-blue-700"></i>
-				</button>
 			</div>
 		</div>
 		<div v-show="!collapsed" class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
@@ -26,7 +20,7 @@
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
 						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
 						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kegiatan</th>
-						   <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">KRO</th>
+						   <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">Ouput</th>
 						   <th class="px-3 py-2 text-center font-semibold text-yellow-700 align-middle">RO</th>
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pagu</th>
 						<th class="px-3 py-2 text-center font-semibold text-red-700 align-middle">Realisasi<br>Bendahara</th>

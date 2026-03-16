@@ -7,53 +7,37 @@
         </span>
         Rekapitulasi Total Anggaran Semua Satker Tahun {{ currentYear }}
       </h2>
-      <button class="btn btn-sm btn-outline" @click="collapsed = !collapsed">
-        <Icon :icon="collapsed ? 'mdi:plus' : 'mdi:minus'" class="text-xl text-blue-700" />
-      </button>
     </div>
     <div v-show="!collapsed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="(card, idx) in cards" :key="idx"
-        :class="[
-          'stat color-card p-6 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.05] hover:shadow-2xl transition-all duration-300 animate-fadein',
-          [5,6,4,7].includes(idx) ? '' : cardColors[idx % cardColors.length]
-        ]"
-        :style="
-          idx === 5 ? 'background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);' :
-          idx === 6 ? 'background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);' :
-          idx === 4 ? 'background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);' :
-          idx === 7 ? 'background: linear-gradient(135deg, #2dd4bf 0%, #22d3ee 100%);' :
-          ''
-        "
+        class="stat shadow-lg rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 bg-brandBlue-500 text-white"
       >
         <!-- Silhouette Background -->
-        <div class="absolute -right-6 -bottom-6 opacity-30 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none select-none">
-          <Icon :icon="card.icon" :class="[
-            'text-[8rem] blur-[2px]',
-            idx === 5 ? 'text-pink-900/30' :
-            idx === 6 ? 'text-indigo-900/30' :
-            idx === 4 ? 'text-rose-900/30' :
-            idx === 7 ? 'text-cyan-900/30' :
-            'text-black/20'
-          ]" />
+        <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none select-none z-0">
+          <Icon :icon="card.icon" class="text-[10rem] blur-[3px] text-white" />
         </div>
         
         <!-- Gradient Overlay (dihilangkan agar warna card keluar) -->
         <!-- <div class="absolute inset-0 bg-gradient-to-br from-white/30 via-white/10 to-transparent pointer-events-none"></div> -->
         
         <!-- Content -->
-        <div class="relative z-10">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="inline-flex items-center justify-center bg-gradient-to-br from-white/60 to-white/10 shadow-lg rounded-full p-2">
-              <Icon :icon="card.icon" class="text-2xl bg-gradient-to-br from-blue-500 via-pink-400 to-yellow-400 bg-clip-text text-transparent drop-shadow" />
+        <div class="relative z-10 flex flex-col items-start gap-0">
+          <div class="flex items-center gap-3 mb-2 relative">
+            <span class="inline-flex items-center justify-center bg-white/20 shadow-lg rounded-full p-2 z-10">
+              <Icon :icon="card.icon" class="text-2xl drop-shadow text-white" />
             </span>
-            <span class="font-semibold text-gray-900 text-lg drop-shadow-sm">{{ card.title }}</span>
+            <span class="font-semibold text-lg drop-shadow z-10">{{ card.title }}</span>
           </div>
-          <div class="flex items-end gap-2 mt-4">
-            <span class="text-3xl font-extrabold text-gray-900 drop-shadow">{{ card.value }}</span>
-            <span v-if="card.unit" class="text-lg text-gray-700 font-medium">{{ card.unit }}</span>
+          <div class="flex items-end gap-2 mt-2">
+            <span class="text-3xl font-extrabold drop-shadow">{{ card.value }}</span>
+            <span v-if="card.unit" class="text-lg font-medium">{{ card.unit }}</span>
           </div>
-          <a :href="card.link" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:text-pink-600 transition-colors">
-            Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base"></i>
+          <a
+            :href="card.link"
+            class="mt-4 text-sm font-semibold text-white flex items-center gap-1 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:underline focus:outline-none"
+            style="padding-left:0"
+          >
+            Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white !text-white"></i>
           </a>
         </div>
       </div>

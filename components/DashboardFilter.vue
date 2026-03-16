@@ -32,9 +32,10 @@
       <form @submit.prevent="submitFilter" class="space-y-4">
         <!-- Filter Fields Grid -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <div class="col-span-12 flex flex-row items-end gap-4">
           
           <!-- 🏢 Satker Select -->
-          <div class="md:col-span-4">
+            <div class="md:col-span-4 flex-1 flex flex-col">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <IconBuilding class="w-4 h-4 text-blue-500" />
               <span>Satker</span>
@@ -44,7 +45,7 @@
               <select 
                 v-model="selectedSatker"
                 @change="loadUnits"
-                class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer"
+                class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 appearance-none cursor-pointer"
                 name="DashboardForm[id_satker]"
                 :class="{ 'border-green-400 ring-2 ring-green-100': selectedSatker }"
               >
@@ -53,9 +54,7 @@
                   {{ satker.label }}
                 </option>
               </select>
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <IconBuilding class="w-5 h-5 text-gray-400" />
-              </div>
+              <!-- Icon di dalam dropdown Satker dihapus -->
               <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <IconChevronDown class="w-4 h-4 text-gray-400" />
               </div>
@@ -63,7 +62,7 @@
           </div>
 
           <!-- 🏭 Unit Select -->
-          <div class="md:col-span-4">
+            <div class="md:col-span-4 flex-1 flex flex-col">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <IconSitemap class="w-4 h-4 text-blue-500" />
               <span>Unit</span>
@@ -72,31 +71,25 @@
             <div class="relative">
               <select 
                 v-model="selectedUnit"
-                class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed"
+                class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 appearance-none cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed"
                 name="DashboardForm[id_unit]"
                 :disabled="!selectedSatker"
                 :class="{ 'border-green-400 ring-2 ring-green-100': selectedUnit }"
               >
-                <option value="" disabled selected>{{ selectedSatker ? 'Pilih Unit...' : 'Pilih Satker dulu' }}</option>
+                <option value="" disabled selected>{{ selectedSatker ? 'Pilih Unit...' : 'Pilih Satker terlebih dahulu' }}</option>
                 <option v-for="unit in units" :key="unit.value" :value="unit.value">
                   {{ unit.label }}
                 </option>
               </select>
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <IconUsersGroup class="w-5 h-5 text-gray-400" />
-              </div>
+              <!-- Icon di dalam dropdown Unit dihapus -->
               <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <IconChevronDown class="w-4 h-4 text-gray-400" />
               </div>
             </div>
-            <p v-if="!selectedSatker" class="text-xs text-gray-400 mt-1 ml-1">
-              <IconInfoCircle class="w-3 h-3 inline mr-0.5" />
-              Pilih satker untuk menampilkan unit
-            </p>
           </div>
 
           <!-- 📅 Year Input -->
-          <div class="md:col-span-2">
+            <div class="md:col-span-2 flex-1 flex flex-col">
             <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
               <IconCalendar class="w-4 h-4 text-blue-500" />
               <span>Tahun</span>
@@ -108,24 +101,24 @@
                 min="2000"
                 max="2100"
                 placeholder="2026"
-                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 text-center font-mono"
+                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 text-center font-mono"
                 @input="validateYear"
               />
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <IconCalendarTime class="w-5 h-5 text-gray-400" />
-              </div>
+              <!-- Icon di dalam input Tahun dihapus -->
             </div>
           </div>
 
           <!-- 🔍 Submit Button -->
-          <div class="md:col-span-2 flex items-end">
-            <button 
-              type="submit" 
-              class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
-            >
-              <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span>Tampilkan</span>
-            </button>
+            <div class="md:col-span-2 flex-1 flex flex-col">
+              <button 
+                type="submit" 
+                class="w-full bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
+                style="min-height:44px"
+              >
+                <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Tampilkan</span>
+              </button>
+            </div>
           </div>
         </div>
 
