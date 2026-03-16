@@ -1,91 +1,85 @@
-import VTable from '~/components/UI/v-table.vue'
-import SuboutputAlert from '@/components/SuboutputAlert.vue'
-<!-- filepath: c:\Users\user\Documents\sik-keuangan2\pages\[slug]\perencanaan.vue -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+      <!-- Alert Suboutput Belum Lengkap -->
+      <SuboutputAlert :showAlert="true" />
+
       <!-- Header Section -->
-      <div class="md:flex md:items-center md:justify-between mb-6">
+      <div class="mb-6 md:flex md:items-center md:justify-between">
         <div class="flex-1 min-w-0">
-          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
             Perencanaan {{ selectedSatkerName || 'Semua Satker' }} Tahun {{ filterForm.tahun }}
           </h2>
         </div>
       </div>
 
       <!-- Filter Card -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-          <h3 class="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      <div class="mb-6 overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
+        <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4">
+          <h3 class="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
             Filter Data
           </h3>
-          <button v-if="hasActiveFilters" @click="resetFilters" class="text-xs text-gray-500 hover:text-red-600 flex items-center gap-1 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          <button v-if="hasActiveFilters" @click="resetFilters"
+            class="flex items-center gap-1 text-xs text-gray-500 transition-colors hover:text-red-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             Reset
           </button>
         </div>
         <div class="px-6 py-4">
           <form @submit.prevent="filterData" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
               <!-- 🏢 Satker Select -->
               <div class="md:col-span-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Satker</label>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Satker</label>
                 <div class="relative">
-                  <select 
-                    v-model="filterForm.id_satker" 
-                    @change="onSatkerChange" 
-                    class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    name="PerencanaanForm[id_satker]"
-                  >
+                  <select v-model="filterForm.id_satker" @change="onSatkerChange"
+                    class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    name="PerencanaanForm[id_satker]">
                     <option value="">- Semua Satker -</option>
-                    <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
+                    <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}
+                    </option>
                   </select>
                 </div>
               </div>
-              
+
               <!-- 🏭 Unit Select -->
               <div class="md:col-span-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Unit</label>
                 <div class="relative">
-                  <select 
-                    v-model="filterForm.id_unit" 
-                    class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed"
-                    :disabled="!filterForm.id_satker"
-                    name="PerencanaanForm[id_unit]"
-                  >
+                  <select v-model="filterForm.id_unit"
+                    class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 sm:text-sm"
+                    :disabled="!filterForm.id_satker" name="PerencanaanForm[id_unit]">
                     <option value="">- Semua Unit -</option>
                     <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                   </select>
                 </div>
               </div>
-              
+
               <!-- 📅 Year Input -->
               <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tahun</label>
-                <input 
-                  v-model.number="filterForm.tahun" 
-                  type="number" 
-                  min="2000" 
-                  max="2100" 
-                  placeholder="2026" 
-                  class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-center"
-                />
+                <label class="mb-1 block text-sm font-medium text-gray-700">Tahun</label>
+                <input v-model.number="filterForm.tahun" type="number" min="2000" max="2100" placeholder="2026"
+                  class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-center" />
               </div>
-              
+
               <!-- 🔍 Submit Button -->
-              <div class="md:col-span-2 flex items-end">
-                <button
-                  type="submit"
-                  class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              <div class="flex items-end md:col-span-2">
+                <button type="submit"
+                  class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                    </path>
                   </svg>
                   <span>Tampilkan</span>
                 </button>
@@ -96,22 +90,22 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
       </div>
 
       <!-- Statistics Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-white overflow-hidden shadow sm:rounded-lg border border-gray-200">
+      <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
           <div class="px-6 py-4">
-            <dt class="text-sm font-medium text-gray-500 truncate">Pagu Anggaran</dt>
+            <dt class="truncate text-sm font-medium text-gray-500">Pagu Anggaran</dt>
             <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalStats.pagu) }}</dd>
           </div>
         </div>
-        <div class="bg-white overflow-hidden shadow sm:rounded-lg border border-gray-200">
+        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
           <div class="px-6 py-4">
-            <dt class="text-sm font-medium text-gray-500 truncate">Perencanaan</dt>
+            <dt class="truncate text-sm font-medium text-gray-500">Perencanaan</dt>
             <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalStats.perencanaan) }}</dd>
           </div>
         </div>
-        <div class="bg-white overflow-hidden shadow sm:rounded-lg border border-gray-200">
+        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
           <div class="px-6 py-4">
-            <dt class="text-sm font-medium text-gray-500 truncate">Selisih</dt>
+            <dt class="truncate text-sm font-medium text-gray-500">Selisih</dt>
             <dd class="mt-1 text-2xl font-semibold" :class="totalStats.selisih >= 0 ? 'text-red-600' : 'text-green-600'">
               {{ formatCurrency(totalStats.selisih) }}
             </dd>
@@ -119,12 +113,14 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
         </div>
       </div>
 
+ 
+
       <!-- Data Table Card -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
-        
+      <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
+
         <!-- Summary -->
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-          <span class="text-sm text-gray-500 font-medium">
+        <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4">
+          <span class="text-sm font-medium text-gray-500">
             Menampilkan {{ suboutputData.length }} hasil
           </span>
           <!-- Debug info (bisa dihapus setelah fix) -->
@@ -134,9 +130,9 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
         </div>
 
         <!-- Table -->
-        <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+        <div class="overflow-x-auto bg-white p-4 shadow-lg rounded-xl">
           <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
-            <thead class="bg-blue-100 sticky top-0 z-10">
+            <thead class="sticky top-0 z-10 bg-blue-100">
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
@@ -150,8 +146,9 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
               <!-- Loading State -->
               <tr v-if="loading">
                 <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                  <div class="flex justify-center items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <div class="flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-spin text-indigo-600" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     <span class="ml-2 text-sm">Memuat data...</span>
@@ -160,12 +157,13 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
               </tr>
 
               <!-- Data Rows -->
-              <tr v-for="(item, index) in suboutputData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+              <tr v-for="(item, index) in suboutputData" :key="item.id" class="align-middle hover:bg-yellow-50">
                 <td class="px-3 py-2 text-center align-middle">{{ index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">{{ item.kode }}</td>
                 <td class="px-3 py-2 align-middle">
                   <template v-if="item.suboutput_id">
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.suboutput_id}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.suboutput_id}`"
+                      class="font-medium text-gray-900 line-clamp-2 hover:text-indigo-600 hover:underline">
                       {{ item.suboutput }}
                     </NuxtLink>
                   </template>
@@ -174,13 +172,16 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
                   </template>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.pagu) }}</span>
+                  <span class="inline-block rounded bg-blue-100 px-2 py-1 font-semibold text-blue-700">{{
+                    formatCurrency(item.pagu) }}</span>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.perencanaan) }}</span>
+                  <span class="inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700">{{
+                    formatCurrency(item.perencanaan) }}</span>
                 </td>
                 <td class="px-3 py-2 text-right align-middle">
-                  <span :class="item.selisih >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
+                  <span
+                    :class="item.selisih >= 0 ? 'inline-block rounded bg-red-100 px-2 py-1 font-semibold text-red-700' : 'inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700'">
                     {{ formatCurrency(item.selisih) }}
                   </span>
                 </td>
@@ -190,14 +191,17 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
               <tr v-if="!loading && suboutputData.length === 0">
                 <td colspan="6" class="px-6 py-10 text-center text-gray-500">
                   <div class="flex flex-col items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-2 h-12 w-12 text-gray-300" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <p class="text-sm">Tidak ada data ditemukan.</p>
-                    <p v-if="hasActiveFilters" class="text-xs text-gray-400 mt-1">
+                    <p v-if="hasActiveFilters" class="mt-1 text-xs text-gray-400">
                       Coba reset filter atau periksa parameter pencarian.
                     </p>
-                    <button v-if="hasActiveFilters" @click="resetFilters" class="mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                    <button v-if="hasActiveFilters" @click="resetFilters"
+                      class="mt-2 text-xs font-medium text-indigo-600 hover:text-indigo-800">
                       Reset filter
                     </button>
                   </div>
@@ -206,27 +210,28 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
             </tbody>
           </table>
         </div>
-        
+
       </div>
 
       <!-- Total Row -->
-      <div class="px-6 py-3 bg-gray-50 border-t border-gray-200">
+      <div class="border-t border-gray-200 bg-gray-50 px-6 py-3">
         <table class="min-w-full text-xs">
           <tbody>
             <tr class="bg-blue-50 font-bold">
               <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
+                <span class="inline-block rounded bg-blue-100 px-2 py-1 font-semibold text-blue-700">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
                 </span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
+                <span class="inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
                 </span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
+                <span
+                  :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block rounded bg-red-100 px-2 py-1 font-semibold text-red-700' : 'inline-block rounded bg-green-100 px-2 py-1 font-semibold text-green-700'">
                   {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
                 </span>
               </td>
@@ -241,7 +246,8 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { NuxtLink } from '#components'
+// NuxtLink diimport otomatis dari '#imports' oleh Nuxt 3, tidak perlu import manual
+import SuboutputAlert from '@/components/SuboutputAlert.vue'
 
 // Config
 const debugMode = false // Set true untuk debugging query
@@ -249,7 +255,7 @@ const debugMode = false // Set true untuk debugging query
 // Reactive data
 const loading = ref(false)
 const filterForm = ref({
-  id_satker: '',      // Empty = semua satker
+  id_satker: '', // Empty = semua satker
   id_unit: '',
   tahun: new Date().getFullYear()
 })
@@ -307,16 +313,16 @@ const loadUnitList = async () => {
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   const satkerId = filterForm.value.id_satker
-  
+
   if (!satkerId) {
     unitOptions.value = [{ text: '- Semua Unit -', value: '' }]
     return
   }
-  
+
   try {
     const unitRes = await $fetch(`/api/unit_kerja/satker/${satkerId}`, { headers })
     unitOptions.value = [
-      { text: '- Semua Unit -', value: '' }, 
+      { text: '- Semua Unit -', value: '' },
       ...unitRes.map(item => ({ text: item.name, value: item.id }))
     ]
   } catch (err) {
@@ -327,7 +333,7 @@ const loadUnitList = async () => {
 
 const buildQueryParams = () => {
   const params = new URLSearchParams()
-  
+
   // Hanya tambahkan parameter jika memiliki nilai (truthy)
   if (filterForm.value.id_satker) {
     params.append('satker_id', filterForm.value.id_satker)
@@ -338,39 +344,39 @@ const buildQueryParams = () => {
   if (filterForm.value.tahun) {
     params.append('tahun', filterForm.value.tahun)
   }
-  
+
   const queryString = params.toString()
-  
+
   // Debug log
   if (debugMode) {
     debugQuery.value = queryString || '(no params - fetch all)'
     console.log('[Filter Query]', queryString ? `?${queryString}` : 'no query')
   }
-  
+
   // Return endpoint URL: jika ada params tambahkan ?, jika tidak return endpoint polos
-    return queryString ? `/api/suboutput?${queryString}` : '/api/suboutput'
+  return queryString ? `/api/suboutput?${queryString}` : '/api/suboutput'
 }
 
 const filterData = async () => {
   loading.value = true
   currentPage.value = 1
-  
+
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
-  
+
   // Build URL dengan query params yang benar
   const endpoint = buildQueryParams()
-  
+
   console.log('API endpoint:', endpoint)
-  
+
   try {
     const res = await $fetch(endpoint, { headers })
-    
+
     console.log('API response:', res)
-    
+
     // Handle response: bisa array langsung atau object dengan data property
     const dataArray = Array.isArray(res) ? res : (res.data || res.items || [])
-    
+
     // Map response sesuai struktur API
     suboutputData.value = dataArray.map(item => {
       const pagu = Number(item.total) || 0
@@ -387,17 +393,17 @@ const filterData = async () => {
         selisih
       }
     })
-    
+
     // Calculate totals
     totalStats.value.pagu = suboutputData.value.reduce((a, b) => a + (b.pagu || 0), 0)
     totalStats.value.perencanaan = suboutputData.value.reduce((a, b) => a + (b.perencanaan || 0), 0)
     totalStats.value.selisih = suboutputData.value.reduce((a, b) => a + (b.selisih || 0), 0)
-    
+
     // Debug log hasil
     if (debugMode) {
       console.log('[Fetched Data]', suboutputData.value.length, 'items')
     }
-    
+
   } catch (err) {
     console.error('Error fetching perencanaan:', err)
     suboutputData.value = []
@@ -421,22 +427,22 @@ onMounted(async () => {
   loading.value = true
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
-  
+
   try {
     // 1. Fetch satker options
     const satkerRes = await $fetch('/api/satker', { headers })
     const satkerData = Array.isArray(satkerRes) ? satkerRes : satkerRes.data || []
     satkerOptions.value = satkerData.map(item => ({ text: item.name, value: item.id }))
-    
+
     // 2. Jika hanya ada 1 satker, auto-select (opsional)
     if (satkerOptions.value.length === 1) {
       filterForm.value.id_satker = satkerOptions.value[0].value
       await loadUnitList()
     }
-    
+
     // 3. Fetch data awal dengan filter saat ini (bisa kosong = semua data)
     await filterData()
-    
+
   } catch (err) {
     console.error('Error on mounted:', err)
   } finally {

@@ -38,14 +38,11 @@ export default defineEventHandler(async (event) => {
 		perencanaan: sql<number>`COALESCE(${anggaranSuboutput.anggaran}, 0)`.mapWith(Number),
 	};
 
-	// Base query
-	let dbQuery = db.select(selectColumns).from(masterSuboutput);
-
 	// Join with tahun_anggaran to filter by year.
 	// We use a subquery to get the id of the requested year to avoid complex joins.
-	const targetYear = query.tahun ? String(query.tahun) : new Date().getFullYear().toString();
+	const targetYear = query.tahun ? Number(query.tahun) : new Date().getFullYear();
 	const yearRecord = await db.select({ id: tahunAnggaran.id }).from(tahunAnggaran).where(eq(tahunAnggaran.tahun, targetYear)).limit(1);
-	const targetYearId = yearRecord.length > 0 ? yearRecord[0].id : null;
+	const targetYearId = yearRecord[0]?.id ?? null;
 
 	// Conditions for the LEFT JOIN on anggaranSuboutput.
 	// This allows us to fetch planning data for the specific context (year, satker, unit).
@@ -62,22 +59,27 @@ export default defineEventHandler(async (event) => {
 		joinConditions.push(eq(anggaranSuboutput.unit_id, Number(query.unit_id)));
 	}
 
-	// Apply the LEFT JOIN to fetch the planning data (perencanaan)
-	dbQuery = dbQuery.leftJoin(anggaranSuboutput, and(...joinConditions));
-	
-	// Apply WHERE conditions on the main table if any
+	// Apply WHERE conditions on the main table if any (before leftJoin)
 	const whereConditions = [];
 	if (query.output_id) {
 		whereConditions.push(eq(masterSuboutput.output_id, Number(query.output_id)));
 	}
-	// Note: If satker/unit filtering should restrict the *list of suboutputs* themselves,
-	// a different query structure (e.g., using INNER JOIN or EXISTS) would be needed.
-	// The current LEFT JOIN shows all suboutputs and fills in planning data where it matches.
+
+	let dbQueryWithJoin;
 	if (whereConditions.length > 0) {
-		dbQuery.where(and(...whereConditions));
+		dbQueryWithJoin = db
+			.select(selectColumns)
+			.from(masterSuboutput)
+			.where(and(...whereConditions))
+			.leftJoin(anggaranSuboutput, and(...joinConditions));
+	} else {
+		dbQueryWithJoin = db
+			.select(selectColumns)
+			.from(masterSuboutput)
+			.leftJoin(anggaranSuboutput, and(...joinConditions));
 	}
-	
-	const result = await dbQuery.orderBy(masterSuboutput.kode_suboutput);
+
+	const result = await dbQueryWithJoin.orderBy(masterSuboutput.kode_suboutput);
 
 	return {
 		success: true,
