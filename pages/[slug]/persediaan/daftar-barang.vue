@@ -22,7 +22,7 @@ definePageMeta({ layout: 'default' });
     <div class="mb-4">
       <NuxtLink
         to="/admin/persediaan/create"
-        class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+        class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg"
       >
         <IconPlus class="w-4 h-4" />
         <span>Tambah Barang Persediaan</span>
@@ -88,7 +88,7 @@ definePageMeta({ layout: 'default' });
                 <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Akun" />
               </td>
               <td class="text-center">
-                <button @click="applyFilters" type="button" class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                <button @click="applyFilters" type="button" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
                   <IconSearch class="w-4 h-4" />
                   <span>Filter Data</span>
                 </button>

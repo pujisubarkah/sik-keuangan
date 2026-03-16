@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Button } from '@idds/vue'
 import { IconLock, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import VTable from '~/components/UI/v-table.vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
@@ -50,21 +49,21 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
         <span class="text-center text-sm">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
-        <Button type="warning" size="sm" circle>
-          <IconLock class="w-5 h-5" />
-        </Button>
+        <button class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+          <IconLock class="h-4 w-4" />
+        </button>
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-          <Button type="info" size="sm" circle>
-            <IconEye class="w-5 h-5" />
-          </Button>
-          <Button type="warning" size="sm" circle>
-            <IconPencil class="w-5 h-5" />
-          </Button>
-          <Button type="error" size="sm" circle>
-            <IconTrash class="w-5 h-5" />
-          </Button>
+          <button class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+            <IconEye class="h-4 w-4" />
+          </button>
+          <button class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+            <IconPencil class="h-4 w-4" />
+          </button>
+          <button class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+            <IconTrash class="h-4 w-4" />
+          </button>
         </div>
       </template>
       <template #empty>

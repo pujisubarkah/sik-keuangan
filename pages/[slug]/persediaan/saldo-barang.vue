@@ -194,8 +194,8 @@ function cetakPdf() {
             </div>
             <!-- Filter Button -->
             <div class="md:col-span-2 flex items-end">
-              <button type="submit" class="btn btn-gradient w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
-                <Icon icon="tabler:search" class="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg w-full">
+                <Icon icon="tabler:search" class="w-5 h-5" />
                 <span>Tampilkan</span>
               </button>
             </div>
@@ -206,11 +206,11 @@ function cetakPdf() {
 
     <!-- Action Buttons -->
     <div class="flex flex-wrap gap-3 mb-4">
-      <NuxtLink to="/admin/persediaan/create" class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+      <NuxtLink to="/admin/persediaan/create" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
         <Icon icon="tabler:plus" class="w-4 h-4" />
         <span>Tambah Barang Persediaan</span>
       </NuxtLink>
-      <button @click="cetakPdf" type="button" class="btn btn-gradient px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+      <button @click="cetakPdf" type="button" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
         <Icon icon="tabler:printer" class="w-4 h-4" />
         <span>Cetak Rekap Saldo</span>
       </button>

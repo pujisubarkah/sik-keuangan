@@ -346,10 +346,10 @@ definePageMeta({ layout: 'default' })
 
       <!-- ACTION -->
       <div class="mb-6">
-        <Button type="primary" size="md" class="w-fit flex items-center gap-2" @click="openAddModal">
-          <IconPlus class="w-5 h-5" />
+        <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg" @click="openAddModal">
+          <IconPlus class="w-4 h-4" />
           Tambah PUMK
-        </Button>
+        </button>
       </div>
 
       <div class="text-sm mb-4 text-blue-700 font-semibold">

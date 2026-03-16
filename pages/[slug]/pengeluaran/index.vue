@@ -5,57 +5,89 @@
 
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
-          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-            Daftar Pengeluaran Tahun 2026
-          </h2>
+          <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun 2026</h1>
+
         </div>
       </div>
 
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h3 class="text-base font-semibold text-gray-900">Filter Data</h3>
-        </div>
-        <div class="px-6 py-5">
-          <form @submit.prevent="filterData" class="space-y-4">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-              <div>
-                <label class="mb-2 block text-sm font-medium text-gray-700">Status Data Dukung</label>
-                <select v-model="filterForm.status_berkas" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                  <option value="">Semua Status</option>
-                  <option value="1">Tersedia</option>
-                  <option value="0">Belum Tersedia</option>
-                </select>
+      <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
+        <template #header>
+          <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
+            <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
+            Filter Data
+          </h2>
+        </template>
+        <template #default>
+          <form @submit.prevent="filterData" class="space-y-2">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
+              <!-- Status Data Dukung -->
+              <div class="md:col-span-4 flex flex-col justify-end">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <IconFolderCheck class="w-4 h-4 text-blue-500" />
+                  <span>Status Data Dukung</span>
+                  <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
+                </label>
+                <div class="relative">
+                  <select v-model="filterForm.status_berkas" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
+                    <option value="" disabled selected>Semua Status</option>
+                    <option value="1">Tersedia</option>
+                    <option value="0">Belum Tersedia</option>
+                  </select>
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconFolderCheck class="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
               </div>
-              <div>
-                <label class="mb-2 block text-sm font-medium text-gray-700">Tanggal Pengajuan Awal</label>
-                <input v-model="filterForm.tanggal_pengajuan_awal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+              <!-- Tanggal Pengajuan Awal -->
+              <div class="md:col-span-3 flex flex-col justify-end">
+                <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
               </div>
-              <div>
-                <label class="mb-2 block text-sm font-medium text-gray-700">Tanggal Pengajuan Akhir</label>
-                <input v-model="filterForm.tanggal_pengajuan_akhir" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+              <div class="md:col-span-1 flex items-end justify-center">
+                <span class="pb-2">s/d</span>
               </div>
-              <div>
-                <label class="mb-2 block text-sm font-medium text-gray-700">Status Data</label>
-                <select v-model="filterForm.status_verifikator" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                  <option value="">Semua Data</option>
-                  <option value="0">Hanya Pengajuan Baru</option>
-                </select>
+              <!-- Tanggal Pengajuan Akhir -->
+              <div class="md:col-span-3 flex flex-col justify-end">
+                <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
               </div>
             </div>
-
-            <div class="flex flex-wrap items-center gap-3">
-              <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">
-                <IconSearch class="h-4 w-4" />
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
+              <!-- Status Data -->
+              <div class="md:col-span-4 flex flex-col justify-end">
+                <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
+                  <span>Status Data</span>
+                  <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
+                </label>
+                <div class="relative">
+                  <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
+                    <option value="" disabled selected>Semua Data</option>
+                    <option value="0">Hanya Pengajuan Baru</option>
+                  </select>
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconDatabaseSearch class="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-2">
+              <Button @click="filterData" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                <IconSearch class="w-4 h-4" />
                 <span>Filter Data</span>
-              </button>
-              <button type="button" @click="resetFilters" class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
-                <IconRefresh class="h-4 w-4" />
+              </Button>
+              <Button @click="resetFilters" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                <IconRefresh class="w-4 h-4" />
                 <span>Reset</span>
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
-      </div>
+        </template>
+      </Card>
 
       <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -216,8 +248,9 @@
 
 
 <script setup>
+import { Button, TextField, Card } from '@idds/vue'
 import { computed, ref, watch } from 'vue'
-import { IconSearch, IconRefresh, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
+import { IconSearch, IconRefresh, IconEye, IconPencil, IconTrash, IconFolderCheck, IconChevronDown, IconDatabaseSearch } from '@tabler/icons-vue';
 import { NuxtLink } from '#components'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 

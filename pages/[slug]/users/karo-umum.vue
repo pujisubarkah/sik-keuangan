@@ -52,10 +52,10 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
       <h1 class="text-3xl font-bold text-blue-700 text-center">Daftar Karo Umum/Kabag Keu</h1>
     </div>
     <div class="mb-6">
-      <Button type="primary" size="md" class="w-fit flex items-center gap-2">
-        <IconPlus class="w-5 h-5" />
+      <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <IconPlus class="w-4 h-4" />
         Tambah Karo Umum
-      </Button>
+      </button>
     </div>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">

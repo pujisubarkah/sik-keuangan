@@ -45,7 +45,7 @@ function confirmDeleteUser() {
 }
 import { ref, computed } from 'vue'
 import { Button } from '@idds/vue'
-import { IconLock, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
+import { IconLock, IconEye, IconPencil, IconTrash, IconPlus } from '@tabler/icons-vue'
 import VTable from '~/components/UI/v-table.vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
@@ -78,10 +78,10 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
     <SuboutputAlert :showAlert="showAlert" />
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Deputi</h1>
     <div class="mb-4">
-      <Button type="success">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+      <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <IconPlus class="h-4 w-4" />
         Tambah Deputi
-      </Button>
+      </button>
     </div>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">

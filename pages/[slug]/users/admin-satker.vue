@@ -346,10 +346,10 @@ definePageMeta({ layout: 'default' })
 
       <!-- ACTION -->
       <div class="mb-6">
-        <Button type="primary" size="md" class="w-fit flex items-center gap-2" @click="openAddModal">
-          <IconPlus class="w-5 h-5" />
+        <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg" @click="openAddModal">
+          <IconPlus class="w-4 h-4" />
           Tambah Admin
-        </Button>
+        </button>
       </div>
 
       <div class="text-sm mb-4 text-blue-700 font-semibold">
@@ -374,22 +374,20 @@ definePageMeta({ layout: 'default' })
           <span class="text-center text-sm">{{ item.lastLogin }}</span>
         </template>
         <template #password="{ item }">
-          <button @click="resetPassword(item)" data-tip="Reset Password" style="background:none;border:none;padding:0;">
-            <Button type="warning" size="sm" circle>
-              <IconLock class="w-5 h-5" />
-            </Button>
+          <button @click="resetPassword(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+            <IconLock class="h-4 w-4" />
           </button>
         </template>
         <template #aksi="{ item }">
           <div class="flex justify-center gap-2">
-            <button @click="openViewModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
-              <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            <button @click="openViewModal(item)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+              <IconEye class="h-4 w-4" />
             </button>
-            <button @click="openEditModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
-              <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            <button @click="openEditModal(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+              <IconPencil class="h-4 w-4" />
             </button>
-            <button @click="openDeleteModal(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-              <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+            <button @click="openDeleteModal(item)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+              <IconTrash class="h-4 w-4" />
             </button>
           </div>
         </template>
