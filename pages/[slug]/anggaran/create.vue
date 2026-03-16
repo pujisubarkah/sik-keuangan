@@ -1,90 +1,109 @@
+
 <template>
-  <div class="content-wrapper min-h-screen font-poppins">
-    <!-- Tombol kembali dan info suboutput belum unit -->
+  <div class="pt-14 min-h-screen font-poppins">
     <div class="mb-4">
-      <button class="btn btn-link text-blue-700 flex items-center mb-2" @click="$router.back()">
+      <button class="text-blue-700 flex items-center mb-2 hover:text-blue-900" @click="$router.back()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         Kembali
       </button>
       <SuboutputAlert :showAlert="true" />
     </div>
-
-    <section class="content-header mt-4">
-      <h1 class="text-2xl font-bold">Tambah Anggaran</h1>
-      <!-- Breadcrumb -->
-      <ul class="breadcrumb flex gap-2 mt-2">
-        <li>
-          <NuxtLink to="/index.php?r=/site/index"><i class="fa fa-dashboard"></i></NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/index.php?r=anggaran/index">Anggarans</NuxtLink>
-        </li>
-        <li><span>Create</span></li>
-      </ul>
-    </section>
-
-    <!-- Main content -->
-    <section class="content mt-6">
-      <form class="form-horizontal" id="anggaran-form" @submit.prevent="handleSubmit">
-        <div class="box box-primary">
-          <div class="box-header">
-            <h3 class="box-title">Form Anggaran</h3>
-          </div>
-          <div class="box-body">
-            <div class="row">
-              <div class="col-sm-6">
-                <input type="hidden" v-model="form.id_pekerjaan" />
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_id_induk">Anggaran Induk</label>
-                  <select class="form-control w-2/3" v-model="form.id_induk" id="Anggaran_id_induk">
-                    <option value="">-- Pilih Induk --</option>
-                    <option v-for="opt in indukOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
-                  </select>
-                </div>
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_uraian">Uraian</label>
-                  <textarea class="form-control w-2/3" maxlength="255" v-model="form.uraian" id="Anggaran_uraian" placeholder="Uraian"></textarea>
-                </div>
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_kode">Kode</label>
-                  <input class="form-control w-2/3" maxlength="255" v-model="form.kode" id="Anggaran_kode" placeholder="Kode" type="text" />
-                </div>
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_revisi">Revisi</label>
-                  <select class="form-control w-2/3" v-model="form.revisi" id="Anggaran_revisi">
-                    <option value="tidak">Tidak</option>
-                    <option value="ya">Ya</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_volume">Volume</label>
-                  <input class="form-control w-2/3" v-model="form.volume" id="Anggaran_volume" placeholder="Volume" type="text" />
-                </div>
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_satuan">Satuan</label>
-                  <input class="form-control w-2/3" maxlength="255" v-model="form.satuan" id="Anggaran_satuan" placeholder="Satuan" type="text" />
-                </div>
-                <div class="form-group flex items-center mb-4">
-                  <label class="w-1/3 font-medium" for="Anggaran_harga_satuan">Harga Satuan</label>
-                  <input class="form-control w-2/3" maxlength="20" v-model="form.harga_satuan" id="Anggaran_harga_satuan" placeholder="Harga Satuan" type="text" />
-                </div>
-                <input type="hidden" v-model="form.referrer" />
-              </div>
+    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
+      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18" /></svg>
+        Dashboard
+      </NuxtLink>
+      <span>/</span>
+      <NuxtLink to="/anggaran" class="hover:text-blue-700">Anggaran</NuxtLink>
+      <span>/</span>
+      <span class="font-bold text-blue-700">Tambah</span>
+    </div>
+    <h1 class="text-3xl font-bold text-blue-700 mb-6">Tambah Anggaran</h1>
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+      <div class="px-8 pt-6 pb-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-800">Form Anggaran</h1>
+        <p class="text-gray-500 text-sm mt-1">Isi detail anggaran di bawah ini.</p>
+      </div>
+      <form class="px-8 py-8" @submit.prevent="handleSubmit">
+        <div class="space-y-6">
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="komponen">Komponen</label>
+            <div class="col-span-9">
+              <select v-model="form.komponen" id="komponen" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+                <option value="">-- Pilih Komponen --</option>
+                <option v-for="opt in komponenOptions" :key="opt.kode_komponen" :value="opt.kode_komponen">{{ opt.nama_komponen }}</option>
+              </select>
             </div>
           </div>
-          <div class="form-actions box-footer flex gap-4">
-            <button class="btn-flat btn btn-primary flex items-center gap-2" type="submit">
-              <span class="mdi mdi-check"></span> Simpan
-            </button>
-            <button class="btn-flat btn btn-danger flex items-center gap-2" type="button" @click="$router.back()">
-              <span class="mdi mdi-close"></span> Batal
-            </button>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="subkomponen">Sub Komponen</label>
+            <div class="col-span-9">
+              <select v-model="form.subkomponen" id="subkomponen" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.komponen">
+                <option value="">-- Pilih Sub Komponen --</option>
+                <option v-for="opt in filteredSubkomponenOptions" :key="opt.kode_subkomponen" :value="opt.kode_subkomponen">{{ opt.nama_subkomponen }}</option>
+              </select>
+            </div>
           </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="akun">Akun</label>
+            <div class="col-span-9">
+              <select v-model="form.akun" id="akun" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.subkomponen">
+                <option value="">-- Pilih Akun --</option>
+                <option v-for="opt in filteredAkunOptions" :key="opt.kode_akun" :value="opt.kode_akun">{{ opt.kode_akun }} - {{ opt.nama_akun }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_uraian">Uraian</label>
+            <div class="col-span-9">
+              <textarea v-model="form.uraian" id="Anggaran_uraian" maxlength="255" placeholder="Uraian" rows="2" class="block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words"></textarea>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_kode">Kode</label>
+            <div class="col-span-9">
+              <input v-model="form.kode" id="Anggaran_kode" type="text" maxlength="255" placeholder="Kode" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_revisi">Revisi</label>
+            <div class="col-span-9">
+              <select v-model="form.revisi" id="Anggaran_revisi" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+                <option value="tidak">Tidak</option>
+                <option value="ya">Ya</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_volume">Volume</label>
+            <div class="col-span-9">
+              <input v-model="form.volume" id="Anggaran_volume" type="text" placeholder="Volume" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_satuan">Satuan</label>
+            <div class="col-span-9">
+              <input v-model="form.satuan" id="Anggaran_satuan" type="text" maxlength="255" placeholder="Satuan" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+            </div>
+          </div>
+          <div class="grid grid-cols-12 items-center gap-4">
+            <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_harga_satuan">Harga Satuan</label>
+            <div class="col-span-9">
+              <input :value="computedHargaSatuan" id="Anggaran_harga_satuan" type="text" readonly placeholder="Harga Satuan" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition bg-gray-100" />
+            </div>
+          </div>
+          <input type="hidden" v-model="form.referrer" />
+        </div>
+        <div class="flex justify-end mt-10 gap-4">
+          <button type="submit" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800">
+            <span class="mdi mdi-check"></span> Simpan
+          </button>
+          <button type="button" @click="$router.back()" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800">
+            <span class="mdi mdi-close"></span> Batal
+          </button>
         </div>
       </form>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -96,44 +115,59 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue';
 const route = useRoute();
 const router = useRouter();
 
+
+
 const form = ref({
   id_pekerjaan: '4725',
-  id_induk: '',
+  komponen: '',
+  subkomponen: '',
+  akun: '',
   uraian: '',
   kode: '',
   revisi: 'tidak',
   volume: '',
   satuan: '',
-  harga_satuan: '',
   referrer: 'https://sik-keuangan.lan.go.id/index.php?r=pekerjaan/perencanaan&id=4725',
 });
 
-const indukOptions = [
-  { value: '228748', label: 'Pelaksanaan Pembinaan Tata Kelola Kebijakan Instansi Pemerintah' },
-  { value: '228749', label: '== Persiapan' },
-  { value: '228750', label: '==== Belanja Bahan' },
-  { value: '228752', label: '====== 000963 ATK' },
-  { value: '228753', label: '====== 000127 Makan Rapat Biasa D.K.I.  JAKARTA' },
-  { value: '228754', label: '====== 000128 Snack Rapat Biasa D.K.I.  JAKARTA' },
-  { value: '228759', label: '== Pelaksanaan' },
-  { value: '228760', label: '==== Belanja Bahan' },
-  { value: '228761', label: '====== 000132 ATK' },
-  { value: '228762', label: '====== 000133 Seminar Kit' },
-  { value: '228763', label: '====== 000134 Makan Rapat Biasa D.K.I.  JAKARTA' },
-  { value: '228764', label: '====== 000135 Snack Rapat Biasa D.K.I.  JAKARTA' },
-  { value: '228765', label: '==== Belanja Jasa Profesi' },
-  { value: '228766', label: '====== 000136 Honorarium Narasumber (Pejabat Eselon I)' },
-  { value: '228767', label: '====== 000137 Honorarium Narasumber (Pejabat Eselon II)' },
-  { value: '228768', label: '====== 000138 Honorarium Narasumber (Pejabat Eselon III)' },
-  { value: '233484', label: '====== 01476. Honorarium Narasumber (MenteriPejabat Setingkat Menteri)' },
-  { value: '228769', label: '==== Belanja Perjalanan Dinas Biasa' },
-  { value: '228770', label: '====== 000139 Perjalanan Dinas Sulawesi' },
-  { value: '228771', label: '==== Belanja Perjalanan Dinas Paket Meeting Dalam Kota' },
-  { value: '228772', label: '====== 000146 Paket Rapat Luar Kantor Luar Kota' },
-  { value: '228773', label: '== Penyusunan Laporan' },
-  { value: '228774', label: '==== Belanja Bahan' },
-  { value: '228775', label: '====== 001147. Alat Tulis Kantor' },
+import { computed } from 'vue'
+const computedHargaSatuan = computed(() => {
+  const v = parseFloat(form.value.volume)
+  const s = parseFloat(form.value.satuan)
+  if (!isNaN(v) && !isNaN(s)) {
+    return v * s
+  }
+  return ''
+})
+
+// Dummy data, ganti dengan API jika ada
+const komponenOptions = [
+  { kode_komponen: 'K001', nama_komponen: 'Komponen A', subkomponen: [
+    { kode_subkomponen: 'SK001', nama_subkomponen: 'Sub Komp A1', akun: [
+      { kode_akun: 'A001', nama_akun: 'Akun 1' },
+      { kode_akun: 'A002', nama_akun: 'Akun 2' },
+    ] },
+    { kode_subkomponen: 'SK002', nama_subkomponen: 'Sub Komp A2', akun: [
+      { kode_akun: 'A003', nama_akun: 'Akun 3' },
+    ] },
+  ] },
+  { kode_komponen: 'K002', nama_komponen: 'Komponen B', subkomponen: [
+    { kode_subkomponen: 'SK003', nama_subkomponen: 'Sub Komp B1', akun: [
+      { kode_akun: 'A004', nama_akun: 'Akun 4' },
+    ] },
+  ] },
 ];
+
+const filteredSubkomponenOptions = computed(() => {
+  const komp = komponenOptions.find(k => k.kode_komponen === form.value.komponen)
+  return komp ? komp.subkomponen : []
+})
+
+const filteredAkunOptions = computed(() => {
+  const komp = komponenOptions.find(k => k.kode_komponen === form.value.komponen)
+  const subkomp = komp?.subkomponen.find(s => s.kode_subkomponen === form.value.subkomponen)
+  return subkomp ? subkomp.akun : []
+})
 
 const cancelUrl = '/index.php?r=pekerjaan/view&id=4725';
 

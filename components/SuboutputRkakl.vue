@@ -8,14 +8,13 @@
 
     <!-- Action Buttons -->
     <div class="flex gap-2 justify-end px-6 py-4">
-      <button
-        type="button"
+      <NuxtLink
+        :to="`/${$route.params.slug}/anggaran/create`"
         class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
-        @click="$emit('tambah-anggaran')"
       >
         <IconPlus class="w-4 h-4" />
         Tambah Anggaran
-      </button>
+      </NuxtLink>
       <button
         type="button"
         class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
