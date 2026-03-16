@@ -32,7 +32,7 @@ export default {
   props: {
     label: {
       type: String,
-      default: 'Input Label'
+      default: ''
     },
     type: {
       type: String,

@@ -34,7 +34,7 @@
 
             <!-- Suboutput -->
             <div class="grid grid-cols-12 items-start gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput <span class="text-red-500">*</span></label>
+              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput <span style="color: red;">*</span></label>
               <div class="col-span-9">
                 <textarea v-model="form.suboutput" rows="4" id="suboutput" placeholder="Deskripsi Suboutput" class="form-textarea w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm"></textarea>
               </div>
@@ -42,7 +42,7 @@
 
             <!-- Kode -->
             <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode <span class="text-red-500">*</span></label>
+              <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode <span style="color: red;">*</span></label>
               <div class="col-span-9">
                 <VTextField v-model="form.kode" placeholder="e.g. 001.A" required id="kode" />
               </div>
