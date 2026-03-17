@@ -1,22 +1,24 @@
-﻿<!-- src/components/Sidebar.vue -->
+﻿/* ===== CUSTOM SEARCH BAR OVERRIDE ===== */
+.sidebar-form input:focus, .sidebar-form input:hover {
+  background-color: #f3f4f6 !important; /* abu-abu netral */
+  border-color: #60a5fa !important; /* biru lembut */
+  color: #222 !important;
+}
+.sidebar-form button:focus, .sidebar-form button:hover {
+  background-color: #f3f4f6 !important;
+  border-color: #60a5fa !important;
+  color: #222 !important;
+}
+<!-- src/components/Sidebar.vue -->
 <template>
   <aside 
     :class="['main-sidebar', 'bg-[#1f4f85]', 'text-white', 'flex', 'flex-col', 'overflow-hidden', { rail }]"
     role="navigation"
     aria-label="Main Navigation"
   >
-    <!-- User Panel Section -->
-    <div v-if="!rail" class="user-panel flex items-center p-4 mb-2 bg-white rounded-lg shadow mx-2">
-      <div class="pull-left image mr-3 flex-shrink-0">
-        <Icon icon="mdi:account-circle" class="w-12 h-12 text-brandBlue-400" />
-      </div>
-      <div class="pull-left info overflow-hidden">
-        <p class="font-semibold mb-1 text-sm truncate text-gray-900">{{ displayName }}</p>
-        <a href="#" class="flex items-center text-xs text-brandBlue-400">
-          <Icon icon="fa:circle" class="w-3 h-3 mr-1 flex-shrink-0" /> 
-          <span class="truncate">Online</span>
-        </a>
-      </div>
+    <!-- Logo Centered -->
+    <div class="sidebar-logo flex justify-center items-center mt-6 mb-6">
+      <img src="/logolanwhite.png" alt="Logo SIKLAN" class="h-12 md:h-[50px] w-auto" />
     </div>
 
     <!-- Search Form -->
@@ -26,10 +28,10 @@
           v-model="searchQuery" 
           type="text" 
           placeholder="Search..." 
-          class="flex-1 px-3 py-2 bg-gray-200 text-white focus:outline-none placeholder-white text-sm"
+          class="flex-1 px-3 py-2 bg-gray-200 text-white focus:outline-none focus:bg-gray-100 hover:bg-gray-100 placeholder-white text-sm transition-colors"
           aria-label="Search menu"
         />
-        <button type="submit" class="px-3 text-white hover:text-gray-300 flex items-center justify-center" aria-label="Submit search">
+        <button type="submit" class="px-3 text-white hover:text-gray-400 focus:bg-gray-100 hover:bg-gray-100 flex items-center justify-center transition-colors" aria-label="Submit search">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4-4m0 0A7 7 0 104 4a7 7 0 0013 13z" />
           </svg>
@@ -46,7 +48,7 @@
       <li v-if="!rail" class="header text-xs text-brandBlue-300 tracking-wider py-2 px-3 font-semibold">MENU NAVIGASI</li>
       
       <!-- Navigation Group Items -->
-      <template v-for="(item, index) in menuItems.filter(i => i.group === 'navigation')" :key="'nav-' + index">
+      <template v-for="(item, index) in filteredMenuItems.filter(i => i.group === 'navigation')" :key="'nav-' + index">
         
         <!-- Parent Menu with Children -->
         <li v-if="item.children && item.children.length > 0">
@@ -106,7 +108,7 @@
       <li v-if="!rail && menuItems.some(i => i.group === 'admin')" class="header text-xs text-brandBlue-300 tracking-wider py-2 px-3 mt-4 font-semibold">MENU ADMIN</li>
       
       <!-- Admin Group Items -->
-      <template v-for="(item, index) in menuItems.filter(i => i.group === 'admin')" :key="'admin-' + index">
+      <template v-for="(item, index) in filteredMenuItems.filter(i => i.group === 'admin')" :key="'admin-' + index">
         
         <!-- Parent Menu with Children -->
         <li v-if="item.children && item.children.length > 0">
@@ -206,6 +208,30 @@ export default {
     menuItems() {
       // Gunakan role dari Pinia userStore sebagai slug dan pass role_id
       return getMenuItems(this.role, this.username, this.role_id)
+    },
+    filteredMenuItems() {
+      if (!this.searchQuery) return this.menuItems;
+      const q = this.searchQuery.trim().toLowerCase();
+      // Helper to check if title matches query (full or initial)
+      const match = (title) => {
+        if (!title) return false;
+        const lower = title.toLowerCase();
+        return lower.includes(q) || lower.startsWith(q) || lower[0] === q[0];
+      };
+      // Recursive filter for children
+      const filterItems = (items) => items
+        .map(item => {
+          if (item.children && item.children.length > 0) {
+            const filteredChildren = filterItems(item.children);
+            if (filteredChildren.length > 0 || match(item.title)) {
+              return { ...item, children: filteredChildren };
+            }
+            return null;
+          }
+          return match(item.title) ? item : null;
+        })
+        .filter(Boolean);
+      return filterItems(this.menuItems);
     }
   },
   methods: {
@@ -226,6 +252,48 @@ export default {
 </script>
 
 <style scoped>
+/* ===== SIDEBAR LOGO ===== */
+.sidebar-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.sidebar-logo img {
+  height: 70px;
+  max-width: 90%;
+  object-fit: contain;
+  display: block;
+}
+/* ===== CUSTOM SEARCH BAR COLOR OVERRIDE ===== */
+.sidebar-form input {
+  background-color: #f3f4f6 !important; /* abu-abu terang */
+  color: #222 !important;
+  border: 1px solid #e5e7eb !important;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.sidebar-form input:focus, .sidebar-form input:hover {
+  background-color: #e5e7eb !important; /* abu-abu sedikit lebih gelap saat hover/focus */
+  border-color: #60a5fa !important; /* biru lembut saat aktif */
+  color: #222 !important;
+}
+.sidebar-form input::placeholder {
+  color: #888 !important;
+  opacity: 1;
+}
+.sidebar-form button {
+  background-color: #f3f4f6 !important;
+  color: #444 !important;
+  border: 1px solid #e5e7eb !important;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.sidebar-form button:focus, .sidebar-form button:hover {
+  background-color: #e5e7eb !important;
+  border-color: #60a5fa !important;
+  color: #222 !important;
+}
 /* ===== MAIN SIDEBAR ===== */
 .main-sidebar {
   transition: width 0.3s ease;

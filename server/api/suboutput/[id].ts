@@ -35,14 +35,18 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     try {
-      const sub = await db.select().from(masterSuboutput).where(eq(masterSuboutput.id, Number(id))).then(r => r[0])
+      const subResult = await db.select().from(masterSuboutput).where(eq(masterSuboutput.id, Number(id)))
+      const sub = subResult[0]
       if (!sub) return { error: 'Not found' }
-      const output = await db.select().from(masterOutput).where(eq(masterOutput.id, sub.output_id)).then(r => r[0])
+      const outputResult = await db.select().from(masterOutput).where(eq(masterOutput.id, sub.output_id))
+      const output = outputResult[0]
       let kegiatan = null, program = null
       if (output) {
-        kegiatan = await db.select().from(masterKegiatan).where(eq(masterKegiatan.id, output.kegiatan_id)).then(r => r[0])
+        const kegiatanResult = await db.select().from(masterKegiatan).where(eq(masterKegiatan.id, output.kegiatan_id))
+        kegiatan = kegiatanResult[0]
         if (kegiatan) {
-          program = await db.select().from(masterProgram).where(eq(masterProgram.id, kegiatan.program_id)).then(r => r[0])
+          const programResult = await db.select().from(masterProgram).where(eq(masterProgram.id, kegiatan.program_id))
+          program = programResult[0]
         }
       }
 

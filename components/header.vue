@@ -1,54 +1,54 @@
 <!-- src/components/layout/Header.vue -->
 <template>
-  <header class="main-header">
-    <div class="header-left">
-      <span class="logo" aria-label="SIK-LAN Dashboard">
-        <span class="logo-lg">
-          <span class="text-white">SIK</span>LAN
-        </span>
-      </span>
-    </div>
-    <!-- Navbar -->
-    <nav class="navbar">
-      
-      <!-- Sidebar toggle button -->
-           <button
-      class="sidebar-toggle"
+  <header class="main-header flex items-center justify-between relative">
+    <!-- Sidebar toggle button di perbatasan sidebar-header -->
+    <button
+      class="sidebar-toggle absolute left-0 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center h-12 w-12 rounded hover:bg-white/10 transition"
+      style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);"
       aria-label="Toggle sidebar"
       type="button"
       aria-expanded="false"
       @click="$emit('toggle-sidebar')"
     >
-      <!-- Icon tiga garis vertikal putih -->
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
         <rect x="4" y="6" width="16" height="2" rx="1" fill="#fff"/>
         <rect x="4" y="11" width="16" height="2" rx="1" fill="#fff"/>
         <rect x="4" y="16" width="16" height="2" rx="1" fill="#fff"/>
       </svg>
       <span class="sr-only">Toggle navigation</span>
     </button>
-
+    <div class="header-left flex items-center h-full pl-4">
+      <!-- Kosong, bisa diisi logo jika perlu -->
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar flex-1">
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
+      <div class="navbar-custom-menu flex items-center">
+        <ul class="nav navbar-nav flex items-center">
           
           <!-- ...existing code... -->
 
           <!-- User Account Dropdown -->
           <li class="dropdown user-menu" ref="userRef">
             <button
-              class="dropdown-toggle user-toggle"
+              class="dropdown-toggle user-toggle flex items-center gap-2"
               @click.stop="toggleUser"
               :aria-expanded="isUserOpen"
               aria-haspopup="true"
               aria-controls="user-menu"
               type="button"
             >
-              <div class="user-avatar">
-                <i class="idds idds-user"></i>
+              <div class="user-avatar flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
               </div>
-              <span class="hidden-xs user-name">{{ displayName }}</span>
-              <i class="idds idds-chevron-down" :class="{ 'rotate-180': isUserOpen }"></i>
+              <div class="flex flex-col items-start">
+                <span class="hidden-xs user-name font-extrabold text-base text-white">{{ displayName }}</span>
+                <span class="flex items-center gap-1 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
+                  <span class="text-xs font-semibold text-white">Online</span>
+                </span>
+              </div>
+              <i class="idds idds-chevron-down ml-2" :class="{ 'rotate-180': isUserOpen }"></i>
             </button>
             
             <ul 
@@ -59,8 +59,10 @@
             >
               <!-- User Header -->
               <li class="user-header">
-                <div class="user-avatar-large">
-                  <i class="idds idds-user"></i>
+                <div class="user-avatar-large flex items-center justify-center w-20 h-20 rounded-full bg-gray-200 mx-auto mb-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
                 </div>
                 <p class="user-info">
                   <span class="user-info-name">{{ displayName }}</span>
