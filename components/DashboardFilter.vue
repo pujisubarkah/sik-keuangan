@@ -166,18 +166,7 @@
           <span class="hidden sm:inline">SP2D</span>
         </a>
         
-        <!-- Divider -->
-        <div class="w-px h-6 bg-gray-200 mx-2 hidden sm:block" />
-        
-        <!-- Export Button (Example) -->
-        <button 
-          type="button"
-          class="btn btn-outline btn-sm btn-soft-primary rounded-xl px-4"
-          title="Export data"
-        >
-          <IconDownload class="w-4 h-4 mr-1.5" />
-          <span class="hidden sm:inline">Export</span>
-        </button>
+        <!-- ...existing code... -->
       </div>
     </div>
   </div>
