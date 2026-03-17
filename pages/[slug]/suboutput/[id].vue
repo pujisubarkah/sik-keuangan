@@ -76,6 +76,9 @@
         </div>
       </div>
 
+<!-- Tambahkan SuboutputActions dengan id -->
+<SuboutputActions v-if="route.params.id" :id="route.params.id" :stats="stats" />
+
  
 
  
@@ -165,18 +168,9 @@ const fetchSuboutput = async () => {
   }
   const headers = { Authorization: `Bearer ${token}` };
   try {
-    const d = await $fetch(`/api/anggaran_suboutput/${route.params.id}`, { headers });
-    subOutputData.kode = d.kode;
-    subOutputData.nama = d.nama_suboutput;
-    subOutputData.unit = d.nama_unit;
-    subOutputData.satker = d.nama_satker;
-    subOutputData.program = d.nama_program;
-    subOutputData.kegiatan = d.nama_kegiatan;
-    subOutputData.kro = d.nama_output;
-    subOutputData.tahun = d.tahun;
-    subOutputData.programLink = '';
-    subOutputData.kegiatanLink = '';
-    subOutputData.outputLink = '';
+    const d = await $fetch(`/api/suboutput/${route.params.id}`, { headers });
+    // Simpan seluruh response ke subOutputData
+    Object.assign(subOutputData, d);
   } catch (err) {
     console.error('Gagal fetch data suboutput', err);
   }
