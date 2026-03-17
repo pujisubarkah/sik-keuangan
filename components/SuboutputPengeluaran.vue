@@ -27,16 +27,9 @@
         </div>
       </div>
       <div class="flex gap-2 mt-6">
-        <button class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-yellow-900 font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 border-2 border-yellow-200 hover:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300">
-          <span class="flex items-center justify-center w-6 h-6 rounded-full bg-white/80 mr-2">
-            <Icon name="tabler:edit" class="w-4 h-4 text-green-700" />
-          </span>
-          <span class="text-sm font-semibold">Sunting Pengeluaran</span>
-        </button>
-          <!-- Ubah style tombol agar mirip btn-success -->
-        <button class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 hover:from-gray-300 hover:to-gray-500 text-gray-800 font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 border-2 border-gray-200 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
-          <Icon name="tabler:arrow-left" class="w-5 h-5" />
-          <span>Kembali</span>
+        <button class="flex items-center gap-2 px-5 py-2 bg-brandGold-500 hover:bg-brandGold-600 text-white font-semibold rounded shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brandGold-400">
+          <Icon name="tabler:edit" class="w-4 h-4" />
+          <span class="text-sm">Edit</span>
         </button>
       </div>
       <!-- SuboutputActions dipindah ke bawah tabel -->
