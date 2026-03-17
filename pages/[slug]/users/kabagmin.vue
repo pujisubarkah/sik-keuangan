@@ -58,51 +58,39 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
       </button>
     </div>
     <VTable :headers="userHeaders" :items="usersWithNo">
-      <template #nama="{ item }">
-        <span class="font-semibold text-blue-700">{{ item.nama }}</span>
-      </template>
-      <template #username="{ item }">
-        <span class="text-center">{{ item.username }}</span>
-      </template>
-      <template #role="{ item }">
-        <span class="badge badge-primary text-white font-bold">{{ item.role }}</span>
-      </template>
-      <template #satker="{ item }">
-        <span class="text-center">{{ item.satker }}</span>
-      </template>
       <template #lastLogin="{ item }">
         <span class="text-center text-sm">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
-        <Button type="warning" size="sm" circle>
-          <IconLock class="w-5 h-5" />
-        </Button>
+        <button @click="resetPassword(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+          <IconLock class="h-4 w-4" />
+        </button>
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-          <Button type="info" size="sm" circle>
-            <IconEye class="w-5 h-5" />
-          </Button>
-          <Button type="warning" size="sm" circle>
-            <IconPencil class="w-5 h-5" />
-          </Button>
-          <Button type="error" size="sm" circle @click="openDeleteModal(item)">
-            <IconTrash class="w-5 h-5" />
-          </Button>
-            <!-- Modal Delete User -->
-            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
-              <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
-                <button @click="closeDeleteModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
-                <h3 class="text-xl font-bold text-red-700 mb-6 text-center">Konfirmasi Hapus Akun</h3>
-                <div class="text-center text-gray-700 mb-6">
-                  Apakah Anda yakin ingin menghapus akun <span class="font-bold">{{ userToDelete?.nama }}</span>?
-                </div>
-                <div class="flex justify-end gap-2">
-                  <Button type="secondary" @click="closeDeleteModal">Batal</Button>
-                  <Button type="error" @click="confirmDeleteUser">Hapus</Button>
-                </div>
+          <button @click="openViewModal(item)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
+            <IconEye class="h-4 w-4" />
+          </button>
+          <button @click="openEditModal(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
+            <IconPencil class="h-4 w-4" />
+          </button>
+          <button @click="openDeleteModal(item)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+            <IconTrash class="h-4 w-4" />
+          </button>
+          <!-- Modal Delete User -->
+          <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+              <button @click="closeDeleteModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+              <h3 class="text-xl font-bold text-red-700 mb-6 text-center">Konfirmasi Hapus Akun</h3>
+              <div class="text-center text-gray-700 mb-6">
+                Apakah Anda yakin ingin menghapus akun <span class="font-bold">{{ userToDelete?.nama }}</span>?
+              </div>
+              <div class="flex justify-end gap-2">
+                <Button type="secondary" @click="closeDeleteModal">Batal</Button>
+                <Button type="error" @click="confirmDeleteUser">Hapus</Button>
               </div>
             </div>
+          </div>
         </div>
       </template>
       <template #empty>

@@ -17,7 +17,7 @@
         </slot>
       </div>
       <div v-if="link">
-        <NuxtLink :to="link" class="text-xs text-white underline flex items-center gap-1">
+        <NuxtLink :to="link" class="text-xs text-yellow-300 underline flex items-center gap-1 drop-shadow font-semibold">
           Info Lebih Lanjut <i class="fa fa-arrow-circle-right"></i>
         </NuxtLink>
       </div>

@@ -77,23 +77,32 @@ export default defineEventHandler(async (event) => {
       subkomponenMap[subkompKey] = subkomp;
       komp.subkomponen.push(subkomp);
     }
-    // Akun
-    subkomp.akun.push({
-      kode_akun: row.kode_akun,
-      nama_akun: row.nama_akun,
-      volume: row.volume,
-      satuan: row.satuan,
-      harga_satuan: row.harga_satuan,
-      jumlah: row.jumlah,
-      tahun: row.tahun,
-      created_at: row.created_at,
-      import_id: row.import_id,
-      status: row.status,
-      updated_at: row.updated_at,
-      satker_id: row.satker_id,
-      uraian: row.uraian
-    });
+    // Akun: hanya push jika kode_akun atau nama_akun tidak null
+    if (row.kode_akun !== null || row.nama_akun !== null) {
+      subkomp.akun.push({
+        kode_akun: row.kode_akun,
+        nama_akun: row.nama_akun,
+        volume: row.volume,
+        satuan: row.satuan,
+        harga_satuan: row.harga_satuan,
+        jumlah: row.jumlah,
+        tahun: row.tahun,
+        created_at: row.created_at,
+        import_id: row.import_id,
+        status: row.status,
+        updated_at: row.updated_at,
+        satker_id: row.satker_id,
+        uraian: row.uraian
+      });
+    }
   }
+
+  // Filter subkomponen tanpa akun
+  suboutput.komponen.forEach((komp: any) => {
+    komp.subkomponen = komp.subkomponen.filter((subkomp: any) => subkomp.akun && subkomp.akun.length > 0);
+  });
+  // Filter komponen tanpa subkomponen
+  suboutput.komponen = suboutput.komponen.filter(komp => komp.subkomponen && komp.subkomponen.length > 0);
 
   return [suboutput];
 });

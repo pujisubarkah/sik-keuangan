@@ -20,25 +20,22 @@
 <script setup>
 import SuboutputRkakl from '@/components/SuboutputRkakl.vue'
 
-// Dummy rkaklDetail, ganti dengan fetch API jika perlu
-const rkaklDetail = {
-  nama_suboutput: 'Suboutput Contoh',
-  komponen: [
-    {
-      kode_komponen: '001',
-      nama_komponen: 'Komponen A',
-      subkomponen: [
-        {
-          kode_subkomponen: '001.1',
-          nama_subkomponen: 'Subkomponen A1',
-          akun: [
-            { kode_akun: '521211', nama_akun: 'Belanja Barang', volume: 2, satuan: 'paket', harga_satuan: 500000, jumlah: 1000000, ket: '-' }
-          ]
-        }
-      ]
-    }
-  ]
-}
+import { ref, onMounted } from 'vue'
+const rkaklDetail = ref(null)
+onMounted(async () => {
+  const id = route.params.id
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch(`/api/rkakl_detail/${id}`, { headers })
+    const json = await res.json()
+    // Jika respons API berupa array, ambil elemen pertama (atau sesuaikan kebutuhan)
+    rkaklDetail.value = Array.isArray(json) ? json[0] : json
+  } catch (err) {
+    console.error('Fetch rkakl_detail error:', err)
+    rkaklDetail.value = null
+  }
+})
 import SuboutputCharts from '@/components/SuboutputCharts.vue'
 
 // Dummy chart data, ganti dengan fetch API jika perlu

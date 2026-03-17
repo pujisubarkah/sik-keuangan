@@ -37,7 +37,7 @@
             style="padding-left:0"
           >
             <span class="group-hover:underline decoration-2 underline-offset-2 inline-flex items-center">
-              Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white !text-white"></i>
+              Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white"></i>
             </span>
           </a>
         </div>

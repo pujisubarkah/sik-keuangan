@@ -65,9 +65,9 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
         <span class="text-center text-sm">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
-        <Button type="warning" size="sm" circle>
-          <IconLock class="w-5 h-5" />
-        </Button>
+        <button @click="resetPassword(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+          <IconLock class="h-4 w-4" />
+        </button>
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
