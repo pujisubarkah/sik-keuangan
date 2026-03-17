@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8">
+  <div class="min-h-screen py-8">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
       <!-- Alert Suboutput Belum Lengkap -->
@@ -15,8 +15,8 @@
       </div>
 
       <!-- Filter Card -->
-      <div class="mb-6 overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
-        <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4">
+      <div class="mb-6 overflow-hidden border border-gray-200 bg-brandBlue-50 shadow sm:rounded-lg">
+        <div class="flex items-center justify-between border-b border-gray-200 bg-brandBlue-100 px-6 py-4">
           <h3 class="flex items-center gap-2 text-sm font-medium text-gray-700">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -43,12 +43,17 @@
                 <label class="mb-1 block text-sm font-medium text-gray-700">Satker</label>
                 <div class="relative">
                   <select v-model="filterForm.id_satker" @change="onSatkerChange"
-                    class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    class="block w-full rounded-md border border-gray-400 border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm appearance-none"
                     name="PerencanaanForm[id_satker]">
                     <option value="">- Semua Satker -</option>
                     <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}
                     </option>
                   </select>
+                  <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center pr-2">
+                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.584l3.71-3.354a.75.75 0 111.02 1.1l-4.25 3.846a.75.75 0 01-1.02 0l-4.25-3.846a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
                 </div>
               </div>
 
@@ -57,11 +62,16 @@
                 <label class="mb-1 block text-sm font-medium text-gray-700">Unit</label>
                 <div class="relative">
                   <select v-model="filterForm.id_unit"
-                    class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 sm:text-sm"
+                    class="block w-full rounded-md border border-gray-400 border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 sm:text-sm appearance-none"
                     :disabled="!filterForm.id_satker" name="PerencanaanForm[id_unit]">
                     <option value="">- Semua Unit -</option>
                     <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                   </select>
+                  <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center pr-2">
+                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.584l3.71-3.354a.75.75 0 111.02 1.1l-4.25 3.846a.75.75 0 01-1.02 0l-4.25-3.846a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
                 </div>
               </div>
 
@@ -91,24 +101,24 @@
 
       <!-- Statistics Cards -->
       <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
+        <div class="overflow-hidden border border-gray-200 bg-brandBlue-500 shadow sm:rounded-lg">
           <div class="px-6 py-4">
-            <dt class="truncate text-sm font-medium text-gray-500">Pagu Anggaran</dt>
-            <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalStats.pagu) }}</dd>
+            <dt class="truncate text-sm font-medium text-white">Pagu Anggaran</dt>
+            <dd class="mt-1 text-2xl font-semibold text-white">{{ formatCurrency(totalStats.pagu) }}</dd>
           </div>
         </div>
-        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
+        <div class="overflow-hidden border border-gray-200 bg-yellow-500 shadow sm:rounded-lg">
           <div class="px-6 py-4">
-            <dt class="truncate text-sm font-medium text-gray-500">Perencanaan</dt>
-            <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalStats.perencanaan) }}</dd>
-          </div>
-        </div>
-        <div class="overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
-          <div class="px-6 py-4">
-            <dt class="truncate text-sm font-medium text-gray-500">Selisih</dt>
-            <dd class="mt-1 text-2xl font-semibold" :class="totalStats.selisih >= 0 ? 'text-red-600' : 'text-green-600'">
+            <dt class="truncate text-sm font-medium text-white">Selisih</dt>
+            <dd class="mt-1 text-2xl font-semibold" :class="totalStats.selisih >= 0 ? 'text-red-100' : 'text-green-100'">
               {{ formatCurrency(totalStats.selisih) }}
             </dd>
+          </div>
+        </div>
+        <div class="overflow-hidden border border-gray-200 bg-green-500 shadow sm:rounded-lg">
+          <div class="px-6 py-4">
+            <dt class="truncate text-sm font-medium text-white">Perencanaan</dt>
+            <dd class="mt-1 text-2xl font-semibold text-white">{{ formatCurrency(totalStats.perencanaan) }}</dd>
           </div>
         </div>
       </div>
@@ -184,6 +194,25 @@
                 </td>
               </tr>
 
+              <!-- Total Row (moved inside table) -->
+              <tr class="bg-blue-50 font-bold">
+                <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
+                <td class="px-3 py-2 text-right align-middle">
+                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
+                    {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
+                  </span>
+                </td>
+                <td class="px-3 py-2 text-right align-middle">
+                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
+                    {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
+                  </span>
+                </td>
+                <td class="px-3 py-2 text-right align-middle">
+                  <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
+                    {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
+                  </span>
+                </td>
+              </tr>
               <!-- Empty State -->
               <tr v-if="!loading && suboutputData.length === 0">
                 <td colspan="6" class="px-6 py-10 text-center text-gray-500">
@@ -210,31 +239,7 @@
 
       </div>
 
-      <!-- Total Row -->
-      <div class="border-t border-gray-200 bg-gray-50 px-6 py-3">
-        <table class="min-w-full text-xs">
-          <tbody>
-            <tr class="bg-blue-50 font-bold">
-              <td colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</td>
-              <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">
-                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.pagu || 0), 0)) }}
-                </span>
-              </td>
-              <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">
-                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.perencanaan || 0), 0)) }}
-                </span>
-              </td>
-              <td class="px-3 py-2 text-right align-middle">
-                <span :class="(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) >= 0 ? 'inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold' : 'inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold'">
-                  {{ formatCurrency(suboutputData.reduce((a, b) => a + (b.selisih || 0), 0)) }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
 
     </div>
   </div>
