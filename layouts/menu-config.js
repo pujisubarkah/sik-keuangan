@@ -227,6 +227,7 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
     }
   ]
 
+
   // Menu khusus untuk role_id 8
   const role8Menu = [
     { title: 'Dashboard', icon: 'tabler:home', to: `/${effectiveSlug}`, group: 'navigation', children: [] },
@@ -246,8 +247,22 @@ export const getMenuItems = (role = 'user', slug = 'default', role_id = null) =>
     { title: 'Unit', icon: 'tabler:building', to: `/${effectiveSlug}/unit`, group: 'admin', children: [] }
   ]
 
+  // Menu khusus untuk role_id 3
+  const role3Menu = [
+    { title: 'Dashboard', icon: 'tabler:home', to: `/${effectiveSlug}`, group: 'navigation', children: [] },
+    { title: 'Perencanaan', icon: 'tabler:clipboard-list', to: `/${effectiveSlug}/perencanaan`, group: 'navigation', children: [] },
+    { title: 'Pengajuan', icon: 'tabler:shopping-cart', to: `/${effectiveSlug}/pengajuan`, group: 'navigation', children: [] },
+    { title: 'Pengeluaran', icon: 'tabler:cash-banknote', to: `/${effectiveSlug}/pengeluaran`, group: 'navigation', children: [] },
+    { title: 'Realisasi Per Bulan', icon: 'tabler:calendar-month', to: `/${effectiveSlug}/realisasi-bulanan`, group: 'navigation', children: [] },
+    { title: 'Informasi', icon: 'tabler:info-circle', to: `/${effectiveSlug}/informasi`, group: 'navigation', children: [] },
+    { title: 'Ganti Password', icon: 'tabler:lock', to: `/${effectiveSlug}/ganti-password`, group: 'navigation', children: [] },
+    { title: 'Logout', icon: 'tabler:logout', to: `/logout`, group: 'navigation', children: [] }
+  ]
+
   if (normalizedRoleId === 8) {
     return [...baseMenu, ...role8Menu]
+  } else if (normalizedRoleId === 3) {
+    return [...baseMenu, ...role3Menu]
   } else if (effectiveRole === 'admin') {
     return [...baseMenu, ...adminMenu]
   } else {

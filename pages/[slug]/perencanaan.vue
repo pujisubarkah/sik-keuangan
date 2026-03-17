@@ -83,17 +83,18 @@
               </div>
 
               <!-- 🔍 Submit Button -->
-              <div class="flex items-end md:col-span-2">
-                <button type="submit"
-                  class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
-                    </path>
-                  </svg>
-                  <span>Tampilkan</span>
-                </button>
-              </div>
+                <!-- 🔍 Submit Button -->
+                <div class="flex items-end md:col-span-2">
+                  <button type="submit"
+                    class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                      </path>
+                    </svg>
+                    <span>Tampilkan</span>
+                  </button>
+                </div>
             </div>
           </form>
         </div>
@@ -247,6 +248,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { watch } from 'vue'
 // NuxtLink diimport otomatis dari '#imports' oleh Nuxt 3, tidak perlu import manual
 import SuboutputAlert from '@/components/SuboutputAlert.vue'
 
@@ -365,37 +367,42 @@ const filterData = async () => {
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
-  // Jika Satker dipilih, fetch ke /api/suboutput/[id_satker]
-  if (filterForm.value.id_satker) {
-    const endpoint = `/api/suboutput/${filterForm.value.id_satker}`
-    try {
-      const res = await $fetch(endpoint, { headers })
-      // Response bisa object atau error
-      if (res && !res.error) {
-        // Bungkus dalam array agar table tetap bisa v-for
-        suboutputData.value = [res]
-        // Hitung total
-        const pagu = Number(res.total) || 0
-        const perencanaan = Number(res.perencanaan) || 0
-        const selisih = pagu - perencanaan
-        totalStats.value = { pagu, perencanaan, selisih }
-      } else {
-        suboutputData.value = []
-        totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
+  // Build URL dengan query params yang benar
+  const endpoint = buildQueryParams()
+
+  try {
+    const res = await $fetch(endpoint, { headers })
+    // Handle response: bisa array langsung atau object dengan data property
+    const dataArray = Array.isArray(res) ? res : (res.data || res.items || [])
+
+    // Map response sesuai struktur API
+    suboutputData.value = dataArray.map(item => {
+      const pagu = Number(item.total) || 0
+      const perencanaan = Number(item.perencanaan) || 0 // Diambil dari API
+      const selisih = pagu - perencanaan
+      return {
+        id: item.id,
+        suboutput_id: item.suboutput_id, // <-- fix agar NuxtLink benar
+        kode: item.kode_suboutput || '',
+        suboutput: item.nama_suboutput || '',
+        output_id: item.output_id,
+        pagu,
+        perencanaan,
+        selisih
       }
-    } catch (err) {
-      console.error('Error fetching perencanaan:', err)
-      suboutputData.value = []
-      totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
-    } finally {
-      loading.value = false
-    }
-    return
+    })
+
+    // Calculate totals
+    totalStats.value.pagu = suboutputData.value.reduce((a, b) => a + (b.pagu || 0), 0)
+    totalStats.value.perencanaan = suboutputData.value.reduce((a, b) => a + (b.perencanaan || 0), 0)
+    totalStats.value.selisih = suboutputData.value.reduce((a, b) => a + (b.selisih || 0), 0)
+  } catch (err) {
+    console.error('Error fetching perencanaan:', err)
+    suboutputData.value = []
+    totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
+  } finally {
+    loading.value = false
   }
-  // Jika tidak ada Satker, kosongkan tabel
-  suboutputData.value = []
-  totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
-  loading.value = false
 }
 
 const formatCurrency = (amount) => {
@@ -434,6 +441,8 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+
 </script>
 
 <style scoped>
