@@ -43,7 +43,7 @@
                 <label class="mb-1 block text-sm font-medium text-gray-700">Satker</label>
                 <div class="relative">
                   <select v-model="filterForm.id_satker" @change="onSatkerChange"
-                    class="block w-full rounded-md border border-gray-400 border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm appearance-none"
+                    class="block w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm appearance-none"
                     name="PerencanaanForm[id_satker]">
                     <option value="">- Semua Satker -</option>
                     <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}
@@ -62,7 +62,7 @@
                 <label class="mb-1 block text-sm font-medium text-gray-700">Unit</label>
                 <div class="relative">
                   <select v-model="filterForm.id_unit"
-                    class="block w-full rounded-md border border-gray-400 border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 sm:text-sm appearance-none"
+                    class="block w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 sm:text-sm appearance-none"
                     :disabled="!filterForm.id_satker" name="PerencanaanForm[id_unit]">
                     <option value="">- Semua Unit -</option>
                     <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
@@ -365,53 +365,37 @@ const filterData = async () => {
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
-  // Build URL dengan query params yang benar
-  const endpoint = buildQueryParams()
-
-  console.log('API endpoint:', endpoint)
-
-  try {
-    const res = await $fetch(endpoint, { headers })
-
-    console.log('API response:', res)
-
-    // Handle response: bisa array langsung atau object dengan data property
-    const dataArray = Array.isArray(res) ? res : (res.data || res.items || [])
-
-    // Map response sesuai struktur API
-    suboutputData.value = dataArray.map(item => {
-      const pagu = Number(item.total) || 0
-      const perencanaan = Number(item.perencanaan) || 0 // Diambil dari API
-      const selisih = pagu - perencanaan
-      return {
-        id: item.id,
-        suboutput_id: item.suboutput_id, // <-- fix agar NuxtLink benar
-        kode: item.kode_suboutput || '',
-        suboutput: item.nama_suboutput || '',
-        output_id: item.output_id,
-        pagu,
-        perencanaan,
-        selisih
+  // Jika Satker dipilih, fetch ke /api/suboutput/[id_satker]
+  if (filterForm.value.id_satker) {
+    const endpoint = `/api/suboutput/${filterForm.value.id_satker}`
+    try {
+      const res = await $fetch(endpoint, { headers })
+      // Response bisa object atau error
+      if (res && !res.error) {
+        // Bungkus dalam array agar table tetap bisa v-for
+        suboutputData.value = [res]
+        // Hitung total
+        const pagu = Number(res.total) || 0
+        const perencanaan = Number(res.perencanaan) || 0
+        const selisih = pagu - perencanaan
+        totalStats.value = { pagu, perencanaan, selisih }
+      } else {
+        suboutputData.value = []
+        totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
       }
-    })
-
-    // Calculate totals
-    totalStats.value.pagu = suboutputData.value.reduce((a, b) => a + (b.pagu || 0), 0)
-    totalStats.value.perencanaan = suboutputData.value.reduce((a, b) => a + (b.perencanaan || 0), 0)
-    totalStats.value.selisih = suboutputData.value.reduce((a, b) => a + (b.selisih || 0), 0)
-
-    // Debug log hasil
-    if (debugMode) {
-      console.log('[Fetched Data]', suboutputData.value.length, 'items')
+    } catch (err) {
+      console.error('Error fetching perencanaan:', err)
+      suboutputData.value = []
+      totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
+    } finally {
+      loading.value = false
     }
-
-  } catch (err) {
-    console.error('Error fetching perencanaan:', err)
-    suboutputData.value = []
-    totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
-  } finally {
-    loading.value = false
+    return
   }
+  // Jika tidak ada Satker, kosongkan tabel
+  suboutputData.value = []
+  totalStats.value = { pagu: 0, perencanaan: 0, selisih: 0 }
+  loading.value = false
 }
 
 const formatCurrency = (amount) => {
