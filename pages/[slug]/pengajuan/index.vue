@@ -21,7 +21,9 @@
                 <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
               </label>
               <div class="relative">
-                <select v-model="filterForm.status_berkas" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
+                <select v-model="filterForm.status_berkas"
+                  class="block w-full min-w-[160px] max-w-full rounded-md border border-gray-300 py-2.5 pl-10 pr-8 text-base focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all appearance-none cursor-pointer"
+                  :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
                   <option value="" disabled selected>Semua Status</option>
                   <option value="1">Tersedia</option>
                   <option value="0">Belum Tersedia</option>
@@ -34,28 +36,33 @@
                 </div>
               </div>
             </div>
-            <!-- Tanggal Pengajuan Awal -->
-            <div class="md:col-span-3 flex flex-col justify-end">
-              <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="Tanggal Awal" class="w-full" />
-            </div>
-            <div class="md:col-span-1 flex items-end justify-center">
-              <span class="pb-2">s/d</span>
-            </div>
-            <!-- Tanggal Pengajuan Akhir -->
-            <div class="md:col-span-3 flex flex-col justify-end">
-              <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="Tanggal Akhir" class="w-full" />
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
+            <!-- Pengajuan (Label + Range) -->
+            <div class="md:col-span-4 flex flex-col justify-end">
+              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <IconCalendar class="w-4 h-4 text-blue-500" />
+                <span>Pengajuan</span>
+              </label>
+              <div class="flex items-end gap-2">
+                <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="mm/dd/yyyy" class="w-36" />
+                <span class="pb-2 text-gray-500">s/d</span>
+                <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="mm/dd/yyyy" class="w-36" />
+              </div>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
             <!-- Status Data -->
-            <div class="md:col-span-4 flex flex-col justify-end">
+            <div class="md:col-span-2 flex flex-col justify-end">
               <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                 <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
                 <span>Status Data</span>
                 <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
               </label>
-              <div class="relative">
-                <select v-model="filterForm.status_verifikator" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
+              <div class="relative w-full max-w-[260px] min-w-[180px]">
+                <select v-model="filterForm.status_verifikator"
+                  class="block w-full rounded-md border border-gray-300 py-2.5 pl-10 pr-8 text-base focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all appearance-none cursor-pointer"
+                  :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
                   <option value="" disabled selected>Semua Data</option>
                   <option value="0">Hanya Pengajuan Baru</option>
                 </select>
@@ -191,24 +198,26 @@
     <!-- Rekap Data Pengajuan -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
       <!-- Jumlah Pengajuan -->
-      <div class="rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 shadow-xl p-6 flex flex-col justify-between text-white">
-        <div class="flex items-center gap-3 mb-2">
-          <Icon icon="mdi:file-document-outline" class="w-10 h-10 text-white drop-shadow" />
-          <span class="text-lg font-bold">Jumlah Pengajuan</span>
+      <div class="overflow-hidden border border-gray-200 bg-brandGold-400 shadow sm:rounded-lg">
+        <div class="px-6 py-4">
+          <div class="flex items-center gap-3 mb-2">
+    
+            <span class="text-lg font-bold text-white">Jumlah Pengajuan</span>
+          </div>
+          <div class="text-3xl font-extrabold mb-2 text-white">{{ rekapData.jumlah_pengajuan }}</div>
+          
         </div>
-        <div class="text-3xl font-extrabold mb-2">{{ rekapData.jumlah_pengajuan }}</div>
-        <div class="text-sm mb-2">Pengajuan</div>
-
       </div>
       <!-- Jumlah Dana -->
-      <div class="rounded-xl bg-gradient-to-br from-green-400 via-green-500 to-green-600 shadow-xl p-6 flex flex-col justify-between text-white">
-        <div class="flex items-center gap-3 mb-2">
-          <Icon icon="mdi:currency-usd" class="w-10 h-10 text-white drop-shadow" />
-          <span class="text-lg font-bold">Jumlah Dana</span>
+      <div class="overflow-hidden border border-gray-200 bg-green-400 shadow sm:rounded-lg">
+        <div class="px-6 py-4">
+          <div class="flex items-center gap-3 mb-2">
+          
+            <span class="text-lg font-bold text-white">Jumlah Dana</span>
+          </div>
+          <div class="text-3xl font-extrabold mb-2 text-white">{{ formatCurrency(rekapData.jumlah_dana) }}</div>
+          <div class="text-sm mb-2 text-white">&nbsp;</div>
         </div>
-        <div class="text-3xl font-extrabold mb-2">{{ formatCurrency(rekapData.jumlah_dana) }}</div>
-        <div class="text-sm mb-2">&nbsp;</div>
-
       </div>
 
     </div>
@@ -218,7 +227,7 @@
 <script setup>
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
-import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash } from '@tabler/icons-vue';
+import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash, IconCalendar } from '@tabler/icons-vue';
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' });
