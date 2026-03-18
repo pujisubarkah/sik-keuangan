@@ -133,9 +133,25 @@
                     <NuxtLink :to="`/${$route.params.slug}/output/update/${item.output_id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
                       <IconPencil class="h-4 w-4" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.output_id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+                    <button @click="openDeleteModal(item.output_id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
                       <IconTrash class="h-4 w-4" />
                     </button>
+                        <!-- ✅ Modal Konfirmasi Hapus - OUTSIDE v-for, root of template -->
+                        <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-transparent">
+                          <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full animate-fadein">
+                            <h2 class="text-xl font-bold text-red-700 mb-3">Konfirmasi Hapus</h2>
+                            <p class="mb-4 text-gray-700">Apakah anda yakin akan menghapus kegiatan ini?</p>
+                            <div v-if="deleteError" class="mb-2 text-red-600">{{ deleteError }}</div>
+                            <div v-if="deleteSuccess" class="mb-2 text-green-600">Data berhasil dihapus.</div>
+                            <div class="flex justify-end gap-3 mt-4">
+                              <button @click="showDeleteModal = false" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                              <button @click="doDelete" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
+                                <span v-if="deleteLoading" class="loader mr-2"></span>
+                                Hapus
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                   </div>
                 </td>
               </tr>
@@ -169,6 +185,40 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { IconEye, IconPencil, IconPlus, IconTrash } from '@tabler/icons-vue'
 import { NuxtLink } from '#components'
 import { useUserStore } from '~/stores/user'
+
+// Modal state
+const showDeleteModal = ref(false)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+const deleteId = ref(null)
+
+function openDeleteModal(id) {
+  deleteId.value = id
+  deleteError.value = ''
+  deleteSuccess.value = false
+  showDeleteModal.value = true
+}
+
+async function doDelete() {
+  deleteLoading.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+  try {
+    // TODO: Ganti dengan request API hapus sesuai kebutuhan
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    deleteSuccess.value = true
+    // Hapus data dari outputData
+    outputData.value = outputData.value.filter(item => item.output_id !== deleteId.value)
+    setTimeout(() => {
+      showDeleteModal.value = false
+    }, 800)
+  } catch (e) {
+    deleteError.value = 'Gagal menghapus data.'
+  } finally {
+    deleteLoading.value = false
+  }
+}
 
 definePageMeta({ layout: 'default' })
 

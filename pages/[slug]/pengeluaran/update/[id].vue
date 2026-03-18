@@ -22,94 +22,123 @@
             <h3 class="modern-card-title">Form Pengeluaran / Pengajuan</h3>
           </div>
           <div class="modern-card-body">
-            <div class="modern-form-vertical-group">
-              <div class="modern-form-vertical-row">
-                <label for="Pengeluaran_tanggal_pengajuan">Tanggal Pengajuan</label>
-                <input class="modern-form-control" type="date" v-model="form.tanggal_pengajuan" />
-              </div>
-              <div class="modern-form-vertical-row">
-                <label for="Pengeluaran_kode_komponen">Kode Komponen</label>
-                <input class="modern-form-control" placeholder="Kode Komponen" v-model="form.kode_komponen" type="text" maxlength="20" />
-              </div>
-              <div class="modern-form-vertical-row">
-                <label for="Pengeluaran_kode_subkomponen">Kode Subkomponen</label>
-                <input class="modern-form-control" placeholder="Kode Subkomponen" v-model="form.kode_subkomponen" type="text" maxlength="20" />
-              </div>
-              <div class="modern-form-vertical-row">
-                <label for="Pengeluaran_kode_akun">Kode Akun</label>
-                <input class="modern-form-control" placeholder="Kode Akun" v-model="form.kode_akun" type="text" />
-              </div>
-            </div>
-            <div class="modern-divider"></div>
-            <div class="modern-form-row">
-              <div class="modern-form-col">
-                <label class="required" for="Pengeluaran_jumlah">Jumlah Pengeluaran</label>
-                <div class="modern-input-group">
-                  <span class="modern-input-group-text">Rp</span>
-                  <input class="modern-form-control text-right" placeholder="0" v-model="form.jumlah" type="text" />
-                </div>
-              </div>
-              <div class="modern-form-col">
-                <label for="Pengeluaran_sisa">Sisa Anggaran</label>
-                <div class="modern-input-group">
-                  <span class="modern-input-group-text">Rp</span>
-                  <input class="modern-form-control bg-light text-muted text-right" readonly placeholder="Sisa" v-model="form.sisa" type="text" />
-                </div>
-              </div>
-            </div>
-            <div class="modern-form-row">
-              <div class="modern-form-col full-width">
-                <label for="Pengeluaran_keterangan">Keterangan</label>
-                <textarea rows="3" class="modern-form-control" placeholder="Tambahkan keterangan detail di sini..." v-model="form.keterangan"></textarea>
-              </div>
-            </div>
-            <div class="modern-divider"></div>
-            <div class="modern-form-row">
-              <div class="modern-form-col">
-                <label class="required" for="Pengeluaran_id_pengeluaran_status">Status</label>
-                <select class="modern-form-control" v-model="form.id_pengeluaran_status">
-                  <option value="1">Cair</option>
-                  <option value="2">Proses</option>
-                  <option value="3">Batal</option>
-                </select>
-              </div>
-              <div class="modern-form-col">
-                <label for="Pengeluaran_tanggal">Tanggal Cair</label>
-                <input class="modern-form-control" type="date" v-model="form.tanggal" />
-              </div>
-            </div>
-            <div class="modern-form-row">
-              <div class="modern-form-col">
-                <label for="Pengeluaran_status_sp2d">Status SP2D</label>
-                <select class="modern-form-control" v-model="form.status_sp2d">
-                  <option value="0">Belum</option>
-                  <option value="1">Sudah</option>
-                </select>
-              </div>
-              <div class="modern-form-col">
-                <label for="Pengeluaran_tanggal_sp2d">Tanggal SP2D</label>
-                <input class="modern-form-control" type="date" v-model="form.tanggal_sp2d" />
-              </div>
-            </div>
-            <div class="modern-form-row">
-              <div class="modern-form-col">
-                <label for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
-                <select class="modern-form-control" v-model="form.status_pertanggungjawaban">
-                  <option value="">- Pilih Status -</option>
-                  <option value="0">Belum</option>
-                  <option value="1">Sudah</option>
-                </select>
-              </div>
-              <div class="modern-form-col">
-                <label for="Pengeluaran_tanggal_pertanggungjawaban">Tanggal PJ</label>
-                <input class="modern-form-control" type="date" v-model="form.tanggal_pertanggungjawaban" />
-              </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-slate-200 rounded-lg">
+                <tbody>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Tanggal Pengajuan</th>
+                    <td class="px-4 py-2">
+                      <input class="modern-form-control" type="date" v-model="form.tanggal_pengajuan" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Komponen</th>
+                    <td class="px-4 py-2">
+                      <input class="modern-form-control" placeholder="Kode Komponen" v-model="form.kode_komponen" type="text" maxlength="20" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Subkomponen</th>
+                    <td class="px-4 py-2">
+                      <input class="modern-form-control" placeholder="Kode Subkomponen" v-model="form.kode_subkomponen" type="text" maxlength="20" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Akun</th>
+                    <td class="px-4 py-2">
+                      <input class="modern-form-control" placeholder="Kode Akun" v-model="form.kode_akun" type="text" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengeluaran & Sisa Anggaran</th>
+                    <td class="px-4 py-2">
+                      <div class="flex gap-4">
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_jumlah">Jumlah Pengeluaran</label>
+                          <div class="flex items-center gap-2">
+                            <span class="modern-input-group-text">Rp</span>
+                            <input id="Pengeluaran_jumlah" class="modern-form-control text-right" placeholder="0" v-model="form.jumlah" type="text" />
+                          </div>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_sisa">Sisa Anggaran</label>
+                          <div class="flex items-center gap-2">
+                            <span class="modern-input-group-text">Rp</span>
+                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right" readonly placeholder="Sisa" v-model="form.sisa" type="text" />
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Keterangan</th>
+                    <td class="px-4 py-2">
+                      <textarea rows="3" class="modern-form-control" placeholder="Tambahkan keterangan detail di sini..." v-model="form.keterangan"></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal Cair</th>
+                    <td class="px-4 py-2">
+                      <div class="flex gap-4">
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_id_pengeluaran_status">Status</label>
+                          <select id="Pengeluaran_id_pengeluaran_status" class="modern-form-control" v-model="form.id_pengeluaran_status">
+                            <option value="1">Cair</option>
+                            <option value="2">Proses</option>
+                            <option value="3">Batal</option>
+                          </select>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal">Tanggal Cair</label>
+                          <input id="Pengeluaran_tanggal" class="modern-form-control" type="date" v-model="form.tanggal" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal SP2D</th>
+                    <td class="px-4 py-2">
+                      <div class="flex gap-4">
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_status_sp2d">Status SP2D</label>
+                          <select id="Pengeluaran_status_sp2d" class="modern-form-control" v-model="form.status_sp2d">
+                            <option value="0">Belum</option>
+                            <option value="1">Sudah</option>
+                          </select>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal_sp2d">Tanggal SP2D</label>
+                          <input id="Pengeluaran_tanggal_sp2d" class="modern-form-control" type="date" v-model="form.tanggal_sp2d" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal PJ</th>
+                    <td class="px-4 py-2">
+                      <div class="flex gap-4">
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
+                          <select id="Pengeluaran_status_pertanggungjawaban" class="modern-form-control" v-model="form.status_pertanggungjawaban">
+                            <option value="">- Pilih Status -</option>
+                            <option value="0">Belum</option>
+                            <option value="1">Sudah</option>
+                          </select>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal_pertanggungjawaban">Tanggal PJ</label>
+                          <input id="Pengeluaran_tanggal_pertanggungjawaban" class="modern-form-control" type="date" v-model="form.tanggal_pertanggungjawaban" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="modern-card-footer">
-            <button class="modern-btn modern-btn-cancel" type="button">Batal</button>
             <button class="modern-btn modern-btn-primary" type="submit">
-              <i class="fa fa-save"></i> Simpan Perubahan
+              <i class="fa fa-save"></i> Simpan
             </button>
           </div>
         </div>
@@ -220,7 +249,7 @@ const form = ref({
   background-color: #f8fafc;
   border-top: 1.5px solid #e2e8f0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 16px;
 }
 

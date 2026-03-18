@@ -181,6 +181,28 @@
         </div>
       </div>
     </div>
+    
+    <!-- ✅ Modal Konfirmasi Hapus -->
+    <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" @click.self="closeModal">
+      <div class="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full m-4">
+        <h2 class="text-xl font-bold text-red-700 mb-3">Konfirmasi Hapus</h2>
+        <p class="mb-4 text-gray-700">Apakah anda yakin akan menghapus rincian output ini? Tindakan ini tidak dapat dibatalkan.</p>
+        
+        <div v-if="deleteError" class="my-3 text-sm bg-red-100 border border-red-300 text-red-800 rounded-lg p-3">{{ deleteError }}</div>
+        <div v-if="deleteSuccess" class="my-3 text-sm bg-green-100 border border-green-300 text-green-800 rounded-lg p-3">Data berhasil dihapus.</div>
+        
+        <div class="flex justify-end gap-3 mt-5">
+          <button @click="closeModal" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:opacity-50 font-medium">
+            Batal
+          </button>
+          <button @click="doDelete" :disabled="deleteLoading" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2 disabled:opacity-50 font-medium">
+            <span v-if="deleteLoading" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -232,7 +254,7 @@ const paginatedData = computed(() => {
 })
 
 const paginationStart = computed(() => {
-  if (filteredData.value.length === 0) return 0
+  if (filteredData.value.length === 0) return 0;
   return (currentPage.value - 1) * pageSize.value + 1
 })
 
@@ -315,11 +337,70 @@ const filterData = () => {
 // Format currency
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(Number(amount || 0))
 
-// Delete confirmation
-const confirmDelete = (id) => { 
-  if (confirm('Yakin akan menghapus data?')) { 
-    // Implement delete logic here
-    console.log('Delete ID:', id)
-  } 
+// --- Delete Logic ---
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
+const confirmDelete = (id) => {
+  itemToDelete.value = id
+  deleteError.value = ''
+  deleteSuccess.value = false
+  showDeleteModal.value = true
+}
+
+const closeModal = () => {
+  if (deleteLoading.value) return; // Prevent closing while loading
+  showDeleteModal.value = false
+  itemToDelete.value = null
+}
+
+const doDelete = async () => {
+  if (!itemToDelete.value) return
+
+  deleteLoading.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+  const token = localStorage.getItem('token')
+  
+  if (!token) {
+    deleteError.value = 'Sesi anda telah berakhir. Silakan login kembali.'
+    deleteLoading.value = false
+    return
+  }
+
+  try {
+    const response = await fetch(`/api/anggaran_suboutput/${itemToDelete.value}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.message || `Gagal menghapus data. Status: ${response.status}`)
+    }
+
+    // Remove item from local data for immediate UI update
+    suboutputData.value = suboutputData.value.filter(item => item.id !== itemToDelete.value)
+    
+    deleteSuccess.value = true
+    
+    // Wait for animation before closing
+    setTimeout(() => {
+      closeModal()
+    }, 1500)
+
+  } catch (error) {
+    deleteError.value = error.message
+  } finally {
+    // Keep modal open on error, but stop loading indicator
+    if (deleteSuccess.value) {
+      // It will close via timeout
+    } else {
+      deleteLoading.value = false
+    }
+  }
 }
 </script>

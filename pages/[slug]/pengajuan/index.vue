@@ -225,10 +225,13 @@
 </template>
 
 <script setup>
-import { Button, TextField, Card } from '@idds/vue'
+
 import { ref, computed, onMounted } from 'vue'
+import { useUserStore } from '~/stores/user.js'
+import { useRouter } from 'vue-router'
 import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash, IconCalendar } from '@tabler/icons-vue';
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
+
 
 definePageMeta({ layout: 'default' });
 
@@ -248,70 +251,51 @@ const filterForm = ref({
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-// Sample data based on the HTML
-const tableData = ref([
-  {
-    id: 183417,
-    id_pekerjaan: 4723,
-    kode_suboutput: '7913.ADI.001',
-    suboutput: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '521211',
-    detil: '000005 Snack Rapat Biasa DKI Jakarta [25 orang x 3 kali]',
-    tanggal_pengajuan: '27 Feb 2026',
-    jumlah_pengajuan: 577500,
-    sisa_anggaran: 1082500,
-    jumlah_data_dukung: 9
-  },
-  {
-    id: 183253,
-    id_pekerjaan: 4728,
-    kode_suboutput: '7916.FAC.001',
-    suboutput: 'Pelatihan Struktural Kepemimpinan',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '522141',
-    detil: 'Sewa Laptop',
-    tanggal_pengajuan: '18 Feb 2026',
-    jumlah_pengajuan: 12925000,
-    sisa_anggaran: 12925000,
-    jumlah_data_dukung: 1
-  },
-  {
-    id: 183278,
-    id_pekerjaan: 4794,
-    kode_suboutput: '7919.EBC.954',
-    suboutput: 'Layanan Manajemen SDM',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '521219',
-    detil: 'Biaya Diklat Peserta',
-    tanggal_pengajuan: '18 Feb 2026',
-    jumlah_pengajuan: 1025000,
-    sisa_anggaran: 49515000,
-    jumlah_data_dukung: 1
-  },
-  {
-    id: 183403,
-    id_pekerjaan: 4797,
-    kode_suboutput: '4821.EBD.952',
-    suboutput: 'Layanan Perencanaan dan Penganggaran',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '522151',
-    detil: 'Honorarium Narasumber (Pejabat Eselon III)',
-    tanggal_pengajuan: '27 Feb 2026',
-    jumlah_pengajuan: 1800000,
-    sisa_anggaran: 1800000,
-    jumlah_data_dukung: 6
-  }
-])
+const tableData = ref([])
 
 const rekapData = ref({
   jumlah_pengajuan: 4,
   jumlah_dana: 16327500
 })
+
+const userStore = useUserStore ? useUserStore() : null
+const router = useRouter ? useRouter() : null
+
+const fetchPengajuan = async () => {
+  const token = localStorage.getItem('token')
+  if (!token) {
+    if (userStore && userStore.clearUser) userStore.clearUser()
+    if (router && router.push) await router.push('/login')
+    return
+  }
+  const headers = { Authorization: `Bearer ${token}` }
+  try {
+    const res = await fetch('/api/pengajuan', { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      tableData.value = json.data.map(item => ({
+        id: item.id,
+        // id_pekerjaan: item.id_pekerjaan, // jika ada, jika tidak bisa dihilangkan
+        kode_suboutput: item.kode_suboutput,
+        suboutput: item.nama_suboutput, // sesuai permintaan
+        kode_komponen: item.kode_komponen,
+        kode_subkomponen: item.kode_subkomponen,
+        kode_akun: item.kode_akun,
+        detil: item.detil,
+        tanggal_pengajuan: item.tanggal_pengajuan,
+        jumlah_pengajuan: item.jumlah_pengajuan,
+        sisa_anggaran: item.rkakl_jumlah, // sesuai permintaan
+        jumlah_data_dukung: item.jumlah_data_dukung
+      }))
+      // Update rekap data
+      rekapData.value.jumlah_pengajuan = json.data.length
+      rekapData.value.jumlah_dana = json.data.reduce((acc, cur) => acc + (parseInt(cur.jumlah_pengajuan) || 0), 0)
+    }
+  } catch (e) {
+    // error handling
+    console.error('Gagal fetch pengajuan', e)
+  }
+}
 
 // Computed properties
 const totalPages = computed(() => {
@@ -376,7 +360,7 @@ const confirmDelete = (id) => {
 
 // Lifecycle
 onMounted(() => {
-  // Initialize data if needed
+  fetchPengajuan()
 })
 </script>
 

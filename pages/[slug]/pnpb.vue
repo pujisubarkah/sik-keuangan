@@ -108,6 +108,14 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr v-for="row in tableData" :key="row.kode" class="hover:bg-yellow-50 align-middle">
+                  <DeleteModal 
+                    :show-delete-modal="showDeleteModal"
+                    :delete-loading="deleteLoading"
+                    :delete-error="deleteError"
+                    :delete-success="deleteSuccess"
+                    @close="closeDeleteModal"
+                    @confirm="doDelete"
+                  />
                   <td class="px-3 py-2 text-center align-middle">{{ row.kode }}</td>
                   <td class="px-3 py-2 align-middle">
                     <div class="inline-flex gap-1">
@@ -333,8 +341,54 @@ function addSubAkun(row) {
 function editAkun(row) {
   // TODO: Implement edit akun logic
 }
+import DeleteModal from '~/components/UI/DeleteModal.vue'
+
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
 function deleteAkun(row) {
-  // TODO: Implement delete akun logic
+  itemToDelete.value = row
+  showDeleteModal.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+function closeDeleteModal() {
+  showDeleteModal.value = false
+  itemToDelete.value = null
+  deleteLoading.value = false
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+const doDelete = async () => {
+  if (!itemToDelete.value) return
+  
+  deleteLoading.value = true
+  deleteError.value = ''
+  
+  try {
+    // Simulate API call - replace with actual delete API
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Remove from tableData
+    const idx = tableData.value.findIndex(r => r.kode === itemToDelete.value.kode)
+    if (idx > -1) {
+      tableData.value.splice(idx, 1)
+    }
+    
+    deleteSuccess.value = true
+    setTimeout(() => {
+      closeDeleteModal()
+    }, 1500)
+  } catch (error) {
+    deleteError.value = 'Gagal menghapus akun. Silakan coba lagi.'
+  } finally {
+    deleteLoading.value = false
+  }
 }
 function addIndukAkun() {
   // TODO: Implement add induk akun logic

@@ -16,57 +16,11 @@
     <SuboutputRekap :stats="stats" :formatCurrency="formatCurrency" />
 
     <div class="pt-2 flex flex-col gap-2">
-      <!-- Chart Section Sejajar -->
-      <div class="flex flex-col md:flex-row gap-4">
-        <!-- Chart Penyerapan -->
-        <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="px-5 py-4 border-b border-gray-100">
-            <div class="flex items-center gap-2">
-              <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
-                <IconChartBar class="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <h3 class="font-semibold text-gray-800">Penyerapan Anggaran</h3>
-                <p class="text-xs text-gray-500">Tren bulanan tahun {{ subOutputData.tahun }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="p-5">
-            <client-only>
-              <apexchart
-                type="bar"
-                :options="chartPenyerapanOptions"
-                :series="chartPenyerapanSeries"
-                height="400"
-              />
-            </client-only>
-          </div>
-        </div>
-        <!-- Chart Pengeluaran -->
-        <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="px-5 py-4 border-b border-gray-100">
-            <div class="flex items-center gap-2">
-              <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-green-100">
-                <IconChartLine class="w-4 h-4 text-green-600" />
-              </div>
-              <div>
-                <h3 class="font-semibold text-gray-800">Pengeluaran Anggaran</h3>
-                <p class="text-xs text-gray-500">Tren bulanan tahun {{ subOutputData.tahun }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="p-5">
-            <client-only>
-              <apexchart
-                type="area"
-                :options="chartPengeluaranOptions"
-                :series="chartPengeluaranSeries"
-                height="320"
-              />
-            </client-only>
-          </div>
-        </div>
-      </div>
+      <SuboutputCharts
+        :tahun="subOutputData.tahun"
+        :chartPenyerapanFusion="chartPenyerapanFusion"
+        :chartPengeluaranFusion="chartPengeluaranFusion"
+      />
 
 <!-- 4. Rincian Anggaran (Tabel) -->
       <!-- Rincian Anggaran (RKAKL) pakai komponen -->
@@ -76,8 +30,6 @@
         </div>
       </div>
 
-<!-- Tambahkan SuboutputActions dengan id -->
-<SuboutputActions v-if="route.params.id" :id="route.params.id" :stats="stats" />
 
  
 
@@ -92,63 +44,65 @@ import { useUserStore } from '@/stores/user.js';
 import { navigateTo } from '#app';
 import { useRoute, useRouter } from 'vue-router';
 import { $fetch } from 'ofetch';
-import { ref, reactive } from 'vue';
-import { IconChartBar, IconChartLine } from '@tabler/icons-vue';
+import { ref, reactive, computed } from 'vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
 import SuboutputRkakl from '@/components/SuboutputRkakl.vue';
-// State untuk data RKAKL detail
+import SuboutputCharts from '@/components/SuboutputCharts.vue';
 const rkaklDetail = ref(null);
-import SuboutputActions from '@/components/SuboutputActions.vue';
 
-// Chart Penyerapan (ApexCharts)
-const chartPenyerapanOptions = {
-  chart: {
-    id: 'penyerapan-chart',
-    toolbar: { show: false }
-  },
-  xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei']
-  },
-  title: {
-    text: 'Grafik Penyerapan Anggaran',
-    align: 'center',
-    style: { fontSize: '16px', fontWeight: 'bold' }
-  },
-  yaxis: {
-    labels: { formatter: val => `Rp ${val.toLocaleString('id-ID')}` }
-  }
-};
-const chartPenyerapanSeries = [
-  {
-    name: 'Penyerapan',
-    data: [200000000, 300000000, 150000000, 250000000, 176950000]
-  }
-];
 
-// Chart Pengeluaran (ApexCharts)
-const chartPengeluaranOptions = {
+// Konversi data chart ke format FusionCharts
+const chartPenyerapanFusion = computed(() => ({
   chart: {
-    id: 'pengeluaran-chart',
-    toolbar: { show: false }
+    caption: 'Grafik Penyerapan Anggaran',
+    xAxisName: 'Bulan',
+    yAxisName: 'Penyerapan (Rp)',
+    numberPrefix: 'Rp ',
+    theme: 'fusion',
+    formatNumberScale: '0',
+    decimals: '0',
   },
-  xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei']
+  data: [
+    { label: 'Jan', value: 200000000 },
+    { label: 'Feb', value: 300000000 },
+    { label: 'Mar', value: 150000000 },
+    { label: 'Apr', value: 250000000 },
+    { label: 'Mei', value: 176950000 },
+    { label: 'Jun', value: 210000000 },
+    { label: 'Jul', value: 180000000 },
+    { label: 'Agu', value: 220000000 },
+    { label: 'Sep', value: 195000000 },
+    { label: 'Okt', value: 205000000 },
+    { label: 'Nov', value: 230000000 },
+    { label: 'Des', value: 240000000 },
+  ]
+}));
+
+const chartPengeluaranFusion = computed(() => ({
+  chart: {
+    caption: 'Grafik Pengeluaran Anggaran',
+    xAxisName: 'Bulan',
+    yAxisName: 'Pengeluaran (Rp)',
+    numberPrefix: 'Rp ',
+    theme: 'fusion',
+    formatNumberScale: '0',
+    decimals: '0',
   },
-  title: {
-    text: 'Grafik Pengeluaran Anggaran',
-    align: 'center',
-    style: { fontSize: '16px', fontWeight: 'bold' }
-  },
-  yaxis: {
-    labels: { formatter: val => `Rp ${val.toLocaleString('id-ID')}` }
-  }
-};
-const chartPengeluaranSeries = [
-  {
-    name: 'Pengeluaran',
-    data: [100000000, 120000000, 90000000, 110000000, 50000000]
-  }
-];
+  data: [
+    { label: 'Jan', value: 100000000 },
+    { label: 'Feb', value: 120000000 },
+    { label: 'Mar', value: 90000000 },
+    { label: 'Apr', value: 110000000 },
+    { label: 'Mei', value: 50000000 },
+    { label: 'Jun', value: 95000000 },
+    { label: 'Jul', value: 105000000 },
+    { label: 'Agu', value: 115000000 },
+    { label: 'Sep', value: 98000000 },
+    { label: 'Okt', value: 102000000 },
+    { label: 'Nov', value: 120000000 },
+    { label: 'Des', value: 125000000 },
+  ]
+}));
 
 // --- State Data ---
 const showAlert = ref(true);

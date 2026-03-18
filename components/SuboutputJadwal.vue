@@ -1,93 +1,252 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden mt-8">
+    <!-- Header -->
     <div class="px-8 pt-8 pb-4 border-b border-blue-100 bg-gradient-to-r from-blue-100 to-blue-50 flex items-center gap-2">
       <i class="fa fa-bar-list text-blue-600 text-xl"></i>
       <h3 class="text-xl font-bold text-blue-800 mb-1">Jadwal Rencana Pengeluaran</h3>
     </div>
+    
+    <!-- Table Container -->
     <div class="px-4 py-6 overflow-x-auto">
       <table class="table-auto w-full text-sm border">
         <thead class="bg-white">
           <tr>
-            <th>Kode</th>
-            <th>Uraian</th>
-            <th class="text-center">Jumlah</th>
-            <th v-for="bulan in bulanList" :key="bulan" class="text-center">{{ bulan }}</th>
-            <th>Total</th>
-            <th>Selisih</th>
+            <th class="px-2 py-2 text-left border-b">Kode</th>
+            <th class="px-2 py-2 text-left border-b">Uraian</th>
+            <th class="px-2 py-2 text-center border-b">Jumlah</th>
+            <th v-for="bulan in bulanList" :key="bulan" class="px-2 py-2 text-center border-b">{{ bulan }}</th>
+            <th class="px-2 py-2 text-right border-b">Total</th>
+            <th class="px-2 py-2 text-right border-b">Selisih</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row, idx) in rows" :key="row.kode">
-            <td class="px-2 py-1">{{ row.kode }}</td>
-            <td class="px-2 py-1">
+          <tr v-for="(row, idx) in rows" :key="row.kode" class="hover:bg-blue-50/50 transition-colors">
+            <td class="px-2 py-2 border-b">{{ row.kode }}</td>
+            <td class="px-2 py-2 border-b">
               <div class="inline-flex items-center gap-2">
-                <div class="relative">
-                  <button class="btn btn-xs btn-primary rounded shadow" @click="openDropdown(idx)">
+                <div class="relative" ref="dropdownRefs" :data-idx="idx">
+                  <button 
+                    type="button"
+                    class="btn btn-xs btn-primary rounded shadow hover:shadow-md transition-shadow" 
+                    @click="toggleDropdown(idx)"
+                    :aria-expanded="dropdownOpen === idx"
+                    :aria-controls="`dropdown-menu-${idx}`"
+                  >
                     <span class="fa fa-bars"></span>
                   </button>
-                  <div v-if="dropdownOpen === idx" class="absolute z-10 bg-white border rounded shadow mt-1 left-0 w-40">
-                    <ul>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50"><i class="fa fa-calendar"></i> Jadwal</a></li>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50"><i class="glyphicon glyphicon-pencil"></i> Revisi</a></li>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50"><i class="glyphicon glyphicon-plus"></i> Sub Anggaran</a></li>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50"><i class="glyphicon glyphicon-shopping-cart"></i> Ajukan Pencairan</a></li>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50" @click.prevent="confirmDelete(row)"><i class="glyphicon glyphicon-trash"></i> Hapus</a></li>
-                      <li><a href="#" class="block px-3 py-2 hover:bg-blue-50"><i class="fa fa-refresh"></i> Debug (Developer)</a></li>
-                    </ul>
+                  <div 
+                    v-if="dropdownOpen === idx" 
+                    :id="`dropdown-menu-${idx}`"
+                    class="absolute z-20 bg-white border rounded shadow-lg mt-1 left-0 w-48 py-1"
+                  >
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('jadwal', row)">
+                      <i class="fa fa-calendar w-4 text-blue-500"></i> Jadwal
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('revisi', row)">
+                      <i class="fa fa-pencil-alt w-4 text-blue-500"></i> Revisi
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('sub', row)">
+                      <i class="fa fa-plus w-4 text-green-500"></i> Sub Anggaran
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('cairkan', row)">
+                      <i class="fa fa-shopping-cart w-4 text-orange-500"></i> Ajukan Pencairan
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-red-50 text-red-700" @click.prevent="confirmDelete(row)">
+                      <i class="fa fa-trash w-4 text-red-600"></i> Hapus
+                    </a>
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('debug', row)">
+                      <i class="fa fa-refresh w-4 text-gray-500"></i> Debug (Developer)
+                    </a>
                   </div>
                 </div>
-                <span>{{ row.uraian }}</span>
+                <span class="text-gray-800">{{ row.uraian }}</span>
               </div>
             </td>
-            <td class="text-right px-2 py-1">{{ formatCurrency(row.jumlah) }}</td>
-            <td v-for="(cell, i) in row.bulanan" :key="i" class="text-right px-2 py-1">
-              <a href="#" class="text-blue-500 underline" @click.prevent="editCell(row, i)">
-                {{ cell === null ? 'Kosong' : formatCurrency(cell) }}
-              </a>
+            <td class="px-2 py-2 text-right border-b font-medium">{{ formatCurrency(row.jumlah) }}</td>
+            <td v-for="(cell, i) in row.bulanan" :key="i" class="px-2 py-2 text-right border-b">
+              <button 
+                type="button"
+                class="text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
+                @click="editCell(row, i)"
+              >
+                {{ cell === null || cell === 0 ? '—' : formatCurrency(cell) }}
+              </button>
             </td>
-            <td class="text-right px-2 py-1 font-bold">{{ formatCurrency(row.total) }}</td>
-            <td class="text-right px-2 py-1 font-bold">{{ formatCurrency(row.selisih) }}</td>
+            <td class="px-2 py-2 text-right border-b font-bold text-gray-800">{{ formatCurrency(row.total) }}</td>
+            <td class="px-2 py-2 text-right border-b font-bold" :class="row.selisih > 0 ? 'text-orange-600' : 'text-green-600'">
+              {{ formatCurrency(row.selisih) }}
+            </td>
+          </tr>
+          <!-- Empty State -->
+          <tr v-if="rows.length === 0">
+            <td colspan="18" class="px-4 py-8 text-center text-gray-500">
+              <i class="fa fa-info-circle mr-2"></i>Belum ada data rencana pengeluaran
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+    
+    <!-- Delete Modal - placed outside table container but inside main wrapper -->
+    <DeleteModal 
+      :show-delete-modal="showDeleteModal"
+      :delete-loading="deleteLoading"
+      :delete-error="deleteError"
+      :delete-success="deleteSuccess"
+      :item-name="itemToDelete?.uraian"
+      @close="closeDeleteModal"
+      @confirm="doDelete"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import DeleteModal from './DeleteModal.vue'
 
 const bulanList = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 
+  'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
 ]
 
 const rows = ref([
   {
     kode: '001',
-    uraian: 'Konsumsi Peserta dan Pengajar (6 hari x 44 orang) ...',
+    uraian: 'Konsumsi Peserta dan Pengajar (6 hari x 44 orang)',
     jumlah: 253440000,
-    bulanan: Array(12).fill(null), // null = Kosong
+    bulanan: Array(12).fill(null),
     total: 0,
     selisih: 253440000
   }
-  // Tambahkan data lain sesuai kebutuhan
 ])
 
+// Dropdown state
 const dropdownOpen = ref(null)
-function openDropdown(idx) {
+const dropdownRefs = ref([])
+
+// Delete modal state
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
+// Toggle dropdown dengan close outside handler
+function toggleDropdown(idx) {
   dropdownOpen.value = dropdownOpen.value === idx ? null : idx
 }
-function confirmDelete(row) {
-  if (confirm('Yakin akan menghapus anggaran?')) {
-    // Hapus data di sini
+
+// Close dropdown when clicking outside
+function handleClickOutside(event) {
+  if (dropdownOpen.value === null) return
+  
+  const target = event.target
+  const dropdownContainer = target.closest('[data-idx]')
+  
+  if (!dropdownContainer) {
+    dropdownOpen.value = null
   }
 }
+
+// Handle dropdown actions
+function handleAction(action, row) {
+  dropdownOpen.value = null
+  const actions = {
+    jadwal: () => alert(`Buka jadwal untuk: ${row.uraian}`),
+    revisi: () => alert(`Revisi anggaran: ${row.uraian}`),
+    sub: () => alert(`Tambah sub-anggaran: ${row.uraian}`),
+    cairkan: () => alert(`Ajukan pencairan: ${row.uraian}`),
+    debug: () => console.log('Debug row:', row)
+  }
+  actions[action]?.()
+}
+
+// Delete flow
+function confirmDelete(row) {
+  itemToDelete.value = row
+  showDeleteModal.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+function closeDeleteModal() {
+  showDeleteModal.value = false
+  itemToDelete.value = null
+  deleteLoading.value = false
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+const doDelete = async () => {
+  if (!itemToDelete.value) return
+  
+  deleteLoading.value = true
+  deleteError.value = ''
+  
+  try {
+    // TODO: Replace with actual API call
+    // await api.delete(`/anggaran/${itemToDelete.value.kode}`)
+    await new Promise(resolve => setTimeout(resolve, 800))
+    
+    const idx = rows.value.findIndex(r => r.kode === itemToDelete.value.kode)
+    if (idx > -1) {
+      rows.value.splice(idx, 1)
+    }
+    
+    deleteSuccess.value = true
+    setTimeout(closeDeleteModal, 1200)
+  } catch (error) {
+    console.error('Delete error:', error)
+    deleteError.value = 'Gagal menghapus data. Silakan coba lagi.'
+  } finally {
+    deleteLoading.value = false
+  }
+}
+
+// Edit cell handler
 function editCell(row, bulanIdx) {
-  // Logic untuk edit cell, misal tampilkan modal input
-  alert(`Edit jadwal bulan ${bulanList[bulanIdx]} untuk ${row.uraian}`)
+  // TODO: Implement modal/form untuk edit nilai bulanan
+  console.log(`Edit ${row.kode} bulan ke-${bulanIdx + 1} (${bulanList[bulanIdx]})`)
+  // Contoh: openEditModal({ row, bulanIdx, currentValue: row.bulanan[bulanIdx] })
 }
+
+// Currency formatter dengan locale Indonesia
 function formatCurrency(val) {
-  if (!val && val !== 0) return '0'
-  return new Intl.NumberFormat('id-ID').format(val)
+  if (val === null || val === undefined) return '—'
+  if (val === 0) return '0'
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(val)
 }
+
+// Auto-calculate total & selisih ketika bulanan berubah (opsional)
+function calculateRowMetrics(row) {
+  const totalBulanan = row.bulanan.reduce((sum, val) => sum + (val || 0), 0)
+  row.total = totalBulanan
+  row.selisih = row.jumlah - totalBulanan
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  // Initial calculation
+  rows.value.forEach(calculateRowMetrics)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+// Watch for changes in bulanan array untuk auto-calculate
+// (jika diperlukan reaktivitas mendalam)
 </script>
+
+<style scoped>
+/* Optional: Tambahkan transition untuk dropdown */
+.absolute {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+</style>

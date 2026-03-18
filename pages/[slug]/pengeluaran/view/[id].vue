@@ -17,90 +17,100 @@
     <form @submit.prevent class="bg-white rounded-xl shadow-lg border border-slate-200 p-8 mb-8">
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-slate-800 mb-6">Detil Pengeluaran</h3>
-        <div class="flex flex-col gap-6 mb-8">
-          <div class="flex items-center gap-6">
-            <label for="Pengeluaran_tanggal_pengajuan" class="min-w-[180px] text-blue-600 font-semibold">Tanggal Pengajuan</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" type="date" v-model="form.tanggal_pengajuan" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label for="Pengeluaran_kode_komponen" class="min-w-[180px] text-blue-600 font-semibold">Kode Komponen</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Kode Komponen" v-model="form.kode_komponen" type="text" maxlength="20" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label for="Pengeluaran_kode_subkomponen" class="min-w-[180px] text-blue-600 font-semibold">Kode Subkomponen</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Kode Subkomponen" v-model="form.kode_subkomponen" type="text" maxlength="20" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label for="Pengeluaran_kode_akun" class="min-w-[180px] text-blue-600 font-semibold">Kode Akun</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Kode Akun" v-model="form.kode_akun" type="text" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_jumlah">Jumlah Pengeluaran</label>
-            <div class="flex flex-1 items-center gap-2">
-              <span class="rounded-lg bg-slate-100 px-3 py-2 text-slate-500">Rp</span>
-              <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium text-right focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="0" v-model="form.jumlah" type="text" />
-            </div>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_sisa">Sisa Anggaran</label>
-            <div class="flex flex-1 items-center gap-2">
-              <span class="rounded-lg bg-slate-100 px-3 py-2 text-slate-500">Rp</span>
-              <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium text-muted text-right bg-slate-100" readonly placeholder="Sisa" v-model="form.sisa" type="text" />
-            </div>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_keterangan">Keterangan</label>
-            <textarea rows="3" class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Tambahkan keterangan detail di sini..." v-model="form.keterangan"></textarea>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_id_pengeluaran_status">Status</label>
-            <select class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" v-model="form.id_pengeluaran_status">
-              <option value="1">Cair</option>
-              <option value="2">Proses</option>
-              <option value="3">Batal</option>
-            </select>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_tanggal">Tanggal Cair</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" type="date" v-model="form.tanggal" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_status_sp2d">Status SP2D</label>
-            <select class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" v-model="form.status_sp2d">
-              <option value="0">Belum</option>
-              <option value="1">Sudah</option>
-            </select>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_tanggal_sp2d">Tanggal SP2D</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" type="date" v-model="form.tanggal_sp2d" />
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
-            <select class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" v-model="form.status_pertanggungjawaban">
-              <option value="">- Pilih Status -</option>
-              <option value="0">Belum</option>
-              <option value="1">Sudah</option>
-            </select>
-          </div>
-          <div class="flex items-center gap-6">
-            <label class="min-w-[180px] font-semibold text-blue-600" for="Pengeluaran_tanggal_pertanggungjawaban">Tanggal PJ</label>
-            <input class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-base font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100" type="date" v-model="form.tanggal_pertanggungjawaban" />
-          </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white border border-slate-200 rounded-lg">
+            <tbody>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Tanggal Pengajuan</th>
+                <td class="px-4 py-2">{{ form.tanggal_pengajuan }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Komponen</th>
+                <td class="px-4 py-2">{{ form.kode_komponen }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Subkomponen</th>
+                <td class="px-4 py-2">{{ form.kode_subkomponen }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Akun</th>
+                <td class="px-4 py-2">{{ form.kode_akun }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengeluaran</th>
+                <td class="px-4 py-2">Rp {{ form.jumlah }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Sisa Anggaran</th>
+                <td class="px-4 py-2">Rp {{ form.sisa }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Keterangan</th>
+                <td class="px-4 py-2">{{ form.keterangan }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status</th>
+                <td class="px-4 py-2">
+                  <span v-if="form.id_pengeluaran_status == 1">Cair</span>
+                  <span v-else-if="form.id_pengeluaran_status == 2">Proses</span>
+                  <span v-else-if="form.id_pengeluaran_status == 3">Batal</span>
+                  <span v-else>-</span>
+                </td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Tanggal Cair</th>
+                <td class="px-4 py-2">{{ form.tanggal }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status SP2D</th>
+                <td class="px-4 py-2">
+                  <span v-if="form.status_sp2d == 1">Sudah</span>
+                  <span v-else>Belum</span>
+                </td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Tanggal SP2D</th>
+                <td class="px-4 py-2">{{ form.tanggal_sp2d }}</td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status PJ</th>
+                <td class="px-4 py-2">
+                  <span v-if="form.status_pertanggungjawaban == 1">Sudah</span>
+                  <span v-else-if="form.status_pertanggungjawaban == 0">Belum</span>
+                  <span v-else>-</span>
+                </td>
+              </tr>
+              <tr :class="['even:bg-blue-50', 'odd:bg-white']">
+                <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Tanggal PJ</th>
+                <td class="px-4 py-2">{{ form.tanggal_pertanggungjawaban }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="flex justify-end gap-4 border-t border-slate-200 pt-6 mt-8">
-        <NuxtLink :to="`/${slug}/pengeluaran/update/${id}`" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition">
-          <i class="fa fa-edit"></i> Sunting Pengeluaran
+      <div class="flex items-center gap-4 border-t border-slate-200 pt-6 mt-8">
+        <NuxtLink :to="`/${slug}/pengeluaran/update/${id}`" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
+          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h.01" /><path d="M15 7h.01" /><path d="M12 7h.01" /><path d="M7 11v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-2" /><path d="M9 15v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-2" /><path d="M9 19h6" /></svg></span> Sunting Pengeluaran
         </NuxtLink>
-        <button @click.prevent="goBack" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-slate-200 text-slate-700 font-semibold shadow hover:bg-slate-300 transition" type="button">
-          <i class="fa fa-arrow-left"></i> Kembali
+        <button @click.prevent="goBack" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
+          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg></span> Kembali
+        </button>
+        <button @click.prevent="eksporUMK" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
+          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-spreadsheet" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="8" y="12" width="8" height="4" rx="1" /><path d="M8 16v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2 -2v-1" /><path d="M8 12v-7a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v7" /></svg></span> Ekspor UMK
         </button>
       </div>
     </form>
     <div class="flex flex-col gap-8">
-      <Berkas :berkas-list="berkasList" />
+      <Berkas :berkas-list="berkasList" @delete="handleBerkasDelete" />
       <Riwayat :riwayat-list="riwayatList" />
+      <DeleteModal 
+        :show-delete-modal="showDeleteModal"
+        :delete-loading="deleteLoading"
+        :delete-error="deleteError"
+        :delete-success="deleteSuccess"
+        @close="closeDeleteModal"
+        @confirm="doDeleteBerkas"
+      />
     </div>
   </section>
 </template>
@@ -110,6 +120,12 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Berkas from '@/components/berkas.vue'
 import Riwayat from '@/components/riwayat.vue'
+import DeleteModal from '@/components/UI/DeleteModal.vue'
+
+function eksporUMK() {
+  // TODO: Implementasi ekspor UMK
+  alert('Fitur ekspor UMK belum diimplementasikan.');
+}
 
 const form = ref({
   tanggal_pengajuan: '',
@@ -138,4 +154,52 @@ function goBack() {
 
 const berkasList = ref([])
 const riwayatList = ref([])
+
+const showDeleteModal = ref(false)
+const berkasToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
+function handleBerkasDelete(berkas) {
+  berkasToDelete.value = berkas
+  showDeleteModal.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+function closeDeleteModal() {
+  showDeleteModal.value = false
+  berkasToDelete.value = null
+  deleteLoading.value = false
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+const doDeleteBerkas = async () => {
+  if (!berkasToDelete.value) return
+  
+  deleteLoading.value = true
+  deleteError.value = ''
+  
+  try {
+    // Simulate API call - replace with actual delete API: $fetch(`/api/berkas/${berkasToDelete.value.id}`, { method: 'DELETE' })
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Remove from list
+    const idx = berkasList.value.findIndex(b => b.id === berkasToDelete.value.id)
+    if (idx > -1) {
+      berkasList.value.splice(idx, 1)
+    }
+    
+    deleteSuccess.value = true
+    setTimeout(() => {
+      closeDeleteModal()
+    }, 1500)
+  } catch (error) {
+    deleteError.value = 'Gagal menghapus berkas. Silakan coba lagi.'
+  } finally {
+    deleteLoading.value = false
+  }
+}
 </script>
