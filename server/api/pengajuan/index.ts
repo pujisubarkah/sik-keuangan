@@ -5,7 +5,10 @@ import { masterSuboutput } from '@/server/database/schema/master_suboutput';
 import { masterKomponen } from '@/server/database/schema/master_komponen';
 import { masterSubkomponen } from '@/server/database/schema/master_subkomponen';
 import { masterAkun } from '@/server/database/schema/master_akun';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
+import { statusPengajuan } from '@/server/database/schema/status_pengajuan';
+import { pengeluaran } from '@/server/database/schema/pengeluaran';
+import { sql } from 'drizzle-orm';
 
 export default defineEventHandler(async (event) => {
   if (event.method === 'POST') {
@@ -21,7 +24,7 @@ export default defineEventHandler(async (event) => {
       jumlah_pengajuan: body.jumlah_pengajuan,
       jumlah_data_dukung: Number(body.jumlah_data_dukung),
       status_berkas: Number(body.status_berkas),
-      status_verifikator: Number(body.status_verifikator),
+      status_pengajuan_id: Number(body.status_pengajuan_id),
       tahun_anggaran_id: Number(body.tahun_anggaran_id),
       satker_id: Number(body.satker_id),
       unit_id: Number(body.unit_id),
@@ -32,13 +35,18 @@ export default defineEventHandler(async (event) => {
     return inserted;
   }
 
-  // GET: list/filter pengajuan + join rkakl_detail + master_suboutput/komponen/subkomponen/akun
+  // GET: list/filter pengajuan + join tabel master saja, pengeluaran diambil terpisah
   const query = getQuery(event);
   const where: any[] = [];
   if (query.unit_id) where.push(eq(pengajuan.unit_id, Number(query.unit_id)));
   if (query.satker_id) where.push(eq(pengajuan.satker_id, Number(query.satker_id)));
   if (query.tahun_anggaran_id) where.push(eq(pengajuan.tahun_anggaran_id, Number(query.tahun_anggaran_id)));
   if (query.user_id) where.push(eq(pengajuan.user_id, Number(query.user_id)));
+
+  // Pagination
+  const page = Number(query.page) || 1;
+  const pageSize = Number(query.pageSize) || 10;
+  const offset = (page - 1) * pageSize;
 
   const result = await db
     .select({
@@ -49,7 +57,8 @@ export default defineEventHandler(async (event) => {
       jumlah_pengajuan: pengajuan.jumlah_pengajuan,
       jumlah_data_dukung: pengajuan.jumlah_data_dukung,
       status_berkas: pengajuan.status_berkas,
-      status_verifikator: pengajuan.status_verifikator,
+      status_pengajuan_id: pengajuan.status_pengajuan_id,
+      status_pengajuan_nama: statusPengajuan.nama_status,
       tahun_anggaran_id: pengajuan.tahun_anggaran_id,
       satker_id: pengajuan.satker_id,
       unit_id: pengajuan.unit_id,
@@ -75,11 +84,38 @@ export default defineEventHandler(async (event) => {
     .leftJoin(masterKomponen, eq(rkaklDetail.komponen_id, masterKomponen.id))
     .leftJoin(masterSubkomponen, eq(rkaklDetail.sub_komponen_id, masterSubkomponen.id))
     .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id))
+    .leftJoin(statusPengajuan, eq(pengajuan.status_pengajuan_id, statusPengajuan.id))
     .where(where.length ? and(...where) : undefined)
-    .orderBy(pengajuan.id);
+    .orderBy(pengajuan.id)
+    .limit(pageSize)
+    .offset(offset);
+
+  // Ambil semua id pengajuan hasil query
+  const pengajuanIds = result.map((row) => row.id);
+  // Query pengeluaran untuk semua pengajuan sekaligus
+  const pengeluaranRows = pengajuanIds.length
+    ? await db.select().from(pengeluaran).where(inArray(pengeluaran.pengajuan_id, pengajuanIds))
+    : [];
+
+  // Gabungkan pengeluaran ke masing-masing pengajuan
+  const pengeluaranMap = new Map();
+  for (const row of pengeluaranRows) {
+    pengeluaranMap.set(row.pengajuan_id, row);
+  }
+  const data = result.map((row) => ({
+    ...row,
+    pengeluaran: pengeluaranMap.get(row.id) || null,
+  }));
+
+  // Hitung total data untuk pagination frontend
+  const totalResult = await db.execute(sql`SELECT COUNT(*)::int as count FROM pengajuan ${where.length ? sql`WHERE ${and(...where)}` : sql``}`);
+  const total = totalResult.rows?.[0]?.count || 0;
 
   return {
     success: true,
-    data: result
+    data,
+    page,
+    pageSize,
+    total,
   };
 });

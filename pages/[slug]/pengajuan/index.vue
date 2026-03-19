@@ -92,7 +92,7 @@
     <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
       <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
         <span class="text-sm text-gray-500 font-medium">
-          Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ tableData.length }} hasil.
+          Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ totalData }} hasil.
         </span>
       </div>
       <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
@@ -126,7 +126,7 @@
               </td>
             </tr> -->
             <!-- Data Rows -->
-            <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+            <tr v-for="(item, index) in tableData" :key="item.id" class="hover:bg-yellow-50 align-middle">
               <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
               <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
                 <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
@@ -170,7 +170,7 @@
               </td>
             </tr>
             <!-- Empty State -->
-            <tr v-if="paginatedData.length === 0">
+            <tr v-if="tableData.length === 0">
               <td colspan="12" class="px-6 py-10 text-center text-gray-500">
                 <div class="flex flex-col items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -226,7 +226,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useUserStore } from '~/stores/user.js'
 import { useRouter } from 'vue-router'
 import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash, IconCalendar } from '@tabler/icons-vue';
@@ -254,12 +254,11 @@ const itemsPerPage = ref(10)
 const tableData = ref([])
 
 const rekapData = ref({
-  jumlah_pengajuan: 4,
-  jumlah_dana: 16327500
+  jumlah_pengajuan: 0,
+  jumlah_dana: 0
 })
 
-const userStore = useUserStore ? useUserStore() : null
-const router = useRouter ? useRouter() : null
+const totalData = ref(0)
 
 const fetchPengajuan = async () => {
   const token = localStorage.getItem('token')
@@ -270,26 +269,12 @@ const fetchPengajuan = async () => {
   }
   const headers = { Authorization: `Bearer ${token}` }
   try {
-    const res = await fetch('/api/pengajuan', { headers })
+    const res = await fetch(`/api/pengajuan?page=${currentPage.value}&pageSize=${itemsPerPage.value}`, { headers })
     const json = await res.json()
     if (json.success && Array.isArray(json.data)) {
-      tableData.value = json.data.map(item => ({
-        id: item.id,
-        // id_pekerjaan: item.id_pekerjaan, // jika ada, jika tidak bisa dihilangkan
-        kode_suboutput: item.kode_suboutput,
-        suboutput: item.nama_suboutput, // sesuai permintaan
-        kode_komponen: item.kode_komponen,
-        kode_subkomponen: item.kode_subkomponen,
-        kode_akun: item.kode_akun,
-        detil: item.detil,
-        tanggal_pengajuan: item.tanggal_pengajuan,
-        jumlah_pengajuan: item.jumlah_pengajuan,
-        sisa_anggaran: item.rkakl_jumlah, // sesuai permintaan
-        jumlah_data_dukung: item.jumlah_data_dukung
-      }))
-      // Update rekap data
-      rekapData.value.jumlah_pengajuan = json.data.length
-      rekapData.value.jumlah_dana = json.data.reduce((acc, cur) => acc + (parseInt(cur.jumlah_pengajuan) || 0), 0)
+      tableData.value = json.data
+      totalPages.value = Math.ceil((json.total || 0) / itemsPerPage.value) || 1
+      totalData.value = json.total || 0
     }
   } catch (e) {
     // error handling
@@ -297,16 +282,12 @@ const fetchPengajuan = async () => {
   }
 }
 
-// Computed properties
-const totalPages = computed(() => {
-  return Math.ceil(tableData.value.length / itemsPerPage.value)
+watch(currentPage, () => {
+  fetchPengajuan()
 })
 
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return tableData.value.slice(start, end)
-})
+// Computed properties
+const totalPages = ref(1)
 
 const startIndex = computed(() => {
   return (currentPage.value - 1) * itemsPerPage.value + 1
@@ -358,9 +339,25 @@ const confirmDelete = (id) => {
   }
 }
 
+const fetchRekapPengajuan = async () => {
+  try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch('/api/jumlah_pengajuan', { headers })
+    const json = await res.json()
+    if (json.success) {
+      rekapData.value.jumlah_pengajuan = json.jumlah_pengajuan
+      rekapData.value.jumlah_dana = parseInt(json.jumlah_dana) || 0
+    }
+  } catch (e) {
+    console.error('Gagal fetch rekap pengajuan', e)
+  }
+}
+
 // Lifecycle
 onMounted(() => {
   fetchPengajuan()
+  fetchRekapPengajuan()
 })
 </script>
 

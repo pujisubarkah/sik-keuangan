@@ -50,11 +50,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengeluaran & Sisa Anggaran</th>
+                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengajuan & Sisa Anggaran</th>
                     <td class="px-4 py-2">
                       <div class="flex gap-4">
                         <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_jumlah">Jumlah Pengeluaran</label>
+                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
                           <div class="flex items-center gap-2">
                             <span class="modern-input-group-text">Rp</span>
                             <input id="Pengeluaran_jumlah" class="modern-form-control text-right" placeholder="0" v-model="form.jumlah" type="text" />
@@ -150,6 +150,10 @@
 <script setup>
 import SuboutputAlert from '@/components/SuboutputAlert.vue'
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
 
 definePageMeta({
   layout: 'default',
@@ -157,19 +161,88 @@ definePageMeta({
 })
 
 const form = ref({
-  tanggal_pengajuan: '2026-03-17',
-  kode_komponen: '001',
-  kode_subkomponen: 'A',
-  kode_akun: '511111',
-  jumlah: '1.590.689.740',
-  sisa: '12.119.064.580',
-  keterangan: 'SPM 00078 - LS - Gaji Induk PNS Bulan April 2026 untuk 424Pegawai/1050 Jiwa',
-  id_pengeluaran_status: '1',
-  tanggal: '2026-04-01',
-  status_sp2d: '1',
-  tanggal_sp2d: '2026-04-01',
-  status_pertanggungjawaban: '1',
-  tanggal_pertanggungjawaban: '2026-03-12',
+  tanggal_pengajuan: '',
+  kode_komponen: '',
+  kode_subkomponen: '',
+  kode_akun: '',
+  jumlah: '',
+  sisa: '',
+  keterangan: '',
+  id_pengeluaran_status: '',
+  tanggal: '',
+  status_sp2d: '',
+  tanggal_sp2d: '',
+  status_pertanggungjawaban: '',
+  tanggal_pertanggungjawaban: '',
+})
+
+const fetchPengajuanById = async () => {
+  // Ambil id dari query param jika ada (misal: ?id=123 dari halaman pengajuan)
+  let id = route.params.id
+  if (!id && route.query.id) {
+    id = route.query.id
+  }
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch(`/api/pengajuan/${id}`, { headers })
+    const json = await res.json()
+    if (json && json.id) {
+      form.value.tanggal_pengajuan = json.tanggal_pengajuan || ''
+      form.value.kode_komponen = json.kode_komponen || ''
+      form.value.kode_subkomponen = json.kode_subkomponen || ''
+      form.value.kode_akun = json.kode_akun || ''
+      form.value.jumlah = json.jumlah_pengajuan || '' // Ambil dari jumlah_pengajuan
+      form.value.sisa = json.rkakl_jumlah || ''
+      form.value.keterangan = json.pengeluaran?.keterangan || ''
+      form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
+      form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
+      form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
+      form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''
+      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ? '1' : '0'
+      form.value.tanggal_pertanggungjawaban = json.pengeluaran?.tanggal_pj || ''
+    }
+  } catch (e) {
+    console.error('Gagal fetch detail pengajuan', e)
+  }
+}
+
+const updatePengajuan = async () => {
+  let id = route.params.id
+  if (!id && route.query.id) {
+    id = route.query.id
+  }
+  const token = localStorage.getItem('token')
+  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : { 'Content-Type': 'application/json' }
+  try {
+    await fetch(`/api/pengajuan/${id}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        // mapping sesuai kebutuhan API
+        tanggal_pengajuan: form.value.tanggal_pengajuan,
+        kode_komponen: form.value.kode_komponen,
+        kode_subkomponen: form.value.kode_subkomponen,
+        kode_akun: form.value.kode_akun,
+        jumlah_pengeluaran: form.value.jumlah,
+        sisa: form.value.sisa,
+        keterangan: form.value.keterangan,
+        id_pengeluaran_status: form.value.id_pengeluaran_status,
+        tanggal_cair: form.value.tanggal,
+        status_sp2d: form.value.status_sp2d === '1',
+        tanggal_sp2d: form.value.tanggal_sp2d,
+        status_pj: form.value.status_pertanggungjawaban === '1',
+        tanggal_pj: form.value.tanggal_pertanggungjawaban,
+      })
+    })
+    // opsional: redirect atau tampilkan notifikasi sukses
+  } catch (e) {
+    console.error('Gagal update pengajuan', e)
+  }
+}
+
+onMounted(() => {
+  fetchPengajuanById()
 })
 </script>
 

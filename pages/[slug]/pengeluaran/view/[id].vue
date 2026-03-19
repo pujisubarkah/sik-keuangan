@@ -121,6 +121,7 @@ import { useRoute, useRouter } from 'vue-router'
 import Berkas from '@/components/berkas.vue'
 import Riwayat from '@/components/riwayat.vue'
 import DeleteModal from '@/components/UI/DeleteModal.vue'
+import { onMounted } from 'vue'
 
 function eksporUMK() {
   // TODO: Implementasi ekspor UMK
@@ -202,4 +203,35 @@ const doDeleteBerkas = async () => {
     deleteLoading.value = false
   }
 }
+
+const fetchPengajuanById = async () => {
+  const pengajuanId = route.params.id
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch(`/api/pengajuan/${pengajuanId}`, { headers })
+    const json = await res.json()
+    if (json && json.id) {
+      form.value.tanggal_pengajuan = json.tanggal_pengajuan || ''
+      form.value.kode_komponen = json.kode_komponen || ''
+      form.value.kode_subkomponen = json.kode_subkomponen || ''
+      form.value.kode_akun = json.kode_akun || ''
+      form.value.jumlah = json.jumlah_pengajuan || ''
+      form.value.sisa = json.rkakl_jumlah || ''
+      form.value.keterangan = json.pengeluaran?.keterangan || ''
+      form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
+      form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
+      form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
+      form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''
+      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ? '1' : '0'
+      form.value.tanggal_pertanggungjawaban = json.pengeluaran?.tanggal_pj || ''
+    }
+  } catch (e) {
+    console.error('Gagal fetch detail pengajuan', e)
+  }
+}
+
+onMounted(() => {
+  fetchPengajuanById()
+})
 </script>

@@ -8,7 +8,7 @@ export const pengajuan = pgTable('pengajuan', {
   jumlah_pengajuan: numeric('jumlah_pengajuan').notNull(),
   jumlah_data_dukung: integer('jumlah_data_dukung').notNull(),
   status_berkas: smallint('status_berkas').notNull(),
-  status_verifikator: smallint('status_verifikator').notNull(),
+  status_pengajuan_id: smallint('status_pengajuan_id').notNull(),
   tahun_anggaran_id: integer('tahun_anggaran_id').notNull(),
   satker_id: integer('satker_id').notNull(),
   unit_id: integer('unit_id').notNull(),
