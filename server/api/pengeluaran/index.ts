@@ -1,0 +1,123 @@
+import { db } from '@/server/database';
+import { pengajuan } from '@/server/database/schema/pengajuan';
+import { rkaklDetail } from '@/server/database/schema/rkakl_detail';
+import { masterSuboutput } from '@/server/database/schema/master_suboutput';
+import { masterKomponen } from '@/server/database/schema/master_komponen';
+import { masterSubkomponen } from '@/server/database/schema/master_subkomponen';
+import { masterAkun } from '@/server/database/schema/master_akun';
+import { and, eq, inArray } from 'drizzle-orm';
+import { statusPengajuan } from '@/server/database/schema/status_pengajuan';
+import { pengeluaran } from '@/server/database/schema/pengeluaran';
+import { sql } from 'drizzle-orm';
+
+export default defineEventHandler(async (event) => {
+  if (event.method === 'POST') {
+    const body = await readBody(event);
+    // Simple validation
+    if (!body || !body.rkakl_detail_id || !body.detil || !body.tanggal_pengajuan || !body.jumlah_pengajuan || !body.jumlah_data_dukung || body.status_berkas === undefined || body.status_verifikator === undefined || !body.tahun_anggaran_id || !body.satker_id || !body.unit_id || !body.user_id) {
+      return { error: 'Data tidak lengkap' };
+    }
+    const [inserted] = await db.insert(pengajuan).values({
+      rkakl_detail_id: Number(body.rkakl_detail_id),
+      detil: body.detil,
+      tanggal_pengajuan: body.tanggal_pengajuan,
+      jumlah_pengajuan: body.jumlah_pengajuan,
+      jumlah_data_dukung: Number(body.jumlah_data_dukung),
+      status_berkas: Number(body.status_berkas),
+      status_pengajuan_id: Number(body.status_pengajuan_id),
+      tahun_anggaran_id: Number(body.tahun_anggaran_id),
+      satker_id: Number(body.satker_id),
+      unit_id: Number(body.unit_id),
+      user_id: Number(body.user_id),
+      created_at: new Date(),
+      updated_at: new Date(),
+    }).returning();
+    return inserted;
+  }
+
+  // GET: list/filter pengajuan + join tabel master saja, pengeluaran diambil terpisah
+  const query = getQuery(event);
+  const where: any[] = [];
+  if (query.unit_id) where.push(eq(pengajuan.unit_id, Number(query.unit_id)));
+  if (query.satker_id) where.push(eq(pengajuan.satker_id, Number(query.satker_id)));
+  if (query.tahun_anggaran_id) where.push(eq(pengajuan.tahun_anggaran_id, Number(query.tahun_anggaran_id)));
+  if (query.user_id) where.push(eq(pengajuan.user_id, Number(query.user_id)));
+  // Filter khusus status_pengajuan_id = 2 (cair) saja
+  where.push(eq(pengajuan.status_pengajuan_id, 2));
+
+  // Pagination
+  const page = Number(query.page) || 1;
+  const pageSize = Number(query.pageSize) || 10;
+  const offset = (page - 1) * pageSize;
+
+  const result = await db
+    .select({
+      id: pengajuan.id,
+      rkakl_detail_id: pengajuan.rkakl_detail_id,
+      detil: pengajuan.detil,
+      tanggal_pengajuan: pengajuan.tanggal_pengajuan,
+      jumlah_pengajuan: pengajuan.jumlah_pengajuan,
+      jumlah_data_dukung: pengajuan.jumlah_data_dukung,
+      status_berkas: pengajuan.status_berkas,
+      status_pengajuan_id: pengajuan.status_pengajuan_id,
+      status_pengajuan_nama: statusPengajuan.nama_status,
+      tahun_anggaran_id: pengajuan.tahun_anggaran_id,
+      satker_id: pengajuan.satker_id,
+      unit_id: pengajuan.unit_id,
+      user_id: pengajuan.user_id,
+      created_at: pengajuan.created_at,
+      updated_at: pengajuan.updated_at,
+      rkakl_uraian: rkaklDetail.uraian,
+      rkakl_status: rkaklDetail.status,
+      rkakl_jumlah: rkaklDetail.jumlah,
+      rkakl_akun_id: rkaklDetail.akun_id,
+      rkakl_komponen_id: rkaklDetail.komponen_id,
+      rkakl_subkomponen_id: rkaklDetail.sub_komponen_id,
+      kode_suboutput: masterSuboutput.kode_suboutput,
+      nama_suboutput: masterSuboutput.nama_suboutput,
+      kode_komponen: masterKomponen.kode_komponen,
+      kode_subkomponen: masterSubkomponen.kode_subkomponen,
+      kode_akun: masterAkun.kode_akun,
+      tahun_anggaran: rkaklDetail.tahun,
+    })
+    .from(pengajuan)
+    .leftJoin(rkaklDetail, eq(pengajuan.rkakl_detail_id, rkaklDetail.id))
+    .leftJoin(masterSuboutput, eq(rkaklDetail.suboutput_id, masterSuboutput.id))
+    .leftJoin(masterKomponen, eq(rkaklDetail.komponen_id, masterKomponen.id))
+    .leftJoin(masterSubkomponen, eq(rkaklDetail.sub_komponen_id, masterSubkomponen.id))
+    .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id))
+    .leftJoin(statusPengajuan, eq(pengajuan.status_pengajuan_id, statusPengajuan.id))
+    .where(where.length ? and(...where) : undefined)
+    .orderBy(pengajuan.id)
+    .limit(pageSize)
+    .offset(offset);
+
+  // Ambil semua id pengajuan hasil query
+  const pengajuanIds = result.map((row) => row.id);
+  // Query pengeluaran untuk semua pengajuan sekaligus
+  const pengeluaranRows = pengajuanIds.length
+    ? await db.select().from(pengeluaran).where(inArray(pengeluaran.pengajuan_id, pengajuanIds))
+    : [];
+
+  // Gabungkan pengeluaran ke masing-masing pengajuan
+  const pengeluaranMap = new Map();
+  for (const row of pengeluaranRows) {
+    pengeluaranMap.set(row.pengajuan_id, row);
+  }
+  const data = result.map((row) => ({
+    ...row,
+    pengeluaran: pengeluaranMap.get(row.id) || null,
+  }));
+
+  // Hitung total data untuk pagination frontend
+  const totalResult = await db.execute(sql`SELECT COUNT(*)::int as count FROM pengajuan ${where.length ? sql`WHERE ${and(...where)}` : sql``}`);
+  const total = totalResult.rows?.[0]?.count || 0;
+
+  return {
+    success: true,
+    data,
+    page,
+    pageSize,
+    total,
+  };
+});

@@ -135,7 +135,7 @@
               </td>
               <td class="px-3 py-2 align-middle">
                 <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
-                  {{ item.suboutput }}
+                  {{ item.nama_suboutput }}
                 </NuxtLink>
               </td>
               <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
@@ -147,7 +147,7 @@
                 <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.jumlah_pengajuan) }}</span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.sisa_anggaran) }}</span>
+                <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.sisa_anggaran ?? 0) }}</span>
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
@@ -273,8 +273,12 @@ const fetchPengajuan = async () => {
     const json = await res.json()
     if (json.success && Array.isArray(json.data)) {
       tableData.value = json.data
-      totalPages.value = Math.ceil((json.total || 0) / itemsPerPage.value) || 1
-      totalData.value = json.total || 0
+      // If API provides total, use it, else fallback to data length
+      totalPages.value = Math.ceil((json.total || json.data.length) / itemsPerPage.value) || 1
+      totalData.value = json.total || json.data.length
+      // Update rekapData
+      rekapData.value.jumlah_pengajuan = json.total || json.data.length
+      rekapData.value.jumlah_dana = json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
     }
   } catch (e) {
     // error handling
@@ -311,17 +315,18 @@ const visiblePages = computed(() => {
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
+    fetchPengajuan()
   }
+}
+
+const filterData = () => {
+  currentPage.value = 1
+  fetchPengajuan()
 }
 
 // Methods
 const toggleSidebar = () => {
   sidebarRail.value = !sidebarRail.value
-}
-
-const filterData = () => {
-  // In a real app, this would make an API call to filter the data
-  console.log('Filtering data with:', filterForm.value)
 }
 
 const formatCurrency = (amount) => {
@@ -339,25 +344,11 @@ const confirmDelete = (id) => {
   }
 }
 
-const fetchRekapPengajuan = async () => {
-  try {
-    const token = localStorage.getItem('token')
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await fetch('/api/jumlah_pengajuan', { headers })
-    const json = await res.json()
-    if (json.success) {
-      rekapData.value.jumlah_pengajuan = json.jumlah_pengajuan
-      rekapData.value.jumlah_dana = parseInt(json.jumlah_dana) || 0
-    }
-  } catch (e) {
-    console.error('Gagal fetch rekap pengajuan', e)
-  }
-}
+// fetchRekapPengajuan dihapus, rekap diambil dari fetchPengajuan
 
 // Lifecycle
 onMounted(() => {
   fetchPengajuan()
-  fetchRekapPengajuan()
 })
 </script>
 

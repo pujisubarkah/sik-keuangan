@@ -1,13 +1,14 @@
 import { db } from '@/server/database';
 import { pengajuan } from '@/server/database/schema/pengajuan';
 import { pengeluaran } from '@/server/database/schema/pengeluaran';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { statusPengajuan } from '@/server/database/schema/status_pengajuan';
 import { rkaklDetail } from '@/server/database/schema/rkakl_detail';
 import { masterSuboutput } from '@/server/database/schema/master_suboutput';
 import { masterKomponen } from '@/server/database/schema/master_komponen';
 import { masterSubkomponen } from '@/server/database/schema/master_subkomponen';
 import { masterAkun } from '@/server/database/schema/master_akun';
+import { vRkaklSaldo } from '@/server/database/schema/vRkaklSaldo';
 
 export default defineEventHandler(async (event) => {
   const id = Number(event.context?.params?.id);
@@ -49,15 +50,36 @@ export default defineEventHandler(async (event) => {
       .where(eq(pengajuan.id, id));
     if (!result.length) return { error: 'Data tidak ditemukan' };
     const pengajuanData = result[0];
+    if (!pengajuanData) return { error: 'Data tidak ditemukan' };
     const pengeluaranData = await db
       .select()
       .from(pengeluaran)
       .where(eq(pengeluaran.pengajuan_id, id))
       .orderBy(pengeluaran.created_at)
       .limit(1);
+
+    // Ambil saldo dan hitung sisa_anggaran (sama seperti index.ts)
+    let saldoObj = null;
+    let sisa_anggaran = null;
+    if (pengajuanData.rkakl_detail_id) {
+      const saldoArr = await db
+        .select()
+        .from(vRkaklSaldo)
+        .where(eq(vRkaklSaldo.rkakl_id, pengajuanData.rkakl_detail_id));
+      saldoObj = saldoArr[0] || null;
+      if (saldoObj && saldoObj.saldo != null && pengajuanData.jumlah_pengajuan != null) {
+        const saldoVal = Number(saldoObj.saldo);
+        const pengajuanVal = Number(pengajuanData.jumlah_pengajuan);
+        if (!isNaN(saldoVal) && !isNaN(pengajuanVal)) {
+          sisa_anggaran = saldoVal - pengajuanVal;
+        }
+      }
+    }
     return {
       ...pengajuanData,
-      pengeluaran: pengeluaranData[0] || null
+      pengeluaran: pengeluaranData[0] || null,
+      saldo: saldoObj,
+      sisa_anggaran,
     };
   }
 

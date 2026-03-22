@@ -17,8 +17,8 @@
         ]"
       >
         <!-- Silhouette background icon watermark -->
-        <span class="absolute -right-8 -bottom-8 pointer-events-none select-none z-0">
-          <Icon icon="tabler:building-skyscraper" class="text-[18rem] text-brandBlue-200 drop-shadow-2xl" />
+        <span class="absolute right-0 bottom-0 pointer-events-none select-none z-0 opacity-50">
+          <Icon icon="tabler:building-skyscraper" class="text-[20rem] text-gray-900" style="filter: blur(1px);" />
         </span>
         <div class="flex flex-col items-start gap-0">
           <div class="flex items-center gap-3 mb-2">

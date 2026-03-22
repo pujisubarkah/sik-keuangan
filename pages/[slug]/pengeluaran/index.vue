@@ -18,7 +18,7 @@
           </h2>
         </template>
         <template #default>
-          <form @submit.prevent="filterData" class="space-y-2">
+          <form class="space-y-2">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
               <!-- Status Data Dukung -->
               <div class="md:col-span-4 flex flex-col justify-end">
@@ -76,10 +76,6 @@
               </div>
             </div>
             <div class="flex gap-2 mt-2">
-              <Button @click="filterData" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                <IconSearch class="w-4 h-4" />
-                <span>Filter Data</span>
-              </Button>
               <Button @click="resetFilters" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                 <IconRefresh class="w-4 h-4" />
                 <span>Reset</span>
@@ -92,7 +88,7 @@
       <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <span class="text-sm text-gray-500 font-medium">
-            Menampilkan {{ paginationStart }} - {{ paginationEnd }} dari {{ filteredData.length }} hasil
+            Menampilkan {{ paginationStart }} - {{ paginationEnd }} dari {{ totalData }} hasil
           </span>
           <div class="flex items-center gap-2 text-sm text-gray-500">
             <span>Tampilkan</span>
@@ -126,30 +122,9 @@
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
-              <tr>
-                <td class="px-3 py-2 bg-white"></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_pekerjaan_kode" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Kode" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_pekerjaan_nama" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Suboutput" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_komponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Komp" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_subkomponen" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Sub Komp" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.kode_akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Akun" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.id_anggaran" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Uraian" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.jumlah" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Jumlah" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.tanggal_pengajuan" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.tanggal" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.status_pertanggungjawaban" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Status PJ" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.status_sp2d" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="SP2D" /></td>
-                <td class="px-3 py-2 bg-white"><input v-model="filterForm.keterangan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Ket" /></td>
-                <td class="px-3 py-2 bg-white"></td>
-                <td class="px-3 py-2 bg-white text-right">
-                  <button @click="filterData" type="button" class="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">
-                    <span>Filter</span>
-                  </button>
-                </td>
-              </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+              <tr v-for="(item, index) in pengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
                 <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
                   <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
@@ -164,7 +139,7 @@
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_akun }}</td>
-                <td class="px-3 py-2 text-blue-700 align-middle">{{ item.id_anggaran }}</td>
+                <td class="px-3 py-2 text-blue-700 align-middle">{{ item.uraian }}</td>
                 <td class="px-3 py-2 text-right align-middle">
                   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.jumlah) }}</span>
                 </td>
@@ -180,12 +155,15 @@
                 <td class="px-3 py-2 text-center align-middle">
                   <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
                 </td>
-                <td class="px-3 py-2 text-right align-middle">
-                  <div class="flex gap-2 justify-end">
-                    <NuxtLink :to="`/pengeluaran/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Berkas">
+                <td class="px-3 py-2 text-center align-middle">
+                  <div class="flex gap-2 justify-center">
+                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
                       <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/update?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                    <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
+                      <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                    </NuxtLink>
+                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
                       <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
@@ -195,7 +173,7 @@
                 </td>
               </tr>
               <!-- Empty State -->
-              <tr v-if="paginatedData.length === 0">
+              <tr v-if="(pengeluaranData?.length || 0) === 0">
                 <td colspan="15" class="px-6 py-10 text-center text-gray-500">
                   <div class="flex flex-col items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -210,7 +188,9 @@
         </div>
 
         <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <span class="text-sm text-gray-500 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
+          <span class="text-sm text-gray-500 font-medium">
+            Halaman {{ currentPage }} dari {{ totalPages }}
+          </span>
           <div class="flex flex-wrap items-center gap-2 md:justify-end">
             <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(1)">Awal</button>
             <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</button>
@@ -229,16 +209,16 @@
           <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Jumlah Pengeluaran</p>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ totalPengeluaran }} Pengeluaran</p>
-            <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900">
+            <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
               Unduh Rincian
-            </NuxtLink>
+            </a>
           </div>
           <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
             <p class="text-sm font-medium text-gray-500">Jumlah Dana</p>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalDana) }}</p>
-            <NuxtLink to="/pengeluaran/admin?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900">
+            <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
               Unduh Rincian
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>
@@ -248,13 +228,13 @@
 
 
 <script setup>
+import { computed, ref, watch } from 'vue';
 import { Button, TextField, Card } from '@idds/vue'
-import { computed, ref, watch } from 'vue'
-import { IconSearch, IconRefresh, IconEye, IconPencil, IconTrash, IconFolderCheck, IconChevronDown, IconDatabaseSearch } from '@tabler/icons-vue';
-import { NuxtLink } from '#components'
+import { IconRefresh, IconEye, IconPencil, IconTrash, IconFolderCheck, IconChevronDown, IconDatabaseSearch } from '@tabler/icons-vue';
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' })
+
 const showAlert = ref(true)
 const filterForm = ref({
   status_berkas: '',
@@ -283,233 +263,64 @@ const filterForm = ref({
   tanggal: '',
   status_pertanggungjawaban: '',
   status_sp2d: '',
-  keterangan: ''
+  keterangan: '',
+  status_verifikator: '',
 })
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
-const pengeluaranData = ref([
-  {
-    id: 183410,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '002',
-    kode_subkomponen: 'J',
-    kode_akun: '521111',
-    id_anggaran: 'Pengadaan Jasa Tenaga Pramubhakti Kantor LAN Jakarta',
-    jumlah: 134000,
-    tanggal_pengajuan: '2026-02-27',
-    tanggal: '2026-03-03',
-    status_pertanggungjawaban: '2026-02-26',
-    status_sp2d: '2026-03-03',
-    keterangan: 'SPM 00054 - LS - Lembur PPNPN BulanJanuari 2026 Sesuai Surat Perintah Kerja Lembur No.225/PPK.1.1.1/SDM.04.1 Tanggal 30 Januari 2026 an Dimas Ade P',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183215,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511111',
-    id_anggaran: 'Belanja Gaji Pokok PNS',
-    jumlah: 1578564740,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183216,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511119',
-    id_anggaran: 'Belanja Pembulatan Gaji PNS',
-    jumlah: 20455,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183217,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511121',
-    id_anggaran: 'Belanja Tunj. Suami/Istri PNS',
-    jumlah: 105983886,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183218,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511122',
-    id_anggaran: 'Belanja Tunj. Anak PNS',
-    jumlah: 27864277,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183219,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511123',
-    id_anggaran: 'Belanja Tunj. Struktural PNS',
-    jumlah: 96150000,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183220,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511124',
-    id_anggaran: 'Belanja Tunj. Fungsional PNS',
-    jumlah: 214876000,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183221,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511125',
-    id_anggaran: 'Belanja Tunj. PPh PNS',
-    jumlah: 9503522,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183222,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511126',
-    id_anggaran: 'Belanja Tunj. Beras PNS',
-    jumlah: 76547940,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  },
-  {
-    id: 183223,
-    id_pekerjaan: 4734,
-    id_pekerjaan_kode: '7918.EBA.994',
-    id_pekerjaan_nama: 'Layanan Perkantoran',
-    kode_komponen: '001',
-    kode_subkomponen: 'A',
-    kode_akun: '511151',
-    id_anggaran: 'Belanja Tunjangan Umum PNS',
-    jumlah: 26290000,
-    tanggal_pengajuan: '2026-02-12',
-    tanggal: '2026-03-01',
-    status_pertanggungjawaban: '2026-02-10',
-    status_sp2d: '2026-03-01',
-    keterangan: 'SPM 00029 - LS - Gaji Induk PNS Bulan Maret 2026 untuk426 Pegawai/1057 Jiwa',
-    jumlah_data_dukung: 0
-  }
-])
-const filteredData = computed(() => {
-  return pengeluaranData.value.filter(item => {
-    const matchesStatusBerkas = filterForm.value.status_berkas === '' || String(item.jumlah_data_dukung > 0 ? 1 : 0) === filterForm.value.status_berkas
-    const matchesTanggalAwal = filterForm.value.tanggal_pengajuan_awal === '' || item.tanggal_pengajuan >= filterForm.value.tanggal_pengajuan_awal
-    const matchesTanggalAkhir = filterForm.value.tanggal_pengajuan_akhir === '' || item.tanggal_pengajuan <= filterForm.value.tanggal_pengajuan_akhir
-    const matchesStatusVerifikator = filterForm.value.status_verifikator === '' || filterForm.value.status_verifikator === '0'
-    const matchesKode = filterForm.value.id_pekerjaan_kode === '' || item.id_pekerjaan_kode.toLowerCase().includes(filterForm.value.id_pekerjaan_kode.toLowerCase())
-    const matchesNama = filterForm.value.id_pekerjaan_nama === '' || item.id_pekerjaan_nama.toLowerCase().includes(filterForm.value.id_pekerjaan_nama.toLowerCase())
-    const matchesKomponen = filterForm.value.kode_komponen === '' || item.kode_komponen.toLowerCase().includes(filterForm.value.kode_komponen.toLowerCase())
-    const matchesSubkomponen = filterForm.value.kode_subkomponen === '' || item.kode_subkomponen.toLowerCase().includes(filterForm.value.kode_subkomponen.toLowerCase())
-    const matchesAkun = filterForm.value.kode_akun === '' || item.kode_akun.toLowerCase().includes(filterForm.value.kode_akun.toLowerCase())
-    const matchesUraian = filterForm.value.id_anggaran === '' || item.id_anggaran.toLowerCase().includes(filterForm.value.id_anggaran.toLowerCase())
-    const matchesJumlah = filterForm.value.jumlah === '' || String(item.jumlah).includes(filterForm.value.jumlah)
-    const matchesTanggalPengajuan = filterForm.value.tanggal_pengajuan === '' || item.tanggal_pengajuan === filterForm.value.tanggal_pengajuan
-    const matchesTanggal = filterForm.value.tanggal === '' || item.tanggal === filterForm.value.tanggal
-    const matchesStatusPertanggungjawaban = filterForm.value.status_pertanggungjawaban === '' || (item.status_pertanggungjawaban || '').includes(filterForm.value.status_pertanggungjawaban)
-    const matchesStatusSp2d = filterForm.value.status_sp2d === '' || (item.status_sp2d || '').includes(filterForm.value.status_sp2d)
-    const matchesKeterangan = filterForm.value.keterangan === '' || item.keterangan.toLowerCase().includes(filterForm.value.keterangan.toLowerCase())
+const pengeluaranData = ref([])
+const totalData = ref(0)
 
-    return matchesStatusBerkas
-      && matchesTanggalAwal
-      && matchesTanggalAkhir
-      && matchesStatusVerifikator
-      && matchesKode
-      && matchesNama
-      && matchesKomponen
-      && matchesSubkomponen
-      && matchesAkun
-      && matchesUraian
-      && matchesJumlah
-      && matchesTanggalPengajuan
-      && matchesTanggal
-      && matchesStatusPertanggungjawaban
-      && matchesStatusSp2d
-      && matchesKeterangan
-  })
-})
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return filteredData.value.slice(start, end)
-})
-const totalPages = computed(() => Math.max(1, Math.ceil(filteredData.value.length / itemsPerPage.value)))
-const paginationStart = computed(() => {
-  if (filteredData.value.length === 0) return 0
-  return (currentPage.value - 1) * itemsPerPage.value + 1
-})
-const paginationEnd = computed(() => {
-  if (filteredData.value.length === 0) return 0
-  return Math.min(currentPage.value * itemsPerPage.value, filteredData.value.length)
-})
+async function fetchPengeluaran() {
+  try {
+    const token = localStorage.getItem('token')
+    const headers = { Authorization: `Bearer ${token}` }
+    const params = new URLSearchParams({
+      page: currentPage.value,
+      pageSize: itemsPerPage.value,
+      ...filterForm.value
+    })
+    const res = await fetch(`/api/pengeluaran?${params.toString()}`, { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      pengeluaranData.value = json.data.map(item => ({
+        id: item.id,
+        id_pekerjaan: item.rkakl_detail_id,
+        id_pekerjaan_kode: item.kode_suboutput,
+        id_pekerjaan_nama: item.nama_suboutput,
+        kode_komponen: item.kode_komponen,
+        kode_subkomponen: item.kode_subkomponen,
+        kode_akun: item.kode_akun,
+        uraian: item.detil || '',
+        jumlah: Number(item.jumlah_pengajuan),
+        tanggal_pengajuan: item.tanggal_pengajuan,
+        tanggal: item.pengeluaran?.tanggal_cair || '',
+        status_pertanggungjawaban: item.pengeluaran?.tanggal_pj || '',
+        status_sp2d: item.pengeluaran?.tanggal_sp2d || '',
+        keterangan: item.pengeluaran?.keterangan || '',
+        jumlah_data_dukung: item.jumlah_data_dukung || 0
+      }))
+      totalData.value = json.total || json.totalData || 0
+    } else {
+      pengeluaranData.value = []
+      totalData.value = 0
+    }
+  } catch (e) {
+    pengeluaranData.value = []
+    totalData.value = 0
+    console.error('Gagal fetch pengeluaran:', e)
+  }
+}
+
+// Fetch data saat halaman dimuat, filter, atau pagination berubah
+watch([currentPage, itemsPerPage, filterForm], fetchPengeluaran, { immediate: true, deep: true })
+
+// Debug: log isi data setiap kali berubah
+watch(pengeluaranData, (val) => { console.log('watch pengeluaranData:', val) })
+
+const totalPages = computed(() => Math.max(1, Math.ceil(totalData.value / itemsPerPage.value)))
+const paginationStart = computed(() => totalData.value === 0 ? 0 : (currentPage.value - 1) * itemsPerPage.value + 1)
+const paginationEnd = computed(() => totalData.value === 0 ? 0 : Math.min(currentPage.value * itemsPerPage.value, totalData.value))
 const visiblePages = computed(() => {
   const maxVisible = 5
   const total = totalPages.value
@@ -519,9 +330,8 @@ const visiblePages = computed(() => {
 
   return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index)
 })
-const totalPengeluaran = computed(() => filteredData.value.length)
-const totalDana = computed(() => filteredData.value.reduce((sum, item) => sum + item.jumlah, 0))
-const filterData = () => { /* Filtering is reactive */ }
+const totalPengeluaran = computed(() => totalData.value)
+const totalDana = computed(() => pengeluaranData.value.reduce((sum, item) => sum + item.jumlah, 0))
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount)
 const formatDate = (date) => date ? new Date(date).toLocaleDateString('id-ID') : ''
 const confirmDelete = (id) => { if (confirm('Yakin akan menghapus data?')) { /* Implement delete logic */ } }
@@ -563,48 +373,7 @@ const resetFilters = () => {
   }
 }
 
-watch(filteredData, () => {
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = totalPages.value
-  }
-
-  if (filteredData.value.length > 0 && currentPage.value < 1) {
-    currentPage.value = 1
-  }
-})
-
 watch(itemsPerPage, () => {
   currentPage.value = 1
 })
 </script>
-
-<style scoped>
-.pengeluaran-table {
-  table-layout: fixed;
-  width: 100%;
-}
-.pengeluaran-table th:nth-child(1) { width: 40px; }
-.pengeluaran-table th:nth-child(2) { width: 120px; }
-.pengeluaran-table th:nth-child(3) { width: 200px; }
-.pengeluaran-table th:nth-child(4) { width: 60px; }
-.pengeluaran-table th:nth-child(5) { width: 70px; }
-.pengeluaran-table th:nth-child(6) { width: 80px; }
-.pengeluaran-table th:nth-child(7) { width: 250px; }
-.pengeluaran-table th:nth-child(8) { width: 120px; }
-.pengeluaran-table th:nth-child(9) { width: 100px; }
-.pengeluaran-table th:nth-child(10) { width: 100px; }
-.pengeluaran-table th:nth-child(11) { width: 80px; }
-.pengeluaran-table th:nth-child(12) { width: 80px; }
-.pengeluaran-table th:nth-child(13) { width: 300px; }
-.pengeluaran-table th:nth-child(14) { width: 100px; }
-.pengeluaran-table th:nth-child(15) { width: 120px; }
-.pengeluaran-jumlah-cell {
-  font-size: 1rem !important;
-  font-weight: 700;
-  white-space: nowrap;
-}
-@media (max-width: 1024px) {
-  .pengeluaran-table th:nth-child(7) { width: 150px; }
-  .pengeluaran-table th:nth-child(13) { width: 150px; }
-}
-</style>

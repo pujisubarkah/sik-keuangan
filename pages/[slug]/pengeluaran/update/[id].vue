@@ -1,11 +1,7 @@
 <template>
   <div class="content-wrapper">
     <section class="content-header">
-      <SuboutputAlert :showAlert="true" />
-    </section>
-
-    <section class="content-header">
-      <h1>Sunting Pengeluaran <small>: Belanja Gaji Pokok PNS</small></h1>
+      <h1>Sunting Pengeluaran <small>: {{ namaSuboutput || '-' }}</small></h1>
       <ul class="breadcrumb">
         <li>
           <NuxtLink to="/"><i class="fa fa-dashboard"></i></NuxtLink>
@@ -16,7 +12,7 @@
     </section>
 
     <section class="content">
-      <form class="modern-form" @submit.prevent>
+      <form class="modern-form" @submit.prevent="submitForm">
         <div class="modern-card">
           <div class="modern-card-header">
             <h3 class="modern-card-title">Form Pengeluaran / Pengajuan</h3>
@@ -32,23 +28,76 @@
                     </td>
                   </tr>
                   <tr>
-                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Komponen</th>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Detil Uraian</th>
                     <td class="px-4 py-2">
-                      <input class="modern-form-control" placeholder="Kode Komponen" v-model="form.kode_komponen" type="text" maxlength="20" />
+                      <input class="modern-form-control bg-light text-muted" type="text" v-model="form.detil" readonly />
                     </td>
                   </tr>
-                  <tr>
-                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Subkomponen</th>
-                    <td class="px-4 py-2">
-                      <input class="modern-form-control" placeholder="Kode Subkomponen" v-model="form.kode_subkomponen" type="text" maxlength="20" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Kode Akun</th>
-                    <td class="px-4 py-2">
-                      <input class="modern-form-control" placeholder="Kode Akun" v-model="form.kode_akun" type="text" />
-                    </td>
-                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Card Anggaran Induk -->
+            <div class="modern-card mt-6 mb-6 border-blue-400 border-2">
+              <div class="modern-card-header bg-blue-50 border-blue-200">
+                <h4 class="modern-card-title text-blue-700 font-bold">Anggaran Induk</h4>
+              </div>
+              <div class="modern-card-body">
+                <div class="overflow-x-auto">
+                  <table class="min-w-full bg-white border border-slate-200 rounded-lg">
+                    <tbody>
+                      <tr>
+                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Suboutput</th>
+                        <td class="px-4 py-2">
+                          <select class="modern-form-control" v-model="selectedSuboutput">
+                            <option value="">- Pilih Suboutput -</option>
+                            <option v-for="item in suboutputs" :key="item.id" :value="item.id">{{ item.kode_suboutput }}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Komponen</th>
+                        <td class="px-4 py-2">
+                          <select class="modern-form-control" v-model="selectedKomponen" :disabled="!selectedSuboutput">
+                            <option value="">- Pilih Komponen -</option>
+                            <option v-for="item in komponen" :key="item.id" :value="item.id">{{ item.kode_komponen }}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Subkomponen</th>
+                        <td class="px-4 py-2">
+                          <select class="modern-form-control" v-model="selectedSubkomponen" :disabled="!selectedKomponen">
+                            <option value="">- Pilih Subkomponen -</option>
+                            <option v-for="item in subkomponen" :key="item.id" :value="item.id">{{ item.kode_subkomponen }}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Akun</th>
+                        <td class="px-4 py-2">
+                          <select class="modern-form-control" v-model="selectedAkun" :disabled="!selectedSubkomponen">
+                            <option value="">- Pilih Akun -</option>
+                            <option v-for="item in akun" :key="item.id" :value="item.id">{{ item.kode_akun }}</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Uraian</th>
+                        <td class="px-4 py-2">
+                          <select class="modern-form-control" v-model="form.rkakl_detail_id" :disabled="!selectedAkun">
+                            <option value="">- Pilih Uraian -</option>
+                            <option v-for="item in rkakl" :key="item.id" :value="item.id">{{ item.uraian }}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-slate-200 rounded-lg">
+                <tbody>
                   <tr>
                     <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengajuan & Sisa Anggaran</th>
                     <td class="px-4 py-2">
@@ -64,16 +113,10 @@
                           <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_sisa">Sisa Anggaran</label>
                           <div class="flex items-center gap-2">
                             <span class="modern-input-group-text">Rp</span>
-                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right" readonly placeholder="Sisa" v-model="form.sisa" type="text" />
+                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right" readonly placeholder="Sisa" :value="form.sisa" type="text" />
                           </div>
                         </div>
                       </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Keterangan</th>
-                    <td class="px-4 py-2">
-                      <textarea rows="3" class="modern-form-control" placeholder="Tambahkan keterangan detail di sini..." v-model="form.keterangan"></textarea>
                     </td>
                   </tr>
                   <tr>
@@ -136,7 +179,7 @@
               </table>
             </div>
           </div>
-          <div class="modern-card-footer">
+          <div class="modern-card-footer flex justify-end">
             <button class="modern-btn modern-btn-primary" type="submit">
               <i class="fa fa-save"></i> Simpan
             </button>
@@ -148,8 +191,9 @@
 </template>
 
 <script setup>
-import SuboutputAlert from '@/components/SuboutputAlert.vue'
-import { ref } from 'vue'
+// Nama suboutput untuk judul
+const namaSuboutput = ref('')
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -162,6 +206,7 @@ definePageMeta({
 
 const form = ref({
   tanggal_pengajuan: '',
+  detil: '',
   kode_komponen: '',
   kode_subkomponen: '',
   kode_akun: '',
@@ -176,184 +221,179 @@ const form = ref({
   tanggal_pertanggungjawaban: '',
 })
 
-const fetchPengajuanById = async () => {
-  // Ambil id dari query param jika ada (misal: ?id=123 dari halaman pengajuan)
-  let id = route.params.id
-  if (!id && route.query.id) {
-    id = route.query.id
-  }
+
+// Dropdown state (nested)
+const struktur = ref({ suboutputs: [] })
+const selectedSuboutput = ref('')
+const selectedKomponen = ref('')
+const selectedSubkomponen = ref('')
+const selectedAkun = ref('')
+
+// Helper untuk fetch dengan token
+async function fetchWithToken(url) {
   const token = localStorage.getItem('token')
-  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  if (!token) {
+    alert('Token autentikasi tidak ditemukan. Silakan login ulang.');
+    window.location.href = '/login';
+    throw new Error('No token provided');
+  }
+  const headers = { Authorization: `Bearer ${token}` }
+  const res = await fetch(url, { headers })
+  return await res.json()
+}
+
+// Computed untuk dropdown bertingkat
+const suboutputs = computed(() => struktur.value.suboutputs || [])
+const komponen = computed(() => {
+  const so = suboutputs.value.find(s => s.id == selectedSuboutput.value)
+  return so && so.komponen ? so.komponen : []
+})
+const subkomponen = computed(() => {
+  const k = komponen.value.find(k => k.id == selectedKomponen.value)
+  return k && k.subkomponen ? k.subkomponen : []
+})
+const akun = computed(() => {
+  const sk = subkomponen.value.find(sk => sk.id == selectedSubkomponen.value)
+  return sk && sk.akun ? sk.akun : []
+})
+const rkakl = computed(() => {
+  const a = akun.value.find(a => a.id == selectedAkun.value)
+  return a && a.uraian ? a.uraian : []
+})
+
+// Set dropdown bertingkat dari data pengajuan by id
+async function fetchPengajuanById() {
+  const pengajuanId = route.params.id
   try {
-    const res = await fetch(`/api/pengajuan/${id}`, { headers })
-    const json = await res.json()
-    if (json && json.id) {
-      form.value.tanggal_pengajuan = json.tanggal_pengajuan || ''
-      form.value.kode_komponen = json.kode_komponen || ''
-      form.value.kode_subkomponen = json.kode_subkomponen || ''
-      form.value.kode_akun = json.kode_akun || ''
-      form.value.jumlah = json.jumlah_pengajuan || '' // Ambil dari jumlah_pengajuan
-      form.value.sisa = json.rkakl_jumlah || ''
-      form.value.keterangan = json.pengeluaran?.keterangan || ''
-      form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
-      form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
-      form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
-      form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''
-      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ? '1' : '0'
-      form.value.tanggal_pertanggungjawaban = json.pengeluaran?.tanggal_pj || ''
+    const { data: json } = await useFetch(`/api/pengajuan/${pengajuanId}`)
+    if (json.value && json.value.id) {
+      selectedSuboutput.value = json.value.rkakl_suboutput_id || json.value.suboutput_id || ''
+      selectedKomponen.value = json.value.rkakl_komponen_id || json.value.komponen_id || ''
+      selectedSubkomponen.value = json.value.rkakl_subkomponen_id || json.value.subkomponen_id || ''
+      selectedAkun.value = json.value.rkakl_akun_id || json.value.akun_id || ''
+      form.value.rkakl_detail_id = json.value.rkakl_detail_id || ''
+      // Set form lain
+      form.value.tanggal_pengajuan = json.value.tanggal_pengajuan || ''
+      form.value.detil = json.value.detil || ''
+      form.value.jumlah = json.value.jumlah_pengajuan || ''
+      form.value.sisa = json.value.sisa_anggaran || ''
+      form.value.keterangan = json.value.pengeluaran?.keterangan || ''
+      form.value.id_pengeluaran_status = json.value.pengeluaran?.id_pengeluaran_status || ''
+      form.value.tanggal = json.value.pengeluaran?.tanggal_cair || ''
+      form.value.status_sp2d = json.value.pengeluaran?.status_sp2d ? '1' : '0'
+      form.value.tanggal_sp2d = json.value.pengeluaran?.tanggal_sp2d || ''
+      form.value.status_pertanggungjawaban = json.value.pengeluaran?.status_pj ? '1' : '0'
+      form.value.tanggal_pertanggungjawaban = json.value.pengeluaran?.tanggal_pj || ''
+      namaSuboutput.value = json.value.nama_suboutput || ''
     }
   } catch (e) {
     console.error('Gagal fetch detail pengajuan', e)
   }
 }
 
-const updatePengajuan = async () => {
-  let id = route.params.id
-  if (!id && route.query.id) {
-    id = route.query.id
-  }
-  const token = localStorage.getItem('token')
-  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : { 'Content-Type': 'application/json' }
+// Fetch struktur nested sekali saja
+async function fetchStruktur() {
+  const json = await fetchWithToken('/api/master/struktur')
+  struktur.value = json && json.suboutputs ? json : { suboutputs: [] }
+}
+
+// Watcher reset child selection saat parent berubah
+watch(selectedSuboutput, () => {
+  selectedKomponen.value = ''
+  selectedSubkomponen.value = ''
+  selectedAkun.value = ''
+  form.value.rkakl_detail_id = ''
+})
+watch(selectedKomponen, () => {
+  selectedSubkomponen.value = ''
+  selectedAkun.value = ''
+  form.value.rkakl_detail_id = ''
+})
+watch(selectedSubkomponen, () => {
+  selectedAkun.value = ''
+  form.value.rkakl_detail_id = ''
+})
+watch(selectedAkun, () => {
+  form.value.rkakl_detail_id = ''
+})
+
+// Submit update pengajuan
+async function submitForm() {
   try {
-    await fetch(`/api/pengajuan/${id}`, {
+    const pengajuanId = route.params.id
+    const body = {
+      rkakl_detail_id: form.value.rkakl_detail_id,
+      detil: form.value.detil,
+      tanggal_pengajuan: form.value.tanggal_pengajuan,
+      jumlah_pengajuan: form.value.jumlah,
+      jumlah_data_dukung: form.value.jumlah_data_dukung,
+      status_berkas: form.value.status_berkas,
+      status_pengajuan_id: form.value.id_pengajuan_status,
+      tahun_anggaran_id: form.value.tahun_anggaran_id,
+      satker_id: form.value.satker_id,
+      unit_id: form.value.unit_id,
+      user_id: form.value.user_id,
+    }
+    const token = localStorage.getItem('token')
+    if (!token) throw new Error('Token tidak ditemukan')
+    const res = await fetch(`/api/pengajuan/${pengajuanId}`, {
       method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        // mapping sesuai kebutuhan API
-        tanggal_pengajuan: form.value.tanggal_pengajuan,
-        kode_komponen: form.value.kode_komponen,
-        kode_subkomponen: form.value.kode_subkomponen,
-        kode_akun: form.value.kode_akun,
-        jumlah_pengeluaran: form.value.jumlah,
-        sisa: form.value.sisa,
-        keterangan: form.value.keterangan,
-        id_pengeluaran_status: form.value.id_pengeluaran_status,
-        tanggal_cair: form.value.tanggal,
-        status_sp2d: form.value.status_sp2d === '1',
-        tanggal_sp2d: form.value.tanggal_sp2d,
-        status_pj: form.value.status_pertanggungjawaban === '1',
-        tanggal_pj: form.value.tanggal_pertanggungjawaban,
-      })
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
     })
-    // opsional: redirect atau tampilkan notifikasi sukses
+    const json = await res.json()
+    if (res.ok && json && json.id) {
+      alert('Data pengajuan berhasil diupdate!')
+      // Optionally redirect or refresh
+    } else {
+      alert('Gagal update data: ' + (json.error || 'Unknown error'))
+    }
   } catch (e) {
-    console.error('Gagal update pengajuan', e)
+    alert('Gagal update data: ' + e.message)
   }
 }
 
-onMounted(() => {
-  fetchPengajuanById()
+onMounted(async () => {
+  await fetchStruktur();
+  await fetchPengajuanById();
 })
 </script>
 
 <style scoped>
 .content-wrapper {
-  background-color: #f6f8fa;
-  font-family: 'Inter', 'Source Sans Pro', Arial, sans-serif;
-  min-height: 100vh;
+  padding: 24px;
 }
-.content-header {
-  padding: 24px 24px 0 24px;
-}
-.content-header > h1 {
-  margin: 0;
+.content-header h1 {
   font-size: 1.7rem;
   font-weight: 700;
-  color: #1e293b;
-}
-.content-header > h1 > small {
-  font-size: 1rem;
-  display: inline-block;
-  padding-left: 8px;
-  font-weight: 400;
-  color: #64748b;
 }
 .breadcrumb {
   float: right;
   background: transparent;
-  margin-top: 0;
-  margin-bottom: 0;
   font-size: 13px;
-  padding: 7px 5px;
-  position: absolute;
-  top: 32px;
-  right: 24px;
-  border-radius: 2px;
 }
-.breadcrumb > li {
-  display: inline-block;
-}
-.breadcrumb > li + li:before {
-  content: '>\00a0';
-  padding: 0 5px;
-  color: #ccc;
-}
-
 .modern-card {
-  background: #fff;
+  margin-top: 24px;
   border-radius: 14px;
   box-shadow: 0 4px 24px 0 rgba(30,41,59,0.08);
-  border: 1.5px solid #e2e8f0;
-  overflow: hidden;
-  margin-bottom: 32px;
-  margin-top: 24px;
-  transition: box-shadow 0.2s;
 }
 .modern-card-header {
   padding: 20px 32px;
   border-bottom: 1.5px solid #e2e8f0;
-  background-color: #f8fafc;
 }
 .modern-card-title {
-  margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1e293b;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 .modern-card-body {
   padding: 32px;
-  background: #fff;
 }
 .modern-card-footer {
   padding: 20px 32px;
-  background-color: #f8fafc;
   border-top: 1.5px solid #e2e8f0;
-  display: flex;
-  justify-content: flex-start;
-  gap: 16px;
-}
-
-.modern-form {
-  width: 100%;
-}
-.modern-form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  margin-bottom: 0;
-}
-.modern-form-col {
-  flex: 1;
-  min-width: 240px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.modern-form-col.full-width {
-  flex-basis: 100%;
-}
-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2563eb;
-  margin-bottom: 4px;
-}
-.required:after {
-  content: " *";
-  color: #ef4444;
 }
 .modern-form-control {
   display: block;
@@ -370,27 +410,23 @@ label {
   transition: border-color 0.15s, box-shadow 0.15s;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
 }
-.modern-form-control:focus {
-  border-color: #2563eb;
-  outline: 0;
-  box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+.modern-form {
+  width: 100%;
 }
-.modern-form-control.bg-light {
-  background-color: #f1f5f9;
-  cursor: not-allowed;
-  color: #64748b;
-}
-.text-muted {
-  color: #64748b !important;
+label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 4px;
 }
 .text-right {
   text-align: right !important;
 }
-.modern-input-group {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+.bg-light {
+  background-color: #f1f5f9;
+}
+.text-muted {
+  color: #64748b !important;
 }
 .modern-input-group-text {
   display: flex;
@@ -405,19 +441,6 @@ label {
   border: 1.5px solid #e2e8f0;
   border-radius: 8px 0 0 8px;
   border-right: none;
-}
-.modern-input-group .modern-form-control {
-  border-radius: 0 8px 8px 0;
-  position: relative;
-  flex: 1 1 auto;
-  width: 1%;
-  min-width: 0;
-}
-.modern-divider {
-  height: 2px;
-  background: linear-gradient(90deg, #2563eb 0%, #e2e8f0 100%);
-  margin: 32px 0;
-  border-radius: 2px;
 }
 .modern-btn {
   display: inline-flex;
@@ -442,76 +465,5 @@ label {
   background-color: #2563eb;
   border-color: #2563eb;
   box-shadow: 0 2px 8px 0 rgba(37,99,235,0.08);
-}
-.modern-btn-primary:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px 0 rgba(37,99,235,0.12);
-}
-.modern-btn-cancel {
-  color: #2563eb;
-  background-color: #fff;
-  border-color: #e2e8f0;
-  font-weight: 600;
-}
-.modern-btn-cancel:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #1d4ed8;
-}
-@media (max-width: 900px) {
-  .modern-card-body {
-    padding: 16px;
-  }
-  .modern-card-header, .modern-card-footer {
-    padding: 12px 16px;
-  }
-  .modern-form-row {
-    gap: 16px;
-  }
-}
-@media (max-width: 600px) {
-  .modern-form-row {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .modern-card-body {
-    padding: 8px;
-  }
-}
-
-.modern-form-vertical-group {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-bottom: 32px;
-}
-.modern-form-vertical-row {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.modern-form-vertical-row label {
-  min-width: 180px;
-  margin-bottom: 0;
-  text-align: right;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2563eb;
-}
-.modern-form-vertical-row .modern-form-control {
-  flex: 1;
-  margin-bottom: 0;
-}
-@media (max-width: 700px) {
-  .modern-form-vertical-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-  .modern-form-vertical-row label {
-    text-align: left;
-    min-width: 0;
-  }
 }
 </style>
