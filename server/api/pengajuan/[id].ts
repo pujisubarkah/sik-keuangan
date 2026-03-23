@@ -40,6 +40,8 @@ export default defineEventHandler(async (event) => {
         kode_komponen: masterKomponen.kode_komponen,
         kode_subkomponen: masterSubkomponen.kode_subkomponen,
         kode_akun: masterAkun.kode_akun,
+        // Status Pengajuan
+        nama_status: statusPengajuan.nama_status,
       })
       .from(pengajuan)
       .leftJoin(rkaklDetail, eq(pengajuan.rkakl_detail_id, rkaklDetail.id))
@@ -47,6 +49,7 @@ export default defineEventHandler(async (event) => {
       .leftJoin(masterKomponen, eq(rkaklDetail.komponen_id, masterKomponen.id))
       .leftJoin(masterSubkomponen, eq(rkaklDetail.sub_komponen_id, masterSubkomponen.id))
       .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id))
+      .leftJoin(statusPengajuan, eq(pengajuan.status_pengajuan_id, statusPengajuan.id))
       .where(eq(pengajuan.id, id));
     if (!result.length) return { error: 'Data tidak ditemukan' };
     const pengajuanData = result[0];

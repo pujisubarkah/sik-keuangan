@@ -48,3 +48,6 @@ export const db = drizzle(pool)
 // Contoh: import { db } from '@/server/database' lalu gunakan db.select(...)
 // Jangan jalankan koneksi di top-level, biarkan pool dan db digunakan di handler/server
 
+export * from './schema';
+// export { db }; // Removed duplicate export
+

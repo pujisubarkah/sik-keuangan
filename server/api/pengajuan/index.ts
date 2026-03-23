@@ -52,6 +52,9 @@ export default defineEventHandler(async (event) => {
         kode_subkomponen: masterSubkomponen.kode_subkomponen,
         kode_akun: masterAkun.kode_akun,
         tahun_anggaran: rkaklDetail.tahun,
+
+        // Status Pengajuan
+        nama_status: statusPengajuan.nama_status,
       })
       .from(pengajuan)
       .leftJoin(rkaklDetail, eq(pengajuan.rkakl_detail_id, rkaklDetail.id))
@@ -67,7 +70,8 @@ export default defineEventHandler(async (event) => {
         masterSubkomponen,
         eq(rkaklDetail.sub_komponen_id, masterSubkomponen.id)
       )
-      .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id));
+      .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id))
+      .leftJoin(statusPengajuan, eq(pengajuan.status_pengajuan_id, statusPengajuan.id));
 
     // =========================
     // 2. Ambil pengeluaran per pengajuan

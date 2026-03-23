@@ -1,13 +1,16 @@
 <template>
   <div class="content-wrapper">
-    <section class="content-header">
-      <h1>Sunting Pengeluaran <small>: {{ namaSuboutput || '-' }}</small></h1>
-      <ul class="breadcrumb">
+    <section class="content-header flex flex-wrap items-center justify-between gap-4 mb-4">
+      <div class="flex items-center gap-2">
+        <h1 class="font-bold text-xl">Sunting Pengeluaran</h1>
+        <span class="text-base text-blue-600 font-semibold">: {{ namaSuboutput || '-' }}</span>
+      </div>
+      <ul class="breadcrumb flex items-center gap-2 bg-transparent p-0 m-0">
         <li>
-          <NuxtLink to="/"><i class="fa fa-dashboard"></i></NuxtLink>
+          <NuxtLink to="/" class="text-blue-600 hover:text-blue-800"><i class="fa fa-dashboard"></i></NuxtLink>
         </li>
-        <li><span>Pengeluaran</span></li>
-        <li><span>Sunting</span></li>
+        <li><span class="text-slate-500">Pengeluaran</span></li>
+        <li><span class="text-slate-500">Sunting</span></li>
       </ul>
     </section>
 
@@ -57,18 +60,18 @@
                       <tr>
                         <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Komponen</th>
                         <td class="px-4 py-2">
-                          <select class="modern-form-control" v-model="selectedKomponen" :disabled="!selectedSuboutput">
+                          <select class="modern-form-control" v-model.number="selectedKomponen" :disabled="!selectedSuboutput">
                             <option value="">- Pilih Komponen -</option>
-                            <option v-for="item in komponen" :key="item.id" :value="item.id">{{ item.kode_komponen }}</option>
+                            <option v-for="item in komponen" :key="item.id" :value="Number(item.id)">{{ item.kode_komponen }}</option>
                           </select>
                         </td>
                       </tr>
                       <tr>
                         <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Subkomponen</th>
                         <td class="px-4 py-2">
-                          <select class="modern-form-control" v-model="selectedSubkomponen" :disabled="!selectedKomponen">
+                          <select class="modern-form-control" v-model.number="selectedSubkomponen" :disabled="!selectedKomponen">
                             <option value="">- Pilih Subkomponen -</option>
-                            <option v-for="item in subkomponen" :key="item.id" :value="item.id">{{ item.kode_subkomponen }}</option>
+                            <option v-for="item in subkomponen" :key="item.id" :value="Number(item.id)">{{ item.kode_subkomponen }}</option>
                           </select>
                         </td>
                       </tr>
@@ -99,78 +102,66 @@
               <table class="min-w-full bg-white border border-slate-200 rounded-lg">
                 <tbody>
                   <tr>
-                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengajuan & Sisa Anggaran</th>
-                    <td class="px-4 py-2">
+                    <td colspan="2" class="px-4 py-2">
                       <div class="flex gap-4">
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
-                          <div class="flex items-center gap-2">
-                            <span class="modern-input-group-text">Rp</span>
-                            <input id="Pengeluaran_jumlah" class="modern-form-control text-right" placeholder="0" v-model="form.jumlah" type="text" />
-                          </div>
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
+                          <span class="modern-input-group-text">Rp</span>
+                          <input id="Pengeluaran_jumlah" class="modern-form-control text-right flex-1" placeholder="0" v-model="form.jumlah" type="text" />
                         </div>
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_sisa">Sisa Anggaran</label>
-                          <div class="flex items-center gap-2">
-                            <span class="modern-input-group-text">Rp</span>
-                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right" readonly placeholder="Sisa" :value="form.sisa" type="text" />
-                          </div>
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_sisa">Sisa Anggaran</label>
+                          <span class="modern-input-group-text">Rp</span>
+                          <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right flex-1" readonly placeholder="Sisa" :value="form.sisa" type="text" />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal Cair</th>
-                    <td class="px-4 py-2">
+                    <td colspan="2" class="px-4 py-2">
                       <div class="flex gap-4">
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_id_pengeluaran_status">Status</label>
-                          <select id="Pengeluaran_id_pengeluaran_status" class="modern-form-control" v-model="form.id_pengeluaran_status">
-                            <option value="1">Cair</option>
-                            <option value="2">Proses</option>
-                            <option value="3">Batal</option>
-                          </select>
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_id_pengeluaran_status">Status</label>
+                          <input id="Pengeluaran_id_pengeluaran_status" class="modern-form-control flex-1 bg-light text-muted" type="text" :value="form.nama_status || '-'" readonly />
                         </div>
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal">Tanggal Cair</label>
-                          <input id="Pengeluaran_tanggal" class="modern-form-control" type="date" v-model="form.tanggal" />
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_tanggal">Tanggal Cair</label>
+                          <input id="Pengeluaran_tanggal" class="modern-form-control flex-1" type="date" v-model="form.tanggal" />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal SP2D</th>
-                    <td class="px-4 py-2">
+                    <td colspan="2" class="px-4 py-2">
                       <div class="flex gap-4">
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_status_sp2d">Status SP2D</label>
-                          <select id="Pengeluaran_status_sp2d" class="modern-form-control" v-model="form.status_sp2d">
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_status_sp2d">Status SP2D</label>
+                          <select id="Pengeluaran_status_sp2d" class="modern-form-control flex-1" v-model="form.status_sp2d">
                             <option value="0">Belum</option>
                             <option value="1">Sudah</option>
                           </select>
                         </div>
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal_sp2d">Tanggal SP2D</label>
-                          <input id="Pengeluaran_tanggal_sp2d" class="modern-form-control" type="date" v-model="form.tanggal_sp2d" />
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_tanggal_sp2d">Tanggal SP2D</label>
+                          <input id="Pengeluaran_tanggal_sp2d" class="modern-form-control flex-1" type="date" v-model="form.tanggal_sp2d" />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th class="text-left align-top px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status & Tanggal PJ</th>
-                    <td class="px-4 py-2">
+                    <td colspan="2" class="px-4 py-2">
                       <div class="flex gap-4">
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
-                          <select id="Pengeluaran_status_pertanggungjawaban" class="modern-form-control" v-model="form.status_pertanggungjawaban">
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
+                          <select id="Pengeluaran_status_pertanggungjawaban" class="modern-form-control flex-1" v-model="form.status_pertanggungjawaban">
                             <option value="">- Pilih Status -</option>
                             <option value="0">Belum</option>
                             <option value="1">Sudah</option>
                           </select>
                         </div>
-                        <div class="flex flex-col flex-1">
-                          <label class="mb-1 text-sm text-blue-600 font-semibold" for="Pengeluaran_tanggal_pertanggungjawaban">Tanggal PJ</label>
-                          <input id="Pengeluaran_tanggal_pertanggungjawaban" class="modern-form-control" type="date" v-model="form.tanggal_pertanggungjawaban" />
+                        <div class="flex flex-1 items-center gap-2">
+                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_tanggal_pertanggungjawaban">Tanggal PJ</label>
+                          <input id="Pengeluaran_tanggal_pertanggungjawaban" class="modern-form-control flex-1" type="date" v-model="form.tanggal_pertanggungjawaban" />
                         </div>
                       </div>
                     </td>
@@ -225,9 +216,11 @@ const form = ref({
 // Dropdown state (nested)
 const struktur = ref({ suboutputs: [] })
 const selectedSuboutput = ref('')
-const selectedKomponen = ref('')
-const selectedSubkomponen = ref('')
-const selectedAkun = ref('')
+const selectedKomponen = ref(null)
+const selectedSubkomponen = ref(null)
+const selectedAkun = ref(null)
+// Flag to prevent watcher resets during API assignment
+const isInitializing = ref(false)
 
 // Helper untuk fetch dengan token
 async function fetchWithToken(url) {
@@ -265,28 +258,46 @@ const rkakl = computed(() => {
 async function fetchPengajuanById() {
   const pengajuanId = route.params.id
   try {
-    const { data: json } = await useFetch(`/api/pengajuan/${pengajuanId}`)
-    if (json.value && json.value.id) {
-      selectedSuboutput.value = json.value.rkakl_suboutput_id || json.value.suboutput_id || ''
-      selectedKomponen.value = json.value.rkakl_komponen_id || json.value.komponen_id || ''
-      selectedSubkomponen.value = json.value.rkakl_subkomponen_id || json.value.subkomponen_id || ''
-      selectedAkun.value = json.value.rkakl_akun_id || json.value.akun_id || ''
-      form.value.rkakl_detail_id = json.value.rkakl_detail_id || ''
+    const json = await fetchWithToken(`/api/pengajuan/${pengajuanId}`)
+    if (json && json.id) {
+      console.log('API response:', json);
+      isInitializing.value = true;
+      // Set dropdown selections
+      selectedSuboutput.value = json.id_suboutput || json.rkakl_suboutput_id || json.suboutput_id || ''
+      selectedKomponen.value = Number(json.rkakl_komponen_id || json.komponen_id || '')
+      selectedSubkomponen.value = json.rkakl_subkomponen_id || json.subkomponen_id || ''
+      selectedAkun.value = json.rkakl_akun_id || json.akun_id || ''
+      form.value.rkakl_detail_id = json.rkakl_detail_id || ''
+
+      // Map kode fields for display/reference if needed
+      form.value.kode_suboutput = json.kode_suboutput || ''
+      form.value.kode_komponen = json.kode_komponen || ''
+      form.value.kode_subkomponen = json.kode_subkomponen || ''
+      form.value.kode_akun = json.kode_akun || ''
+
       // Set form lain
-      form.value.tanggal_pengajuan = json.value.tanggal_pengajuan || ''
-      form.value.detil = json.value.detil || ''
-      form.value.jumlah = json.value.jumlah_pengajuan || ''
-      form.value.sisa = json.value.sisa_anggaran || ''
-      form.value.keterangan = json.value.pengeluaran?.keterangan || ''
-      form.value.id_pengeluaran_status = json.value.pengeluaran?.id_pengeluaran_status || ''
-      form.value.tanggal = json.value.pengeluaran?.tanggal_cair || ''
-      form.value.status_sp2d = json.value.pengeluaran?.status_sp2d ? '1' : '0'
-      form.value.tanggal_sp2d = json.value.pengeluaran?.tanggal_sp2d || ''
-      form.value.status_pertanggungjawaban = json.value.pengeluaran?.status_pj ? '1' : '0'
-      form.value.tanggal_pertanggungjawaban = json.value.pengeluaran?.tanggal_pj || ''
-      namaSuboutput.value = json.value.nama_suboutput || ''
+      form.value.tanggal_pengajuan = json.tanggal_pengajuan || ''
+      form.value.detil = json.detil || ''
+      form.value.jumlah = json.jumlah_pengajuan || ''
+      // Prioritaskan sisa_anggaran, fallback ke saldo.saldo jika tidak ada
+      form.value.sisa = (json.sisa_anggaran !== undefined && json.sisa_anggaran !== null)
+        ? json.sisa_anggaran
+        : (json.saldo && json.saldo.saldo ? json.saldo.saldo : '')
+      form.value.keterangan = json.pengeluaran?.keterangan || ''
+      form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
+      form.value.nama_status = json.pengeluaran?.nama_status || json.nama_status || ''
+      form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
+      form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
+      form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''
+      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ? '1' : '0'
+      form.value.tanggal_pertanggungjawaban = json.pengeluaran?.tanggal_pj || ''
+      namaSuboutput.value = json.nama_suboutput || ''
+      // Debug mapped values
+      console.log('selectedSuboutput', selectedSuboutput.value, 'komponen', komponen.value);
+      isInitializing.value = false;
     }
   } catch (e) {
+    isInitializing.value = false;
     console.error('Gagal fetch detail pengajuan', e)
   }
 }
@@ -299,21 +310,41 @@ async function fetchStruktur() {
 
 // Watcher reset child selection saat parent berubah
 watch(selectedSuboutput, () => {
-  selectedKomponen.value = ''
-  selectedSubkomponen.value = ''
-  selectedAkun.value = ''
+  if (isInitializing.value) {
+    console.log('[watch:selectedSuboutput] skip reset (isInitializing)');
+    return;
+  }
+  console.log('[watch:selectedSuboutput] RESET: selectedKomponen, selectedSubkomponen, selectedAkun, rkakl_detail_id');
+  selectedKomponen.value = null
+  selectedSubkomponen.value = null
+  selectedAkun.value = null
   form.value.rkakl_detail_id = ''
 })
 watch(selectedKomponen, () => {
-  selectedSubkomponen.value = ''
-  selectedAkun.value = ''
+  if (isInitializing.value) {
+    console.log('[watch:selectedKomponen] skip reset (isInitializing)');
+    return;
+  }
+  console.log('[watch:selectedKomponen] RESET: selectedSubkomponen, selectedAkun, rkakl_detail_id');
+  selectedSubkomponen.value = null
+  selectedAkun.value = null
   form.value.rkakl_detail_id = ''
 })
 watch(selectedSubkomponen, () => {
-  selectedAkun.value = ''
+  if (isInitializing.value) {
+    console.log('[watch:selectedSubkomponen] skip reset (isInitializing)');
+    return;
+  }
+  console.log('[watch:selectedSubkomponen] RESET: selectedAkun, rkakl_detail_id');
+  selectedAkun.value = null
   form.value.rkakl_detail_id = ''
 })
 watch(selectedAkun, () => {
+  if (isInitializing.value) {
+    console.log('[watch:selectedAkun] skip reset (isInitializing)');
+    return;
+  }
+  console.log('[watch:selectedAkun] RESET: rkakl_detail_id');
   form.value.rkakl_detail_id = ''
 })
 
@@ -359,6 +390,19 @@ async function submitForm() {
 onMounted(async () => {
   await fetchStruktur();
   await fetchPengajuanById();
+  // Debug: tampilkan struktur suboutputs dan komponen
+  console.log('suboutputs', JSON.parse(JSON.stringify(suboutputs.value)));
+  console.log('komponen', JSON.parse(JSON.stringify(komponen.value)));
+  // Debug: tampilkan isi dan tipe id komponen
+  komponen.value.forEach(k => {
+    console.log('komponen item', k, 'id:', k.id, typeof k.id);
+  });
+  console.log('selectedKomponen', selectedKomponen.value, typeof selectedKomponen.value);
+  // Cek kecocokan selectedKomponen
+  if (selectedKomponen.value && !komponen.value.find(k => k.id == selectedKomponen.value)) {
+    console.warn('selectedKomponen tidak ditemukan di komponen.value, reset ke null');
+    selectedKomponen.value = null;
+  }
 })
 </script>
 
