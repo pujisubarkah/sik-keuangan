@@ -2,7 +2,7 @@
   <section class="px-8 pt-8">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-        Sunting Pengeluaran <span class="text-base font-normal text-slate-500">: Belanja Gaji Pokok PNS</span>
+        Sunting Pengeluaran <span class="text-base font-normal text-slate-500">: {{ form.nama_suboutput || '-' }}</span>
       </h1>
       <ul class="flex items-center gap-2 text-sm text-slate-500 mt-2">
         <li>
@@ -51,10 +51,7 @@
               <tr :class="['even:bg-blue-50', 'odd:bg-white']">
                 <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Status</th>
                 <td class="px-4 py-2">
-                  <span v-if="form.id_pengeluaran_status == 1">Cair</span>
-                  <span v-else-if="form.id_pengeluaran_status == 2">Proses</span>
-                  <span v-else-if="form.id_pengeluaran_status == 3">Batal</span>
-                  <span v-else>-</span>
+                  <span>{{ form.nama_status || '-' }}</span>
                 </td>
               </tr>
               <tr :class="['even:bg-blue-50', 'odd:bg-white']">
@@ -220,6 +217,8 @@ const fetchPengajuanById = async () => {
       form.value.sisa = json.rkakl_jumlah || ''
       form.value.keterangan = json.pengeluaran?.keterangan || ''
       form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
+      form.value.nama_status = json.pengeluaran?.nama_status || json.nama_status || ''
+      form.value.nama_suboutput = json.nama_suboutput || ''
       form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
       form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
       form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''

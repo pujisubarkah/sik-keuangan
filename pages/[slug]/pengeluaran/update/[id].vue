@@ -36,6 +36,12 @@
                       <input class="modern-form-control bg-light text-muted" type="text" v-model="form.detil" readonly />
                     </td>
                   </tr>
+                  <tr>
+                    <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Keterangan</th>
+                    <td class="px-4 py-2">
+                      <input class="modern-form-control" type="text" v-model="form.keterangan" placeholder="Keterangan tambahan" />
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -136,9 +142,9 @@
                       <div class="flex gap-4">
                         <div class="flex flex-1 items-center gap-2">
                           <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_status_sp2d">Status SP2D</label>
-                          <select id="Pengeluaran_status_sp2d" class="modern-form-control flex-1" v-model="form.status_sp2d">
-                            <option value="0">Belum</option>
-                            <option value="1">Sudah</option>
+                          <select id="Pengeluaran_status_sp2d" class="modern-form-control flex-1" v-model.boolean="form.status_sp2d">
+                            <option :value="false">Belum</option>
+                            <option :value="true">Sudah</option>
                           </select>
                         </div>
                         <div class="flex flex-1 items-center gap-2">
@@ -153,10 +159,9 @@
                       <div class="flex gap-4">
                         <div class="flex flex-1 items-center gap-2">
                           <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_status_pertanggungjawaban">Status PJ</label>
-                          <select id="Pengeluaran_status_pertanggungjawaban" class="modern-form-control flex-1" v-model="form.status_pertanggungjawaban">
-                            <option value="">- Pilih Status -</option>
-                            <option value="0">Belum</option>
-                            <option value="1">Sudah</option>
+                          <select id="Pengeluaran_status_pertanggungjawaban" class="modern-form-control flex-1" v-model.boolean="form.status_pertanggungjawaban">
+                            <option :value="false">Belum</option>
+                            <option :value="true">Sudah</option>
                           </select>
                         </div>
                         <div class="flex flex-1 items-center gap-2">
@@ -172,7 +177,7 @@
           </div>
           <div class="modern-card-footer flex justify-end">
             <button class="modern-btn modern-btn-primary" type="submit">
-              <i class="fa fa-save"></i> Simpan
+              <i class="fa fa-save"></i> Update
             </button>
           </div>
         </div>
@@ -287,9 +292,9 @@ async function fetchPengajuanById() {
       form.value.id_pengeluaran_status = json.pengeluaran?.id_pengeluaran_status || ''
       form.value.nama_status = json.pengeluaran?.nama_status || json.nama_status || ''
       form.value.tanggal = json.pengeluaran?.tanggal_cair || ''
-      form.value.status_sp2d = json.pengeluaran?.status_sp2d ? '1' : '0'
+      form.value.status_sp2d = json.pengeluaran?.status_sp2d ?? false
       form.value.tanggal_sp2d = json.pengeluaran?.tanggal_sp2d || ''
-      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ? '1' : '0'
+      form.value.status_pertanggungjawaban = json.pengeluaran?.status_pj ?? false
       form.value.tanggal_pertanggungjawaban = json.pengeluaran?.tanggal_pj || ''
       namaSuboutput.value = json.nama_suboutput || ''
       // Debug mapped values
