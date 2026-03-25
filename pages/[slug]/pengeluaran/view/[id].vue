@@ -2,7 +2,7 @@
   <section class="px-8 pt-8">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-        Sunting Pengeluaran <span class="text-base font-normal text-slate-500">: {{ form.nama_suboutput || '-' }}</span>
+        Edit Pengeluaran <span class="text-base font-normal text-slate-500">: {{ form.nama_suboutput || '-' }}</span>
       </h1>
       <ul class="flex items-center gap-2 text-sm text-slate-500 mt-2">
         <li>
@@ -11,7 +11,7 @@
         <li><span class="mx-1">/</span></li>
         <li>Pengeluaran</li>
         <li><span class="mx-1">/</span></li>
-        <li>Sunting</li>
+        <li>Edit</li>
       </ul>
     </div>
     <form @submit.prevent class="bg-white rounded-xl shadow-lg border border-slate-200 p-8 mb-8">
@@ -86,14 +86,11 @@
         </div>
       </div>
       <div class="flex items-center gap-4 border-t border-slate-200 pt-6 mt-8">
-        <NuxtLink :to="`/${slug}/pengeluaran/update/${id}`" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
-          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h.01" /><path d="M15 7h.01" /><path d="M12 7h.01" /><path d="M7 11v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-2" /><path d="M9 15v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-2" /><path d="M9 19h6" /></svg></span> Sunting Pengeluaran
+        <NuxtLink :to="`/${slug}/pengeluaran/update/${id}`" class="inline-flex px-6 py-2 rounded-lg bg-blue-500 text-white font-semibold shadow hover:bg-blue-600 transition" type="button">
+          Edit Pengeluaran
         </NuxtLink>
-        <button @click.prevent="goBack" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
-          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg></span> Kembali
-        </button>
-        <button @click.prevent="eksporUMK" class="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold shadow hover:bg-blue-200 transition" type="button">
-          <span class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-spreadsheet" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="8" y="12" width="8" height="4" rx="1" /><path d="M8 16v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2 -2v-1" /><path d="M8 12v-7a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v7" /></svg></span> Ekspor UMK
+        <button @click.prevent="eksporUMK" class="inline-flex px-6 py-2 rounded-lg bg-green-500 text-white font-semibold shadow hover:bg-green-600 transition" type="button">
+          Ekspor UMK
         </button>
       </div>
     </form>
