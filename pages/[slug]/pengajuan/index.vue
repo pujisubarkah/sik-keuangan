@@ -270,20 +270,33 @@ const fetchPengajuan = async () => {
     const token = localStorage.getItem('token')
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
 
+    // Fetch data tabel (paginated)
     const res = await fetch(`/api/pengajuan?${params.toString()}`, { headers })
     const json = await res.json()
     if (json.success && Array.isArray(json.data)) {
       tableData.value = json.data
       totalData.value = json.total || json.data.length
       totalPages.value = Math.ceil(totalData.value / itemsPerPage.value) || 1
-      // Rekap
       rekapData.value.jumlah_pengajuan = json.total || json.data.length
-      rekapData.value.jumlah_dana = json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
     } else {
       tableData.value = []
       totalData.value = 0
       totalPages.value = 1
-      rekapData.value = { jumlah_pengajuan: 0, jumlah_dana: 0 }
+      rekapData.value.jumlah_pengajuan = 0
+    }
+
+    // Fetch total jumlah dana seluruh pengajuan (bisa difilter)
+    const paramsRekap = new URLSearchParams()
+    if (filterForm.value.status_berkas) paramsRekap.append('status_berkas', filterForm.value.status_berkas)
+    if (filterForm.value.tanggal_pengajuan_awal) paramsRekap.append('tanggal_pengajuan_awal', filterForm.value.tanggal_pengajuan_awal)
+    if (filterForm.value.tanggal_pengajuan_akhir) paramsRekap.append('tanggal_pengajuan_akhir', filterForm.value.tanggal_pengajuan_akhir)
+    if (filterForm.value.status_verifikator) paramsRekap.append('status_verifikator', filterForm.value.status_verifikator)
+    const resRekap = await fetch(`/api/jumlah_pengajuan?${paramsRekap.toString()}`, { headers })
+    const jsonRekap = await resRekap.json()
+    if (jsonRekap && jsonRekap.success) {
+      rekapData.value.jumlah_dana = Number(jsonRekap.jumlah_dana) || 0
+    } else {
+      rekapData.value.jumlah_dana = 0
     }
   } catch (e) {
     tableData.value = []
