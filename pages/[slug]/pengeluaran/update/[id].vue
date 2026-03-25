@@ -46,9 +46,9 @@
               </table>
             </div>
             <!-- Card Anggaran Induk -->
-            <div class="modern-card mt-6 mb-6 border-blue-400 border-2">
-              <div class="modern-card-header bg-blue-50 border-blue-200">
-                <h4 class="modern-card-title text-blue-700 font-bold">Anggaran Induk</h4>
+            <div class="modern-card mt-6 mb-6">
+              <div class="modern-card-header">
+                <h4 class="modern-card-title font-bold">Anggaran Induk</h4>
               </div>
               <div class="modern-card-body">
                 <div class="overflow-x-auto">
@@ -111,14 +111,18 @@
                     <td colspan="2" class="px-4 py-2">
                       <div class="flex gap-4">
                         <div class="flex flex-1 items-center gap-2">
-                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
-                          <span class="modern-input-group-text">Rp</span>
-                          <input id="Pengeluaran_jumlah" class="modern-form-control text-right flex-1" placeholder="0" v-model="form.jumlah" type="text" />
+                          <label class="text-sm font-semibold w-32 text-black" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
+                          <div class="relative flex-1">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-black pointer-events-none select-none">Rp</span>
+                            <input id="Pengeluaran_jumlah" class="modern-form-control text-right pl-10 text-black" placeholder="0" v-model="form.jumlah" type="text" />
+                          </div>
                         </div>
                         <div class="flex flex-1 items-center gap-2">
-                          <label class="text-sm text-blue-600 font-semibold w-32" for="Pengeluaran_sisa">Sisa Anggaran</label>
-                          <span class="modern-input-group-text">Rp</span>
-                          <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-muted text-right flex-1" readonly placeholder="Sisa" :value="form.sisa" type="text" />
+                          <label class="text-sm font-semibold w-32 text-black" for="Pengeluaran_sisa">Sisa Anggaran</label>
+                          <div class="relative flex-1">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-black pointer-events-none select-none">Rp</span>
+                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-right pl-10 text-black" readonly placeholder="Sisa" :value="form.sisa" type="text" />
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -176,7 +180,7 @@
             </div>
           </div>
           <div class="modern-card-footer flex justify-end">
-            <button class="modern-btn modern-btn-primary" type="submit">
+            <button class="modern-btn modern-btn-primary bg-[#3781C7] hover:bg-[#2663A3] text-white font-semibold px-6 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200" type="submit">
               <i class="fa fa-save"></i> Update
             </button>
           </div>

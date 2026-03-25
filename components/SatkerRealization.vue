@@ -16,10 +16,6 @@
           'bg-brandBlue-500 text-white'
         ]"
       >
-        <!-- Silhouette background icon watermark -->
-        <span class="absolute right-0 bottom-0 pointer-events-none select-none z-0 opacity-50">
-          <Icon icon="tabler:building-skyscraper" class="text-[20rem] text-gray-900" style="filter: blur(1px);" />
-        </span>
         <div class="flex flex-col items-start gap-0">
           <div class="flex items-center gap-3 mb-2">
             <span class="inline-flex items-center justify-center bg-white/20 shadow-lg rounded-full p-2 z-10">

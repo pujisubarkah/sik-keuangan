@@ -1,3 +1,9 @@
+/* Override khusus button update pengeluaran agar hover pasti muncul */
+.modern-btn.modern-btn-primary.bg-\[\#3781C7\]:hover,
+.modern-btn.modern-btn-primary.bg-\[\#3781C7\]:focus {
+  background-color: #2663A3 !important;
+  color: #fff !important;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

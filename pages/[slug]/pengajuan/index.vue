@@ -92,7 +92,7 @@
     <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
       <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
         <span class="text-sm text-gray-500 font-medium">
-          Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ totalData }} hasil.
+          Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ tableData.length }} hasil.
         </span>
       </div>
       <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
@@ -126,7 +126,7 @@
               </td>
             </tr> -->
             <!-- Data Rows -->
-            <tr v-for="(item, index) in tableData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+            <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
               <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
               <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
                 <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
@@ -135,7 +135,7 @@
               </td>
               <td class="px-3 py-2 align-middle">
                 <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
-                  {{ item.nama_suboutput }}
+                  {{ item.suboutput }}
                 </NuxtLink>
               </td>
               <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
@@ -147,7 +147,7 @@
                 <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.jumlah_pengajuan) }}</span>
               </td>
               <td class="px-3 py-2 text-right align-middle">
-                <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.sisa_anggaran ?? 0) }}</span>
+                <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(item.sisa_anggaran) }}</span>
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
@@ -160,7 +160,7 @@
                   <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
                     <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
-                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                  <NuxtLink :to="`/${$route.params.slug}/pengajuan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
                     <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                   <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
@@ -170,7 +170,7 @@
               </td>
             </tr>
             <!-- Empty State -->
-            <tr v-if="tableData.length === 0">
+            <tr v-if="paginatedData.length === 0">
               <td colspan="12" class="px-6 py-10 text-center text-gray-500">
                 <div class="flex flex-col items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -225,13 +225,10 @@
 </template>
 
 <script setup>
-
-import { ref, computed, onMounted, watch } from 'vue'
-import { useUserStore } from '~/stores/user.js'
-import { useRouter } from 'vue-router'
+import { Button, TextField, Card } from '@idds/vue'
+import { ref, computed, onMounted } from 'vue'
 import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash, IconCalendar } from '@tabler/icons-vue';
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
-
 
 definePageMeta({ layout: 'default' });
 
@@ -251,51 +248,81 @@ const filterForm = ref({
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-const tableData = ref([])
+// Sample data based on the HTML
+const tableData = ref([
+  {
+    id: 183417,
+    id_pekerjaan: 4723,
+    kode_suboutput: '7913.ADI.001',
+    suboutput: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN',
+    kode_komponen: '051',
+    kode_subkomponen: 'A',
+    kode_akun: '521211',
+    detil: '000005 Snack Rapat Biasa DKI Jakarta [25 orang x 3 kali]',
+    tanggal_pengajuan: '27 Feb 2026',
+    jumlah_pengajuan: 577500,
+    sisa_anggaran: 1082500,
+    jumlah_data_dukung: 9
+  },
+  {
+    id: 183253,
+    id_pekerjaan: 4728,
+    kode_suboutput: '7916.FAC.001',
+    suboutput: 'Pelatihan Struktural Kepemimpinan',
+    kode_komponen: '051',
+    kode_subkomponen: 'A',
+    kode_akun: '522141',
+    detil: 'Sewa Laptop',
+    tanggal_pengajuan: '18 Feb 2026',
+    jumlah_pengajuan: 12925000,
+    sisa_anggaran: 12925000,
+    jumlah_data_dukung: 1
+  },
+  {
+    id: 183278,
+    id_pekerjaan: 4794,
+    kode_suboutput: '7919.EBC.954',
+    suboutput: 'Layanan Manajemen SDM',
+    kode_komponen: '051',
+    kode_subkomponen: 'A',
+    kode_akun: '521219',
+    detil: 'Biaya Diklat Peserta',
+    tanggal_pengajuan: '18 Feb 2026',
+    jumlah_pengajuan: 1025000,
+    sisa_anggaran: 49515000,
+    jumlah_data_dukung: 1
+  },
+  {
+    id: 183403,
+    id_pekerjaan: 4797,
+    kode_suboutput: '4821.EBD.952',
+    suboutput: 'Layanan Perencanaan dan Penganggaran',
+    kode_komponen: '051',
+    kode_subkomponen: 'A',
+    kode_akun: '522151',
+    detil: 'Honorarium Narasumber (Pejabat Eselon III)',
+    tanggal_pengajuan: '27 Feb 2026',
+    jumlah_pengajuan: 1800000,
+    sisa_anggaran: 1800000,
+    jumlah_data_dukung: 6
+  }
+])
 
 const rekapData = ref({
-  jumlah_pengajuan: 0,
-  jumlah_dana: 0
-})
-
-const totalData = ref(0)
-
-const fetchPengajuan = async () => {
-  const token = localStorage.getItem('token')
-  if (!token) {
-    if (userStore && userStore.clearUser) userStore.clearUser()
-    if (router && router.push) await router.push('/login')
-    return
-  }
-  const headers = { Authorization: `Bearer ${token}` }
-  try {
-    const res = await fetch(`/api/pengajuan?page=${currentPage.value}&pageSize=${itemsPerPage.value}`, { headers })
-    const json = await res.json()
-    if (json.success && Array.isArray(json.data)) {
-      tableData.value = json.data
-      // If API provides total, use it, else fallback to data length
-      totalPages.value = Math.ceil((json.total || json.data.length) / itemsPerPage.value) || 1
-      totalData.value = json.total || json.data.length
-      // Update rekapData
-      rekapData.value.jumlah_pengajuan = json.total || json.data.length
-      // Use total_jumlah_dana from API if available, else fallback to current page sum
-      rekapData.value.jumlah_dana =
-        typeof json.total_jumlah_dana === 'number'
-          ? json.total_jumlah_dana
-          : json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
-    }
-  } catch (e) {
-    // error handling
-    console.error('Gagal fetch pengajuan', e)
-  }
-}
-
-watch(currentPage, () => {
-  fetchPengajuan()
+  jumlah_pengajuan: 4,
+  jumlah_dana: 16327500
 })
 
 // Computed properties
-const totalPages = ref(1)
+const totalPages = computed(() => {
+  return Math.ceil(tableData.value.length / itemsPerPage.value)
+})
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return tableData.value.slice(start, end)
+})
 
 const startIndex = computed(() => {
   return (currentPage.value - 1) * itemsPerPage.value + 1
@@ -319,18 +346,17 @@ const visiblePages = computed(() => {
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
-    fetchPengajuan()
   }
-}
-
-const filterData = () => {
-  currentPage.value = 1
-  fetchPengajuan()
 }
 
 // Methods
 const toggleSidebar = () => {
   sidebarRail.value = !sidebarRail.value
+}
+
+const filterData = () => {
+  // In a real app, this would make an API call to filter the data
+  console.log('Filtering data with:', filterForm.value)
 }
 
 const formatCurrency = (amount) => {
@@ -348,11 +374,9 @@ const confirmDelete = (id) => {
   }
 }
 
-// fetchRekapPengajuan dihapus, rekap diambil dari fetchPengajuan
-
 // Lifecycle
 onMounted(() => {
-  fetchPengajuan()
+  // Initialize data if needed
 })
 </script>
 

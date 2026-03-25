@@ -29,7 +29,7 @@
       <div class="max-w-5xl mx-auto px-4 space-y-6">
 
         <!-- Program Info Card -->
-        <div class="box">
+        <div class="box bg-transparent max-w-3xl mx-auto">
           <div class="box-body">
             <table class="w-full detail-view">
               <tbody>
@@ -59,7 +59,7 @@
         </div>
 
         <!-- Suboutput Table -->
-        <div class="box">
+        <div class="box bg-transparent max-w-3xl mx-auto">
           <div class="box-body">
             <table class="w-full main-table">
               <thead>
