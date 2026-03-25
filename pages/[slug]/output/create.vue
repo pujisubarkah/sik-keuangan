@@ -126,51 +126,69 @@ async function submitForm() {
       SIK - Create Output
     </h1>
 
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
-      <div class="px-8 pt-6 pb-4 border-b border-gray-200">
-        <h1 class="text-2xl font-bold text-gray-800">Tambah Output</h1>
-        <p class="text-gray-500 text-sm mt-1">Lengkapi detail output di bawah ini.</p>
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+      <div class="px-8 py-6 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-blue-100 rounded-xl">
+            <Icon icon="mdi:file-document-plus-outline" class="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-slate-800">Detail Output</h2>
+            <p class="text-sm text-slate-500">Field dengan <span class="text-rose-500">*</span> wajib diisi</p>
+          </div>
+        </div>
       </div>
       <form class="px-8 py-8" @submit.prevent="submitForm">
-        <div class="space-y-6">
+        <div class="space-y-7">
           <!-- Kegiatan -->
-          <div class="grid grid-cols-12 items-center gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700" for="kegiatan">Kegiatan</label>
-            <div class="col-span-9">
-              <select v-model="kegiatan" id="kegiatan" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+          <div class="flex items-center gap-4">
+            <label for="kegiatan" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <Icon icon="mdi:format-list-bulleted" class="w-4 h-4 text-slate-400" />
+              Kegiatan
+            </label>
+            <div class="relative flex-1">
+              <select v-model="kegiatan" id="kegiatan" class="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 pr-10 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200 cursor-pointer">
                 <option v-for="k in kegiatanList" :key="k.value" :value="k.value">{{ k.label }}</option>
               </select>
+              <Icon icon="mdi:chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
           </div>
           <!-- Satker -->
-          <div class="grid grid-cols-12 items-center gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700" for="satker">Satker</label>
-            <div class="col-span-9">
-              <select v-model="satker" id="satker" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+          <div class="flex items-center gap-4">
+            <label for="satker" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <Icon icon="mdi:office-building-outline" class="w-4 h-4 text-slate-400" />
+              Satker
+            </label>
+            <div class="relative flex-1">
+              <select v-model="satker" id="satker" class="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 pr-10 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200 cursor-pointer">
                 <option v-for="s in satkerList" :key="s.value" :value="s.value">{{ s.label }}</option>
               </select>
+              <Icon icon="mdi:chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
           </div>
           <!-- Kode -->
-          <div class="grid grid-cols-12 items-center gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode</label>
-            <div class="col-span-9">
-              <input v-model="kode" id="kode" type="text" maxlength="255" placeholder="Kode" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
-            </div>
+          <div class="flex items-center gap-4">
+            <label for="kode" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <Icon icon="mdi:code-tags" class="w-4 h-4 text-slate-400" />
+              Kode
+            </label>
+            <input v-model="kode" id="kode" type="text" maxlength="255" placeholder="Kode" class="flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200" />
           </div>
           <!-- Nama -->
-          <div class="grid grid-cols-12 items-start gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
-            <div class="col-span-9">
-              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words"></textarea>
-            </div>
+          <div class="flex items-center gap-4">
+            <label for="nama" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <Icon icon="mdi:text-box-edit-outline" class="w-4 h-4 text-slate-400" />
+              Nama
+            </label>
+            <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200 min-h-[48px] max-h-40 resize-y break-words"></textarea>
           </div>
           <!-- Tahun -->
-          <div class="grid grid-cols-12 items-center gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun</label>
-            <div class="col-span-9">
-              <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
-            </div>
+          <div class="flex items-center gap-4">
+            <label for="tahun" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
+              Tahun
+            </label>
+            <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" readonly />
           </div>
         </div>
         <div class="flex justify-end mt-10">

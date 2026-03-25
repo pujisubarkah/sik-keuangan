@@ -256,8 +256,8 @@ const fetchOutput = async () => {
     }
 
     const result = await response.json()
-    // result adalah array dari master_output + join info
-    outputData.value = (result || []).map(item => ({
+    // result.data adalah array dari master_output + join info
+    outputData.value = (result.data || []).map(item => ({
       output_id: item.id,
       kode: item.kode_output,
       nama_output: item.nama_output,

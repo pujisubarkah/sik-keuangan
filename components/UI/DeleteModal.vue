@@ -9,13 +9,15 @@
         @keydown.esc="handleEscape"
         tabindex="-1"
       >
-        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-container" :class="error ? 'modal-error-highlight' : ''" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           
           <!-- Header -->
-          <div class="modal-header">
-            <h3 id="modal-title" class="modal-title">
-              <i class="fa fa-exclamation-triangle" />
-              Konfirmasi Hapus
+          <div class="modal-header" :class="error ? 'modal-header-error' : ''">
+            <h3 id="modal-title" class="modal-title" :class="error ? 'modal-title-error' : ''">
+              <i v-if="error" class="fa fa-times-circle" style="color:#dc2626" />
+              <i v-else class="fa fa-exclamation-triangle" />
+              <span v-if="error">Terjadi Duplikasi Data</span>
+              <span v-else>Konfirmasi Hapus</span>
             </h3>
             <button 
               type="button" 
@@ -27,6 +29,19 @@
               <i class="fa fa-times" />
             </button>
           </div>
+/* Modal error highlight */
+.modal-error-highlight {
+  border: 3px solid #dc2626 !important;
+  box-shadow: 0 0 0 4px #fee2e2, 0 20px 60px rgb(0 0 0 / 0.3);
+}
+.modal-header-error {
+  background: #fee2e2;
+  border-bottom: 2px solid #dc2626;
+}
+.modal-title-error {
+  color: #dc2626 !important;
+  font-weight: 700;
+}
 
           <!-- Body -->
           <div class="modal-body">

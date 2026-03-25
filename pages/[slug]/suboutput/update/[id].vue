@@ -1,128 +1,214 @@
 <template>
-  <div class="bg-gray-50 min-h-screen py-12">
-    <div class="max-w-4xl mx-auto">
-      <SuboutputAlert class="mb-6" :showAlert="true" />
-      <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
-        <div class="px-8 pt-6 pb-4 border-b border-gray-200">
-          <h1 class="text-2xl font-bold text-gray-800">Ubah Rincian Ouput</h1>
-          <p class="text-gray-500 text-sm mt-1">Perbarui detail Rincian Ouput di bawah ini.</p>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 py-12">
+    <div class="max-w-5xl mx-auto px-6">
+      
+      <!-- 📍 Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm mb-8">
+        <NuxtLink to="/" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
+          <Icon icon="mdi:home-outline" class="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span class="font-medium">Dashboard</span>
+        </NuxtLink>
+        <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />
+        <NuxtLink :to="`/${route?.params?.slug}/suboutput`" 
+                  class="text-slate-500 hover:text-blue-600 transition-colors font-medium">
+          Suboutput
+        </NuxtLink>
+        <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />
+        <span class="text-blue-600 font-semibold">Ubah Data</span>
+      </nav>
+
+      <!-- 🎯 Header Section -->
+      <div class="mb-8">
+        <div class="flex items-start justify-between">
+          <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
+              Ubah Rincian Output
+            </h1>
+            <p class="text-slate-500 mt-2 text-base">
+              Perbarui detail rincian output. Pastikan data yang diubah telah diverifikasi.
+            </p>
+          </div>
+          <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100">
+            <Icon icon="mdi:calendar" class="w-4 h-4 text-blue-600" />
+            <span class="text-sm font-medium text-blue-700">Tahun {{ form.tahun || '-' }}</span>
+          </div>
         </div>
+      </div>
+
+      <!-- ⚠️ Alert Component (Elegant Wrapper) -->
+      <div class="mb-6">
+        <SuboutputAlert :showAlert="true" />
+      </div>
+
+      <!-- 📋 Form Card -->
+      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+        
+        <!-- Card Header -->
+        <div class="px-8 py-6 bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-amber-100 rounded-xl">
+              <Icon icon="mdi:pencil-outline" class="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-slate-800">Edit Detail</h2>
+              <p class="text-sm text-slate-500">Field dengan <span class="text-rose-500">*</span> wajib diisi</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Content -->
         <form class="px-8 py-8" @submit.prevent="handleSubmit">
-          <div class="space-y-6">
-            
-            <!-- Satker -->
-            <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700">Satker</label>
-              <div class="col-span-9">
-                <input
-                  class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition"
-                  id="Satker_nama"
-                  v-model="satkerNama"
-                  readonly
-                />
-              </div>
+          <div class="space-y-7">
+            <!-- Satker (readonly) -->
+            <div class="flex items-center gap-4">
+              <label for="satker" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:office-building-outline" class="w-4 h-4 text-slate-400" />
+                Satuan Kerja
+              </label>
+              <input id="satker" type="text" :value="satkerNama || '-'" readonly disabled
+                class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" />
             </div>
 
-            <!-- Output -->
-            <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700" for="output">Output</label>
-              <div class="col-span-9 flex items-center min-h-[40px]">
-                <span v-if="outputName" class="text-base text-gray-800 font-semibold">{{ outputName }}</span>
-                <span v-else class="text-gray-400 italic">(Tidak ada data output)</span>
-              </div>
+            <!-- Output (readonly) -->
+            <div class="flex items-center gap-4">
+              <label for="output" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:format-list-bulleted" class="w-4 h-4 text-slate-400" />
+                Output
+              </label>
+              <input id="output" type="text" :value="outputName || '-'" readonly disabled
+                class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" />
             </div>
 
-            <!-- Suboutput -->
-            <div class="grid grid-cols-12 items-start gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput <span style="color: red;">*</span></label>
-              <div class="col-span-9">
-                <textarea v-model="form.suboutput" rows="4" id="suboutput" placeholder="Deskripsi Suboutput" class="form-textarea w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm"></textarea>
-              </div>
+            <!-- Suboutput (Textarea) -->
+            <div class="flex items-center gap-4">
+              <label for="suboutput" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:text-box-edit-outline" class="w-4 h-4 text-slate-400" />
+                Rincian Output <span class="text-rose-500">*</span>
+              </label>
+              <textarea 
+                v-model="form.suboutput" 
+                id="suboutput" 
+                rows="4" 
+                required
+                class="flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 
+                       focus:border-amber-400 focus:ring-4 focus:ring-amber-100/60 focus:bg-white transition-all duration-200 
+                       resize-y min-h-[100px] max-h-52 leading-relaxed"
+                placeholder="Deskripsikan rincian output secara jelas dan spesifik..."
+              />
             </div>
 
             <!-- Kode -->
-            <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode <span style="color: red;">*</span></label>
-              <div class="col-span-9">
-                <VTextField v-model="form.kode" placeholder="e.g. 001.A" required id="kode" />
-              </div>
+            <div class="flex items-center gap-4">
+              <label for="kode" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:code-tags" class="w-4 h-4 text-slate-400" />
+                Kode Suboutput <span class="text-rose-500">*</span>
+              </label>
+              <VTextField 
+                v-model="form.kode" 
+                id="kode" 
+                required 
+                placeholder="Contoh: 001.A.01"
+                class="flex-1 [&>input]:rounded-xl [&>input]:border-slate-200 [&>input]:bg-slate-50/50 [&>input]:px-4 [&>input]:py-3 
+                       [&>input]:text-slate-700 [&>input]:placeholder-slate-400 
+                       [&>input:focus]:border-amber-400 [&>input:focus]:ring-4 [&>input:focus]:ring-amber-100/60 [&>input:focus]:bg-white 
+                       [&>input]:transition-all [&>input]:duration-200"
+              />
             </div>
 
             <!-- Unit -->
-            <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700" for="unit">Unit</label>
-              <div class="col-span-9">
-                <select v-model="form.unit" id="unit" class="form-select w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm">
+            <div class="flex items-center gap-4">
+              <label for="unit" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:account-group-outline" class="w-4 h-4 text-slate-400" />
+                Unit Kerja
+              </label>
+              <div class="relative flex-1">
+                <select 
+                  v-model="form.unit" 
+                  id="unit"
+                  class="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 pr-10 text-slate-700 placeholder-slate-400 
+                         focus:border-amber-400 focus:ring-4 focus:ring-amber-100/60 focus:bg-white transition-all duration-200 cursor-pointer"
+                >
                   <option value="">- Pilih Unit -</option>
                   <option v-for="unit in unitOptions" :key="unit.value" :value="unit.value">{{ unit.label }}</option>
                 </select>
-              </div>
-            </div>
-            
-            <!-- Tahun -->
-            <div class="grid grid-cols-12 items-center gap-4">
-              <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun</label>
-              <div class="col-span-9">
-                <VTextField v-model="form.tahun" readonly disabled id="tahun" />
+                <Icon icon="mdi:chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
             </div>
 
+            <!-- Tahun (Readonly) -->
+            <div class="flex items-center gap-4 pt-2">
+              <label for="tahun" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+                <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
+                Tahun Anggaran
+              </label>
+              <div class="relative flex-1">
+                <VTextField 
+                  v-model="form.tahun" 
+                  id="tahun" 
+                  readonly 
+                  disabled
+                  class="w-full [&>input]:rounded-xl [&>input]:border-slate-200 [&>input]:bg-slate-100/70 [&>input]:px-4 [&>input]:py-3 
+                         [&>input]:text-slate-600 [&>input]:cursor-not-allowed
+                         [&>input]:transition-all [&>input]:duration-200"
+                />
+                <Icon icon="mdi:lock-outline" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              </div>
+            </div>
           </div>
-          <div class="flex justify-end mt-10">
-            <VButton type="submit" variant="primary" text="Simpan Perubahan" :loading="isSubmitting" />
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-10 pt-6 border-t border-slate-100">
+            <VButton 
+              type="button" 
+              variant="neutral"
+              @click="router?.back()"
+              :disabled="isSubmitting"
+              class="px-6 py-2.5 rounded-xl font-medium border-slate-200 hover:bg-slate-50 transition-all disabled:opacity-50"
+            >
+              <Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" /> Batal
+            </VButton>
+            <VButton 
+              type="submit" 
+              variant="primary"
+              :loading="isSubmitting"
+              class="px-8 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-amber-500 to-orange-500 
+                     hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-500/25 
+                     disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:from-amber-500 disabled:hover:to-orange-500
+                     transition-all duration-200 flex items-center gap-2"
+            >
+              <Icon v-if="isSubmitting" icon="mdi:loading" class="w-5 h-5 animate-spin" />
+              <Icon v-else icon="mdi:content-save" class="w-5 h-5" />
+              {{ isSubmitting ? 'Memperbarui...' : 'Simpan Perubahan' }}
+            </VButton>
           </div>
         </form>
       </div>
+
+      <!-- Helper Text -->
+      <p class="text-center text-xs text-slate-400 mt-6">
+        Perubahan data akan tercatat dalam audit log. Pastikan koordinasikan dengan tim terkait sebelum menyimpan.
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
 import { useUserStore } from '~/stores/user';
-const userStore = useUserStore();
 import { useRoute, useRouter } from 'vue-router';
 import VButton from '@/components/UI/v-button.vue';
 import VTextField from '@/components/UI/v-text-field.vue';
+import Icon from '~/components/Icon.vue';
 
 const isSubmitting = ref(false);
-const route = useRoute ? useRoute() : null;
-const router = useRouter ? useRouter() : null;
+const route = useRoute?.() || null;
+const router = useRouter?.() || null;
+const userStore = useUserStore();
 
-import { computed } from 'vue';
+// Options & Form State
 const satkerOptions = ref([]);
-const satkerLabel = computed(() => {
-  const found = satkerOptions.value.find(opt => opt.value === form.value.satker);
-  return found ? found.label : '';
-});
-
-// outputOptions dihapus, output tidak bisa diubah pada update
-
-import { watch } from 'vue';
 const unitOptions = ref([]);
-
-// Fetch unit options by satker_id
-async function fetchUnitOptions(satkerId) {
-  console.log('fetchUnitOptions satkerId:', satkerId);
-  if (!satkerId) {
-    unitOptions.value = [];
-    return;
-  }
-  const token = localStorage.getItem('token');
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  try {
-    const response = await fetch(`/api/unit_kerja/satker/${satkerId}`, { headers });
-    if (!response.ok) throw new Error('Gagal mengambil unit');
-    const data = await response.json();
-    console.log('unit data:', data);
-    unitOptions.value = Array.isArray(data)
-      ? data.map(unit => ({ value: String(unit.id), label: unit.name }))
-      : [];
-  } catch (err) {
-    unitOptions.value = [];
-  }
-}
 
 const form = ref({
   satker: '',
@@ -132,39 +218,69 @@ const form = ref({
   unit: '',
   tahun: ''
 });
+
 const outputName = ref('');
 const satkerNama = ref('');
 
-// Fetch data by id saat mount
+// Fetch unit options by satker_id
+async function fetchUnitOptions(satkerId) {
+  if (!satkerId) {
+    unitOptions.value = [];
+    return;
+  }
+  const token = localStorage.getItem('token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  
+  try {
+    const response = await fetch(`/api/unit_kerja/satker/${satkerId}`, { headers });
+    if (!response.ok) throw new Error('Gagal mengambil unit');
+    const data = await response.json();
+    unitOptions.value = Array.isArray(data)
+      ? data.map(unit => ({ value: String(unit.id), label: unit.name }))
+      : [];
+  } catch {
+    unitOptions.value = [];
+  }
+}
+
+// Fetch initial data
 onMounted(async () => {
   const token = localStorage.getItem('token');
   if (!token) {
-    userStore.clearUser && userStore.clearUser();
-    await navigateTo('/login');
+    userStore.clearUser?.();
+    await navigateTo?.('/login') || router?.push('/login');
     return;
   }
+  
   const headers = { Authorization: `Bearer ${token}` };
   const id = route?.params?.id;
   if (!id) return;
+  
   try {
-    // Fetch satker options from API
+    // Fetch satker options
     const satkerRes = await fetch('/api/satker', { headers });
-    if (!satkerRes.ok) throw new Error('Gagal mengambil data satker');
-    const satkerJson = await satkerRes.json();
-    if (satkerJson.success && Array.isArray(satkerJson.data)) {
-      satkerOptions.value = satkerJson.data.map(item => ({ value: String(item.id), label: item.name }));
-    } else {
-      satkerOptions.value = [];
+    if (satkerRes.ok) {
+      const json = await satkerRes.json();
+      if (json.success && Array.isArray(json.data)) {
+        satkerOptions.value = json.data.map(item => ({ 
+          value: String(item.id), 
+          label: item.name 
+        }));
+      }
     }
 
+    // Fetch suboutput data
     const response = await fetch(`/api/anggaran_suboutput/by-suboutput/${id}`, { headers });
+    
     if (response.status === 401) {
       localStorage.removeItem('token');
-      userStore.clearUser && userStore.clearUser();
-      await navigateTo('/login');
+      userStore.clearUser?.();
+      await navigateTo?.('/login') || router?.push('/login');
       return;
     }
+    
     if (!response.ok) throw new Error('Gagal mengambil data');
+    
     const data = await response.json();
     if (data) {
       form.value = {
@@ -177,36 +293,44 @@ onMounted(async () => {
       };
       outputName.value = data.output_name || '';
       satkerNama.value = data.satker_name || '';
-      // Fetch unit options for initial satker
+      
+      // Fetch initial unit options
       await fetchUnitOptions(form.value.satker);
     }
-    // Watch for satker change to update unit options
+    
+    // Watch satker changes for dynamic unit loading
     watch(() => form.value.satker, (newSatker) => {
       fetchUnitOptions(newSatker);
     });
+    
   } catch (err) {
     alert(err.message || 'Terjadi kesalahan saat mengambil data');
   }
 });
 
+// Handle form submission
 async function handleSubmit() {
   isSubmitting.value = true;
+  
   const token = localStorage.getItem('token');
   if (!token) {
-    userStore.clearUser && userStore.clearUser();
-    await navigateTo('/login');
+    userStore.clearUser?.();
+    await navigateTo?.('/login') || router?.push('/login');
     return;
   }
+  
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`
   };
+  
   const id = route?.params?.id;
   if (!id) {
     alert('ID tidak ditemukan');
     isSubmitting.value = false;
     return;
   }
+  
   try {
     const response = await fetch(`/api/anggaran_suboutput/by-suboutput/${id}`, {
       method: 'PUT',
@@ -220,46 +344,79 @@ async function handleSubmit() {
         tahun_anggaran: form.value.tahun
       })
     });
+    
     if (response.status === 401) {
       localStorage.removeItem('token');
-      userStore.clearUser && userStore.clearUser();
-      await navigateTo('/login');
+      userStore.clearUser?.();
+      await navigateTo?.('/login') || router?.push('/login');
       return;
     }
-    if (!response.ok) {
-      throw new Error('Gagal memperbarui data');
+    
+    if (!response.ok) throw new Error('Gagal memperbarui data');
+    
+    // Success feedback
+    alert('✅ Data berhasil diperbarui!');
+    
+    // Redirect
+    const slug = route?.params?.slug;
+    if (router) {
+      router.push({ path: `/${slug || 'suboutput'}/suboutput` });
     }
-    isSubmitting.value = false;
-    alert('Data berhasil diperbarui!');
-    // Redirect ke halaman suboutput setelah update
-    if (router && route) {
-      const slug = route.params?.slug;
-      if (slug) {
-        router.push({ path: `/${slug}/suboutput` });
-      } else {
-        router.push({ path: `/suboutput` });
-      }
-    }
+    
   } catch (err) {
-    isSubmitting.value = false;
     alert(err.message || 'Terjadi kesalahan');
+  } finally {
+    isSubmitting.value = false;
   }
 }
 </script>
 
 <style scoped>
-/* You can add component-specific styles here if needed */
-.form-select, .form-textarea {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
-  padding-right: 2.5rem;
+/* ✨ Smooth transitions for interactive elements */
+select,
+textarea,
+:deep(input) {
+  transition: all 0.2s ease-in-out;
 }
-:deep(.form-control.w-full.mb-4) {
-  margin-bottom: 0;
+
+/* ✨ Focus glow enhancement */
+select:focus,
+textarea:focus,
+:deep(input:focus) {
+  box-shadow: 0 0 0 4px rgb(245 158 11 / 0.15); /* amber-500/15 */
+}
+
+/* ✨ Custom scrollbar for textarea */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184) transparent; /* slate-400 */
+}
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(148 163 184);
+  border-radius: 3px;
+}
+
+/* ✨ Subtle hover lift for card */
+:deep(.bg-white.rounded-3xl) {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+:deep(.bg-white.rounded-3xl:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -10px rgb(148 163 184 / 0.3);
+}
+
+/* ✨ Button loading animation */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+:deep(button:disabled) {
+  animation: subtle-pulse 2s ease-in-out infinite;
 }
 </style>
