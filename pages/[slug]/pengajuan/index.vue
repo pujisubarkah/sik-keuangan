@@ -248,92 +248,61 @@ const filterForm = ref({
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-// Sample data based on the HTML
-const tableData = ref([
-  {
-    id: 183417,
-    id_pekerjaan: 4723,
-    kode_suboutput: '7913.ADI.001',
-    suboutput: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '521211',
-    detil: '000005 Snack Rapat Biasa DKI Jakarta [25 orang x 3 kali]',
-    tanggal_pengajuan: '27 Feb 2026',
-    jumlah_pengajuan: 577500,
-    sisa_anggaran: 1082500,
-    jumlah_data_dukung: 9
-  },
-  {
-    id: 183253,
-    id_pekerjaan: 4728,
-    kode_suboutput: '7916.FAC.001',
-    suboutput: 'Pelatihan Struktural Kepemimpinan',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '522141',
-    detil: 'Sewa Laptop',
-    tanggal_pengajuan: '18 Feb 2026',
-    jumlah_pengajuan: 12925000,
-    sisa_anggaran: 12925000,
-    jumlah_data_dukung: 1
-  },
-  {
-    id: 183278,
-    id_pekerjaan: 4794,
-    kode_suboutput: '7919.EBC.954',
-    suboutput: 'Layanan Manajemen SDM',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '521219',
-    detil: 'Biaya Diklat Peserta',
-    tanggal_pengajuan: '18 Feb 2026',
-    jumlah_pengajuan: 1025000,
-    sisa_anggaran: 49515000,
-    jumlah_data_dukung: 1
-  },
-  {
-    id: 183403,
-    id_pekerjaan: 4797,
-    kode_suboutput: '4821.EBD.952',
-    suboutput: 'Layanan Perencanaan dan Penganggaran',
-    kode_komponen: '051',
-    kode_subkomponen: 'A',
-    kode_akun: '522151',
-    detil: 'Honorarium Narasumber (Pejabat Eselon III)',
-    tanggal_pengajuan: '27 Feb 2026',
-    jumlah_pengajuan: 1800000,
-    sisa_anggaran: 1800000,
-    jumlah_data_dukung: 6
+const tableData = ref([])
+const rekapData = ref({ jumlah_pengajuan: 0, jumlah_dana: 0 })
+const totalData = ref(0)
+const totalPages = ref(1)
+const loading = ref(false)
+
+const fetchPengajuan = async () => {
+  loading.value = true
+  try {
+    // Build query params
+    const params = new URLSearchParams()
+    params.append('page', currentPage.value)
+    params.append('pageSize', itemsPerPage.value)
+    if (filterForm.value.status_berkas) params.append('status_berkas', filterForm.value.status_berkas)
+    if (filterForm.value.tanggal_pengajuan_awal) params.append('tanggal_pengajuan_awal', filterForm.value.tanggal_pengajuan_awal)
+    if (filterForm.value.tanggal_pengajuan_akhir) params.append('tanggal_pengajuan_akhir', filterForm.value.tanggal_pengajuan_akhir)
+    if (filterForm.value.status_verifikator) params.append('status_verifikator', filterForm.value.status_verifikator)
+
+    // Ambil token dari localStorage
+    const token = localStorage.getItem('token')
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+
+    const res = await fetch(`/api/pengajuan?${params.toString()}`, { headers })
+    const json = await res.json()
+    if (json.success && Array.isArray(json.data)) {
+      tableData.value = json.data
+      totalData.value = json.total || json.data.length
+      totalPages.value = Math.ceil(totalData.value / itemsPerPage.value) || 1
+      // Rekap
+      rekapData.value.jumlah_pengajuan = json.total || json.data.length
+      rekapData.value.jumlah_dana = json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
+    } else {
+      tableData.value = []
+      totalData.value = 0
+      totalPages.value = 1
+      rekapData.value = { jumlah_pengajuan: 0, jumlah_dana: 0 }
+    }
+  } catch (e) {
+    tableData.value = []
+    totalData.value = 0
+    totalPages.value = 1
+    rekapData.value = { jumlah_pengajuan: 0, jumlah_dana: 0 }
+    // Optionally show error
+    console.error('Gagal fetch pengajuan', e)
+  } finally {
+    loading.value = false
   }
-])
+}
 
-const rekapData = ref({
-  jumlah_pengajuan: 4,
-  jumlah_dana: 16327500
-})
-
-// Computed properties
-const totalPages = computed(() => {
-  return Math.ceil(tableData.value.length / itemsPerPage.value)
-})
-
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return tableData.value.slice(start, end)
-})
-
-const startIndex = computed(() => {
-  return (currentPage.value - 1) * itemsPerPage.value + 1
-})
-
+const paginatedData = computed(() => tableData.value)
+const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1)
 const endIndex = computed(() => {
-  const end = currentPage.value * itemsPerPage.value
-  return end > tableData.value.length ? tableData.value.length : end
+  const end = (currentPage.value * itemsPerPage.value)
+  return end > totalData.value ? totalData.value : end
 })
-
-// Pagination for numbered buttons (like program)
 const visiblePages = computed(() => {
   const maxVisible = 5
   const total = totalPages.value
@@ -342,10 +311,10 @@ const visiblePages = computed(() => {
   const adjustedStart = Math.max(1, end - maxVisible + 1)
   return Array.from({ length: end - adjustedStart + 1 }, (_, index) => adjustedStart + index)
 })
-
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
+    fetchPengajuan()
   }
 }
 
@@ -355,8 +324,8 @@ const toggleSidebar = () => {
 }
 
 const filterData = () => {
-  // In a real app, this would make an API call to filter the data
-  console.log('Filtering data with:', filterForm.value)
+  currentPage.value = 1
+  fetchPengajuan()
 }
 
 const formatCurrency = (amount) => {
@@ -376,7 +345,7 @@ const confirmDelete = (id) => {
 
 // Lifecycle
 onMounted(() => {
-  // Initialize data if needed
+  fetchPengajuan()
 })
 </script>
 
