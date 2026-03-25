@@ -148,7 +148,11 @@ export default defineEventHandler(async (event) => {
 
   if (event.method === 'DELETE') {
     const [deleted] = await db.delete(pengajuan).where(eq(pengajuan.id, id)).returning();
-    return deleted || { error: 'Gagal hapus data' };
+    if (deleted) {
+      return { success: true, data: deleted };
+    } else {
+      return { success: false, error: 'Gagal hapus data' };
+    }
   }
 
   return { error: 'Method tidak didukung' };

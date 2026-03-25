@@ -13,4 +13,5 @@ export const pengeluaran = pgTable('pengeluaran', {
   keterangan: text('keterangan').notNull(),
   created_at: timestamp('created_at', { withTimezone: false }).notNull().defaultNow(),
   updated_at: timestamp('updated_at', { withTimezone: false }).notNull().defaultNow(),
+  rkakl_detail_id: integer('rkakl_detail_id').notNull(),
 });

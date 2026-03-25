@@ -90,13 +90,10 @@ const isSubmitting = ref(false);
 const route = useRoute ? useRoute() : null;
 const router = useRouter ? useRouter() : null;
 
-const satkerOptions = [
-  { value: '1', label: 'LAN JAKARTA' },
-  { value: '2', label: 'PUSJAR SKTASN NAS' },
-  { value: '3', label: 'PUSJAR SKMP' },
-];
+import { computed } from 'vue';
+const satkerOptions = ref([]);
 const satkerLabel = computed(() => {
-  const found = satkerOptions.find(opt => opt.value === form.value.satker);
+  const found = satkerOptions.value.find(opt => opt.value === form.value.satker);
   return found ? found.label : '';
 });
 
@@ -150,6 +147,16 @@ onMounted(async () => {
   const id = route?.params?.id;
   if (!id) return;
   try {
+    // Fetch satker options from API
+    const satkerRes = await fetch('/api/satker', { headers });
+    if (!satkerRes.ok) throw new Error('Gagal mengambil data satker');
+    const satkerJson = await satkerRes.json();
+    if (satkerJson.success && Array.isArray(satkerJson.data)) {
+      satkerOptions.value = satkerJson.data.map(item => ({ value: String(item.id), label: item.name }));
+    } else {
+      satkerOptions.value = [];
+    }
+
     const response = await fetch(`/api/anggaran_suboutput/by-suboutput/${id}`, { headers });
     if (response.status === 401) {
       localStorage.removeItem('token');
@@ -173,10 +180,10 @@ onMounted(async () => {
       // Fetch unit options for initial satker
       await fetchUnitOptions(form.value.satker);
     }
-  // Watch for satker change to update unit options
-  watch(() => form.value.satker, (newSatker) => {
-    fetchUnitOptions(newSatker);
-  });
+    // Watch for satker change to update unit options
+    watch(() => form.value.satker, (newSatker) => {
+      fetchUnitOptions(newSatker);
+    });
   } catch (err) {
     alert(err.message || 'Terjadi kesalahan saat mengambil data');
   }

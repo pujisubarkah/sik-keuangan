@@ -46,8 +46,7 @@ export default defineEventHandler(async (event) => {
         COALESCE(SUM(peng.jumlah_pengeluaran), 0) AS total_pengeluaran,
         d.jumlah - COALESCE(SUM(peng.jumlah_pengeluaran), 0) AS saldo
       FROM rkakl_detail d
-      LEFT JOIN pengajuan pj ON pj.rkakl_detail_id = d.id
-      LEFT JOIN pengeluaran peng ON peng.pengajuan_id = pj.id
+      LEFT JOIN pengeluaran peng ON peng.rkakl_detail_id = d.id
       GROUP BY d.id, d.akun_id, d.jumlah
     `);
     return { success: true, data: saldoList.rows || [] };

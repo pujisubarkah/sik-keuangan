@@ -130,14 +130,17 @@ export default defineEventHandler(async (event) => {
 
     // Pagination logic
     const total = result.length;
+    // Hitung total_jumlah_dana dari seluruh data sebelum paginate
+    const total_jumlah_dana = result.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0);
     const startIdx = (page - 1) * pageSize;
     const endIdx = startIdx + pageSize;
-    result = result.slice(startIdx, endIdx);
+    const paginatedResult = result.slice(startIdx, endIdx);
 
     return {
       success: true,
-      data: result,
+      data: paginatedResult,
       total,
+      total_jumlah_dana,
     };
   } catch (error) {
     console.error(error);

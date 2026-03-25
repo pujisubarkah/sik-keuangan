@@ -22,6 +22,7 @@
         </div>
       </div>
 
+
       <!-- Header Section -->
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
@@ -29,6 +30,14 @@
             Daftar Kegiatan Tahun 2026
           </h2>
         </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mb-6 flex flex-wrap items-center gap-2">
+        <NuxtLink to="/admin/kegiatan/create" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+          <IconPlus class="h-4 w-4" />
+          <span>Input Kegiatan</span>
+        </NuxtLink>
       </div>
 
       <!-- Content Card -->

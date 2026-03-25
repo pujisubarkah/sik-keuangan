@@ -3,7 +3,7 @@ import { Button, TextField, Card } from '@idds/vue'
 import { ref } from 'vue'
 import Icon from '~/components/Icon.vue'
 
-const showAlert = ref(true)
+
 const satker = ref('')
 const output = ref('')
 const suboutput = ref('')
@@ -15,8 +15,10 @@ const showToast = ref(false)
 const toastMessage = ref('')
 const toastType = ref('success') // 'success' | 'error'
 
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 const satkerList = ref([{ value: '', label: '- Pilih Satker -' }])
+const outputList = ref([{ value: '', label: '- Pilih Output -' }])
+const unitList = ref([{ value: '', label: '- Pilih Unit -' }])
 
 const isSubmitting = ref(false)
 import { useUserStore } from '~/stores/user'
@@ -25,123 +27,153 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter ? useRouter() : null;
 const route = useRoute ? useRoute() : null;
 
-onMounted(async () => {
-  isSubmitting.value = true;
-  const token = localStorage.getItem('token');
-  if (!token) {
-    userStore.clearUser && userStore.clearUser();
-    if (typeof navigateTo === 'function') {
-      await navigateTo('/login');
-    } else if (router) {
-      router.push({ path: '/login' });
-    }
-    return;
-  }
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`
-  };
-  try {
-    const response = await fetch('/api/satker', { headers });
-    if (!response.ok) throw new Error('Gagal mengambil data satker');
-    const json = await response.json();
-    if (json.success && Array.isArray(json.data)) {
-      satkerList.value = [
-        { value: '', label: '- Pilih Satker -' },
-        ...json.data.map(item => ({ value: String(item.id), label: item.name }))
-      ];
-    }
-  } catch (err) {
-    satkerList.value = [{ value: '', label: '- Pilih Satker -' }];
-  } finally {
-    isSubmitting.value = false;
-  }
-})
-
-const outputList = ref([{ value: '', label: '- Pilih Output -' }])
-
-onMounted(async () => {
-  // ...existing code for satkerList...
-
-  // Fetch outputList from API
-  isSubmitting.value = true;
-  const token = localStorage.getItem('token');
-  if (!token) {
-    userStore.clearUser && userStore.clearUser();
-    if (typeof navigateTo === 'function') {
-      await navigateTo('/login');
-    } else if (router) {
-      router.push({ path: '/login' });
-    }
-    return;
-  }
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`
-  };
-  try {
-    const response = await fetch('/api/output', { headers });
-    if (!response.ok) throw new Error('Gagal mengambil data output');
-    const data = await response.json();
-    if (Array.isArray(data)) {
-      outputList.value = [
-        { value: '', label: '- Pilih Output -', kode: '' },
-        ...data.map(item => ({
-          value: String(item.id),
-          label: `${item.kode_output} - ${item.nama_output}`,
-          kode: item.kode_output
-        }))
-      ];
-    }
-  } catch (err) {
-    outputList.value = [{ value: '', label: '- Pilih Output -' }];
-  } finally {
-    isSubmitting.value = false;
-  }
-})
-
-const unitList = ref([{ value: '', label: '- Pilih Unit -' }])
-
-import { watch } from 'vue'
 watch(satker, async (newSatker) => {
-  unit.value = ''
-  if (!newSatker) {
-    unitList.value = [{ value: '', label: '- Pilih Unit -' }]
-    return
-  }
-  isSubmitting.value = true
-  const token = localStorage.getItem('token')
-  if (!token) {
-    userStore.clearUser && userStore.clearUser()
-    if (typeof navigateTo === 'function') {
-      await navigateTo('/login')
-    } else if (router) {
-      router.push({ path: '/login' })
+  if (newSatker) {
+    // Fetch output list based on satker
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    };
+    try {
+      // Fetch output
+      const response = await fetch(`/api/output?satker_id=${newSatker}`, { headers });
+      if (!response.ok) throw new Error('Gagal mengambil data output');
+      const json = await response.json();
+      if (json.success && Array.isArray(json.data)) {
+        outputList.value = [
+          { value: '', label: '- Pilih Output -' },
+          ...json.data.map(item => ({
+            value: String(item.id),
+            label: `${item.kode_output || ''} - ${item.nama_output || item.name || ''}`.replace(/^ - | - $/, '').trim(),
+            kode_output: item.kode_output || ''
+          }))
+        ];
+      }
+    } catch (err) {
+      outputList.value = [{ value: '', label: '- Pilih Output -' }];
     }
-    return
-  }
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`
-  }
-  try {
-    const response = await fetch(`/api/unit_kerja/satker/${newSatker}`, { headers })
-    if (!response.ok) throw new Error('Gagal mengambil data unit')
-    const data = await response.json()
-    if (Array.isArray(data)) {
+
+    // Fetch unit list based on satker
+    try {
+      const response = await fetch(`/api/unit_kerja/satker/${newSatker}`, { headers });
+      if (!response.ok) throw new Error('Gagal mengambil data unit');
+      const data = await response.json();
       unitList.value = [
         { value: '', label: '- Pilih Unit -' },
-        ...data.map(item => ({ value: String(item.id), label: item.name }))
-      ]
+        ...Array.isArray(data) ? data.map(item => ({ value: String(item.id), label: item.name })) : []
+      ];
+    } catch (err) {
+      unitList.value = [{ value: '', label: '- Pilih Unit -' }];
     }
-  } catch (err) {
-    unitList.value = [{ value: '', label: '- Pilih Unit -' }]
-  } finally {
-    isSubmitting.value = false
+  } else {
+    outputList.value = [{ value: '', label: '- Pilih Output -' }];
+    unitList.value = [{ value: '', label: '- Pilih Unit -' }];
   }
-})
+});
 
 async function submitForm() {
+  if (isSubmitting.value) return;
+  isSubmitting.value = true;
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    userStore.clearUser && userStore.clearUser();
+    router.push({ path: '/login' });
+    return;
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`
+  };
+
+  try {
+    // 1. POST ke /api/suboutput
+    // Ambil kode_output dari output terpilih
+    console.log('output.value:', output.value);
+    console.log('outputList:', outputList.value);
+    const selectedOutput = outputList.value.find(o => o.value === output.value);
+    console.log('selectedOutput:', selectedOutput);
+    const kodeOutput = selectedOutput && selectedOutput.kode_output ? selectedOutput.kode_output : '';
+    // Gabungkan kode_output.kode_suboutput
+    const kodeGabungan = kodeOutput && kode.value ? `${kodeOutput}.${kode.value}` : kode.value;
+    const payloadSuboutput = {
+      output_id: output.value,
+      nama_suboutput: suboutput.value,
+      kode_suboutput: kodeGabungan,
+      kode_output: kodeOutput
+    };
+    console.log('Payload POST /api/suboutput:', payloadSuboutput);
+    const suboutputRes = await fetch('/api/suboutput', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payloadSuboutput)
+    });
+    const suboutputJson = await suboutputRes.json();
+    if (!suboutputRes.ok || !suboutputJson.id) {
+      // Tangani error duplicate key
+      if (suboutputJson.message && suboutputJson.message.includes('duplicate key value')) {
+        throw new Error('Suboutput dengan kode dan output tersebut sudah ada. Silakan gunakan kode lain.');
+      }
+      throw new Error(suboutputJson.message || suboutputJson.error || 'Gagal menambah suboutput');
+    }
+    const suboutputId = suboutputJson.id;
+
+    // 2. POST ke /api/anggaran_suboutput/by-suboutput
+    // Fetch tahun_anggaran_id dari API jika perlu
+    let tahunAnggaranId = null;
+    try {
+      const tahunRes = await fetch('/api/tahun_anggaran', { headers });
+      const tahunData = await tahunRes.json();
+      if (Array.isArray(tahunData)) {
+        const found = tahunData.find(item => String(item.tahun) === String(tahun.value));
+        if (found && found.id) tahunAnggaranId = found.id;
+      }
+    } catch (e) {}
+    if (!tahunAnggaranId) {
+      alert('Gagal mendapatkan tahun_anggaran_id, data anggaran_suboutput tidak dikirim.');
+      throw new Error('Gagal mendapatkan tahun_anggaran_id');
+    }
+    const anggaranPayload = {
+      suboutput_id: suboutputId,
+      satker_id: satker.value,
+      unit_id: unit.value,
+      tahun_anggaran_id: tahunAnggaranId,
+      anggaran: 0
+    };
+    console.log('Payload POST /api/anggaran_suboutput/by-suboutput:', anggaranPayload);
+    const anggaranRes = await fetch('/api/anggaran_suboutput/by-suboutput', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(anggaranPayload)
+    });
+    const anggaranJson = await anggaranRes.json();
+    if (anggaranRes.ok && anggaranJson.success) {
+      toastMessage.value = 'Suboutput berhasil ditambahkan';
+      toastType.value = 'success';
+      showToast.value = true;
+      setTimeout(() => {
+        router.push({ path: `/${route.params.slug}/suboutput` });
+      }, 2000);
+    } else {
+      console.error('Gagal tambah anggaran_suboutput:', anggaranJson);
+      alert('Gagal menambah anggaran suboutput: ' + (anggaranJson.message || anggaranJson.error || JSON.stringify(anggaranJson)));
+      throw new Error(anggaranJson.message || anggaranJson.error || 'Gagal menambah anggaran_suboutput');
+    }
+  } catch (err) {
+    toastMessage.value = err.message;
+    toastType.value = 'error';
+    showToast.value = true;
+  } finally {
+    isSubmitting.value = false;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 3000);
+  }
+}
+
+onMounted(async () => {
   isSubmitting.value = true;
   const token = localStorage.getItem('token');
   if (!token) {
@@ -157,99 +189,37 @@ async function submitForm() {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`
   };
-  // Ambil kode_output dari output terpilih
-  const selectedOutput = outputList.value.find(o => o.value === output.value);
-  const kodeOutput = selectedOutput ? selectedOutput.kode : '';
-  const kodeSuboutput = kodeOutput && kode.value ? `${kodeOutput}.${kode.value}` : kode.value;
   try {
-    // 1. POST ke /api/suboutput
-    const response = await fetch('/api/suboutput', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        kode_suboutput: kodeSuboutput,
-        nama_suboutput: suboutput.value,
-        output_id: output.value,
-        total: '0',
-      })
-    });
-    const data = await response.json();
-    if (response.ok && data && data.id) {
-      // 2. Cari tahun_anggaran_id dari tahun
-      let tahunAnggaranId = null;
-      try {
-        // Ambil list tahun_anggaran dari /api/anggaran_suboutput, lalu cari id berdasarkan tahun
-        const tahunRes = await fetch(`/api/anggaran_suboutput`, { headers });
-        const tahunData = await tahunRes.json();
-        if (tahunRes.ok && Array.isArray(tahunData)) {
-          const found = tahunData.find(item => String(item.tahun) === String(tahun.value));
-          if (found && found.tahun_anggaran_id) tahunAngGaranId = found.tahun_anggaran_id;
-        }
-      } catch (e) {}
-      // Fallback: jika tidak ketemu, coba fetch ke endpoint tahun_anggaran
-      if (!tahunAngGaranId) {
-        try {
-          const tahunRes = await fetch(`/api/tahun_anggaran`, { headers });
-          const tahunData = await tahunRes.json();
-          if (tahunRes.ok && Array.isArray(tahunData)) {
-            const found = tahunData.find(item => String(item.tahun) === String(tahun.value));
-            if (found && found.id) tahunAngGaranId = found.id;
-          }
-        } catch (e) {}
-      }
-      if (!tahunAngGaranId) {
-        toastType.value = 'error';
-        toastMessage.value = 'Gagal mendapatkan tahun_anggaran_id, data anggaran_suboutput tidak dikirim.';
-        showToast.value = true;
-        setTimeout(() => { showToast.value = false }, 2500);
-      } else {
-        // 3. POST ke /api/anggaran_suboutput
-        const anggaranPayload = {
-          suboutput_id: data.id,
-          satker_id: satker.value,
-          unit_id: unit.value,
-          tahun_anggaran_id: tahunAngGaranId,
-          anggaran: '0'
-        };
-        console.log('POST /api/anggaran_suboutput payload:', anggaranPayload);
-        const anggaranRes = await fetch('/api/anggaran_suboutput', {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(anggaranPayload)
-        });
-        const anggaranData = await anggaranRes.json();
-        console.log('POST /api/anggaran_suboutput response:', anggaranData);
-        if ((anggaranRes.ok && !anggaranData.error) || (anggaranData && anggaranData.success)) {
-          toastType.value = 'success';
-          toastMessage.value = 'data berhasil RO berhasil ditambahkan';
-          showToast.value = true;
-          setTimeout(() => { showToast.value = false }, 2000);
-        }
-      }
-      // Redirect ke halaman suboutput setelah berhasil
-      if (router && route) {
-        const slug = route.params?.slug;
-        if (slug) {
-          router.push({ path: `/${slug}/suboutput` });
-        } else {
-          router.push({ path: `/suboutput` });
-        }
-      }
-    } else {
-      toastType.value = 'error';
-      toastMessage.value = data.error || 'Gagal menyimpan suboutput';
-      showToast.value = true;
-      setTimeout(() => { showToast.value = false }, 2500);
+    const [satkerRes, unitRes] = await Promise.all([
+      fetch('/api/satker', { headers }),
+      fetch('/api/unit_kerja', { headers })
+    ]);
+
+    if (!satkerRes.ok) throw new Error('Gagal mengambil data satker');
+    const satkerJson = await satkerRes.json();
+    if (satkerJson.success && Array.isArray(satkerJson.data)) {
+      satkerList.value = [
+        { value: '', label: '- Pilih Satker -' },
+        ...satkerJson.data.map(item => ({ value: String(item.id), label: item.name }))
+      ];
     }
+
+    if (!unitRes.ok) throw new Error('Gagal mengambil data unit');
+    const unitJson = await unitRes.json();
+    if (unitJson.success && Array.isArray(unitJson.data)) {
+      unitList.value = [
+        { value: '', label: '- Pilih Unit -' },
+        ...unitJson.data.map(item => ({ value: String(item.id), label: item.name }))
+      ];
+    }
+
   } catch (err) {
-    toastType.value = 'error';
-    toastMessage.value = 'Terjadi kesalahan saat menyimpan suboutput';
-    showToast.value = true;
-    setTimeout(() => { showToast.value = false }, 2500);
+    satkerList.value = [{ value: '', label: '- Pilih Satker -' }];
+    unitList.value = [{ value: '', label: '- Pilih Unit -' }];
   } finally {
     isSubmitting.value = false;
   }
-}
+});
 </script>
 
 <template>
@@ -260,7 +230,7 @@ async function submitForm() {
         <span class="font-semibold text-lg tracking-wide">{{ toastMessage }}</span>
       </div>
     </transition>
-    <SuboutputAlert class="mb-6" :showAlert="showAlert" />
+
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
@@ -268,7 +238,7 @@ async function submitForm() {
         <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/suboutput" class="hover:text-blue-700">Suboutput</NuxtLink>
+      <NuxtLink :to="`/${route.params.slug}/suboutput`" class="hover:text-blue-700">Suboutput</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Tambah</span>
     </div>
@@ -305,7 +275,7 @@ async function submitForm() {
           </div>
           <!-- Suboutput -->
           <div class="grid grid-cols-12 items-start gap-4">
-            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Ouput<span class="text-red-500">*</span></label>
+            <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="suboutput">Rincian Output<span class="text-red-500">*</span></label>
             <div class="col-span-9">
               <textarea v-model="suboutput" id="suboutput" rows="3" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" placeholder="Suboutput" required></textarea>
             </div>
@@ -335,8 +305,8 @@ async function submitForm() {
           </div>
         </div>
         <div class="flex justify-end mt-10">
-          <Button type="success" native-type="submit">
-            <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> Simpan
+          <Button type="success" native-type="submit" :disabled="isSubmitting">
+            <Icon icon="mdi:check" class="w-5 h-5 mr-2" /> {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
           </Button>
         </div>
       </form>

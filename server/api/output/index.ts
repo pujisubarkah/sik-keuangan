@@ -3,12 +3,24 @@ import { masterOutput } from "@/server/database/schema/master_output";
 import { masterSuboutput } from "@/server/database/schema/master_suboutput";
 import { masterKegiatan } from "@/server/database/schema/master_kegiatan";
 import { masterProgram } from "@/server/database/schema/master_program";
+import { and, eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
   if (event.node.req.method === 'POST') {
     const body = await readBody(event);
     if (!body.kode_output || !body.nama_output || !body.kegiatan_id || !body.satker_id) {
       return { success: false, message: 'kode_output, nama_output, kegiatan_id, dan satker_id wajib diisi' };
+    }
+    // Cek duplikat kombinasi unik
+    const existing = await db.select().from(masterOutput).where(
+      and(
+        eq(masterOutput.kode_output, body.kode_output),
+        eq(masterOutput.kegiatan_id, Number(body.kegiatan_id)),
+        eq(masterOutput.satker_id, Number(body.satker_id))
+      )
+    );
+    if (existing && existing.length > 0) {
+      return { success: false, message: 'Data dengan kombinasi kode_output, kegiatan_id, dan satker_id sudah ada.' };
     }
     const now = new Date();
     const inserted = await db.insert(masterOutput).values({
@@ -71,5 +83,5 @@ export default defineEventHandler(async (event) => {
       kegiatan: kegiatanObj,
     };
   });
-  return result;
+  return { success: true, data: result };
 });

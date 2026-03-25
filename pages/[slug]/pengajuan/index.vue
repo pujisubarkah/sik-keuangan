@@ -278,7 +278,11 @@ const fetchPengajuan = async () => {
       totalData.value = json.total || json.data.length
       // Update rekapData
       rekapData.value.jumlah_pengajuan = json.total || json.data.length
-      rekapData.value.jumlah_dana = json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
+      // Use total_jumlah_dana from API if available, else fallback to current page sum
+      rekapData.value.jumlah_dana =
+        typeof json.total_jumlah_dana === 'number'
+          ? json.total_jumlah_dana
+          : json.data.reduce((sum, item) => sum + (Number(item.jumlah_pengajuan) || 0), 0)
     }
   } catch (e) {
     // error handling

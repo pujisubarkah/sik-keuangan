@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   if (event.method === 'POST') {
     const body = await readBody(event);
     // Validasi minimal
-    if (!body.suboutput_id || !body.satker_id || !body.unit_id || !body.tahun_anggaran_id || !body.anggaran) {
+    if (!body.suboutput_id || !body.satker_id || !body.unit_id || !body.tahun_anggaran_id || typeof body.anggaran === 'undefined' || body.anggaran === null) {
       return sendError(event, createError({ statusCode: 400, statusMessage: 'Data tidak lengkap' }));
     }
     const inserted = await db.insert(anggaranSuboutput).values({

@@ -1,11 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SuboutputAlert :showAlert="showAlert" />
 
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
-          <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun 2026</h1>
+          <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun {{ new Date().getFullYear() }}</h1>
 
         </div>
       </div>
@@ -13,7 +12,7 @@
       <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
         <template #header>
           <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
-            <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
+            <Icon icon="filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
             Filter Data
           </h2>
         </template>
@@ -23,7 +22,7 @@
               <!-- Status Data Dukung -->
               <div class="md:col-span-4 flex flex-col justify-end">
                 <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <IconFolderCheck class="w-4 h-4 text-blue-500" />
+                  <Icon icon="folder-check" class="w-4 h-4 text-blue-500" />
                   <span>Status Data Dukung</span>
                   <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
                 </label>
@@ -34,10 +33,10 @@
                     <option value="0">Belum Tersedia</option>
                   </select>
                   <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <IconFolderCheck class="w-5 h-5 text-gray-400" />
+                    <Icon icon="folder-check" class="w-5 h-5 text-gray-400" />
                   </div>
                   <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                    <Icon icon="chevron-down" class="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               </div>
@@ -57,7 +56,7 @@
               <!-- Status Data -->
               <div class="md:col-span-4 flex flex-col justify-end">
                 <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
+                  <Icon icon="database-search" class="w-4 h-4 text-blue-500" />
                   <span>Status Data</span>
                   <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
                 </label>
@@ -67,17 +66,17 @@
                     <option value="0">Hanya Pengajuan Baru</option>
                   </select>
                   <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <IconDatabaseSearch class="w-5 h-5 text-gray-400" />
+                    <Icon icon="database-search" class="w-5 h-5 text-gray-400" />
                   </div>
                   <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <IconChevronDown class="w-4 h-4 text-gray-400" />
+                    <Icon icon="chevron-down" class="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex gap-2 mt-2">
               <Button @click="resetFilters" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                <IconRefresh class="w-4 h-4" />
+                <Icon icon="refresh" class="w-4 h-4" />
                 <span>Reset</span>
               </Button>
             </div>
@@ -158,16 +157,16 @@
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex gap-2 justify-center">
                     <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
-                      <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <Icon icon="eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
-                      <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <Icon icon="printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                      <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                      <Icon icon="pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                      <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                    <button @click="openDeleteModal(item)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
+                      <Icon icon="trash" class="w-5 h-5" />
                     </button>
                   </div>
                 </td>
@@ -201,6 +200,17 @@
         </div>
       </div>
 
+      <!-- Modal Delete -->
+      <DeleteModal
+        :show="showDeleteModal"
+        :loading="deleteLoading"
+        :error="deleteError"
+        :success="deleteSuccess"
+        :fileName="itemToDelete?.uraian || ''"
+        @close="closeDeleteModal"
+        @confirm="doDelete"
+      />
+
       <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
           <h3 class="text-base font-semibold text-gray-900">Rekap Data Pengeluaran</h3>
@@ -230,12 +240,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { Button, TextField, Card } from '@idds/vue'
-import { IconRefresh, IconEye, IconPencil, IconTrash, IconFolderCheck, IconChevronDown, IconDatabaseSearch } from '@tabler/icons-vue';
-import SuboutputAlert from '~/components/SuboutputAlert.vue'
+import Icon from '~/components/Icon.vue'
 
 definePageMeta({ layout: 'default' })
 
-const showAlert = ref(true)
 const filterForm = ref({
   status_berkas: '',
   tanggal_pengajuan_awal: '',
@@ -334,7 +342,59 @@ const totalPengeluaran = computed(() => totalData.value)
 const totalDana = computed(() => pengeluaranData.value.reduce((sum, item) => sum + item.jumlah, 0))
 const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount)
 const formatDate = (date) => date ? new Date(date).toLocaleDateString('id-ID') : ''
-const confirmDelete = (id) => { if (confirm('Yakin akan menghapus data?')) { /* Implement delete logic */ } }
+
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
+function openDeleteModal(item) {
+  itemToDelete.value = item
+  showDeleteModal.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+function closeDeleteModal() {
+  showDeleteModal.value = false
+  itemToDelete.value = null
+}
+
+async function doDelete() {
+  if (!itemToDelete.value) return
+  deleteLoading.value = true
+  deleteError.value = ''
+  deleteSuccess.value = false
+  try {
+    const token = localStorage.getItem('token')
+    const res = await fetch(`/api/pengajuan/${itemToDelete.value.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    const json = await res.json()
+    console.log('Delete response:', json)
+    if (json.success) {
+      deleteSuccess.value = true
+      fetchPengeluaran()
+      setTimeout(() => {
+        closeDeleteModal()
+      }, 1000)
+    } else {
+      console.error('Delete error:', json.error)
+      deleteError.value = json.error || 'Gagal menghapus data'
+    }
+  } catch (e) {
+    console.error('Exception saat hapus:', e)
+    deleteError.value = 'Terjadi kesalahan saat menghapus data'
+  } finally {
+    deleteLoading.value = false
+  }
+}
+
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
