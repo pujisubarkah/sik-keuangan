@@ -2,92 +2,80 @@
   <div class="pt-14">
     <SuboutputAlert :showAlert="showAlert" />
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengajuan Tahun 2026</h1>
-    <!-- Filter Form -->
-    <Card class="bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
-      <template #header>
-        <h2 class="text-lg font-bold text-blue-700 flex items-center gap-2">
-          <Icon icon="mdi:filter-cog" class="w-6 h-6 text-blue-500 animate-spin-slow" />
+    <!-- Filter Form (styled like perencanaan) -->
+    <div class="mb-6 overflow-hidden border border-gray-200 bg-brandBlue-50 shadow sm:rounded-lg">
+      <div class="flex items-center justify-between border-b border-gray-200 bg-brandBlue-100 px-6 py-4">
+        <h3 class="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
           Filter Data
-        </h2>
-      </template>
-      <template #default>
-        <form @submit.prevent="filterData" class="space-y-2">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
+        </h3>
+      </div>
+      <div class="px-6 py-4">
+        <form @submit.prevent="filterData" class="space-y-4">
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
             <!-- Status Data Dukung -->
-            <div class="md:col-span-4 flex flex-col justify-end">
-              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <IconFolderCheck class="w-4 h-4 text-blue-500" />
-                <span>Status Data Dukung</span>
-                <span v-if="filterForm.status_berkas" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
-              </label>
+            <div class="md:col-span-4">
+              <label class="mb-1 block text-sm font-medium text-gray-700">Status Data Dukung</label>
               <div class="relative">
                 <select v-model="filterForm.status_berkas"
-                  class="block w-full min-w-[160px] max-w-full rounded-md border border-gray-300 py-2.5 pl-10 pr-8 text-base focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all appearance-none cursor-pointer"
-                  :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_berkas }">
-                  <option value="" disabled selected>Semua Status</option>
+                  class="block w-full rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm appearance-none">
+                  <option value="">Semua Status</option>
                   <option value="1">Tersedia</option>
                   <option value="0">Belum Tersedia</option>
                 </select>
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconFolderCheck class="w-5 h-5 text-gray-400" />
-                </div>
-                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconChevronDown class="w-4 h-4 text-gray-400" />
-                </div>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center pr-2">
+                  <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.584l3.71-3.354a.75.75 0 111.02 1.1l-4.25 3.846a.75.75 0 01-1.02 0l-4.25-3.846a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
               </div>
             </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-2">
             <!-- Pengajuan (Label + Range) -->
-            <div class="md:col-span-4 flex flex-col justify-end">
-              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <IconCalendar class="w-4 h-4 text-blue-500" />
-                <span>Pengajuan</span>
-              </label>
+            <div class="md:col-span-4">
+              <label class="mb-1 block text-sm font-medium text-gray-700">Pengajuan</label>
               <div class="flex items-end gap-2">
-                <TextField v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="mm/dd/yyyy" class="w-36" />
+                <input v-model="filterForm.tanggal_pengajuan_awal" type="date" placeholder="mm/dd/yyyy" class="block w-full rounded-md border border-gray-300 bg-white py-2.5 px-3 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
                 <span class="pb-2 text-gray-500">s/d</span>
-                <TextField v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="mm/dd/yyyy" class="w-36" />
+                <input v-model="filterForm.tanggal_pengajuan_akhir" type="date" placeholder="mm/dd/yyyy" class="block w-full rounded-md border border-gray-300 bg-white py-2.5 px-3 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
               </div>
             </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
             <!-- Status Data -->
-            <div class="md:col-span-2 flex flex-col justify-end">
-              <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <IconDatabaseSearch class="w-4 h-4 text-blue-500" />
-                <span>Status Data</span>
-                <span v-if="filterForm.status_verifikator" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
-              </label>
-              <div class="relative w-full max-w-[260px] min-w-[180px]">
+            <div class="md:col-span-4">
+              <label class="mb-1 block text-sm font-medium text-gray-700">Status Data</label>
+              <div class="relative">
                 <select v-model="filterForm.status_verifikator"
-                  class="block w-full rounded-md border border-gray-300 py-2.5 pl-10 pr-8 text-base focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all appearance-none cursor-pointer"
-                  :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.status_verifikator }">
-                  <option value="" disabled selected>Semua Data</option>
+                  class="block w-full rounded-md border border-gray-300 bg-white py-2.5 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm appearance-none">
+                  <option value="">Semua Data</option>
                   <option value="0">Hanya Pengajuan Baru</option>
                 </select>
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconDatabaseSearch class="w-5 h-5 text-gray-400" />
-                </div>
-                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconChevronDown class="w-4 h-4 text-gray-400" />
-                </div>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center pr-2">
+                  <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.584l3.71-3.354a.75.75 0 111.02 1.1l-4.25 3.846a.75.75 0 01-1.02 0l-4.25-3.846a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
               </div>
             </div>
-          </div>
-          <div class="flex gap-2 mt-2">
-            <Button @click="filterData" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              <IconSearch class="w-4 h-4" />
-              <span>Filter Data</span>
-            </Button>
-            <Button @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="w-auto px-6 flex items-center gap-2 bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              <IconRefresh class="w-4 h-4" />
-              <span>Reset</span>
-            </Button>
+            <!-- Tombol -->
+            <div class="md:col-span-12 flex justify-end gap-2 mt-2">
+              <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span>Tampilkan</span>
+              </button>
+              <button type="button" @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="inline-flex items-center gap-2 rounded-md border border-gray-400 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-md transition-all hover:bg-gray-100 hover:shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Reset</span>
+              </button>
+            </div>
           </div>
         </form>
-      </template>
-    </Card>
+      </div>
+    </div>
     <!-- Data Table (Styled like perencanaan.vue) -->
     <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
       <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">

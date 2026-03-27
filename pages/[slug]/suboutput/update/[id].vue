@@ -28,10 +28,6 @@
               Perbarui detail rincian output. Pastikan data yang diubah telah diverifikasi.
             </p>
           </div>
-          <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100">
-            <Icon icon="mdi:calendar" class="w-4 h-4 text-blue-600" />
-            <span class="text-sm font-medium text-blue-700">Tahun {{ form.tahun || '-' }}</span>
-          </div>
         </div>
       </div>
 
@@ -137,19 +133,17 @@
 
             <!-- Tahun (Readonly) -->
             <div class="flex items-center gap-4 pt-2">
-              <label for="tahun" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
+              <label class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
                 <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
                 Tahun Anggaran
               </label>
               <div class="relative flex-1">
-                <VTextField 
-                  v-model="form.tahun" 
-                  id="tahun" 
-                  readonly 
+                <input 
+                  type="text"
+                  :value="tahunLogin"
+                  readonly
                   disabled
-                  class="w-full [&>input]:rounded-xl [&>input]:border-slate-200 [&>input]:bg-slate-100/70 [&>input]:px-4 [&>input]:py-3 
-                         [&>input]:text-slate-600 [&>input]:cursor-not-allowed
-                         [&>input]:transition-all [&>input]:duration-200"
+                  class="w-full rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200"
                 />
                 <Icon icon="mdi:lock-outline" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               </div>
@@ -159,26 +153,13 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-10 pt-6 border-t border-slate-100">
             <VButton 
-              type="button" 
-              variant="neutral"
-              @click="router?.back()"
-              :disabled="isSubmitting"
-              class="px-6 py-2.5 rounded-xl font-medium border-slate-200 hover:bg-slate-50 transition-all disabled:opacity-50"
-            >
-              <Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" /> Batal
-            </VButton>
-            <VButton 
               type="submit" 
-              variant="primary"
               :loading="isSubmitting"
-              class="px-8 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-amber-500 to-orange-500 
-                     hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-500/25 
-                     disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:from-amber-500 disabled:hover:to-orange-500
-                     transition-all duration-200 flex items-center gap-2"
+              class="px-8 py-2.5 rounded-xl font-semibold bg-green-500 text-white hover:bg-green-600 focus:ring-4 focus:ring-green-200 shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <Icon v-if="isSubmitting" icon="mdi:loading" class="w-5 h-5 animate-spin" />
               <Icon v-else icon="mdi:content-save" class="w-5 h-5" />
-              {{ isSubmitting ? 'Memperbarui...' : 'Simpan Perubahan' }}
+              {{ isSubmitting ? 'Memperbarui...' : 'Simpan' }}
             </VButton>
           </div>
         </form>
@@ -221,6 +202,13 @@ const form = ref({
 
 const outputName = ref('');
 const satkerNama = ref('');
+const tahunLogin = computed(() => {
+  // Ambil tahun dari userStore jika ada, fallback ke tahun sekarang
+  // Misal userStore.year atau userStore.tahun, jika tidak ada pakai tahun sekarang
+  // Jika di token tidak ada, bisa di-set manual di sini
+  // Untuk demo, pakai tahun sekarang
+  return new Date().getFullYear().toString();
+});
 
 // Fetch unit options by satker_id
 async function fetchUnitOptions(satkerId) {
