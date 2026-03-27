@@ -31,21 +31,21 @@
           <!-- User Account Dropdown -->
           <li class="dropdown user-menu" ref="userRef">
             <button
-              class="dropdown-toggle user-toggle flex items-center gap-2"
+              class="dropdown-toggle user-toggle flex items-center gap-0"
               @click.stop="toggleUser"
               :aria-expanded="isUserOpen"
               aria-haspopup="true"
               aria-controls="user-menu"
               type="button"
             >
-              <div class="user-avatar flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 mr-2">
+              <div class="user-avatar flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 mr-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
               </div>
               <div class="flex flex-col items-start">
                 <span class="hidden-xs user-name font-extrabold text-base text-white">{{ displayName }}</span>
-                <span class="flex items-center gap-1 mt-0.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
-                  <span class="text-xs font-semibold text-white">Online</span>
+                <span class="flex items-center gap-0.5 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
+                  <span class="text-[10px] font-semibold text-white">Online</span>
                 </span>
               </div>
               <i class="idds idds-chevron-down ml-2" :class="{ 'rotate-180': isUserOpen }"></i>
@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
 
 /* ===== USER TOGGLE ===== */
 .user-toggle {
-  padding: 4px 8px;
+  padding: 2px 6px;
 }
 
 .user-avatar {
