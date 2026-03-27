@@ -271,12 +271,39 @@ async function fetchPengajuanById() {
     if (json && json.id) {
       console.log('API response:', json);
       isInitializing.value = true;
-      // Set dropdown selections
-      selectedSuboutput.value = json.id_suboutput || json.rkakl_suboutput_id || json.suboutput_id || ''
-      selectedKomponen.value = Number(json.rkakl_komponen_id || json.komponen_id || '')
-      selectedSubkomponen.value = json.rkakl_subkomponen_id || json.subkomponen_id || ''
-      selectedAkun.value = json.rkakl_akun_id || json.akun_id || ''
-      form.value.rkakl_detail_id = json.rkakl_detail_id || ''
+
+      // --- Penyesuaian tipe id agar dropdown otomatis terisi (semua number/null) ---
+      // --- Fallback: jika id tidak ditemukan, cari berdasarkan kode ---
+      // Cari suboutput
+      let suboutput = struktur.value.suboutputs.find(s => s.id === Number(json.id_suboutput))
+      if (!suboutput && json.kode_suboutput) {
+        suboutput = struktur.value.suboutputs.find(s => s.kode_suboutput === json.kode_suboutput)
+      }
+      selectedSuboutput.value = suboutput ? suboutput.id : null
+
+      // Cari komponen
+      let komponenItem = suboutput && suboutput.komponen ? suboutput.komponen.find(k => k.id === Number(json.rkakl_komponen_id)) : null
+      if (!komponenItem && json.kode_komponen && suboutput && suboutput.komponen) {
+        komponenItem = suboutput.komponen.find(k => k.kode_komponen === json.kode_komponen)
+      }
+      selectedKomponen.value = komponenItem ? komponenItem.id : null
+
+      // Cari subkomponen
+      let subkomponenItem = komponenItem && komponenItem.subkomponen ? komponenItem.subkomponen.find(sk => sk.id === Number(json.rkakl_subkomponen_id)) : null
+      if (!subkomponenItem && json.kode_subkomponen && komponenItem && komponenItem.subkomponen) {
+        subkomponenItem = komponenItem.subkomponen.find(sk => sk.kode_subkomponen === json.kode_subkomponen)
+      }
+      selectedSubkomponen.value = subkomponenItem ? subkomponenItem.id : null
+
+      // Cari akun
+      let akunItem = subkomponenItem && subkomponenItem.akun ? subkomponenItem.akun.find(a => a.id === Number(json.rkakl_akun_id)) : null
+      if (!akunItem && json.kode_akun && subkomponenItem && subkomponenItem.akun) {
+        akunItem = subkomponenItem.akun.find(a => a.kode_akun === json.kode_akun)
+      }
+      selectedAkun.value = akunItem ? akunItem.id : null
+
+      // Uraian (rkakl_detail_id)
+      form.value.rkakl_detail_id = json.rkakl_detail_id ? Number(json.rkakl_detail_id) : ''
 
       // Map kode fields for display/reference if needed
       form.value.kode_suboutput = json.kode_suboutput || ''

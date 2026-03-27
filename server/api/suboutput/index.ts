@@ -91,8 +91,18 @@ export default defineEventHandler(async (event) => {
 
 	const result = await dbQueryWithJoin.orderBy(masterSuboutput.kode_suboutput);
 
+	// Filter agar hanya satu baris per suboutput_id (ambil yang pertama ditemukan)
+	const uniqueBySuboutput = [];
+	const seen = new Set();
+	for (const row of result) {
+		if (!seen.has(row.suboutput_id)) {
+			uniqueBySuboutput.push(row);
+			seen.add(row.suboutput_id);
+		}
+	}
+
 	return {
 		success: true,
-		data: result
+		data: uniqueBySuboutput
 	};
 });

@@ -22,8 +22,15 @@ async function fetchSatkers() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   try {
     const res = await $fetch('/api/satker', { headers })
-    satkers.value = Array.isArray(res) ? res : []
+    console.log('API /api/satker response:', res)
+    // Jika response berbentuk { success, data }, ambil data-nya
+    if (res && typeof res === 'object' && 'data' in res) {
+      satkers.value = Array.isArray(res.data) ? res.data : []
+    } else {
+      satkers.value = Array.isArray(res) ? res : []
+    }
   } catch (err) {
+    console.error('Error fetching satkers:', err)
     satkers.value = []
   }
 }

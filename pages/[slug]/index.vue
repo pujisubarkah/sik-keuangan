@@ -106,29 +106,63 @@ const selectedSatker = ref('')
 const selectedUnit = ref('')
 
 // Satker Realization Data
-const satkerRealizationData = ref([
-  { id: 1, name: 'LAN JAKARTA', percentage: 14.00 },
-  { id: 2, name: 'PUSJAR SKTASN NAS', percentage: 4.37 },
-  { id: 3, name: 'PUSJAR SKMP', percentage: 0 },
-  { id: 4, name: 'PUSJAR SKPP', percentage: 0 },
-  { id: 5, name: 'PUSJAR SKMK', percentage: 0.00 },
-  { id: 6, name: 'STIA LAN BANDUNG', percentage: 0 },
-  { id: 7, name: 'STIA LAN JAKARTA', percentage: 0.00 },
-  { id: 8, name: 'STIA MAKASSAR', percentage: 0 }
-])
+const satkerRealizationData = ref([])
+
+const fetchSatkerRealizationData = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/dashboard/satker', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data)) {
+      // Map to match frontend usage if needed
+      satkerRealizationData.value = data.data.map(item => ({
+        id: item.id,
+        name: item.nama_satker,
+        percentage: item.percentage
+      }));
+    }
+  } catch (e) {
+    console.error('Failed to fetch satker realization data', e);
+  }
+};
 
 // Budget Data
 const budgetData = reactive({
-  totalBudget: 209029781000,
-  submissionCount: 4,
-  submissionAmount: 16327500,
-  treasurerRealization: 19539547658,
-  treasurerBalance: 189490233342,
-  treasurerAbsorption: 9.35,
-  sp2dRealization: 19370360710,
-  sp2dBalance: 189659420290,
-  sp2dAbsorption: 9.27
+  totalBudget: 0,
+  submissionCount: 0,
+  submissionAmount: 0,
+  treasurerRealization: 0,
+  treasurerBalance: 0,
+  treasurerAbsorption: 0,
+  sp2dRealization: 0,
+  sp2dBalance: 0,
+  sp2dAbsorption: 0
 })
+
+const fetchBudgetData = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/total_pengajuan', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success) {
+      budgetData.totalBudget = data.totalBudget;
+      budgetData.submissionCount = data.submissionCount;
+      budgetData.submissionAmount = data.submissionAmount;
+      budgetData.treasurerRealization = data.treasurerRealization;
+      budgetData.treasurerBalance = data.treasurerBalance;
+      budgetData.treasurerAbsorption = data.treasurerAbsorption;
+      budgetData.sp2dRealization = data.sp2dRealization;
+      budgetData.sp2dBalance = data.sp2dBalance;
+      budgetData.sp2dAbsorption = data.sp2dAbsorption;
+    }
+  } catch (e) {
+    console.error('Failed to fetch budgetData', e);
+  }
+};
 
 // Chart Data
 const absorptionChartData = reactive({
@@ -142,34 +176,127 @@ const expenditureChartData = reactive({
 })
 
 // Table Data
+
 const programs = ref([])
-const totalProgram = ref({
-  activities: 22,
-  outputs: 35,
-  subOutputs: 50,
-  budget: 208068456000,
-  treasurerRealization: 19507960058,
-  treasurerAbsorption: 9.38,
-  treasurerBalance: 188560495942,
-  sp2dRealization: 19341473110,
-  sp2dAbsorption: 9.30,
-  sp2dBalance: 188726982890
-})
+const totalProgram = computed(() => {
+  if (!programs.value.length) return {
+    activities: 0,
+    outputs: 0,
+    subOutputs: 0,
+    budget: 0,
+    treasurerRealization: 0,
+    treasurerAbsorption: 0,
+    treasurerBalance: 0,
+    sp2dRealization: 0,
+    sp2dAbsorption: 0,
+    sp2dBalance: 0
+  };
+  const activities = programs.value.reduce((sum, p) => sum + (p.jumlah_kegiatan || 0), 0);
+  const outputs = programs.value.reduce((sum, p) => sum + (p.jumlah_output || 0), 0);
+  const subOutputs = programs.value.reduce((sum, p) => sum + (p.jumlah_suboutput || 0), 0);
+  const budget = programs.value.reduce((sum, p) => sum + Number(p.pagu || 0), 0);
+  const treasurerRealization = programs.value.reduce((sum, p) => sum + Number(p.treasurerRealization || 0), 0);
+  const treasurerBalance = programs.value.reduce((sum, p) => sum + Number(p.treasurerBalance || 0), 0);
+  const sp2dRealization = programs.value.reduce((sum, p) => sum + Number(p.sp2dRealization || 0), 0);
+  const sp2dBalance = programs.value.reduce((sum, p) => sum + Number(p.sp2dBalance || 0), 0);
+  const treasurerAbsorption = budget > 0 ? (treasurerRealization / budget) * 100 : 0;
+  const sp2dAbsorption = budget > 0 ? (sp2dRealization / budget) * 100 : 0;
+  return {
+    activities,
+    outputs,
+    subOutputs,
+    budget,
+    treasurerRealization,
+    treasurerAbsorption,
+    treasurerBalance,
+    sp2dRealization,
+    sp2dAbsorption,
+    sp2dBalance
+  };
+});
+
+const fetchPrograms = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/dashboard/program', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data)) {
+      programs.value = data.data;
+    }
+  } catch (e) {
+    console.error('Failed to fetch programs', e);
+  }
+};
+
 
 const activities = ref([])
-const totalActivity = ref({
-  outputs: 43,
-  subOutputs: 62,
-  budget: 208068456000,
-  treasurerRealization: 19539547658,
-  treasurerAbsorption: 9.39,
-  treasurerBalance: 188528908342,
-  sp2dRealization: 19370360710,
-  sp2dAbsorption: 9.31,
-  sp2dBalance: 188698095290
-})
+const totalActivity = computed(() => {
+  if (!activities.value.length) return {
+    outputs: 0,
+    subOutputs: 0,
+    budget: 0,
+    treasurerRealization: 0,
+    treasurerAbsorption: 0,
+    treasurerBalance: 0,
+    sp2dRealization: 0,
+    sp2dAbsorption: 0,
+    sp2dBalance: 0
+  };
+  const outputs = activities.value.reduce((sum, a) => sum + (a.jumlah_output || 0), 0);
+  const subOutputs = activities.value.reduce((sum, a) => sum + (a.jumlah_suboutput || 0), 0);
+  const budget = activities.value.reduce((sum, a) => sum + Number(a.pagu || 0), 0);
+  const treasurerRealization = activities.value.reduce((sum, a) => sum + Number(a.treasurerRealization || 0), 0);
+  const treasurerBalance = activities.value.reduce((sum, a) => sum + Number(a.treasurerBalance || 0), 0);
+  const sp2dRealization = activities.value.reduce((sum, a) => sum + Number(a.sp2dRealization || 0), 0);
+  const sp2dBalance = activities.value.reduce((sum, a) => sum + Number(a.sp2dBalance || 0), 0);
+  const treasurerAbsorption = budget > 0 ? (treasurerRealization / budget) * 100 : 0;
+  const sp2dAbsorption = budget > 0 ? (sp2dRealization / budget) * 100 : 0;
+  return {
+    outputs,
+    subOutputs,
+    budget,
+    treasurerRealization,
+    treasurerAbsorption,
+    treasurerBalance,
+    sp2dRealization,
+    sp2dAbsorption,
+    sp2dBalance
+  };
+});
+
+const fetchActivities = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/dashboard/kegiatan', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data)) {
+      activities.value = data.data;
+    }
+  } catch (e) {
+    console.error('Failed to fetch activities', e);
+  }
+};
 
 const outputs = ref([])
+
+const fetchOutputs = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/dashboard/output', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data)) {
+      outputs.value = data.data;
+    }
+  } catch (e) {
+    console.error('Failed to fetch outputs', e);
+  }
+};
 const totalOutput = ref({
   subOutputs: 62,
   budget: 209029781000,
@@ -182,15 +309,49 @@ const totalOutput = ref({
 })
 
 const subOutputs = ref([])
-const totalSubOutput = ref({
-  budget: 209029781000,
-  treasurerRealization: 19539547658,
-  treasurerAbsorption: 9.35,
-  treasurerBalance: 189490233342,
-  sp2dRealization: 19370360710,
-  sp2dAbsorption: 9.27,
-  sp2dBalance: 189659420290
-})
+
+const fetchSubOutputs = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/dashboard/suboutput', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data)) {
+      subOutputs.value = data.data;
+    }
+  } catch (e) {
+    console.error('Failed to fetch subOutputs', e);
+  }
+};
+const totalSubOutput = computed(() => {
+  if (!subOutputs.value.length) return {
+    budget: 0,
+    treasurerRealization: 0,
+    treasurerAbsorption: 0,
+    treasurerBalance: 0,
+    sp2dRealization: 0,
+    sp2dAbsorption: 0,
+    sp2dBalance: 0
+  };
+  const budget = subOutputs.value.reduce((sum, s) => sum + Number(s.pagu || 0), 0);
+  const treasurerRealization = subOutputs.value.reduce((sum, s) => sum + Number(s.treasurerRealization || 0), 0);
+  const treasurerBalance = subOutputs.value.reduce((sum, s) => sum + Number(s.treasurerBalance || 0), 0);
+  const sp2dRealization = subOutputs.value.reduce((sum, s) => sum + Number(s.sp2dRealization || 0), 0);
+  const sp2dBalance = subOutputs.value.reduce((sum, s) => sum + Number(s.sp2dBalance || 0), 0);
+  // Persentase rata-rata (atau total/total)
+  const treasurerAbsorption = budget > 0 ? (treasurerRealization / budget) * 100 : 0;
+  const sp2dAbsorption = budget > 0 ? (sp2dRealization / budget) * 100 : 0;
+  return {
+    budget,
+    treasurerRealization,
+    treasurerAbsorption,
+    treasurerBalance,
+    sp2dRealization,
+    sp2dAbsorption,
+    sp2dBalance
+  };
+});
 
 // Methods
 const handleFilter = (filterData) => {
@@ -228,13 +389,19 @@ const formatPercentage = (value) => {
 
 onMounted(async () => {
   // Initialize data
-  fetchData({ year: currentYear.value })
+  await fetchBudgetData();
+  await fetchSubOutputs();
+  await fetchOutputs();
+  await fetchActivities();
+  await fetchPrograms();
+  await fetchSatkerRealizationData();
+  fetchData({ year: currentYear.value });
   if (process.client) {
-    const FusionCharts = (await import('fusioncharts')).default
-    const Charts = (await import('fusioncharts/fusioncharts.charts')).default
+    const FusionCharts = (await import('fusioncharts')).default;
+    const Charts = (await import('fusioncharts/fusioncharts.charts')).default;
     // ...initialize charts here
   }
-})
+});
 </script>
 
 <style scoped>

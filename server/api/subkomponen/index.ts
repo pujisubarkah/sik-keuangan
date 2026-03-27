@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
       id: masterSubkomponen.id,
       komponen_id: masterSubkomponen.komponen_id,
       kode_subkomponen: masterSubkomponen.kode_subkomponen,
+      nama_subkomponen: masterSubkomponen.nama_subkomponen,
     })
     .from(masterSubkomponen)
     .where(where)

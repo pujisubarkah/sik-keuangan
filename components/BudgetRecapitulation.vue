@@ -37,7 +37,7 @@
             class="mt-4 text-sm font-semibold text-white flex items-center gap-1 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:underline focus:outline-none"
             style="padding-left:0"
           >
-            Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white !text-white"></i>
+            Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white"></i>
           </a>
         </div>
       </div>

@@ -36,23 +36,23 @@
         <tbody class="divide-y divide-gray-100">
           <tr v-for="(program, index) in programs" :key="program.id" class="hover:bg-yellow-50">
             <td class="px-3 py-2 text-center align-middle">{{ index + 1 }}</td>
-            <td class="px-3 py-2 align-middle">{{ program.code }}</td>
+            <td class="px-3 py-2 align-middle">{{ program.kode_program }}</td>
             <td class="px-3 py-2 align-middle">
               <a :href="`/index.php?r=program/view&id=${program.id}`" class="text-blue-600 hover:underline font-semibold">
-                {{ program.name }}
+                {{ program.nama_program }}
               </a>
             </td>
             <td class="px-3 py-2 text-center align-middle">
-              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ program.activities }}</span>
+              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ program.jumlah_kegiatan }}</span>
             </td>
             <td class="px-3 py-2 text-center align-middle">
-               <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ program.kros }}</span>
+               <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ program.jumlah_output }}</span>
             </td>
             <td class="px-3 py-2 text-center align-middle">
-               <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ program.ros }}</span>
+               <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ program.jumlah_suboutput }}</span>
             </td>
             <td class="px-3 py-2 text-right align-middle">
-              <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(program.budget) }}</span>
+              <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(program.pagu) }}</span>
             </td>
             <td class="px-3 py-2 text-right align-middle">
               <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(program.treasurerRealization) }}</span>
@@ -81,10 +81,10 @@
               <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ totalProgram.activities }}</span>
             </th>
             <th class="px-3 py-2 text-center align-middle">
-               <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ totalProgram.kros }}</span>
+              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ totalProgram.outputs }}</span>
             </th>
             <th class="px-3 py-2 text-center align-middle">
-               <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalProgram.ros }}</span>
+              <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalProgram.subOutputs }}</span>
             </th>
             <th class="px-3 py-2 text-right align-middle">
               <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalProgram.budget) }}</span>
@@ -117,6 +117,7 @@
 <script setup>
 import { ref } from 'vue'
 
+
 const props = defineProps({
   programs: {
     type: Array,
@@ -131,6 +132,23 @@ const props = defineProps({
     default: 2026
   }
 })
+
+const programData = computed(() =>
+  props.programs.map(item => ({
+    kode_program: item.kode_program,
+    nama_program: item.nama_program,
+    jumlah_kegiatan: item.jumlah_kegiatan,
+    jumlah_output: item.jumlah_output,
+    jumlah_suboutput: item.jumlah_suboutput,
+    pagu: item.pagu,
+    treasurerRealization: item.treasurerRealization,
+    treasurerAbsorption: item.treasurerAbsorption,
+    treasurerBalance: item.treasurerBalance,
+    sp2dRealization: item.sp2dRealization,
+    sp2dAbsorption: item.sp2dAbsorption,
+    sp2dBalance: item.sp2dBalance,
+  }))
+)
 
 const collapsed = ref(true)
 

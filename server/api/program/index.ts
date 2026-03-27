@@ -83,32 +83,6 @@ export default defineEventHandler(async (event) => {
     return { success: true, data: inserted[0] };
   }
 
-  // PUT: Update program
-  if (event.node.req.method === 'PUT') {
-    const body = await readBody(event);
-    if (!body.id) return { success: false, message: 'ID wajib diisi' };
-    const now = new Date();
-    const updated = await db.update(masterProgram)
-      .set({
-        ...(body.kode_program && { kode_program: body.kode_program }),
-        ...(body.nama_program && { nama_program: body.nama_program }),
-        ...(body.total !== undefined && { total: body.total }),
-        updated_at: now,
-      })
-      .where(eq(masterProgram.id, body.id))
-      .returning();
-    return { success: true, data: updated[0] };
-  }
-
-  // DELETE: Delete program
-  if (event.node.req.method === 'DELETE') {
-    const body = await readBody(event);
-    if (!body.id) return { success: false, message: 'ID wajib diisi' };
-    const deleted = await db.delete(masterProgram)
-      .where(eq(masterProgram.id, body.id))
-      .returning();
-    return { success: true, data: deleted[0] };
-  }
 
   return { success: false, message: 'Method not allowed' };
 });

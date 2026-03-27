@@ -20,7 +20,7 @@
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
 						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
 						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kegiatan</th>
-						   <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">Ouput</th>
+						   <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">KRO</th>
 						   <th class="px-3 py-2 text-center font-semibold text-yellow-700 align-middle">RO</th>
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pagu</th>
 						<th class="px-3 py-2 text-center font-semibold text-red-700 align-middle">Realisasi<br>Bendahara</th>
@@ -39,10 +39,10 @@
 							<a :href="row.link" class="text-blue-600 hover:underline font-semibold">{{ row.kegiatan }}</a>
 						</td>
 						<td class="px-3 py-2 text-center align-middle">
-							   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ row.kro }}</span>
+							<span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ row.output }}</span>
 						</td>
 						<td class="px-3 py-2 text-center align-middle">
-							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ row.ro }}</span>
+							<span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ row.suboutput }}</span>
 						</td>
 						<td class="px-3 py-2 text-right align-middle">
 							<span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.pagu) }}</span>
@@ -67,13 +67,7 @@
 						</td>
 					</tr>
 					<tr class="bg-blue-50 font-bold">
-						<th colspan="3" class="px-3 py-2 text-right align-middle">TOTAL</th>
-						<th class="px-3 py-2 text-center align-middle">
-							   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ total.kro }}</span>
-						</th>
-						<th class="px-3 py-2 text-center align-middle">
-							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ total.ro }}</span>
-						</th>
+						<th colspan="5" class="px-3 py-2 text-right align-middle">TOTAL</th>
 						<th class="px-3 py-2 text-right align-middle">
 							<span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.pagu) }}</span>
 						</th>
@@ -107,24 +101,28 @@ import { ref, computed } from 'vue'
 
 const collapsed = ref(false)
 
-const kegiatanData = ref([
-	// ...example data, replace with real data or props
-	{
-		kode: '7913',
-		kegiatan: 'Penguatan Kapasitas Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran Aparatur Sipil Negara',
-		link: '/index.php?r=kegiatan/view&id=659',
-		output: 2,
-		suboutput: 2,
-		pagu: 1347726000,
-		realisasiBendahara: 65902419,
-		percentBendahara: 4.89,
-		sisaBendahara: 1281823581,
-		realisasiSP2D: 29212419,
-		percentSP2D: 2.17,
-		sisaSP2D: 1318513581,
-	},
-	// ...add more rows as needed
-])
+const props = defineProps({
+	activities: {
+		type: Array,
+		default: () => []
+	}
+})
+
+const kegiatanData = computed(() =>
+	props.activities.map(item => ({
+		kode: item.kode_kegiatan,
+		kegiatan: item.nama_kegiatan,
+		output: item.jumlah_output,
+		suboutput: item.jumlah_suboutput,
+		pagu: item.pagu,
+		realisasiBendahara: item.treasurerRealization,
+		percentBendahara: item.treasurerAbsorption,
+		sisaBendahara: item.treasurerBalance,
+		realisasiSP2D: item.sp2dRealization,
+		percentSP2D: item.sp2dAbsorption,
+		sisaSP2D: item.sp2dBalance,
+	}))
+)
 
 const total = computed(() => {
 	const sum = (key) => kegiatanData.value.reduce((a, b) => a + (b[key] || 0), 0)

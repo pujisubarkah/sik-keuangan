@@ -19,9 +19,8 @@
 					<tr>
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
 						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode</th>
-						   <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Output</th>
-						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">Unit</th>
-						   <th class="px-3 py-2 text-center font-semibold text-yellow-700 align-middle">RO</th>
+						<th class="px-3 py-2 font-semibold text-blue-700 align-middle">KRO</th>
+						<th class="px-3 py-2 text-center font-semibold text-yellow-700 align-middle">RO</th>
 						<th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Pagu</th>
 						<th class="px-3 py-2 text-center font-semibold text-red-700 align-middle">Realisasi<br>Bendahara</th>
 						<th class="px-3 py-2 text-center font-semibold text-yellow-700 align-middle">% Bendahara</th>
@@ -35,13 +34,12 @@
 					<tr v-for="(row, idx) in outputData" :key="row.kode" class="hover:bg-yellow-50">
 						<td class="px-3 py-2 text-center align-middle">{{ idx + 1 }}</td>
 						<td class="px-3 py-2 align-middle">{{ row.kode }}</td>
-						<td class="px-3 py-2 align-middle">
-							   <a :href="row.link" class="text-blue-600 hover:underline font-semibold">{{ row.kro }}</a>
-						</td>
-						<td class="px-3 py-2 align-middle">{{ row.unit }}</td>
-						<td class="px-3 py-2 text-center align-middle">
-							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ row.ro }}</span>
-						</td>
+						 <td class="px-3 py-2 align-middle">
+							 <a :href="row.link" class="text-blue-600 hover:underline font-semibold">{{ row.kro }}</a>
+						 </td>
+						 <td class="px-3 py-2 text-center align-middle">
+							 <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ row.ro }}</span>
+						 </td>
 						<td class="px-3 py-2 text-right align-middle">
 							<span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.pagu) }}</span>
 						</td>
@@ -64,33 +62,33 @@
 							<span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.sisaSP2D) }}</span>
 						</td>
 					</tr>
-					<tr class="bg-blue-50 font-bold">
-						<th colspan="4" class="px-3 py-2 text-right align-middle">TOTAL</th>
-						<th class="px-3 py-2 text-center align-middle">
+					   <tr class="bg-blue-50 font-bold">
+						   <th class="px-3 py-2 text-center align-middle" colspan="3">TOTAL</th>
+						   <th class="px-3 py-2 text-center align-middle">
 							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ total.ro }}</span>
-						</th>
-						<th class="px-3 py-2 text-right align-middle">
-							<span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.pagu) }}</span>
-						</th>
-						<th class="px-3 py-2 text-right align-middle">
-							<span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.realisasiBendahara) }}</span>
-						</th>
-						<th class="px-3 py-2 text-center align-middle">
-							<span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ formatPercent(total.percentBendahara) }}</span>
-						</th>
-						<th class="px-3 py-2 text-right align-middle">
-							<span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.sisaBendahara) }}</span>
-						</th>
-						<th class="px-3 py-2 text-right align-middle">
-							<span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.realisasiSP2D) }}</span>
-						</th>
-						<th class="px-3 py-2 text-center align-middle">
-							<span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ formatPercent(total.percentSP2D) }}</span>
-						</th>
-						<th class="px-3 py-2 text-right align-middle">
-							<span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.sisaSP2D) }}</span>
-						</th>
-					</tr>
+						   </th>
+						   <th class="px-3 py-2 text-right align-middle">
+							   <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.pagu) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-right align-middle">
+							   <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.realisasiBendahara) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-center align-middle">
+							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ formatPercent(total.percentBendahara) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-right align-middle">
+							   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.sisaBendahara) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-right align-middle">
+							   <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.realisasiSP2D) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-center align-middle">
+							   <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ formatPercent(total.percentSP2D) }}</span>
+						   </th>
+						   <th class="px-3 py-2 text-right align-middle">
+							   <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(total.sisaSP2D) }}</span>
+						   </th>
+					   </tr>
 				</tbody>
 			</table>
 		</div>
@@ -102,29 +100,32 @@ import { ref, computed } from 'vue'
 
 const collapsed = ref(false)
 
-const outputData = ref([
-	// ...example data, replace with real data or props
-	{
-		kode: '7913.ADI',
-		output: 'Sertifikasi Profesi dan SDM[Base Line]',
-		link: '/index.php?r=output/view&id=2243',
-		unit: '',
-		suboutput: 1,
-		pagu: 1076950000,
-		realisasiBendahara: 64037419,
-		percentBendahara: 5.95,
-		sisaBendahara: 1012912581,
-		realisasiSP2D: 27347419,
-		percentSP2D: 2.54,
-		sisaSP2D: 1049602581,
-	},
-	// ...add more rows as needed
-])
+const props = defineProps({
+  outputs: {
+    type: Array,
+    default: () => []
+  }
+})
+
+const outputData = computed(() =>
+	props.outputs.map(item => ({
+		kode: item.kode_output,
+		kro: item.nama_output, // nama_output -> kro
+		ro: item.jumlah_suboutput, // jumlah_suboutput -> ro
+		pagu: item.pagu,
+		realisasiBendahara: item.treasurerRealization,
+		percentBendahara: item.treasurerAbsorption,
+		sisaBendahara: item.treasurerBalance,
+		realisasiSP2D: item.sp2dRealization,
+		percentSP2D: item.sp2dAbsorption,
+		sisaSP2D: item.sp2dBalance,
+	}))
+)
 
 const total = computed(() => {
 	const sum = (key) => outputData.value.reduce((a, b) => a + (b[key] || 0), 0)
 	return {
-		suboutput: sum('suboutput'),
+		ro: sum('ro'),
 		pagu: sum('pagu'),
 		realisasiBendahara: sum('realisasiBendahara'),
 		percentBendahara: outputData.value.length ? (sum('percentBendahara') / outputData.value.length) : 0,

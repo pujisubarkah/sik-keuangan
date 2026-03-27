@@ -117,14 +117,10 @@
             <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-yellow-50 align-middle">
               <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
               <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
-                <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
-                  {{ item.kode_suboutput }}
-                </NuxtLink>
+                {{ item.kode_suboutput }}
               </td>
               <td class="px-3 py-2 align-middle">
-                <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
-                  {{ item.suboutput }}
-                </NuxtLink>
+                {{ item.suboutput }}
               </td>
               <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
               <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>
@@ -148,7 +144,7 @@
                   <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
                     <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
-                  <NuxtLink :to="`/${$route.params.slug}/pengajuan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
                     <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                   </NuxtLink>
                   <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
@@ -203,7 +199,9 @@
           
             <span class="text-lg font-bold text-white">Jumlah Dana</span>
           </div>
-          <div class="text-3xl font-extrabold mb-2 text-white">{{ formatCurrency(rekapData.jumlah_dana) }}</div>
+          <div class="text-3xl font-extrabold mb-2 text-white">
+            {{ formatCurrency(rekapData.jumlah_dana) }}
+          </div>
           <div class="text-sm mb-2 text-white">&nbsp;</div>
         </div>
       </div>
@@ -265,27 +263,14 @@ const fetchPengajuan = async () => {
       tableData.value = json.data
       totalData.value = json.total || json.data.length
       totalPages.value = Math.ceil(totalData.value / itemsPerPage.value) || 1
-      rekapData.value.jumlah_pengajuan = json.total || json.data.length
+      // Jangan update rekapData di sini, biarkan hanya dari /api/total_pengajuan
     } else {
       tableData.value = []
       totalData.value = 0
       totalPages.value = 1
-      rekapData.value.jumlah_pengajuan = 0
     }
 
-    // Fetch total jumlah dana seluruh pengajuan (bisa difilter)
-    const paramsRekap = new URLSearchParams()
-    if (filterForm.value.status_berkas) paramsRekap.append('status_berkas', filterForm.value.status_berkas)
-    if (filterForm.value.tanggal_pengajuan_awal) paramsRekap.append('tanggal_pengajuan_awal', filterForm.value.tanggal_pengajuan_awal)
-    if (filterForm.value.tanggal_pengajuan_akhir) paramsRekap.append('tanggal_pengajuan_akhir', filterForm.value.tanggal_pengajuan_akhir)
-    if (filterForm.value.status_verifikator) paramsRekap.append('status_verifikator', filterForm.value.status_verifikator)
-    const resRekap = await fetch(`/api/jumlah_pengajuan?${paramsRekap.toString()}`, { headers })
-    const jsonRekap = await resRekap.json()
-    if (jsonRekap && jsonRekap.success) {
-      rekapData.value.jumlah_dana = Number(jsonRekap.jumlah_dana) || 0
-    } else {
-      rekapData.value.jumlah_dana = 0
-    }
+    // Tidak perlu fetch jumlah dana rekap lain, biarkan hanya dari /api/total_pengajuan
   } catch (e) {
     tableData.value = []
     totalData.value = 0
@@ -324,9 +309,35 @@ const toggleSidebar = () => {
   sidebarRail.value = !sidebarRail.value
 }
 
+const fetchRekapTotalPengajuan = async () => {
+  try {
+    // Ambil token dari localStorage (atau Pinia store jika ada)
+    let token = '';
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('token') || '';
+    }
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    const res = await fetch('/api/total_pengajuan', { headers });
+    const json = await res.json();
+    console.log('RESPON /api/total_pengajuan:', json);
+    if (json.success) {
+      rekapData.value.jumlah_pengajuan = json.jumlah_pengajuan || 0;
+      rekapData.value.jumlah_dana = Number(json.total_jumlah_dana) || 0;
+    } else {
+      rekapData.value.jumlah_pengajuan = 0;
+      rekapData.value.jumlah_dana = 0;
+    }
+  } catch (e) {
+    console.error('ERROR fetch /api/total_pengajuan', e);
+    rekapData.value.jumlah_pengajuan = 0;
+    rekapData.value.jumlah_dana = 0;
+  }
+}
+
 const filterData = () => {
-  currentPage.value = 1
-  fetchPengajuan()
+  currentPage.value = 1;
+  fetchPengajuan();
+  fetchRekapTotalPengajuan();
 }
 
 const formatCurrency = (amount) => {
@@ -345,8 +356,10 @@ const confirmDelete = (id) => {
 }
 
 // Lifecycle
+
 onMounted(() => {
-  fetchPengajuan()
+  fetchPengajuan();
+  fetchRekapTotalPengajuan();
 })
 </script>
 

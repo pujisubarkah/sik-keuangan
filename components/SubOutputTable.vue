@@ -93,22 +93,28 @@ import { ref, computed } from 'vue'
 
 const collapsed = ref(false)
 
-const suboutputData = ref([
-	// ...example data, replace with real data or props
-	{
-		kode: '7913.ADI.001',
-		suboutput: 'Seleksi dan Uji Kompetensi Jabatan Fungsional Bidang Pengembangan Kapasitas dan Pembelajaran ASN',
-		link: '/index.php?r=pekerjaan/view&id=4723',
-		pagu: 1076950000,
-		realisasiBendahara: 64037419,
-		percentBendahara: 5.95,
-		sisaBendahara: 1012912581,
-		realisasiSP2D: 27347419,
-		percentSP2D: 2.54,
-		sisaSP2D: 1049602581,
-	},
-	// ...add more rows as needed
-])
+
+const props = defineProps({
+	subOutputs: {
+		type: Array,
+		default: () => []
+	}
+})
+
+const suboutputData = computed(() =>
+	props.subOutputs.map(item => ({
+		kode: item.kode_suboutput,
+		suboutput: item.nama_suboutput,
+		pagu: item.pagu,
+		realisasiBendahara: item.treasurerRealization,
+		percentBendahara: item.treasurerAbsorption,
+		sisaBendahara: item.treasurerBalance,
+		realisasiSP2D: item.sp2dRealization,
+		percentSP2D: item.sp2dAbsorption,
+		sisaSP2D: item.sp2dBalance,
+		// tambahkan link jika perlu
+	}))
+)
 
 const total = computed(() => {
 	const sum = (key) => suboutputData.value.reduce((a, b) => a + (b[key] || 0), 0)

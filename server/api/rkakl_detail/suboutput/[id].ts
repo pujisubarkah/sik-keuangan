@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const id = event.context.params?.id;
   if (!id) return { error: 'id is required' };
 
-  // Query hanya berdasarkan id detail
+  // Query berdasarkan suboutput_id
   const flat = await db.select({
     id: rkaklDetail.id,
     volume: rkaklDetail.volume,
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     .leftJoin(masterKomponen, eq(rkaklDetail.komponen_id, masterKomponen.id))
     .leftJoin(masterSubkomponen, eq(rkaklDetail.sub_komponen_id, masterSubkomponen.id))
     .leftJoin(masterAkun, eq(rkaklDetail.akun_id, masterAkun.id))
-    .where(eq(rkaklDetail.id, Number(id)))
+    .where(eq(rkaklDetail.suboutput_id, Number(id)))
     .orderBy(rkaklDetail.id);
 
   if (!flat || flat.length === 0) return [];

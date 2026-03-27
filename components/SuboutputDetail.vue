@@ -72,7 +72,7 @@
 
     <!-- Card Footer with Actions -->
     <div v-if="data && !data.editable" class="bg-gray-50/60 px-4 sm:px-6 py-3 border-t border-gray-100">
-      <SuboutputActions :stats="data.stats || {}" />
+      <SuboutputActions :id="data.id" :stats="data.stats || {}" />
     </div>
   </div>
 </template>
