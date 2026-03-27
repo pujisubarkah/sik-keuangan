@@ -3,7 +3,7 @@
   <SuboutputAlert :showAlert="showAlert" />
 
       <!-- Detail Suboutput Section -->
-      <Card class="mb-0 p-0">
+      <Card class="mb-6 p-0">
         <template #header>
           <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
         </template>

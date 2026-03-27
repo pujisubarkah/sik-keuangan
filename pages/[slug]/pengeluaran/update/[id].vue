@@ -2,15 +2,15 @@
   <div class="content-wrapper">
     <section class="content-header flex flex-wrap items-center justify-between gap-4 mb-4">
       <div class="flex items-center gap-2">
-        <h1 class="font-bold text-xl">Sunting Pengeluaran</h1>
-        <span class="text-base text-blue-600 font-semibold">: {{ namaSuboutput || '-' }}</span>
+        <h1 class="font-bold text-xl">Edit Pengeluaran</h1>
+        <span class="text-xl text-blue-600 font-semibold">: {{ namaSuboutput || '-' }}</span>
       </div>
       <ul class="breadcrumb flex items-center gap-2 bg-transparent p-0 m-0">
         <li>
           <NuxtLink to="/" class="text-blue-600 hover:text-blue-800"><i class="fa fa-dashboard"></i></NuxtLink>
         </li>
         <li><span class="text-slate-500">Pengeluaran</span></li>
-        <li><span class="text-slate-500">Sunting</span></li>
+        <li><span class="text-slate-500">Edit</span></li>
       </ul>
     </section>
 
@@ -22,7 +22,7 @@
           </div>
           <div class="modern-card-body">
             <div class="overflow-x-auto">
-              <table class="min-w-full bg-white border border-slate-200 rounded-lg">
+              <table class="min-w-full bg-white border border-slate-200 rounded-xl">
                 <tbody>
                   <tr>
                     <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Tanggal Pengajuan</th>
@@ -55,10 +55,10 @@
                   <table class="min-w-full bg-white border border-slate-200 rounded-lg">
                     <tbody>
                       <tr>
-                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Suboutput</th>
+                        <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Rincian Output</th>
                         <td class="px-4 py-2">
                           <select class="modern-form-control" v-model="selectedSuboutput">
-                            <option value="">- Pilih Suboutput -</option>
+                            <option value="">- Pilih Rincian Output -</option>
                             <option v-for="item in suboutputs" :key="item.id" :value="item.id">{{ item.kode_suboutput }}</option>
                           </select>
                         </td>

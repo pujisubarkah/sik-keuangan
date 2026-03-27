@@ -89,7 +89,7 @@ const fields = [
   { key: 'kegiatan', label: 'Kegiatan', format: val => val ? `${val.kode_kegiatan} - ${val.nama_kegiatan}` : '-' },
   { key: 'output', label: 'Output', format: val => val ? `${val.kode_output} - ${val.nama_output}` : '-' },
   { key: 'kode_suboutput', label: 'Kode' },
-  { key: 'nama_suboutput', label: 'Suboutput' },
+  { key: 'nama_suboutput', label: 'Rincian Output' },
   { key: 'tahun', label: 'Tahun' },
 ]
 

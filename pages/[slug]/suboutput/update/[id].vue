@@ -62,7 +62,7 @@
                 Satuan Kerja
               </label>
               <input id="satker" type="text" :value="satkerNama || '-'" readonly disabled
-                class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" />
+                class="flex-1 rounded-xl border border-gray-200 bg-gray-200 px-4 py-3 text-gray-500 cursor-not-allowed transition-all duration-200" />
             </div>
 
             <!-- Output (readonly) -->
@@ -72,7 +72,7 @@
                 Output
               </label>
               <input id="output" type="text" :value="outputName || '-'" readonly disabled
-                class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" />
+                class="flex-1 rounded-xl border border-gray-200 bg-gray-200 px-4 py-3 text-gray-500 cursor-not-allowed transition-all duration-200" />
             </div>
 
             <!-- Suboutput (Textarea) -->
@@ -97,17 +97,14 @@
             <div class="flex items-center gap-4">
               <label for="kode" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
                 <Icon icon="mdi:code-tags" class="w-4 h-4 text-slate-400" />
-                Kode Suboutput <span class="text-rose-500">*</span>
+                Kode RO <span class="text-rose-500">*</span>
               </label>
               <VTextField 
                 v-model="form.kode" 
                 id="kode" 
                 required 
                 placeholder="Contoh: 001.A.01"
-                class="flex-1 [&>input]:rounded-xl [&>input]:border-slate-200 [&>input]:bg-slate-50/50 [&>input]:px-4 [&>input]:py-3 
-                       [&>input]:text-slate-700 [&>input]:placeholder-slate-400 
-                       [&>input:focus]:border-amber-400 [&>input:focus]:ring-4 [&>input:focus]:ring-amber-100/60 [&>input:focus]:bg-white 
-                       [&>input]:transition-all [&>input]:duration-200"
+                class="flex-1 border border-gray-300 rounded-xl bg-white px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-4 focus:ring-amber-100/60 focus:bg-white transition-all duration-200"
               />
             </div>
 
@@ -134,7 +131,6 @@
             <!-- Tahun (Readonly) -->
             <div class="flex items-center gap-4 pt-2">
               <label class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
-                <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
                 Tahun Anggaran
               </label>
               <div class="relative flex-1">
@@ -143,9 +139,8 @@
                   :value="tahunLogin"
                   readonly
                   disabled
-                  class="w-full rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-200 px-4 py-3 text-gray-500 cursor-not-allowed transition-all duration-200"
                 />
-                <Icon icon="mdi:lock-outline" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               </div>
             </div>
           </div>

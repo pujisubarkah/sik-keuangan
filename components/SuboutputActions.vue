@@ -42,7 +42,7 @@ function handleSalinClick(event) {
 <template>
   <div class="box-footer with-border items-center flex gap-1 flex-nowrap overflow-x-auto">
     <a :href="`/${$route.params.slug}/suboutput/update/${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:pencil" class="w-6 h-6 text-blue-500 align-middle" /> Sunting
+      <Icon icon="tabler:pencil" class="w-6 h-6 text-blue-500 align-middle" /> Edit
     </a>
     <a :href="`/index.php?r=pekerjaan/view&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
       <Icon icon="tabler:currency-dollar" class="w-6 h-6 text-blue-500 align-middle" /> Anggaran
@@ -62,7 +62,7 @@ function handleSalinClick(event) {
       @click="handleSalinClick"
     >
       <Icon icon="tabler:copy" class="w-6 h-6 text-blue-500 align-middle" />
-      <span>Salin Suboutput</span>
+      <span>Salin RO</span>
     </a>
     <div class="btn-flat btn-group" ref="dropdownRef">
       <button @click="toggleDropdown" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition dropdown-toggle" type="button">

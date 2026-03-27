@@ -3,7 +3,7 @@
     <SuboutputAlert :showAlert="showAlert" />
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengajuan Tahun 2026</h1>
     <!-- Filter Form (styled like perencanaan) -->
-    <div class="mb-6 overflow-hidden border border-gray-200 bg-brandBlue-50 shadow sm:rounded-lg">
+    <div class="mb-6 overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
       <div class="flex items-center justify-between border-b border-gray-200 bg-brandBlue-100 px-6 py-4">
         <h3 class="flex items-center gap-2 text-sm font-medium text-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
