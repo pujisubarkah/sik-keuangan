@@ -188,7 +188,7 @@
     
             <span class="text-lg font-bold text-white">Jumlah Pengajuan</span>
           </div>
-          <div class="text-3xl font-extrabold mb-2 text-white">{{ rekapData.jumlah_pengajuan }}</div>
+          <div class="text-3xl font-extrabold mb-2 text-white">{{ rekapData.submissionCount }}</div>
           
         </div>
       </div>
@@ -200,7 +200,7 @@
             <span class="text-lg font-bold text-white">Jumlah Dana</span>
           </div>
           <div class="text-3xl font-extrabold mb-2 text-white">
-            {{ formatCurrency(rekapData.jumlah_dana) }}
+            {{ formatCurrency(rekapData.submissionAmount) }}
           </div>
           <div class="text-sm mb-2 text-white">&nbsp;</div>
         </div>
@@ -235,7 +235,7 @@ const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
 const tableData = ref([])
-const rekapData = ref({ jumlah_pengajuan: 0, jumlah_dana: 0 })
+const rekapData = ref({ submissionCount: 0, submissionAmount: 0 })
 const totalData = ref(0)
 const totalPages = ref(1)
 const loading = ref(false)
@@ -321,16 +321,16 @@ const fetchRekapTotalPengajuan = async () => {
     const json = await res.json();
     console.log('RESPON /api/total_pengajuan:', json);
     if (json.success) {
-      rekapData.value.jumlah_pengajuan = json.jumlah_pengajuan || 0;
-      rekapData.value.jumlah_dana = Number(json.total_jumlah_dana) || 0;
+      rekapData.value.submissionCount = json.submissionCount || 0;
+      rekapData.value.submissionAmount = Number(json.submissionAmount) || 0;
     } else {
-      rekapData.value.jumlah_pengajuan = 0;
-      rekapData.value.jumlah_dana = 0;
+      rekapData.value.submissionCount = 0;
+      rekapData.value.submissionAmount = 0;
     }
   } catch (e) {
     console.error('ERROR fetch /api/total_pengajuan', e);
-    rekapData.value.jumlah_pengajuan = 0;
-    rekapData.value.jumlah_dana = 0;
+    rekapData.value.submissionCount = 0;
+    rekapData.value.submissionAmount = 0;
   }
 }
 
