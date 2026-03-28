@@ -380,14 +380,14 @@ definePageMeta({ layout: 'default' })
         </template>
         <template #aksi="{ item }">
           <div class="flex justify-center gap-2">
-            <button @click="openViewModal(item)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
-              <IconEye class="h-4 w-4" />
+            <button @click="openViewModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
+              <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
             </button>
-            <button @click="openEditModal(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
-              <IconPencil class="h-4 w-4" />
+            <button @click="openEditModal(item)" class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
+              <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
             </button>
-            <button @click="openDeleteModal(item)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
-              <IconTrash class="h-4 w-4" />
+            <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+              <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
             </button>
           </div>
         </template>

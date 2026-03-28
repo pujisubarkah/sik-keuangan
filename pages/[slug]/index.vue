@@ -27,62 +27,63 @@
         @loadUnits="loadUnits"
       />
 
-      <!-- Satker Realization Cards -->
-      <SatkerRealization 
-        :satkerData="satkerRealizationData"
-      />
-
-      <!-- Budget Recapitulation Cards -->
-      <BudgetRecapitulation 
-        :budgetData="budgetData"
-      />
-
-      <!-- Charts Section -->
-      <ChartsSection 
-        :absorptionData="absorptionChartData"
-        :expenditureData="expenditureChartData"
-        :currentYear="currentYear"
-      />
-
-      <!-- Program Table -->
-      <ProgramTable 
-        :programs="programs"
-        :totalProgram="totalProgram"
-      />
-
-      <!-- Activity Table -->
-      <ActivityTable 
-        :activities="activities"
-        :totalActivity="totalActivity"
-      />
-
-      <!-- Output Table - TODO: Create component -->
-      <OutputTable 
-        :outputs="outputs"
-        :totalOutput="totalOutput"
-      /> 
-
-      <!-- Sub Output Table - TODO: Create component -->
-      <SubOutputTable 
-        :subOutputs="subOutputs"
-        :totalSubOutput="totalSubOutput"
-      /> 
+      <div class="mt-6 flex flex-col gap-6">
+        <SatkerRealization 
+          v-if="satkerRealizationData && satkerRealizationData.length > 0" 
+          :satkerData="satkerRealizationData" 
+          :currentYear="currentYear" 
+        />
+        
+        <BudgetRecapitulation 
+          :budgetData="budgetData" 
+          :currentYear="currentYear" 
+        />
+        
+        <ChartsSection 
+          :absorptionData="absorptionChartData" 
+          :expenditureData="expenditureChartData" 
+          :currentYear="currentYear"
+        />
+        
+        <ProgramTable 
+          :programs="programs" 
+          :totalProgram="totalProgram" 
+          :currentYear="currentYear" 
+        />
+        
+        <ActivityTable 
+          :activities="activities" 
+          :totalActivity="totalActivity" 
+          :currentYear="currentYear" 
+        />
+        
+        <OutputTable 
+          :outputs="outputs" 
+          :totalOutput="totalOutput" 
+          :currentYear="currentYear" 
+        />
+        
+        <SubOutputTable 
+          :subOutputs="subOutputs" 
+          :totalSubOutput="totalSubOutput" 
+          :currentYear="currentYear" 
+        />
+      </div>
     </section>
   </div>
 </template>
 
-<script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
-// import ClientOnly from 'vue-client-only' // REMOVE this line
-import DashboardFilter from '~/components/DashboardFilter.vue'
-import SatkerRealization from '~/components/SatkerRealization.vue'
-import BudgetRecapitulation from '~/components/BudgetRecapitulation.vue'
-import ChartsSection from '~/components/ChartsSection.vue'
-import ProgramTable from '~/components/ProgramTable.vue'
-import ActivityTable from '~/components/ActivityTable.vue'
-import OutputTable from '~/components/OutputTable.vue'
-import SubOutputTable from '~/components/SubOutputTable.vue'
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useUserStore } from '~/stores/user'
 
+definePageMeta({
+  middleware: ['auth']
+})
+
+const userStore = useUserStore()
+const userRole = computed(() => userStore.role)
+const userSatkerId = computed(() => userStore.satker_id)
 // State
 const currentYear = ref(2026)
 const showAlert = ref(true)
@@ -106,20 +107,28 @@ const selectedSatker = ref('')
 const selectedUnit = ref('')
 
 // Satker Realization Data
-const satkerRealizationData = ref([])
+const satkerRealizationData = ref<any[]>([])
 
 const fetchSatkerRealizationData = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/dashboard/satker', {
+    // Ambil role_id dan satker_id dari userStore
+    const roleId = userStore.role_id;
+    const satkerId = userStore.satker_id;
+    let url = '/api/dashboard/satker';
+    // Jika role_id 8 (Admin Satker), gunakan endpoint khusus
+    if (roleId === 8) {
+      url = `/api/dashboard/unit_kerja/satker/${satkerId}`;
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
     if (data.success && Array.isArray(data.data)) {
       // Map to match frontend usage if needed
-      satkerRealizationData.value = data.data.map(item => ({
+      satkerRealizationData.value = data.data.map((item: any) => ({
         id: item.id,
-        name: item.nama_satker,
+        name: item.nama_unit || item.nama_satker || item.name || '',
         percentage: item.percentage
       }));
     }
@@ -144,7 +153,12 @@ const budgetData = reactive({
 const fetchBudgetData = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/total_pengajuan', {
+    // Contoh: jika role 'satker', tambahkan param satker_id
+    let url = '/api/total_pengajuan';
+    if (userRole.value === 'satker' && userSatkerId.value) {
+      url += `?satker_id=${userSatkerId.value}`
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
@@ -177,7 +191,7 @@ const expenditureChartData = reactive({
 
 // Table Data
 
-const programs = ref([])
+const programs = ref<any[]>([])
 const totalProgram = computed(() => {
   if (!programs.value.length) return {
     activities: 0,
@@ -218,7 +232,11 @@ const totalProgram = computed(() => {
 const fetchPrograms = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/dashboard/program', {
+    let url = '/api/dashboard/program';
+    if (userRole.value === 'satker' && userSatkerId.value) {
+      url += `?satker_id=${userSatkerId.value}`
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
@@ -231,7 +249,7 @@ const fetchPrograms = async () => {
 };
 
 
-const activities = ref([])
+const activities = ref<any[]>([])
 const totalActivity = computed(() => {
   if (!activities.value.length) return {
     outputs: 0,
@@ -269,7 +287,11 @@ const totalActivity = computed(() => {
 const fetchActivities = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/dashboard/kegiatan', {
+    let url = '/api/dashboard/kegiatan';
+    if (userRole.value === 'satker' && userSatkerId.value) {
+      url += `?satker_id=${userSatkerId.value}`
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
@@ -281,12 +303,16 @@ const fetchActivities = async () => {
   }
 };
 
-const outputs = ref([])
+const outputs = ref<any[]>([])
 
 const fetchOutputs = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/dashboard/output', {
+    let url = '/api/dashboard/output';
+    if (userRole.value === 'satker' && userSatkerId.value) {
+      url += `?satker_id=${userSatkerId.value}`
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
@@ -308,12 +334,16 @@ const totalOutput = ref({
   sp2dBalance: 189659420290
 })
 
-const subOutputs = ref([])
+const subOutputs = ref<any[]>([])
 
 const fetchSubOutputs = async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('/api/dashboard/suboutput', {
+    let url = '/api/dashboard/suboutput';
+    if (userRole.value === 'satker' && userSatkerId.value) {
+      url += `?satker_id=${userSatkerId.value}`
+    }
+    const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     const data = await res.json();
@@ -354,28 +384,28 @@ const totalSubOutput = computed(() => {
 });
 
 // Methods
-const handleFilter = (filterData) => {
+const handleFilter = (filterData: any) => {
   console.log('Filter applied:', filterData)
   // Fetch filtered data
   fetchData(filterData)
 }
 
-const loadUnits = async (satkerId) => {
+const loadUnits = async (satkerId: string) => {
   try {
     const response = await fetch(`/index.php?r=satker/loadList&id_satker=${satkerId}`)
     const data = await response.text()
-    units.value = parseUnitsData(data)
+    // units.value = parseUnitsData(data)
   } catch (error) {
     console.error('Error loading units:', error)
   }
 }
 
-const fetchData = async (filterData) => {
+const fetchData = async (filterData: any) => {
   // Fetch data based on filters
   // Implementation depends on your API
 }
 
-const formatCurrency = (value) => {
+const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -383,7 +413,7 @@ const formatCurrency = (value) => {
   }).format(value)
 }
 
-const formatPercentage = (value) => {
+const formatPercentage = (value: number) => {
   return `${value.toFixed(2)}%`
 }
 
@@ -397,8 +427,8 @@ onMounted(async () => {
   await fetchSatkerRealizationData();
   fetchData({ year: currentYear.value });
   if (process.client) {
-    const FusionCharts = (await import('fusioncharts')).default;
-    const Charts = (await import('fusioncharts/fusioncharts.charts')).default;
+    // const FusionCharts = (await import('fusioncharts')).default;
+    // const Charts = (await import('fusioncharts/fusioncharts.charts')).default;
     // ...initialize charts here
   }
 });
@@ -500,4 +530,4 @@ onMounted(async () => {
 .bg-red { background-color: #dd4b39 !important; }
 .bg-yellow { background-color: #f39c12 !important; }
 .bg-orange { background-color: #ff851b !important; }
-</style>
+ </style>

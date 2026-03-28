@@ -27,7 +27,7 @@ onMounted(async () => {
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   try {
-    const res = await fetch(`/api/rkakl_detail/${id}`, { headers })
+    const res = await fetch(`/api/rkakl_detail/suboutput/${id}`, { headers })
     const json = await res.json()
     // Jika respons API berupa array, ambil elemen pertama (atau sesuaikan kebutuhan)
     rkaklDetail.value = Array.isArray(json) ? json[0] : json

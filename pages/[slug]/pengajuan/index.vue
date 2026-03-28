@@ -1,10 +1,10 @@
 <template>
-  <div class="pt-14">
+  <div class="pt-14 px-2 sm:px-4">
     <SuboutputAlert :showAlert="showAlert" />
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengajuan Tahun 2026</h1>
     <!-- Filter Form (styled like perencanaan) -->
     <div class="mb-6 overflow-hidden border border-gray-200 bg-white shadow sm:rounded-lg">
-      <div class="flex items-center justify-between border-b border-gray-200 bg-brandBlue-100 px-6 py-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-gray-200 bg-brandBlue-100 px-4 sm:px-6 py-3 sm:py-4 gap-2">
         <h3 class="flex items-center gap-2 text-sm font-medium text-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -12,7 +12,7 @@
           Filter Data
         </h3>
       </div>
-      <div class="px-6 py-4">
+      <div class="px-4 sm:px-6 py-4">
         <form @submit.prevent="filterData" class="space-y-4">
           <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
             <!-- Status Data Dukung -->
@@ -58,7 +58,7 @@
               </div>
             </div>
             <!-- Tombol -->
-            <div class="md:col-span-12 flex justify-end gap-2 mt-2">
+            <div class="md:col-span-12 flex flex-col xs:flex-row justify-end gap-2 mt-2">
               <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -78,13 +78,13 @@
     </div>
     <!-- Data Table (Styled like perencanaan.vue) -->
     <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 mb-6">
-      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+      <div class="px-4 sm:px-6 py-4 border-b border-gray-200 bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <span class="text-sm text-gray-500 font-medium">
           Menampilkan {{ startIndex }}-{{ endIndex }} dari {{ tableData.length }} hasil.
         </span>
       </div>
-      <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
+      <div class="shadow-lg rounded-xl bg-white p-2 sm:p-4 overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm whitespace-nowrap" style="table-layout: auto;">
           <thead class="bg-blue-100 sticky top-0 z-10">
             <tr>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
@@ -168,7 +168,7 @@
         </table>
       </div>
       <!-- Pagination -->
-      <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <span class="text-sm text-gray-500 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
         <div class="flex flex-wrap items-center gap-2 md:justify-end">
           <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(1)">Awal</button>
@@ -180,10 +180,10 @@
       </div>
     </div>
     <!-- Rekap Data Pengajuan -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8">
       <!-- Jumlah Pengajuan -->
       <div class="overflow-hidden border border-gray-200 bg-brandGold-400 shadow sm:rounded-lg">
-        <div class="px-6 py-4">
+        <div class="px-4 sm:px-6 py-4">
           <div class="flex items-center gap-3 mb-2">
     
             <span class="text-lg font-bold text-white">Jumlah Pengajuan</span>
@@ -194,7 +194,7 @@
       </div>
       <!-- Jumlah Dana -->
       <div class="overflow-hidden border border-gray-200 bg-green-400 shadow sm:rounded-lg">
-        <div class="px-6 py-4">
+        <div class="px-4 sm:px-6 py-4">
           <div class="flex items-center gap-3 mb-2">
           
             <span class="text-lg font-bold text-white">Jumlah Dana</span>
@@ -364,6 +364,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Mobile responsive tweaks */
+@media (max-width: 640px) {
+  .v-table th, .v-table td, th, td {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+  .v-data-table th, .v-data-table td {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+}
 /* Catchy style for dashboard-page */
 .dashboard-page {
   min-height: 100vh;

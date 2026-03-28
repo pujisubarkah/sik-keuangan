@@ -147,7 +147,7 @@ const fetchRkaklDetail = async () => {
   const token = localStorage.getItem('token');
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
   try {
-    const res = await $fetch(`/api/rkakl_detail/${route.params.id}`, { headers });
+    const res = await $fetch(`/api/rkakl_detail/suboutput/${route.params.id}`, { headers });
     console.log('API /api/rkakl_detail response:', res);
     rkaklDetail.value = res && res[0] ? res[0] : null;
   } catch (err) {
