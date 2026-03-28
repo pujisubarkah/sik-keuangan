@@ -42,20 +42,20 @@ function handleSalinClick(event) {
 <template>
   <div class="box-footer with-border items-center flex gap-1 flex-nowrap overflow-x-auto">
     <a :href="`/${$route.params.slug}/suboutput/update/${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:pencil" class="w-6 h-6 text-blue-500 align-middle" /> Edit
+      <Icon icon="tabler:pencil" class="w-6 h-6 text-blue-500 align-middle" /> Sunting
     </a>
-    <a :href="`/index.php?r=pekerjaan/view&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
+    <a :href="`/${$route.params.slug}/suboutput/view/${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
       <Icon icon="tabler:currency-dollar" class="w-6 h-6 text-blue-500 align-middle" /> Anggaran
     </a>
-      <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-        <Icon icon="tabler:shopping-cart" class="w-6 h-6 text-blue-500 align-middle" /> Pengeluaran ({{ pengeluaranCount }})
-      </a>
+    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
+      <Icon icon="tabler:shopping-cart" class="w-6 h-6 text-blue-500 align-middle" /> Pengeluaran ({{ pengeluaranCount }})
+    </a>
     <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
       <Icon icon="tabler:arrow-up-circle" class="w-6 h-6 text-blue-500 align-middle" /> Pengajuan ({{ pengajuanCount }})
     </a>
-      <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-        <Icon icon="tabler:calendar" class="w-6 h-6 text-blue-500 align-middle" /> Perencanaan
-      </a>
+    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
+      <Icon icon="tabler:calendar" class="w-6 h-6 text-blue-500 align-middle" /> Perencanaan
+    </a>
     <a
       :href="`/index.php?r=pekerjaan/salin&id=${id}`"
       class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition whitespace-nowrap"
@@ -90,105 +90,131 @@ function handleSalinClick(event) {
 </template>
 
 <style scoped>
+/* Premium Card and Button Styling */
 .box-footer {
-  border-top: 1px solid #f4f4f4;
-  padding: 10px;
-  background-color: #fff;
   display: flex;
-  gap: 5px;
   flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(120deg, #3b82f6 0%, #1e40af 100%);
+  backdrop-filter: blur(12px);
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 30px rgba(30, 64, 175, 0.18);
+  border: 2px solid #2563eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #fff;
 }
+.box-footer:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+}
+
 .with-border {
-  border-top: 1px solid #f4f4f4;
+  border-top: none;
 }
-.btn-success {
+
+/* Base button style */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
   color: #fff;
-  background-color: #00a65a;
-  border-color: #008d4c;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
-.btn-success:hover {
-  background-color: #008d4c;
-}
+
+/* Gradient button variants */
 .btn-primary {
-  color: #fff;
-  background-color: #3c8dbc;
-  border-color: #367fa9;
+  background: linear-gradient(45deg, #3b82f6, #1e40af);
+  border: none;
 }
 .btn-primary:hover {
-  background-color: #367fa9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
 }
+
+.btn-success {
+  background: linear-gradient(45deg, #10b981, #065f46);
+}
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+}
+
 .btn-danger {
-  color: #fff;
-  background-color: #dd4b39;
-  border-color: #d73925;
+  background: linear-gradient(45deg, #ef4444, #991b1b);
 }
 .btn-danger:hover {
-  background-color: #d73925;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.3);
 }
+
 .btn-warning {
-  color: #fff;
-  background-color: #f39c12;
-  border-color: #e08e0b;
+  background: linear-gradient(45deg, #f59e0b, #b45309);
 }
 .btn-warning:hover {
-  background-color: #e08e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245,158,11,0.3);
 }
+
+/* Dropdown styling */
 .btn-group {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
 }
+
 .dropdown-toggle .caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 4px dashed;
+  border-top: 4px solid #fff;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
+  margin-left: 0.3rem;
 }
+
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
+  top: 110%;
+  right: 0;
+  left: auto;
+  min-width: 12rem;
+  background: rgba(255,255,255,0.95);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 0.5rem 0;
   display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  font-size: 14px;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: 4px;
-  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  z-index: 1000;
 }
-.dropdown-menu > li > a {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: 400;
-  line-height: 1.42857143;
+
+.dropdown-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
   color: #333;
-  white-space: nowrap;
-  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background 0.2s ease;
 }
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-  color: #262626;
-  text-decoration: none;
-  background-color: #f5f5f5;
+
+.dropdown-menu li a:hover {
+  background: #f0f4ff;
 }
-.dropdown-menu > li > a > .fa,
-.dropdown-menu > li > a > .glyphicon {
-    margin-right: 10px;
+
+.dropdown-menu li a .fa,
+.dropdown-menu li a .glyphicon {
+  margin-right: 0.5rem;
 }
+
+/* Show dropdown when open */
+.dropdown-menu.show {
+  display: block;
+}
+
+/* Icon spacing for buttons */
 .btn > .fa,
 .btn > .glyphicon {
-    margin-right: 5px;
+  margin-right: 0.3rem;
 }
 </style>

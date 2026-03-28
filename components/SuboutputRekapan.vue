@@ -27,7 +27,7 @@
         <StatBox
           color="blue"
           title="Jumlah Pengajuan"
-          :value="formatCurrency(stats.jumlahPengajuan)"
+          :value="formatCurrency(stats.total)"
           icon="tags"
           moreInfoLink="/index.php?r=pekerjaan/pengajuan&id=4723"
         >
@@ -40,7 +40,7 @@
         <StatBox
           color="blue"
           title="Nominal Pengajuan"
-          :value="formatCurrency(stats.nominalPengajuan)"
+          :value="formatCurrency(stats.total)"
           prefix="Rp "
           icon="circle-o"
           moreInfoLink="/index.php?r=pekerjaan/pengajuan&id=4723"
@@ -56,7 +56,7 @@
         <StatBox
           color="blue"
           title="Realisasi Bendahara"
-          :value="formatCurrency(stats.realisasiBendahara)"
+          :value="formatCurrency(stats.treasurerRealization)"
           prefix="Rp "
           icon="shopping-cart"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
@@ -70,7 +70,7 @@
         <StatBox
           color="blue"
           title="Saldo Bendahara"
-          :value="formatCurrency(stats.saldoBendahara)"
+          :value="formatCurrency(stats.treasurerBalance)"
           prefix="Rp "
           icon="check"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
@@ -84,7 +84,7 @@
         <StatBox
           color="blue"
           title="% Penyerapan Bendahara"
-          :value="stats.persenPenyerapanBendahara.toFixed(2) + ' %'"
+          :value="(stats.treasurerAbsorption ?? 0).toFixed(2) + ' %'"
           icon="circle-o"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
         >
@@ -99,7 +99,7 @@
         <StatBox
           color="blue"
           title="Realisasi SP2D"
-          :value="formatCurrency(stats.realisasiSp2d)"
+          :value="formatCurrency(stats.sp2dRealization)"
           prefix="Rp "
           icon="shopping-cart"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
@@ -113,7 +113,7 @@
         <StatBox
           color="blue"
           title="Saldo SP2D"
-          :value="formatCurrency(stats.saldoSp2d)"
+          :value="formatCurrency(stats.sp2dBalance)"
           prefix="Rp "
           icon="check"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
@@ -127,7 +127,7 @@
         <StatBox
           color="blue"
           title="% Penyerapan SP2D"
-          :value="stats.persenPenyerapanSp2d.toFixed(2) + ' %'"
+          :value="(stats.sp2dAbsorption ?? 0).toFixed(2) + ' %'"
           icon="circle-o"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
         >

@@ -4,7 +4,7 @@
     <!-- Konten detail suboutput di sini -->
     <div class="mt-8">
       <SuboutputDetail :data="subOutputData ?? {}" />
-      <SuboutputRekapan :stats="stats" />
+      <SuboutputRekapan v-if="stats" :stats="stats" />
       <SuboutputCharts
         :tahun="subOutputData?.tahun ?? ''"
         :chartPenyerapanOptions="chartPenyerapanOptions"
@@ -61,18 +61,8 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
 import SuboutputDetail from '@/components/SuboutputDetail.vue'
 import SuboutputRekapan from '@/components/SuboutputRekapan.vue'
 
-// Dummy stats, ganti dengan fetch API jika perlu
-const stats = {
-  pagu: 1172186000,
-  jumlahPengajuan: 0,
-  nominalPengajuan: 0,
-  realisasiBendahara: 65267337,
-  saldoBendahara: 1106918663,
-  persenPenyerapanBendahara: 6.0,
-  realisasiSp2d: 65267337,
-  saldoSp2d: 1106918663,
-  persenPenyerapanSp2d: 6.0
-}
+
+const stats = ref(null)
 
 
 const subOutputData = ref(null)
@@ -82,18 +72,28 @@ onMounted(async () => {
   const id = route.params.id
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  // Fetch detail suboutput
   try {
     const res = await fetch(`/api/suboutput/${id}`, { headers })
     const json = await res.json()
-    console.log('API /api/suboutput/[id] response:', json)
-    // Jika respons API langsung objek, assign langsung
     if (json && typeof json === 'object') {
       subOutputData.value = json
-    } else {
-      console.error('API error:', json)
     }
   } catch (err) {
     console.error('Fetch error:', err)
+  }
+  // Fetch stats dari dashboard endpoint
+  try {
+    const res = await fetch(`/api/dashboard/suboutput/${id}`, { headers })
+    const json = await res.json()
+    if (json && Array.isArray(json.data) && json.data.length > 0) {
+      stats.value = json.data[0]
+    } else {
+      stats.value = null
+    }
+  } catch (err) {
+    console.error('Fetch stats error:', err)
+    stats.value = null
   }
 })
 </script>
