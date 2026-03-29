@@ -7,7 +7,13 @@ export default defineEventHandler((event) => {
   if (!pathname.startsWith('/api')) return;
   if (pathname === '/api/auth/login') return;
 
-  const authHeader = event.req.headers.authorization;
+  // Ambil header Authorization dari req atau dari event.headers (case-insensitive, support Headers object)
+  let authHeader: string | undefined = event.req?.headers?.authorization;
+  if (!authHeader && event.headers?.get) {
+    const lower = event.headers.get('authorization');
+    const upper = event.headers.get('Authorization');
+    authHeader = lower || upper || undefined;
+  }
   if (!authHeader) throw createError({ statusCode: 401, statusMessage: 'No token provided' });
   const token = authHeader.split(' ')[1];
   if (!token) throw createError({ statusCode: 401, statusMessage: 'No token provided' });

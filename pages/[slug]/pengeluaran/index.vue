@@ -2,6 +2,9 @@
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+      <!-- Alert Section -->
+      <SuboutputAlert />
+
       <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="flex-1 min-w-0">
           <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Pengeluaran Tahun {{ new Date().getFullYear() }}</h1>
@@ -241,6 +244,7 @@
 import { computed, ref, watch } from 'vue';
 import { Button, TextField, Card } from '@idds/vue'
 import Icon from '~/components/Icon.vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' })
 

@@ -3,24 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Alert Section -->
-      <div v-if="showAlert" class="mb-6 rounded-md bg-red-50 p-4 border border-red-200">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium text-red-800">Perhatian: Data Belum Lengkap</h3>
-            <div class="mt-2 text-sm text-red-700">
-              <p>
-                Terdapat <span class="font-bold">1 Sub Output</span> yang belum ditentukan unitnya.
-                <NuxtLink to="/admin/suboutput" class="font-medium underline hover:text-red-900">Klik di sini untuk memperbaiki</NuxtLink>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SuboutputAlert />
 
       <!-- Header Section -->
       <div class="md:flex md:items-center md:justify-between mb-6">
@@ -173,6 +156,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import { useUserStore } from '~/stores/user'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
 definePageMeta({ layout: 'default' })
 

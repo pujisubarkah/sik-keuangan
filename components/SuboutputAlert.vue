@@ -8,7 +8,7 @@
         <h3 class="text-sm font-medium text-red-800">Perhatian: Data Belum Lengkap</h3>
         <div class="mt-2 text-sm text-red-700">
           <p>
-            Terdapat <span class="font-bold">41 Rincian Ouput</span> yang belum ditentukan unitnya.
+            Terdapat <span class="font-bold">{{ count }} Rincian Output</span> yang belum ditentukan unitnya.
             <NuxtLink to="/admin/suboutput" class="font-medium underline hover:text-red-900">Klik di sini untuk memperbaiki</NuxtLink>.
           </p>
         </div>
@@ -18,8 +18,26 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { IconAlertCircle } from '@tabler/icons-vue'
-const props = defineProps({ showAlert: Boolean })
+const count = ref(0)
+const showAlert = ref(false)
+
+const loadAlertCount = async () => {
+  const token = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  try {
+    const res = await fetch('/api/alert_unit', { headers })
+    if (!res.ok) throw new Error('Gagal fetch')
+    const data = await res.json()
+    count.value = data.count
+    showAlert.value = count.value > 0
+  } catch (e) {
+    showAlert.value = false
+  }
+}
+
+onMounted(loadAlertCount)
 </script>
 
 <style scoped>
