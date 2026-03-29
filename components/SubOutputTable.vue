@@ -8,7 +8,7 @@
 				Daftar Rincian Ouput Semua Satker Tahun 2026
 			</h2>
 			<div class="flex gap-2">
-				<a class="btn btn-sm btn-success" href="/index.php?r=admin/index&export=1&exportObject=subOutput">
+				<a class="btn btn-sm btn-success flex items-center gap-1.5" href="/index.php?r=admin/index&export=1&exportObject=subOutput">
 					<i class="fa fa-download"></i> Export Excel
 				</a>
 			</div>
@@ -98,6 +98,10 @@ const props = defineProps({
 	subOutputs: {
 		type: Array,
 		default: () => []
+	},
+	addUrl: {
+		type: String,
+		default: ''
 	}
 })
 
@@ -112,7 +116,7 @@ const suboutputData = computed(() =>
 		realisasiSP2D: item.sp2dRealization,
 		percentSP2D: item.sp2dAbsorption,
 		sisaSP2D: item.sp2dBalance,
-		// tambahkan link jika perlu
+		link: item.link || '#'
 	}))
 )
 

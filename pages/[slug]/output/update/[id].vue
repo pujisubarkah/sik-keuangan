@@ -56,7 +56,7 @@
           <div class="grid grid-cols-12 items-start gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
             <div class="col-span-9">
-              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words"></textarea>
+              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition min-h-[48px] max-h-40 resize-y break-words"></textarea>
             </div>
           </div>
           <!-- Tahun -->
@@ -67,9 +67,9 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-end mt-10">
-          <button type="submit" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800">
-            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+        <div class="flex justify-end mt-8">
+          <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 transition-colors">
+            <Icon icon="mdi:pencil" class="w-5 h-5" /> Update
           </button>
         </div>
       </form>
@@ -150,40 +150,7 @@ onMounted(async () => {
   } catch (e) {}
 })
 
-onMounted(async () => {
-  // Fetch kegiatan
-  try {
-    const token = localStorage.getItem('token')
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await fetch('/api/kegiatan', { headers })
-    const json = await res.json()
-    if (json.success && Array.isArray(json.data)) {
-      kegiatanList.value = [
-        { value: '', label: '- Pilih Kegiatan -' },
-        ...json.data.map(item => ({
-          value: item.id,
-          label: `${item.kode_kegiatan} - ${item.nama_kegiatan}`
-        }))
-      ]
-    }
-  } catch (e) {}
-  // Fetch satker
-  try {
-    const token = localStorage.getItem('token')
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await fetch('/api/satker', { headers })
-    const json = await res.json()
-    if (json.success && Array.isArray(json.data)) {
-      satkerList.value = [
-        { value: '', label: '- Pilih Satker -' },
-        ...json.data.map(item => ({
-          value: item.id,
-          label: item.name
-        }))
-      ]
-    }
-  } catch (e) {}
-})
+
 
 async function submitForm() {
   // Simpan data ke backend (PUT)

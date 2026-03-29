@@ -40,181 +40,55 @@ function handleSalinClick(event) {
 </script>
 
 <template>
-  <div class="box-footer with-border items-center flex gap-1 flex-nowrap overflow-x-auto">
-    <a :href="`/${$route.params.slug}/suboutput/update/${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:pencil" class="w-6 h-6 text-blue-500 align-middle" /> Sunting
+  <div class="flex flex-wrap items-center gap-2 w-full">
+    <a :href="`/${$route.params.slug}/suboutput/update/${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg shadow-sm hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+      <Icon icon="tabler:pencil" class="w-4 h-4 text-blue-500" /> Sunting
     </a>
-    <a :href="`/${$route.params.slug}/suboutput/view/${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:currency-dollar" class="w-6 h-6 text-blue-500 align-middle" /> Anggaran
+    <a :href="`/${$route.params.slug}/suboutput/view/${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+      <Icon icon="tabler:currency-dollar" class="w-4 h-4 text-gray-500" /> Anggaran
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:shopping-cart" class="w-6 h-6 text-blue-500 align-middle" /> Pengeluaran ({{ pengeluaranCount }})
+    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+      <Icon icon="tabler:shopping-cart" class="w-4 h-4 text-gray-500" /> Pengeluaran
+      <span v-if="pengeluaranCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengeluaranCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:arrow-up-circle" class="w-6 h-6 text-blue-500 align-middle" /> Pengajuan ({{ pengajuanCount }})
+    <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+      <Icon icon="tabler:arrow-up-circle" class="w-4 h-4 text-gray-500" /> Pengajuan
+      <span v-if="pengajuanCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengajuanCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition">
-      <Icon icon="tabler:calendar" class="w-6 h-6 text-blue-500 align-middle" /> Perencanaan
+    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+      <Icon icon="tabler:calendar" class="w-4 h-4 text-gray-500" /> Perencanaan
     </a>
     <a
       :href="`/index.php?r=pekerjaan/salin&id=${id}`"
-      class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition whitespace-nowrap"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
       @click="handleSalinClick"
     >
-      <Icon icon="tabler:copy" class="w-6 h-6 text-blue-500 align-middle" />
-      <span>Salin RO</span>
+      <Icon icon="tabler:copy" class="w-4 h-4 text-gray-500" /> Salin RO
     </a>
-    <div class="btn-flat btn-group" ref="dropdownRef">
-      <button @click="toggleDropdown" class="flex items-center gap-1 text-xs font-normal text-blue-700 bg-blue-100 rounded px-2 py-1 border border-blue-300 hover:bg-blue-200 transition dropdown-toggle" type="button">
-        <Icon icon="tabler:refresh" class="w-6 h-6 text-blue-500 align-middle" /> Refresh <span class="caret"></span>
+    <div class="relative inline-block" ref="dropdownRef">
+      <button @click="toggleDropdown" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" type="button">
+        <Icon icon="tabler:refresh" class="w-4 h-4 text-gray-500" /> Refresh
+        <Icon icon="tabler:chevron-down" class="w-4 h-4 ml-1 text-gray-400" />
       </button>
-      <ul v-if="dropdownOpen" class="dropdown-menu" style="display: block; right: 0; left: auto;">
-        <li>
-          <a :href="`/index.php?r=pekerjaan/refreshPagu&id=${id}`" class="flex items-center bg-blue-100 rounded px-4 py-2 border border-blue-300 hover:bg-blue-200 transition text-blue-700 font-normal gap-2 text-sm">
-            <Icon icon="tabler:refresh" class="w-6 h-6 text-blue-500 align-middle" /> Refresh Pagu
-          </a>
-        </li>
-        <li>
-          <a :href="`/index.php?r=pekerjaan/refreshPengeluaran&id=${id}`" class="flex items-center bg-blue-100 rounded px-4 py-2 border border-blue-300 hover:bg-blue-200 transition text-blue-700 font-normal gap-2 text-sm">
-            <Icon icon="tabler:refresh" class="w-6 h-6 text-blue-500 align-middle" /> Refresh Realisasi
-          </a>
-        </li>
-        <li>
-          <a :href="`/index.php?r=pekerjaan/refreshPerencanaan&id=${id}`" class="flex items-center bg-blue-100 rounded px-4 py-2 border border-blue-300 hover:bg-blue-200 transition text-blue-700 font-normal gap-2 text-sm">
-            <Icon icon="tabler:refresh" class="w-6 h-6 text-blue-500 align-middle" /> Refresh Perencanaan
-          </a>
-        </li>
-      </ul>
+      <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+        <ul v-if="dropdownOpen" class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg py-1 z-50">
+          <li>
+            <a :href="`/index.php?r=pekerjaan/refreshPagu&id=${id}`" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+              <Icon icon="tabler:refresh" class="w-4 h-4 text-gray-400" /> Refresh Pagu
+            </a>
+          </li>
+          <li>
+            <a :href="`/index.php?r=pekerjaan/refreshPengeluaran&id=${id}`" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+              <Icon icon="tabler:refresh" class="w-4 h-4 text-gray-400" /> Refresh Realisasi
+            </a>
+          </li>
+          <li>
+            <a :href="`/index.php?r=pekerjaan/refreshPerencanaan&id=${id}`" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+              <Icon icon="tabler:refresh" class="w-4 h-4 text-gray-400" /> Refresh Perencanaan
+            </a>
+          </li>
+        </ul>
+      </transition>
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Premium Card and Button Styling */
-.box-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: linear-gradient(120deg, #3b82f6 0%, #1e40af 100%);
-  backdrop-filter: blur(12px);
-  border-radius: 0.75rem;
-  box-shadow: 0 12px 30px rgba(30, 64, 175, 0.18);
-  border: 2px solid #2563eb;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  color: #fff;
-}
-.box-footer:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
-}
-
-.with-border {
-  border-top: none;
-}
-
-/* Base button style */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  color: #fff;
-  text-decoration: none;
-  transition: transform 0.15s ease, background 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-/* Gradient button variants */
-.btn-primary {
-  background: linear-gradient(45deg, #3b82f6, #1e40af);
-  border: none;
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-}
-
-.btn-success {
-  background: linear-gradient(45deg, #10b981, #065f46);
-}
-.btn-success:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
-}
-
-.btn-danger {
-  background: linear-gradient(45deg, #ef4444, #991b1b);
-}
-.btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239,68,68,0.3);
-}
-
-.btn-warning {
-  background: linear-gradient(45deg, #f59e0b, #b45309);
-}
-.btn-warning:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245,158,11,0.3);
-}
-
-/* Dropdown styling */
-.btn-group {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle .caret {
-  border-top: 4px solid #fff;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  margin-left: 0.3rem;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 110%;
-  right: 0;
-  left: auto;
-  min-width: 12rem;
-  background: rgba(255,255,255,0.95);
-  border-radius: 0.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  padding: 0.5rem 0;
-  display: none;
-  z-index: 1000;
-}
-
-.dropdown-menu li a {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  color: #333;
-  font-size: 0.875rem;
-  transition: background 0.2s ease;
-}
-
-.dropdown-menu li a:hover {
-  background: #f0f4ff;
-}
-
-.dropdown-menu li a .fa,
-.dropdown-menu li a .glyphicon {
-  margin-right: 0.5rem;
-}
-
-/* Show dropdown when open */
-.dropdown-menu.show {
-  display: block;
-}
-
-/* Icon spacing for buttons */
-.btn > .fa,
-.btn > .glyphicon {
-  margin-right: 0.3rem;
-}
-</style>

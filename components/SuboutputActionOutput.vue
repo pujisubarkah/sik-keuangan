@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-wrap gap-3 items-center mb-6">
-    <button class="btn px-4 py-2 rounded-lg font-semibold shadow hover:scale-105 transition-all duration-200 bg-blue-400 hover:bg-blue-500 text-white flex items-center gap-2" @click="onEdit">
-      <IconPencil class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Sunting RO</span>
+  <div class="flex flex-wrap gap-2 items-center w-full">
+    <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg shadow-sm hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" @click="onEdit">
+      <IconPencil class="w-4 h-4 text-blue-600" /> Sunting Output
     </button>
-    <button class="btn px-4 py-2 rounded-lg font-semibold shadow hover:scale-105 transition-all duration-200 bg-green-400 hover:bg-green-500 text-white flex items-center gap-2" @click="onAnggaran">
-      <IconCash class="w-5 h-5 align-middle mr-1" /> <span class="align-middle">Update Jumlah</span>
+    <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" @click="onAnggaran">
+      <IconCash class="w-4 h-4 text-gray-500" /> Update Jumlah
     </button>
   </div>
 </template>

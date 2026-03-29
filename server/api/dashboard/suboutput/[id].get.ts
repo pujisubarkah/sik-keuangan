@@ -51,52 +51,49 @@ export default defineEventHandler(async (event) => {
     .leftJoin(anggaranSuboutput, and(...joinConditions))
     .leftJoin(satker, eq(anggaranSuboutput.satker_id, satker.id))
     .leftJoin(unit, eq(anggaranSuboutput.unit_id, unit.id))
-    .leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id));
+    .leftJoin(tahunAnggaran, eq(anggaranSuboutput.tahun_anggaran_id, tahunAnggaran.id))
+    .limit(1);
 
   if (!result.length) {
     return { success: false, message: "Suboutput tidak ditemukan" };
   }
 
-  // Ambil pengajuan dan rkakl_detail untuk agregat
-  const pengajuanRows = await db.select({
+  const row = result[0]!;
+
+  // Ambil pagu (sum rkakl_detail) khusus untuk id ini
+  const rkaklRows = await db.select({
+    jumlah: rkaklDetail.jumlah
+  })
+  .from(rkaklDetail)
+  .where(eq(rkaklDetail.suboutput_id, suboutputId));
+
+  const pagu = rkaklRows.reduce((sum, r) => sum + Number(r.jumlah || 0), 0);
+
+  // Ambil realisasi pengajuan khusus untuk suboutput id ini
+  const pengajuanList = await db.select({
     jumlah_pengajuan: pengajuan.jumlah_pengajuan,
     status_pengajuan_id: pengajuan.status_pengajuan_id,
-    rkakl_detail_id: pengajuan.rkakl_detail_id
-  }).from(pengajuan);
-  const rkaklRows = await db.select({
-    id: rkaklDetail.id,
-    suboutput_id: rkaklDetail.suboutput_id,
-    jumlah: rkaklDetail.jumlah
-  }).from(rkaklDetail);
-  const rkaklMap = new Map();
-  for (const row of rkaklRows) {
-    if (!rkaklMap.has(row.suboutput_id)) rkaklMap.set(row.suboutput_id, []);
-    rkaklMap.get(row.suboutput_id).push(row);
-  }
-  const pengajuanMap = new Map();
-  for (const p of pengajuanRows) {
-    const rkakl = rkaklRows.find(r => r.id === p.rkakl_detail_id);
-    if (!rkakl) continue;
-    if (!pengajuanMap.has(rkakl.suboutput_id)) pengajuanMap.set(rkakl.suboutput_id, []);
-    pengajuanMap.get(rkakl.suboutput_id).push(p);
-  }
+  })
+  .from(pengajuan)
+  .innerJoin(rkaklDetail, eq(pengajuan.rkakl_detail_id, rkaklDetail.id))
+  .where(eq(rkaklDetail.suboutput_id, suboutputId));
 
-  // Proses agregat untuk satu suboutput
-  const row = result[0]!;
-  const pagu = (rkaklMap.get(row.suboutput_id) || []).reduce((sum: number, r: { jumlah: number | string }) => sum + Number(r.jumlah || 0), 0);
-  const pengajuanList = pengajuanMap.get(row.suboutput_id) || [];
-  // Jumlah pengajuan (status_pengajuan_id != 2)
+  // Hitung jumlah pengajuan berdasarkan status
   const jumlahPengajuan = pengajuanList
-    .filter((p: { status_pengajuan_id: number }) => p.status_pengajuan_id !== 2)
-    .reduce((sum: number, p: { jumlah_pengajuan: number | string }) => sum + Number(p.jumlah_pengajuan || 0), 0);
-  // Jumlah pengeluaran (status_pengajuan_id == 2)
+    .filter((p) => p.status_pengajuan_id !== 2)
+    .reduce((sum, p) => sum + Number(p.jumlah_pengajuan || 0), 0);
+    
   const jumlahPengeluaran = pengajuanList
-    .filter((p: { status_pengajuan_id: number }) => p.status_pengajuan_id === 2)
-    .reduce((sum: number, p: { jumlah_pengajuan: number | string }) => sum + Number(p.jumlah_pengajuan || 0), 0);
-  const treasurerRealization = pengajuanList.reduce((sum: number, p: { jumlah_pengajuan: number | string }) => sum + Number(p.jumlah_pengajuan || 0), 0);
+    .filter((p) => p.status_pengajuan_id === 2)
+    .reduce((sum, p) => sum + Number(p.jumlah_pengajuan || 0), 0);
+
+  const treasurerRealization = pengajuanList.reduce((sum, p) => sum + Number(p.jumlah_pengajuan || 0), 0);
   const treasurerAbsorption = pagu > 0 ? (treasurerRealization / pagu) * 100 : 0;
   const treasurerBalance = pagu - treasurerRealization;
-  const sp2dRealization = pengajuanList.filter((p: { status_pengajuan_id: number }) => p.status_pengajuan_id === 2).reduce((sum: number, p: { jumlah_pengajuan: number | string, status_pengajuan_id: number }) => sum + Number(p.jumlah_pengajuan || 0), 0);
+  
+  const sp2dRealization = pengajuanList
+    .filter((p) => p.status_pengajuan_id === 2)
+    .reduce((sum, p) => sum + Number(p.jumlah_pengajuan || 0), 0);
   const sp2dAbsorption = pagu > 0 ? (sp2dRealization / pagu) * 100 : 0;
   const sp2dBalance = pagu - sp2dRealization;
 
@@ -112,7 +109,11 @@ export default defineEventHandler(async (event) => {
       sp2dAbsorption,
       sp2dBalance,
       jumlahPengajuan,
-      jumlahPengeluaran
+      jumlahPengeluaran,
+      stats: {
+        pengeluaranCount: pengajuanList.filter(p => p.status_pengajuan_id === 2).length,
+        pengajuanCount: pengajuanList.filter(p => p.status_pengajuan_id !== 2).length
+      }
     }]
   };
 });

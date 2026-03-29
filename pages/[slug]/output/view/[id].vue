@@ -4,8 +4,16 @@
     <div class="mt-8">
       <SuboutputDetailOutput v-if="outputData" :data="outputData" />
     </div>
-    <div class="mt-8">
-      <SuboutputDaftar v-if="outputData" :items="suboutputItems" :addUrl="'/pekerjaan/create?id_output=' + outputData.id" />
+    <div class="mt-8 flex flex-col gap-4">
+      <div v-if="outputData" class="flex justify-end">
+        <NuxtLink :to="`/${$route.params.slug}/suboutput/create?id_output=${outputData.id}`" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Tambah Suboutput
+        </NuxtLink>
+      </div>
+      <SubOutputTable v-if="outputData" :subOutputs="suboutputItems" />
     </div>
   </div>
 </template>
@@ -13,23 +21,23 @@
 <script setup>
 import SuboutputAlert from '@/components/SuboutputAlert.vue'
 import SuboutputDetailOutput from '@/components/SuboutputDetailOutput.vue'
-    import SuboutputDaftar from '@/components/SuboutputDaftar.vue'
+import SubOutputTable from '@/components/SubOutputTable.vue'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-// Dummy data, ganti dengan fetch API jika perlu
 const route = useRoute()
 const outputData = ref(null)
+const suboutputItems = ref([])
 
 onMounted(async () => {
   const id = route.params.id
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
   try {
+    // 1. Fetch Output Data
     const res = await fetch(`/api/output/${id}`, { headers })
     const json = await res.json()
     if (json.success && json.data) {
-      // Mapping agar field cocok dengan SuboutputDetailOutput
       outputData.value = {
         id: json.data.id,
         kode: json.data.kode_output,
@@ -46,24 +54,18 @@ onMounted(async () => {
         jumlah_suboutput: json.data.jumlah_suboutput || 0
       }
     }
+
+    // 2. Fetch Suboutput Table Data using output_id
+    const resSub = await fetch(`/api/dashboard/suboutput?output_id=${id}`, { headers })
+    const jsonSub = await resSub.json()
+    if (jsonSub.success && jsonSub.data) {
+      suboutputItems.value = jsonSub.data.map(item => ({
+        ...item,
+        link: `/${route.params.slug}/suboutput/view/${item.id}`
+      }))
+    }
   } catch (e) {
     outputData.value = null
   }
 })
-
-const suboutputItems = [
-  {
-    id: 4732,
-    kode: '7917.ADE.001',
-    nama: 'Akreditasi Pelatihan ASN',
-    detailUrl: '/pekerjaan/view?id=4732',
-    tahun: 2026,
-    pagu: '1.272.228.000',
-    realisasiBendahara: '36.155.100',
-    persenBendahara: '2.84%',
-    realisasiSp2d: '36.155.100',
-    persenSp2d: '2.84%',
-    sisa: '1.236.072.900'
-  }
-]
 </script>
