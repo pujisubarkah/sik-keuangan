@@ -64,14 +64,40 @@
             </td>
             <td class="px-2 py-2 text-right border-b font-medium">{{ formatCurrency(row.jumlah) }}</td>
             <td v-for="(cell, i) in row.bulanan" :key="i" class="px-2 py-2 text-right border-b">
-              <button 
-                type="button"
-                class="text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
-                @click="editCell(row, i)"
-              >
-                {{ cell === null || cell === 0 ? '—' : formatCurrency(cell) }}
-              </button>
+              <template v-if="editingCell && editingCell.row === row && editingCell.idx === i">
+                <input
+                  type="number"
+                  min="0"
+                  :max="row.jumlah - (row.total - (cell || 0))"
+                  v-model.number="editingCell.value"
+                  @keydown.enter="saveCell(row, i)"
+                  @blur="saveCell(row, i)"
+                  class="w-20 px-1 py-0.5 border rounded text-right focus:ring-2 focus:ring-blue-300"
+                  :class="{'border-red-400': editingCell.error}"
+                  autofocus
+                />
+                <div v-if="editingCell.error" class="text-xs text-red-500">Melebihi pagu</div>
+              </template>
+              <template v-else>
+                <button 
+                  type="button"
+                  class="text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
+                  @click="startEditCell(row, i, cell)"
+                >
+                  {{ cell === null || cell === 0 ? '—' : formatCurrency(cell) }}
+                </button>
+              </template>
             </td>
+                <!-- Tombol Simpan -->
+                <div class="flex justify-end px-8 pb-6">
+                  <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow disabled:opacity-50"
+                    :disabled="!canSave"
+                    @click="saveAll"
+                  >
+                    Simpan
+                  </button>
+                </div>
             <td class="px-2 py-2 text-right border-b font-bold text-gray-800">{{ formatCurrency(row.total) }}</td>
             <td class="px-2 py-2 text-right border-b font-bold" :class="row.selisih > 0 ? 'text-orange-600' : 'text-green-600'">
               {{ formatCurrency(row.selisih) }}
@@ -123,6 +149,9 @@ const rows = ref([
 // Dropdown state
 const dropdownOpen = ref(null)
 const dropdownRefs = ref([])
+
+// Inline edit state
+const editingCell = ref(null) // { row, idx, value, error }
 
 // Delete modal state
 const showDeleteModal = ref(false)
@@ -203,11 +232,41 @@ const doDelete = async () => {
   }
 }
 
-// Edit cell handler
-function editCell(row, bulanIdx) {
-  // TODO: Implement modal/form untuk edit nilai bulanan
-  console.log(`Edit ${row.kode} bulan ke-${bulanIdx + 1} (${bulanList[bulanIdx]})`)
-  // Contoh: openEditModal({ row, bulanIdx, currentValue: row.bulanan[bulanIdx] })
+
+function startEditCell(row, idx, cell) {
+  editingCell.value = {
+    row,
+    idx,
+    value: cell || 0,
+    error: false
+  }
+  nextTick(() => {
+    // Autofocus handled by input
+  })
+}
+
+function saveCell(row, idx) {
+  if (!editingCell.value) return
+  const val = editingCell.value.value || 0
+  // Hitung total baru jika nilai ini diubah
+  const totalTanpaCell = row.bulanan.reduce((sum, v, i) => sum + (i === idx ? 0 : (v || 0)), 0)
+  if (val + totalTanpaCell > row.jumlah) {
+    editingCell.value.error = true
+    return
+  }
+  row.bulanan[idx] = val
+  calculateRowMetrics(row)
+  editingCell.value = null
+}
+// Validasi tombol simpan
+const canSave = computed(() => {
+  return rows.value.every(row => row.selisih >= 0)
+})
+
+// Simpan semua perubahan (dummy, ganti dengan API call jika perlu)
+function saveAll() {
+  alert('Data berhasil disimpan!')
+  // TODO: Ganti dengan API call
 }
 
 // Currency formatter dengan locale Indonesia

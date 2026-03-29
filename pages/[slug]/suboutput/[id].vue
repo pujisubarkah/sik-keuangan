@@ -44,65 +44,91 @@ import { useUserStore } from '@/stores/user.js';
 import { navigateTo } from '#app';
 import { useRoute, useRouter } from 'vue-router';
 import { $fetch } from 'ofetch';
-import { ref, reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
 import SuboutputRkakl from '@/components/SuboutputRkakl.vue';
 import SuboutputCharts from '@/components/SuboutputCharts.vue';
 const rkaklDetail = ref(null);
 
-
 // Konversi data chart ke format FusionCharts
-const chartPenyerapanFusion = computed(() => ({
-  chart: {
-    caption: 'Grafik Penyerapan Anggaran',
-    xAxisName: 'Bulan',
-    yAxisName: 'Penyerapan (Rp)',
-    numberPrefix: 'Rp ',
-    theme: 'fusion',
-    formatNumberScale: '0',
-    decimals: '0',
-  },
-  data: [
-    { label: 'Jan', value: 200000000 },
-    { label: 'Feb', value: 300000000 },
-    { label: 'Mar', value: 150000000 },
-    { label: 'Apr', value: 250000000 },
-    { label: 'Mei', value: 176950000 },
-    { label: 'Jun', value: 210000000 },
-    { label: 'Jul', value: 180000000 },
-    { label: 'Agu', value: 220000000 },
-    { label: 'Sep', value: 195000000 },
-    { label: 'Okt', value: 205000000 },
-    { label: 'Nov', value: 230000000 },
-    { label: 'Des', value: 240000000 },
-  ]
-}));
+const realisasiBulanan = ref(null); // Pastikan ini ada sebelum chartPenyerapanFusion
 
-const chartPengeluaranFusion = computed(() => ({
-  chart: {
-    caption: 'Grafik Pengeluaran Anggaran',
-    xAxisName: 'Bulan',
-    yAxisName: 'Pengeluaran (Rp)',
-    numberPrefix: 'Rp ',
-    theme: 'fusion',
-    formatNumberScale: '0',
-    decimals: '0',
-  },
-  data: [
-    { label: 'Jan', value: 100000000 },
-    { label: 'Feb', value: 120000000 },
-    { label: 'Mar', value: 90000000 },
-    { label: 'Apr', value: 110000000 },
-    { label: 'Mei', value: 50000000 },
-    { label: 'Jun', value: 95000000 },
-    { label: 'Jul', value: 105000000 },
-    { label: 'Agu', value: 115000000 },
-    { label: 'Sep', value: 98000000 },
-    { label: 'Okt', value: 102000000 },
-    { label: 'Nov', value: 120000000 },
-    { label: 'Des', value: 125000000 },
-  ]
-}));
+const fetchRealisasiBulanan = async () => {
+  const token = localStorage.getItem('token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  try {
+    const res = await $fetch(`/api/realisasi_bulanan/${route.params.id}`, { headers });
+    console.log('API /api/realisasi_bulanan/[id] response:', res);
+    realisasiBulanan.value = res;
+  } catch (err) {
+    console.error('Gagal fetch realisasi bulanan', err);
+    realisasiBulanan.value = null;
+  }
+};
+
+onMounted(() => {
+  fetchSuboutput();
+  fetchRkaklDetail();
+  fetchRealisasiBulanan();
+});
+
+const chartPenyerapanFusion = computed(() => {
+  if (!realisasiBulanan.value) return null;
+  return {
+    chart: {
+      caption: 'Grafik Penyerapan Anggaran',
+      xAxisName: 'Bulan',
+      yAxisName: 'Penyerapan (Rp)',
+      numberPrefix: 'Rp ',
+      theme: 'fusion',
+      formatNumberScale: '0',
+      decimals: '0',
+    },
+    data: [
+      { label: 'Jan', value: realisasiBulanan.value.jan || 0 },
+      { label: 'Feb', value: realisasiBulanan.value.feb || 0 },
+      { label: 'Mar', value: realisasiBulanan.value.mar || 0 },
+      { label: 'Apr', value: realisasiBulanan.value.apr || 0 },
+      { label: 'Mei', value: realisasiBulanan.value.mei || 0 },
+      { label: 'Jun', value: realisasiBulanan.value.jun || 0 },
+      { label: 'Jul', value: realisasiBulanan.value.jul || 0 },
+      { label: 'Agu', value: realisasiBulanan.value.agt || 0 },
+      { label: 'Sep', value: realisasiBulanan.value.sep || 0 },
+      { label: 'Okt', value: realisasiBulanan.value.okt || 0 },
+      { label: 'Nov', value: realisasiBulanan.value.nov || 0 },
+      { label: 'Des', value: realisasiBulanan.value.des || 0 },
+    ]
+  };
+});
+
+const chartPengeluaranFusion = computed(() => {
+  if (!realisasiBulanan.value) return null;
+  return {
+    chart: {
+      caption: 'Grafik Pengeluaran Anggaran',
+      xAxisName: 'Bulan',
+      yAxisName: 'Pengeluaran (Rp)',
+      numberPrefix: 'Rp ',
+      theme: 'fusion',
+      formatNumberScale: '0',
+      decimals: '0',
+    },
+    data: [
+      { label: 'Jan', value: realisasiBulanan.value.jan || 0 },
+      { label: 'Feb', value: realisasiBulanan.value.feb || 0 },
+      { label: 'Mar', value: realisasiBulanan.value.mar || 0 },
+      { label: 'Apr', value: realisasiBulanan.value.apr || 0 },
+      { label: 'Mei', value: realisasiBulanan.value.mei || 0 },
+      { label: 'Jun', value: realisasiBulanan.value.jun || 0 },
+      { label: 'Jul', value: realisasiBulanan.value.jul || 0 },
+      { label: 'Agu', value: realisasiBulanan.value.agt || 0 },
+      { label: 'Sep', value: realisasiBulanan.value.sep || 0 },
+      { label: 'Okt', value: realisasiBulanan.value.okt || 0 },
+      { label: 'Nov', value: realisasiBulanan.value.nov || 0 },
+      { label: 'Des', value: realisasiBulanan.value.des || 0 },
+    ]
+  };
+});
 
 // --- State Data ---
 const showAlert = ref(true);
