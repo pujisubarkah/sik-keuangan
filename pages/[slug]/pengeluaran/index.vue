@@ -177,7 +177,7 @@
                   <span class="inline-block bg-blue-500 text-white rounded px-2 py-1 font-bold">{{ item.jumlah_data_dukung }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
-                  <div class="flex gap-2 justify-center">
+                  <div class="flex items-center justify-center gap-2">
                     <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
                       <Icon icon="eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
@@ -187,8 +187,8 @@
                     <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
                       <Icon icon="pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <button @click="openDeleteModal(item)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
-                      <Icon icon="trash" class="w-5 h-5" />
+                    <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip flex items-center justify-center" title="Hapus" style="background:none;border:none;padding:0;">
+                      <Icon icon="trash" class="w-5 h-5 text-red-500" />
                     </button>
                   </div>
                 </td>
@@ -238,19 +238,19 @@
           <h3 class="text-base font-semibold text-gray-900">Rekap Data Pengeluaran</h3>
         </div>
         <div class="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
-          <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded-lg border border-gray-200 bg-brandGold-300 p-5">
             <p class="text-sm font-medium text-gray-500">Jumlah Pengeluaran</p>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ totalPengeluaran }} Pengeluaran</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-              Unduh Rincian
-            </a>
+            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+          </a>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+          <div class="rounded-lg border border-gray-200 bg-brandGold-200 p-5">
             <p class="text-sm font-medium text-gray-500">Jumlah Dana</p>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalDana) }}</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-              Unduh Rincian
-            </a>
+            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+          </a>
           </div>
         </div>
       </div>

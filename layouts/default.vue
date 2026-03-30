@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+  <div class="min-h-screen bg-[#F8F9FB]">
     <Header :rail="rail" @toggle-sidebar="toggleSidebar" />
     <!-- Sidebar top offset and main padding-top must match header height -->
     <Sidebar :rail="rail" class="fixed top-20 left-0 z-30" />

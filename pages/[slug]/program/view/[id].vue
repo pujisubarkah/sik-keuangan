@@ -1,10 +1,15 @@
 <template>
-  <div class="content-wrapper min-h-screen pt-24">
+  <div class="content-wrapper min-h-screen pt-24 bg-[#F8F9FB] font-inter">
 
     <!-- Alert -->
     <section class="content-header">
       <div class="alert-wide-wrapper">
         <SuboutputAlert :showAlert="true" />
+        <!-- Mismatch Alert (pindah ke sini) -->
+        <div v-if="showMismatch" class="mb-4 p-4 rounded-xl bg-yellow-100 border border-yellow-300 text-yellow-800 font-semibold mt-4">
+          <span class="mr-2">⚠️</span>
+          Jumlah anggaran di Master Program dan Total Suboutput tidak sama!
+        </div>
       </div>
     </section>
 
@@ -51,7 +56,7 @@
                 </tr>
                 <tr>
                   <th>Jumlah (Master Program)</th>
-                  <td class="text-right" :class="{'bg-yellow-100 text-yellow-800 font-bold': showMismatch}">Rp {{ masterTotal ?? '-' }}</td>
+                  <td class="text-left">Rp {{ masterTotal ?? '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -65,7 +70,7 @@
               <thead>
                 <tr>
                   <th class="w-16">No</th>
-                  <th>Suboutput</th>
+                  <th>Rincian Output</th>
                   <th class="text-right">Pagu Anggaran</th>
                 </tr>
               </thead>
@@ -90,10 +95,6 @@
         </div>
 
         <!-- Mismatch Alert -->
-        <div v-if="showMismatch" class="mb-4 p-4 rounded-xl bg-yellow-100 border border-yellow-300 text-yellow-800 font-semibold">
-          <span class="mr-2">⚠️</span>
-          Jumlah anggaran di Master Program dan Total Suboutput tidak sama!
-        </div>
 
       </div>
     </section>
@@ -168,7 +169,7 @@ onMounted(fetchProgramDetail)
 
 /* ===== Background ===== */
 .content-wrapper {
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  background: #F8F9FB;
 }
 
 /* ===== Breadcrumb ===== */
@@ -182,7 +183,7 @@ onMounted(fetchProgramDetail)
 
 /* ===== Card / Box ===== */
 .box {
-  background: #ffffff;
+  background: #F8F9FB;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
@@ -206,12 +207,14 @@ onMounted(fetchProgramDetail)
   padding: 10px 8px;
   color: #64748b;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
 }
 
 .detail-view td {
   padding: 10px 8px;
   font-weight: 500;
   color: #1e293b;
+  font-family: 'Inter', sans-serif;
 }
 
 .detail-view tr {
@@ -224,6 +227,7 @@ onMounted(fetchProgramDetail)
   border-spacing: 0;
 }
 
+
 .main-table thead th {
   text-align: left;
   padding: 12px 10px;
@@ -233,13 +237,16 @@ onMounted(fetchProgramDetail)
   color: #64748b;
   font-weight: 600;
   border-bottom: 2px solid #e2e8f0;
+  font-family: 'Inter', sans-serif;
 }
+
 
 .main-table tbody td {
   padding: 12px 10px;
   border-bottom: 1px solid #f1f5f9;
   font-weight: 500;
   color: #1e293b;
+  font-family: 'Inter', sans-serif;
 }
 
 .main-table tbody tr:hover {
@@ -248,20 +255,21 @@ onMounted(fetchProgramDetail)
 
 /* Zebra */
 .main-table tbody tr:nth-child(even) {
-  background: #f8fafc;
+  background: #F8F9FB;
 }
 
 /* ===== Total Row ===== */
 .total-row {
-  background: #f1f5f9;
+  background: #F8F9FB;
   font-weight: 700;
   color: #0f172a;
+  font-family: 'Inter', sans-serif;
 }
 
 /* ===== Angka ===== */
 .text-right {
   text-align: right;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
 }
 

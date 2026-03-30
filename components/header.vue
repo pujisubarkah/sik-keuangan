@@ -94,7 +94,7 @@
                     role="menuitem"
                   >
                     <i class="idds idds-user"></i>
-                    Profile
+                    Ganti Akun
                   </NuxtLink>
                 </div>
               </li>
