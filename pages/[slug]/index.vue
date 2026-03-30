@@ -179,15 +179,50 @@ const fetchBudgetData = async () => {
 };
 
 // Chart Data
+
 const absorptionChartData = reactive({
-  realization: [2.1, 8.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  realization: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   plan: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 })
 
+const fetchAbsorptionChartData = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/realisasi_bulanan/persentase', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data && typeof data === 'object') {
+      const monthKeys = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agt', 'sep', 'okt', 'nov', 'des'];
+      absorptionChartData.realization = monthKeys.map(key => Number(data[key] || 0));
+    }
+  } catch (e) {
+    console.error('Failed to fetch absorption chart data', e);
+  }
+}
+
+
 const expenditureChartData = reactive({
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
-  values: [4350820986, 12956676510, 2232050162, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'],
+  values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 })
+
+const fetchExpenditureChartData = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/realisasi_bulanan/total', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    const data = await res.json();
+    if (data && typeof data === 'object') {
+      // Order: jan, feb, mar, apr, mei, jun, jul, agt, sep, okt, nov, des
+      const monthKeys = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agt', 'sep', 'okt', 'nov', 'des'];
+      expenditureChartData.values = monthKeys.map(key => Number(data[key] || 0));
+    }
+  } catch (e) {
+    console.error('Failed to fetch expenditure chart data', e);
+  }
+}
 
 // Table Data
 
@@ -425,6 +460,8 @@ onMounted(async () => {
   await fetchActivities();
   await fetchPrograms();
   await fetchSatkerRealizationData();
+  await fetchExpenditureChartData();
+  await fetchAbsorptionChartData();
   fetchData({ year: currentYear.value });
   if (process.client) {
     // const FusionCharts = (await import('fusioncharts')).default;
