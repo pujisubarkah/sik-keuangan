@@ -1,6 +1,19 @@
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+// Helper untuk menentukan menu aktif berdasarkan path
+const activeMenu = computed(() => {
+  const path = route.path;
+  if (path.includes('/suboutput/update/')) return 'edit';
+  if (path.includes('/suboutput/view/')) return 'anggaran';
+  if (path.includes('pekerjaan/pengeluaran')) return 'pengeluaran';
+  if (path.includes('pekerjaan/pengajuan')) return 'pengajuan';
+  if (path.includes('pekerjaan/perencanaan')) return 'perencanaan';
+  return '';
+});
 import { useClickOutside } from '~/composables/useClickOutside';
 import Icon from '~/components/Icon.vue';
 
@@ -41,21 +54,56 @@ function handleSalinClick(event) {
 
 <template>
   <div class="flex flex-wrap items-center gap-2 w-full">
-    <a :href="`/${$route.params.slug}/suboutput/update/${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg shadow-sm hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
-      <Icon icon="tabler:pencil" class="w-4 h-4 text-blue-500" /> Sunting
+    <a :href="`/${$route.params.slug}/suboutput/update/${id}`"
+      :class="[
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
+        activeMenu === 'edit'
+          ? 'text-blue-700 bg-blue-100 border-blue-400'
+          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+      ]"
+    >
+      <Icon icon="tabler:pencil" class="w-4 h-4 text-blue-500" /> Edit
     </a>
-    <a :href="`/${$route.params.slug}/suboutput/view/${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+    <a :href="`/${$route.params.slug}/suboutput/view/${id}`"
+      :class="[
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
+        activeMenu === 'anggaran'
+          ? 'text-blue-700 bg-blue-100 border-blue-400'
+          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+      ]"
+    >
       <Icon icon="tabler:currency-dollar" class="w-4 h-4 text-gray-500" /> Anggaran
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`"
+      :class="[
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
+        activeMenu === 'pengeluaran'
+          ? 'text-blue-700 bg-blue-100 border-blue-400'
+          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+      ]"
+    >
       <Icon icon="tabler:shopping-cart" class="w-4 h-4 text-gray-500" /> Pengeluaran
       <span v-if="pengeluaranCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengeluaranCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+    <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`"
+      :class="[
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
+        activeMenu === 'pengajuan'
+          ? 'text-blue-700 bg-blue-100 border-blue-400'
+          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+      ]"
+    >
       <Icon icon="tabler:arrow-up-circle" class="w-4 h-4 text-gray-500" /> Pengajuan
       <span v-if="pengajuanCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengajuanCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap">
+    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`"
+      :class="[
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
+        activeMenu === 'perencanaan'
+          ? 'text-blue-700 bg-blue-100 border-blue-400'
+          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+      ]"
+    >
       <Icon icon="tabler:calendar" class="w-4 h-4 text-gray-500" /> Perencanaan
     </a>
     <a

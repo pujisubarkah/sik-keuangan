@@ -154,7 +154,7 @@
           href="/index.php?r=admin/perBulan" 
           class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
         >
-          <IconCalendarMonth class="w-4 h-4 mr-1.5 group-hover:animate-bounce" />
+          <IconCalendarMonth class="w-4 h-4 mr-1.5" />
           <span class="hidden sm:inline">Per Bulan</span>
         </a>
         
@@ -162,7 +162,7 @@
           href="/index.php?r=admin/perBulan&sp2d=1" 
           class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
         >
-          <IconCalendarCheck class="w-4 h-4 mr-1.5 group-hover:animate-pulse" />
+          <IconCalendarCheck class="w-4 h-4 mr-1.5" />
           <span class="hidden sm:inline">SP2D</span>
         </a>
         

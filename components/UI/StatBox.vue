@@ -1,21 +1,10 @@
 <template>
   <div :class="['small-box', bgColor, 'rounded-lg shadow flex flex-col justify-between h-full relative overflow-hidden']">
-    <!-- Silhouette Icon -->
-    <span class="absolute top-2 right-2 opacity-20 text-white">
-      <slot name="silhouette">
-        <i class="fa fa-chart-line text-6xl"></i>
-      </slot>
-    </span>
     <div class="inner py-2 px-2 relative z-10">
       <p class="font-bold text-base mb-1">{{ title }}</p>
       <h3 class="text-2xl font-bold">{{ value }}</h3>
     </div>
-    <div class="flex items-center justify-between px-2 pb-2 relative z-10">
-      <div class="icon text-2xl">
-        <slot name="icon">
-          <i class="fa fa-circle-o"></i>
-        </slot>
-      </div>
+    <div class="flex items-center justify-end px-2 pb-2 relative z-10">
       <div v-if="link">
         <NuxtLink :to="link" class="text-xs text-yellow-300 underline flex items-center gap-1 drop-shadow font-semibold">
           Info Lebih Lanjut <i class="fa fa-arrow-circle-right"></i>

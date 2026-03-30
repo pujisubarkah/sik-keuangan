@@ -2,7 +2,7 @@
   <div class="mb-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold text-blue-700 flex items-center gap-3">
-        <span class="inline-flex items-center justify-center bg-blue-100 rounded-full p-2 mr-1">
+        <span class="inline-flex items-center justify-center bg-blue-100 rounded-full px-3 py-3 mr-1 mt-2">
           <i class="fa fa-bar-chart-o text-2xl text-blue-600"></i>
         </span>
         Rekapitulasi Suboutput
@@ -83,7 +83,7 @@
       <div class="stat shadow-lg rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.03] hover:shadow-2xl transition-all duration-300">
         <StatBox
           color="blue"
-          title="% Penyerapan Bendahara"
+          title="Penyerapan Bendahara"
           :value="(stats.treasurerAbsorption ?? 0).toFixed(2) + ' %'"
           icon="circle-o"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
@@ -126,7 +126,7 @@
       <div class="stat shadow-lg rounded-xl p-6 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.03] hover:shadow-2xl transition-all duration-300">
         <StatBox
           color="blue"
-          title="% Penyerapan SP2D"
+          title="Penyerapan SP2D"
           :value="(stats.sp2dAbsorption ?? 0).toFixed(2) + ' %'"
           icon="circle-o"
           moreInfoLink="/index.php?r=pekerjaan/pengeluaran&id=4723"
