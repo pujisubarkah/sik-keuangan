@@ -28,15 +28,8 @@ const props = defineProps({
   link: String
 })
 const bgColor = computed(() => {
-  switch (props.color) {
-    case 'green': return 'bg-green-400 text-white';
-    case 'red': return 'bg-red-400 text-white';
-    case 'yellow': return 'bg-yellow-300 text-black';
-    case 'aqua': return 'bg-cyan-300 text-black';
-    case 'olive': return 'bg-lime-300 text-black';
-    case 'orange': return 'bg-orange-300 text-black';
-    default: return 'bg-blue-400 text-white';
-  }
+  // Semua card pakai warna #0969F6 (blue-400 custom)
+  return 'bg-[#0969F6] text-white';
 })
 </script>
 

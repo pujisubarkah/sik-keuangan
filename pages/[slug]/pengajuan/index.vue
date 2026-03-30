@@ -58,19 +58,24 @@
               </div>
             </div>
             <!-- Tombol -->
-            <div class="md:col-span-12 flex flex-col xs:flex-row justify-end gap-2 mt-2">
-              <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <span>Tampilkan</span>
-              </button>
-              <button type="button" @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }" class="inline-flex items-center gap-2 rounded-md border border-gray-400 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-md transition-all hover:bg-gray-100 hover:shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span>Reset</span>
-              </button>
+            <div class="md:col-span-12 flex flex-col sm:flex-row justify-end items-center gap-2 mt-2 w-full">
+              <div class="flex flex-row w-full sm:w-auto justify-end gap-2">
+                <button type="submit"
+                  class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <span>Tampilkan</span>
+                </button>
+                <button type="button"
+                  @click="() => { filterForm.status_berkas = ''; filterForm.tanggal_pengajuan_awal = ''; filterForm.tanggal_pengajuan_akhir = ''; filterForm.status_verifikator = '' }"
+                  class="inline-flex items-center gap-2 rounded-md border border-blue-400 bg-white px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-sm transition-all hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span>Reset</span>
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -99,6 +104,20 @@
               <th class="px-3 py-2 text-right font-semibold text-red-700 align-middle">Sisa Anggaran</th>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
+            </tr>
+            <tr class="bg-white border-b border-gray-200">
+              <th class="py-2"></th>
+              <th class="py-2"><input v-model="columnFilters.kode_ro" class="filter-input" placeholder="Cari" /></th>
+              <th class="py-2"><input v-model="columnFilters.rincian_output" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.komp" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.sub_komp" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.akun" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.detil" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.tanggal_pengajuan" class="filter-input" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.jumlah_pengajuan" class="filter-input text-right" placeholder="" /></th>
+              <th class="py-2"><input v-model="columnFilters.sisa_anggaran" class="filter-input text-right" placeholder="" /></th>
+              <th class="py-2"></th>
+              <th class="py-2"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
@@ -211,6 +230,37 @@
 </template>
 
 <script setup>
+const columnFilters = ref({
+  kode_ro: '',
+  rincian_output: '',
+  komp: '',
+  sub_komp: '',
+  akun: '',
+  detil: '',
+  tanggal_pengajuan: '',
+  jumlah_pengajuan: '',
+  sisa_anggaran: ''
+})
+
+// Filter data secara client-side
+const filteredData = computed(() => {
+  return tableData.value.filter(item => {
+    return (
+      (!columnFilters.value.kode_ro || (item.kode_suboutput || '').toLowerCase().includes(columnFilters.value.kode_ro.toLowerCase())) &&
+      (!columnFilters.value.rincian_output || (item.suboutput || '').toLowerCase().includes(columnFilters.value.rincian_output.toLowerCase())) &&
+      (!columnFilters.value.komp || (item.kode_komponen || '').toLowerCase().includes(columnFilters.value.komp.toLowerCase())) &&
+      (!columnFilters.value.sub_komp || (item.kode_subkomponen || '').toLowerCase().includes(columnFilters.value.sub_komp.toLowerCase())) &&
+      (!columnFilters.value.akun || (item.kode_akun || '').toLowerCase().includes(columnFilters.value.akun.toLowerCase())) &&
+      (!columnFilters.value.detil || (item.detil || '').toLowerCase().includes(columnFilters.value.detil.toLowerCase())) &&
+      (!columnFilters.value.tanggal_pengajuan || (item.tanggal_pengajuan || '').toLowerCase().includes(columnFilters.value.tanggal_pengajuan.toLowerCase())) &&
+      (!columnFilters.value.jumlah_pengajuan || String(item.jumlah_pengajuan || '').includes(columnFilters.value.jumlah_pengajuan)) &&
+      (!columnFilters.value.sisa_anggaran || String(item.sisa_anggaran || '').includes(columnFilters.value.sisa_anggaran))
+    )
+  })
+})
+
+// Ganti paginatedData menjadi filteredData
+const paginatedData = computed(() => filteredData.value)
 import { Button, TextField, Card } from '@idds/vue'
 import { ref, computed, onMounted } from 'vue'
 import { IconFolderCheck, IconChevronDown, IconDatabaseSearch, IconSearch, IconRefresh, IconEye, IconPrinter, IconPencil, IconTrash, IconCalendar } from '@tabler/icons-vue';
@@ -283,7 +333,6 @@ const fetchPengajuan = async () => {
   }
 }
 
-const paginatedData = computed(() => tableData.value)
 const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1)
 const endIndex = computed(() => {
   const end = (currentPage.value * itemsPerPage.value)
@@ -364,6 +413,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.filter-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded text-xs bg-white shadow-sm transition placeholder-gray-400 focus:border-green-400 focus:ring-0 outline-none placeholder:text-center placeholder:font-normal;
+}
 /* Mobile responsive tweaks */
 @media (max-width: 640px) {
   .v-table th, .v-table td, th, td {

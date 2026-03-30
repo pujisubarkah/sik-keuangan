@@ -30,26 +30,40 @@
 
           <!-- User Account Dropdown -->
           <li class="dropdown user-menu" ref="userRef">
-            <button
-              class="dropdown-toggle user-toggle flex items-center gap-0"
-              @click.stop="toggleUser"
-              :aria-expanded="isUserOpen"
-              aria-haspopup="true"
-              aria-controls="user-menu"
-              type="button"
-            >
-              <div class="user-avatar flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 mr-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              </div>
-              <div class="flex flex-col items-start">
-                <span class="hidden-xs user-name font-extrabold text-base text-white">{{ displayName }}</span>
-                <span class="flex items-center gap-0.5 mt-0.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
-                  <span class="text-[10px] font-semibold text-white">Online</span>
-                </span>
-              </div>
-              <i class="idds idds-chevron-down ml-2" :class="{ 'rotate-180': isUserOpen }"></i>
-            </button>
+            <div class="flex items-center gap-1.5">
+              <button
+                class="dropdown-toggle user-toggle flex items-center gap-2 p-0"
+                @click.stop="toggleUser"
+                :aria-expanded="isUserOpen"
+                aria-haspopup="true"
+                aria-controls="user-menu"
+                type="button"
+              >
+                <div class="user-avatar flex items-center justify-center w-9 h-9 rounded-full bg-gray-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                </div>
+                <div class="flex flex-col items-start justify-center">
+                  <span class="hidden-xs user-name font-extrabold text-base text-white leading-tight">{{ displayName }}</span>
+                  <span class="flex items-center gap-1 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
+                    <span class="text-[10px] font-semibold text-white">Online</span>
+                  </span>
+                </div>
+                <i class="idds idds-chevron-down" :class="{ 'rotate-180': isUserOpen }"></i>
+              </button>
+              <a
+                href="/logout"
+                class="flex items-center justify-center rounded-full p-2 text-white hover:bg-white/20 transition cursor-pointer"
+                style="min-width:32px; min-height:32px;"
+                title="Sign out"
+                aria-label="Sign out"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 8v-2a2 2 0 0 0-2-2h-5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h12m0 0l-4-4m4 4l-4 4" />
+                </svg>
+              </a>
+            </div>
             
             <ul 
               v-show="isUserOpen"
@@ -82,14 +96,6 @@
                     <i class="idds idds-user"></i>
                     Profile
                   </NuxtLink>
-                  <a 
-                    href="/logout" 
-                    class="btn-logout"
-                    role="menuitem"
-                  >
-                    <i class="idds idds-logout"></i>
-                    Sign out
-                  </a>
                 </div>
               </li>
             </ul>

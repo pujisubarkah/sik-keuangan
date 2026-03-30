@@ -111,8 +111,8 @@
           <!-- 🔍 Submit Button -->
             <div class="md:col-span-2 flex-1 flex flex-col">
               <button 
-                type="submit" 
-                class="w-full bg-green-700 hover:bg-green-800 border-0 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
+                type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 border border-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group"
                 style="min-height:44px"
               >
                 <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
