@@ -173,27 +173,17 @@ const handleSubmit = async () => {
           </span>
         </div>
         <!-- ACTION -->
-        <div class="flex gap-3">
+        <div class="flex">
           <Button
             @click="handleSubmit"
             :disabled="isSubmitting"
-            class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+            class="btn w-auto px-6 flex items-center gap-2 bg-green-600 hover:bg-green-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
           >
-            <Icon
-              v-if="!isSubmitting"
-              icon="tabler:check"
-              class="w-4 h-4"
-            />
+            <!-- Icon ceklis dihapus -->
             <span>
               {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
             </span>
           </Button>
-          <NuxtLink to="/admin/omspan">
-            <Button class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              <IconX class="w-4 h-4" />
-              Batal
-            </Button>
-          </NuxtLink>
         </div>
       </div>
     </div>

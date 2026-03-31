@@ -83,9 +83,9 @@
 
       <!-- Pagination -->
       <div v-if="units && units.length > pageSize" class="flex items-center justify-between mt-4">
-        <button @click="prevPage" :disabled="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50">Previous</button>
+        <button @click="prevPage" :disabled="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50">Previous</button>
         <span class="text-sm">Halaman {{ currentPage }} dari {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50">Next</button>
+        <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50">Next</button>
       </div>
     </div>
 

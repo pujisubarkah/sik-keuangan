@@ -81,14 +81,7 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-gray-200">
-              <NuxtLink 
-                :to="`/${route.params.slug}/informasi`" 
-                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
-                :disabled="submitting"
-              >
-                Batal
-              </NuxtLink>
+            <div class="flex justify-end pt-4 border-t border-gray-200">
               <button 
                 type="submit" 
                 :disabled="submitting || !form.judul.trim() || !form.deskripsi.trim()"
@@ -106,15 +99,7 @@
         </div>
       </div>
 
-      <!-- Back Link (Mobile Friendly) -->
-      <div class="mt-6 text-center sm:text-left">
-        <NuxtLink :to="`/${route.params.slug}/informasi`" class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Kembali ke daftar informasi
-        </NuxtLink>
-      </div>
+      <!-- Back Link dihapus sesuai permintaan -->
 
     </div>
   </div>

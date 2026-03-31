@@ -94,7 +94,7 @@
                     role="menuitem"
                   >
                     <i class="idds idds-sign-out"></i>
-                    Sign Out
+                    Ganti Akun
                   </NuxtLink>
                 </div>
               </li>

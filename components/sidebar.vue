@@ -18,7 +18,9 @@
   >
     <!-- Logo Centered -->
     <div class="sidebar-logo flex justify-center items-center mt-6 mb-6">
-      <img src="/logolanwhite.png" alt="Logo SIKLAN" class="h-12 md:h-[50px] w-auto" />
+      <NuxtLink :to="filteredMenuItems.find(i => i.group === 'navigation')?.to || '/'" class="focus:outline-none">
+        <img src="/logolanwhite.png" alt="Logo SIKLAN" class="h-12 md:h-[50px] w-auto cursor-pointer" />
+      </NuxtLink>
     </div>
 
     <!-- Search Form -->
