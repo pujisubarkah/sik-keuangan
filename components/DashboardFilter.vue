@@ -101,7 +101,7 @@
                 min="2000"
                 max="2100"
                 placeholder="2026"
-                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 text-center font-mono"
+                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 text-center font-[Inter]"
                 @input="validateYear"
               />
               <!-- Icon di dalam input Tahun dihapus -->

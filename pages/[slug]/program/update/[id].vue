@@ -40,7 +40,7 @@
             <div class="grid grid-cols-12 items-center gap-4">
               <label class="col-span-3 text-right font-semibold text-gray-700" for="jumlah">Jumlah</label>
               <div class="col-span-9">
-                <input v-model="form.jumlah" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
+                <input v-model="form.jumlah" @input="form.jumlah = formatNumberWithDots(form.jumlah)" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
               </div>
             </div>
           </div>
@@ -124,7 +124,7 @@ async function handleSubmit() {
         id: Number(id),
         kode_program: form.value.kode,
         nama_program: form.value.nama,
-        total: form.value.jumlah ? Number(form.value.jumlah) : null
+        total: form.value.jumlah ? Number(unformatNumber(form.value.jumlah)) : null
       })
     })
     const json2 = await res2.json()
@@ -141,6 +141,16 @@ async function handleSubmit() {
     console.error('Exception saat update:', e)
     alert('Gagal menyimpan data!')
   }
+}
+
+const formatNumberWithDots = (value) => {
+  if (!value) return ''
+  const number = value.toString().replace(/\D/g, '')
+  return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+const unformatNumber = (value) => {
+  if (!value) return ''
+  return value.toString().replace(/\./g, '')
 }
 
 onMounted(fetchProgram)

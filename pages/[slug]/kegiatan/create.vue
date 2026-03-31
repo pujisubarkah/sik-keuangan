@@ -173,8 +173,8 @@ async function submitForm() {
           </div>
         </div>
         <div class="flex justify-end mt-10">
-          <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
-            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+          <Button type="success" class="rounded-xl shadow-lg bg-green-600 hover:bg-green-700 transition-transform duration-150 px-8 py-3 font-semibold text-lg text-white" native-type="submit">
+            Simpan
           </Button>
         </div>
       </form>

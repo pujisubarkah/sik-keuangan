@@ -159,7 +159,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
+import { IconEye, IconPencil, IconTrash, IconPlus } from '@tabler/icons-vue'
 import { useUserStore } from '~/stores/user'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
