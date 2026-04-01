@@ -84,7 +84,7 @@
               <div class="md:col-span-12 flex flex-col sm:flex-row justify-end items-center gap-2 mt-2 w-full">
                 <div class="flex flex-row w-full sm:w-auto justify-end gap-2">
                   <button type="submit"
-                    class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                    class="inline-flex items-center gap-2 rounded-md border border-brandBlue-700 bg-brandBlue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brandBlue-700 focus:outline-none focus:ring-2 focus:ring-brandBlue-400 focus:ring-offset-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -128,8 +128,8 @@
             <thead class="bg-blue-100 sticky top-0 z-10">
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode Suboutput</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode RO</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Output</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Komp</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Sub Komp</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Akun</th>
@@ -143,10 +143,27 @@
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
+              <tr class="bg-white border-b border-gray-200 mt-2">
+                <th></th>
+                <th><input v-model="columnFilters.id_pekerjaan_kode" placeholder="Cari" class="filter-input" /></th>
+                <th><input v-model="columnFilters.id_pekerjaan_nama" class="filter-input" placeholder="" /></th>
+                <th><input v-model="columnFilters.kode_komponen" class="filter-input" /></th>
+                <th><input v-model="columnFilters.kode_subkomponen" class="filter-input" /></th>
+                <th><input v-model="columnFilters.kode_akun" class="filter-input" /></th>
+                <th><input v-model="columnFilters.uraian" class="filter-input" /></th>
+                <th><input v-model="columnFilters.jumlah" class="filter-input text-right" /></th>
+                <th><input v-model="columnFilters.tanggal_pengajuan" class="filter-input text-center" /></th>
+                <th><input v-model="columnFilters.tanggal" class="filter-input text-center" /></th>
+                <th><input v-model="columnFilters.status_pertanggungjawaban" class="filter-input text-center" /></th>
+                <th><input v-model="columnFilters.status_sp2d" class="filter-input text-center" /></th>
+                <th><input v-model="columnFilters.keterangan" class="filter-input" /></th>
+                <th></th>
+                <th></th>
+              </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="(item, index) in pengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
-                <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+              <tr v-for="(item, index) in filteredPengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+                  <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
                   <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_kode }}
@@ -194,7 +211,7 @@
                 </td>
               </tr>
               <!-- Empty State -->
-              <tr v-if="(pengeluaranData?.length || 0) === 0">
+              <tr v-if="(filteredPengeluaranData?.length || 0) === 0">
                 <td colspan="15" class="px-6 py-10 text-center text-gray-500">
                   <div class="flex flex-col items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -301,6 +318,40 @@ const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const pengeluaranData = ref([])
 const totalData = ref(0)
+const searchText = ref('')
+
+const columnFilters = ref({
+  id_pekerjaan_kode: '',
+  id_pekerjaan_nama: '',
+  kode_komponen: '',
+  kode_subkomponen: '',
+  kode_akun: '',
+  uraian: '',
+  jumlah: '',
+  tanggal_pengajuan: '',
+  tanggal: '',
+  status_pertanggungjawaban: '',
+  status_sp2d: '',
+  keterangan: '',
+})
+
+const filteredPengeluaranData = computed(() => {
+  return pengeluaranData.value.filter(item => {
+    if (columnFilters.value.id_pekerjaan_kode && !(item.id_pekerjaan_kode || '').toLowerCase().includes(columnFilters.value.id_pekerjaan_kode.toLowerCase())) return false
+    if (columnFilters.value.id_pekerjaan_nama && !(item.id_pekerjaan_nama || '').toLowerCase().includes(columnFilters.value.id_pekerjaan_nama.toLowerCase())) return false
+    if (columnFilters.value.kode_komponen && !(item.kode_komponen || '').toLowerCase().includes(columnFilters.value.kode_komponen.toLowerCase())) return false
+    if (columnFilters.value.kode_subkomponen && !(item.kode_subkomponen || '').toLowerCase().includes(columnFilters.value.kode_subkomponen.toLowerCase())) return false
+    if (columnFilters.value.kode_akun && !(item.kode_akun || '').toLowerCase().includes(columnFilters.value.kode_akun.toLowerCase())) return false
+    if (columnFilters.value.uraian && !(item.uraian || '').toLowerCase().includes(columnFilters.value.uraian.toLowerCase())) return false
+    if (columnFilters.value.jumlah && !(String(item.jumlah || '').toLowerCase().includes(columnFilters.value.jumlah.toLowerCase()))) return false
+    if (columnFilters.value.tanggal_pengajuan && !(String(item.tanggal_pengajuan || '').toLowerCase().includes(columnFilters.value.tanggal_pengajuan.toLowerCase()))) return false
+    if (columnFilters.value.tanggal && !(String(item.tanggal || '').toLowerCase().includes(columnFilters.value.tanggal.toLowerCase()))) return false
+    if (columnFilters.value.status_pertanggungjawaban && !(String(item.status_pertanggungjawaban || '').toLowerCase().includes(columnFilters.value.status_pertanggungjawaban.toLowerCase()))) return false
+    if (columnFilters.value.status_sp2d && !(String(item.status_sp2d || '').toLowerCase().includes(columnFilters.value.status_sp2d.toLowerCase()))) return false
+    if (columnFilters.value.keterangan && !(item.keterangan || '').toLowerCase().includes(columnFilters.value.keterangan.toLowerCase())) return false
+    return true
+  })
+})
 
 async function fetchPengeluaran() {
   try {
@@ -460,3 +511,9 @@ watch(itemsPerPage, () => {
   currentPage.value = 1
 })
 </script>
+
+<style scoped>
+.filter-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded text-xs bg-white shadow-sm transition placeholder-gray-400 focus:border-green-400 focus:ring-0 outline-none placeholder:text-center placeholder:font-normal;
+}
+</style>

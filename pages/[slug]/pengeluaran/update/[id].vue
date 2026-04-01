@@ -121,7 +121,7 @@
                           <label class="text-sm font-semibold w-32 text-black" for="Pengeluaran_sisa">Sisa Anggaran</label>
                           <div class="relative flex-1">
                             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-black pointer-events-none select-none">Rp</span>
-                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-right pl-10 text-black" readonly placeholder="Sisa" :value="form.sisa" type="text" />
+                            <input id="Pengeluaran_sisa" class="modern-form-control bg-light text-right pl-10 text-black" readonly placeholder="Sisa" :value="formattedSisa" type="text" />
                           </div>
                         </div>
                       </div>
@@ -385,6 +385,25 @@ watch(() => form.value.jumlah, (val) => {
 function onJumlahInput(e) {
   formattedJumlah.value = e.target.value
 }
+
+// --- FORMAT INPUT SISA ANGGARAN DENGAN TITIK RIBUAN ---
+const rawSisa = ref('')
+
+const formattedSisa = computed({
+  get() {
+    return formatNumberWithDots(rawSisa.value)
+  },
+  set(val) {
+    rawSisa.value = val.replace(/\D/g, '')
+  }
+})
+
+watch(() => form.value.sisa, (val) => {
+  if (val !== rawSisa.value) rawSisa.value = val || ''
+})
+watch(rawSisa, (val) => {
+  if (val !== form.value.sisa) form.value.sisa = val
+})
 
 // Submit update pengajuan
 async function submitForm() {

@@ -38,11 +38,11 @@
               </tr>
               <tr :class="['even:bg-blue-50', 'odd:bg-white']">
                 <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Jumlah Pengeluaran</th>
-                <td class="px-4 py-2">Rp {{ form.jumlah }}</td>
+                <td class="px-4 py-2">Rp {{ formatRupiah(form.jumlah) }}</td>
               </tr>
               <tr :class="['even:bg-blue-50', 'odd:bg-white']">
                 <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Sisa Anggaran</th>
-                <td class="px-4 py-2">Rp {{ form.sisa }}</td>
+                <td class="px-4 py-2">Rp {{ formatRupiah(form.sisa) }}</td>
               </tr>
               <tr :class="['even:bg-blue-50', 'odd:bg-white']">
                 <th class="text-left px-4 py-2 text-blue-600 font-semibold border-r border-slate-200">Keterangan</th>
@@ -110,6 +110,12 @@
 </template>
 
 <script setup>
+// Format angka dengan titik ribuan
+function formatRupiah(value) {
+  if (typeof value === 'number') value = value.toString();
+  if (!value) return '';
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Berkas from '@/components/berkas.vue'
