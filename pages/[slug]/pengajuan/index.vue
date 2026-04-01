@@ -61,7 +61,7 @@
             <div class="md:col-span-12 flex flex-col sm:flex-row justify-end items-center gap-2 mt-2 w-full">
               <div class="flex flex-row w-full sm:w-auto justify-end gap-2">
                 <button type="submit"
-                  class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                  class="inline-flex items-center gap-2 rounded-md border border-brandBlue-700 bg-brandBlue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brandBlue-700 active:bg-brandBlue-800 hover:border-brandBlue-800 active:border-brandBlue-800 focus:outline-none focus:ring-2 focus:ring-brandBlue-300 focus:ring-offset-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>

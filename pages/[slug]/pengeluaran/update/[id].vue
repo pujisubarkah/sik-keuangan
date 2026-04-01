@@ -23,7 +23,7 @@
           <div class="modern-card-body">
             <div class="overflow-x-auto">
               <table class="min-w-full bg-white border border-slate-200 rounded-lg">
-                <tbody>
+                <tbody class="text-black">
                   <tr>
                     <th class="text-left px-4 py-2 text-blue-600 font-semibold w-56 border-r border-slate-200">Tanggal Pengajuan</th>
                     <td class="px-4 py-2">
@@ -114,7 +114,7 @@
                           <label class="text-sm font-semibold w-32 text-black" for="Pengeluaran_jumlah">Jumlah Pengajuan</label>
                           <div class="relative flex-1">
                             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-black pointer-events-none select-none">Rp</span>
-                            <input id="Pengeluaran_jumlah" class="modern-form-control text-right pl-10 text-black" placeholder="0" v-model="form.jumlah" type="text" />
+                            <input id="Pengeluaran_jumlah" class="modern-form-control text-right pl-10 text-black" placeholder="0" :value="formattedJumlah" type="text" @input="onJumlahInput($event)" autocomplete="off" />
                           </div>
                         </div>
                         <div class="flex flex-1 items-center gap-2">
@@ -180,8 +180,8 @@
             </div>
           </div>
           <div class="modern-card-footer flex justify-end">
-            <button class="modern-btn modern-btn-primary bg-[#3781C7] hover:bg-[#2663A3] text-white font-semibold px-6 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200" type="submit">
-              <i class="fa fa-save"></i> Update
+            <button class="modern-btn border border-brandBlue-700 bg-brandBlue-600 hover:bg-brandBlue-700 active:bg-brandBlue-800 hover:border-brandBlue-800 active:border-brandBlue-800 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brandBlue-300 focus:ring-offset-2" type="submit">
+              Simpan
             </button>
           </div>
         </div>
@@ -357,6 +357,35 @@ watch(selectedAkun, () => {
   form.value.rkakl_detail_id = ''
 })
 
+// --- FORMAT INPUT ANGKA RIBUAN OTOMATIS ---
+const rawJumlah = ref('')
+
+const formatNumberWithDots = (value) => {
+  if (!value) return ''
+  const number = value.toString().replace(/\D/g, '')
+  return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
+const formattedJumlah = computed({
+  get() {
+    return formatNumberWithDots(rawJumlah.value)
+  },
+  set(val) {
+    rawJumlah.value = val.replace(/\D/g, '')
+  }
+})
+
+watch(rawJumlah, (val) => {
+  form.value.jumlah = val
+})
+watch(() => form.value.jumlah, (val) => {
+  if (val !== rawJumlah.value) rawJumlah.value = val || ''
+})
+
+function onJumlahInput(e) {
+  formattedJumlah.value = e.target.value
+}
+
 // Submit update pengajuan
 async function submitForm() {
   try {
@@ -469,7 +498,7 @@ onMounted(async () => {
 label {
   font-size: 1rem;
   font-weight: 600;
-  color: #2563eb;
+  color: #000 !important;
   margin-bottom: 4px;
 }
 .text-right {
@@ -479,7 +508,14 @@ label {
   background-color: #f1f5f9;
 }
 .text-muted {
-  color: #64748b !important;
+  color: #000 !important;
+}
+th {
+  color: #000 !important;
+}
+
+.text-blue-600, .text-slate-500 {
+  color: #000 !important;
 }
 .modern-input-group-text {
   display: flex;
