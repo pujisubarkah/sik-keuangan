@@ -150,7 +150,8 @@
             <VButton 
               type="submit" 
               :loading="isSubmitting"
-              class="px-8 py-2.5 rounded-xl font-semibold bg-green-500 text-white hover:bg-green-600 focus:ring-4 focus:ring-green-200 shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              variant="brandblue"
+              class="px-8 py-2.5 rounded-xl font-semibold flex items-center gap-2"
             >
               <Icon v-if="isSubmitting" icon="mdi:loading" class="w-5 h-5 animate-spin" />
               <Icon v-else icon="mdi:content-save" class="w-5 h-5" />

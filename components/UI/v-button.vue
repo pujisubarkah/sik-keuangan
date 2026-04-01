@@ -73,7 +73,8 @@
       secondary: 'border-gray-600 bg-gray-600 text-white hover:bg-gray-700 hover:shadow-lg',
       success: 'border-emerald-800 bg-emerald-700 text-white hover:bg-emerald-800 hover:shadow-lg',
       danger: 'border-red-800 bg-red-700 text-white hover:bg-red-800 hover:shadow-lg',
-      outline: 'border-green-800 bg-transparent text-green-700 hover:bg-green-50 hover:shadow-md'
+      outline: 'border-green-800 bg-transparent text-green-700 hover:bg-green-50 hover:shadow-md',
+      brandblue: 'border-brandBlue-700 bg-brandBlue-600 text-white hover:bg-brandBlue-700 active:bg-brandBlue-800 hover:border-brandBlue-800 active:border-brandBlue-800 focus:outline-none focus:ring-2 focus:ring-brandBlue-300 focus:ring-offset-2 shadow-md transition-all'
     }
 
     const sizeClasses = {
