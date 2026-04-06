@@ -90,7 +90,7 @@ async function fetchProgram() {
         tahun: json.data.created_at ? new Date(json.data.created_at).getFullYear().toString() : '',
         kode: json.data.kode_program || '',
         nama: json.data.nama_program || '',
-        jumlah: json.data.total !== undefined && json.data.total !== null ? String(json.data.total) : ''
+        jumlah: json.data.total !== undefined && json.data.total !== null ? formatNumberWithDots(String(json.data.total)) : ''
       }
     }
   } catch (e) {}

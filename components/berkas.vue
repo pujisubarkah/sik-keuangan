@@ -3,7 +3,7 @@
     <div class="modern-card-header">
       <h3 class="modern-card-title">Daftar Berkas</h3>
       <slot name="add-button">
-        <button class="modern-btn modern-btn-primary flex items-center gap-2 bg-[#3781C7] hover:bg-[#2663A3] text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200" @click="$emit('add')">
+        <button class="modern-btn modern-btn-primary flex items-center gap-2 bg-[#00B925] hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200" @click="$emit('add')">
           <i class="fa fa-plus"></i>
           Tambah Berkas
         </button>
@@ -140,14 +140,15 @@ const props = defineProps({
   font-size: 1.1rem;
   background: none;
 }
+/* Override for Tambah Berkas button */
 .modern-btn-primary {
-  background: #2563eb;
+  background: #B1670C !important;
   color: #fff;
   border: none;
   margin-left: 8px;
 }
 .modern-btn-primary:hover {
-  background: #1d4ed8;
+  background: #905110 !important;
 }
 .modern-btn:hover {
   background: #f1f5f9;

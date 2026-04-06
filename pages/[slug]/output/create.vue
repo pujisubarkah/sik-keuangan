@@ -118,12 +118,12 @@ async function submitForm() {
       <span>/</span>
       <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
       <span>/</span>
-      <span class="font-bold text-blue-700">Create</span>
+      <span class="font-bold text-blue-700">Input</span>
     </div>
 
     <!-- TITLE -->
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      SIK - Create Output
+      SIK - Input Output
     </h1>
 
     <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
@@ -192,8 +192,11 @@ async function submitForm() {
           </div>
         </div>
         <div class="flex justify-end mt-10">
-          <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
-            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+          <Button 
+            class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 px-8 py-3 font-bold text-lg bg-gradient-to-tr from-brandBlue-500 to-brandBlue-700 text-white hover:from-brandBlue-600 hover:to-brandBlue-800"
+            native-type="submit"
+          >
+            Simpan
           </Button>
         </div>
       </form>

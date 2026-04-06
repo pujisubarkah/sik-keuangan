@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                   <th>Jumlah</th>
-                  <td class="text-right">Rp {{ kegiatanInfo.total_anggaran }}</td>
+                  <td class="text-right font-inter-number">Rp {{ kegiatanInfo.total_anggaran }}</td>
                 </tr>
               </tbody>
             </table>
@@ -154,6 +154,11 @@ onMounted(fetchKegiatanDetail)
   color: #1e293b;
 }
 
+.font-inter-number {
+  font-family: 'Inter', 'Arial', sans-serif;
+  letter-spacing: 0.01em;
+}
+
 .detail-view tr {
   border-bottom: 1px solid #f1f5f9;
 }
@@ -201,8 +206,12 @@ onMounted(fetchKegiatanDetail)
 /* ===== Angka ===== */
 .text-right {
   text-align: right;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-weight: 600;
+}
+
+.font-inter-number {
+  font-family: 'Inter', 'Arial', sans-serif !important;
+  letter-spacing: 0.01em;
 }
 
 /* ===== Alert Wrapper ===== */

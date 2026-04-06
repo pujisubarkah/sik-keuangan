@@ -117,12 +117,12 @@ async function submitForm() {
       <span>/</span>
       <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
       <span>/</span>
-      <span class="font-bold text-blue-700">Create</span>
+      <span class="font-bold text-blue-700">Input</span>
     </div>
 
     <!-- TITLE -->
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      SIK - Create Kegiatan
+      SIK - Input Kegiatan
     </h1>
 
     <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">

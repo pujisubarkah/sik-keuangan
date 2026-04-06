@@ -40,7 +40,7 @@
             <div class="grid grid-cols-12 items-start gap-4">
               <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
               <div class="col-span-9">
-                <textarea v-model="form.nama" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
+                <textarea v-model="form.nama" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
               </div>
             </div>
             <!-- Jumlah -->
@@ -107,7 +107,7 @@ async function fetchKegiatan() {
         id_program: json.data.program_id || '',
         kode: json.data.kode_kegiatan || '',
         nama: json.data.nama_kegiatan || '',
-        jumlah: json.data.total ? String(json.data.total) : ''
+        jumlah: json.data.total ? formatNumberWithDots(String(json.data.total)) : ''
       }
     }
   } catch (e) {}
