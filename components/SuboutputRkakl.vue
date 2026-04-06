@@ -38,7 +38,7 @@
     </div>
     <!-- Table -->
     <div class="overflow-x-auto">
-      <table class="w-full text-sm">
+      <table class="w-full text-sm font-sans">
         <thead>
           <tr class="bg-blue-50">
             <th class="px-3 py-3 text-left font-bold text-blue-900 w-20">Kode</th>
@@ -87,7 +87,7 @@
                   :key="`item-${idx}`"
                   :class="''"
                 >
-                  <td class="px-3 py-2 text-gray-500 text-xs pl-12" colspan="2">
+                  <td class="px-3 py-2 text-gray-500 text-xs pl-12 font-sans" colspan="2">
                     <div class="flex items-start gap-2">
                       <span class="text-gray-400 mt-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,16 +102,15 @@
                       </div>
                     </div>
                   </td>
-                  <td class="px-3 py-2 text-right text-xs font-mono">{{ item.volume || 0 }}</td>
-                  <td class="px-3 py-2 text-xs text-gray-600">{{ item.satuan || '-' }}</td>
-                  <td class="px-3 py-2 text-right text-xs font-mono">{{ formatCurrency(item.harga_satuan) }}</td>
-                  <td class="px-3 py-2 text-right text-xs font-mono font-semibold text-gray-800">
-                    {{ formatCurrency(item.jumlah) }}
-                  </td>
+                  <td class="px-3 py-2 text-right text-xs font-sans">{{ item.volume || 0 }}</td>
+                  <td class="px-3 py-2 text-xs text-gray-600 font-sans">{{ item.satuan || '-' }}</td>
+                  <td class="px-3 py-2 text-right text-xs font-sans">{{ formatCurrency(item.harga_satuan) }}</td>
+                  <td class="px-3 py-2 text-right text-xs font-sans font-semibold text-gray-800">{{ formatCurrency(item.jumlah) }}</td>
                   <td class="px-3 py-2 text-center">
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal`" class="inline-flex items-center justify-center text-blue-500 hover:text-blue-700">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13h3l8-8a2.828 2.828 0 10-4-4l-8 8v3h3z" />
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal`" class="inline-flex items-center justify-center text-[#2663A3] hover:opacity-80">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#2663A3" stroke-width="2">
+                        <!-- path plus dihapus, hanya path pensil/edit -->
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.121 2.121 0 113 3L7.5 18.75l-4 1 1-4L16.862 3.487z" />
                       </svg>
                     </NuxtLink>
                   </td>
@@ -124,10 +123,10 @@
         <!-- Footer Total -->
         <tfoot>
           <tr>
-            <td colspan="5" class="px-3 py-3 text-right font-bold text-green-800 border-t-2 border-green-300">
+            <td colspan="5" class="px-3 py-3 text-right font-bold text-green-800 font-sans">
               TOTAL ANGGARAN:
             </td>
-            <td class="px-3 py-3 text-right font-bold text-green-800 border-t-2 border-green-300 text-lg">
+            <td class="px-3 py-3 text-right font-bold text-green-800 text-lg font-sans">
               {{ formatCurrency(calculateTotal()) }}
             </td>
             <td></td>
