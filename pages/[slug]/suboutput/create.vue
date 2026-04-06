@@ -285,23 +285,18 @@ onMounted(async () => {
             Lengkapi formulir di bawah untuk menambahkan rincian output baru ke dalam sistem.
           </p>
         </div>
-        <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100">
-          <Icon icon="mdi:calendar" class="w-4 h-4 text-blue-600" />
-          <span class="text-sm font-medium text-blue-700">Tahun Anggaran {{ tahun }}</span>
-        </div>
+        <!-- Tahun Anggaran di pojok kanan dihapus sesuai permintaan -->
       </div>
     </div>
 
     <!-- 📋 Form Card -->
     <div class="max-w-5xl mx-auto px-6">
-      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden border-t-4 border-t-[#D69009]">
         
         <!-- Card Header dengan gradient accent -->
         <div class="px-8 py-6 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-b border-slate-100">
           <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-blue-100 rounded-xl">
-              <Icon icon="mdi:file-document-plus-outline" class="w-5 h-5 text-blue-600" />
-            </div>
+            <!-- Icon di header dihapus sesuai permintaan -->
             <div>
               <h2 class="text-lg font-semibold text-slate-800">Detail Suboutput</h2>
               <p class="text-sm text-slate-500">Field dengan <span class="text-rose-500">*</span> wajib diisi</p>
@@ -405,11 +400,6 @@ onMounted(async () => {
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-10 pt-6 border-t border-slate-100">
-            <Button type="neutral" native-type="button" 
-                    class="px-6 py-2.5 rounded-xl font-medium border-slate-200 hover:bg-slate-50 transition-all"
-                    @click="router?.back()">
-              <Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" /> Batal
-            </Button>
             <Button type="success" native-type="submit" :disabled="isSubmitting"
                     class="px-8 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 
                            hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-500/25 

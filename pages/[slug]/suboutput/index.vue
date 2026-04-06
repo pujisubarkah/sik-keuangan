@@ -20,7 +20,7 @@
           <IconPlus class="h-4 w-4" />
           <span>Tambah Rincian Ouput</span>
         </NuxtLink>
-        <NuxtLink to="/admin/suboutput/export" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <NuxtLink to="/admin/suboutput/export" class="inline-flex items-center gap-2 rounded-md border border-[#00B925] bg-[#00B925] px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:shadow-lg">
           <IconDownload class="h-4 w-4" />
           <span>Export ke Excel</span>
         </NuxtLink>
@@ -114,8 +114,8 @@
                 <td class="px-3 py-2 text-center align-middle">{{ item.tahun }}</td>
                 <td class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">{{ formatCurrency(item.anggaran) }}</td>
                 <td class="px-3 py-2 align-middle">
-                  <span v-if="item.unit_name" class="inline-block bg-gray-100 text-gray-700 rounded px-2 py-1 font-semibold">{{ item.unit_name }}</span>
-                  <span v-else class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">-</span>
+                  <span v-if="item.unit_name" class="inline-block text-gray-700 font-semibold">{{ item.unit_name }}</span>
+                  <span v-else class="inline-block text-red-700 font-semibold">-</span>
                 </td>
                 
                 <td class="px-3 py-2 text-right align-middle">
