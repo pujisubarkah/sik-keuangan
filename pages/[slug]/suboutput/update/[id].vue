@@ -37,7 +37,7 @@
       </div>
 
       <!-- 📋 Form Card -->
-      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 border-t-4 border-t-[#D69009] overflow-hidden">
         
         <!-- Card Header -->
         <div class="px-8 py-6 bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-b border-slate-100">

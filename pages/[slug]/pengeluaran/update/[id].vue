@@ -16,7 +16,7 @@
 
     <section class="content">
       <form class="modern-form" @submit.prevent="submitForm">
-        <div class="modern-card">
+        <div class="modern-card border-t-4 border-t-[#D69009]">
           <div class="modern-card-header">
             <h3 class="modern-card-title">Form Pengeluaran / Pengajuan</h3>
           </div>

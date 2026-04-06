@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-lg rounded-xl border border-gray-200/80">
+  <div class="bg-white shadow-lg rounded-xl border border-gray-200/80 border-t-4 border-t-[#D69009]">
     <!-- Card Header -->
     <div class="p-4 sm:p-6 border-b border-gray-100">
       <div class="flex items-start gap-4">

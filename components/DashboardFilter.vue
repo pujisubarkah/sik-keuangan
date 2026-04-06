@@ -5,7 +5,7 @@
     :class="{ 'animate-fade-in-up': true }"
   >
     <!-- Decorative Header Bar -->
-    <div class="h-1 bg-brandGold-300" />
+    <div class="h-1 bg-[#D69009]" />
     
     <div class="p-5 md:p-6">
       <!-- Card Header -->

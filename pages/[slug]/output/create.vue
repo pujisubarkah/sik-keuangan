@@ -126,12 +126,10 @@ async function submitForm() {
       SIK - Input Output
     </h1>
 
-    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden border-t-4 border-t-[#D69009]">
       <div class="px-8 py-6 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-b border-slate-100">
         <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-blue-100 rounded-xl">
-            <Icon icon="mdi:file-document-plus-outline" class="w-5 h-5 text-blue-600" />
-          </div>
+          <!-- Icon di header dihapus sesuai permintaan -->
           <div>
             <h2 class="text-lg font-semibold text-slate-800">Detail Output</h2>
             <p class="text-sm text-slate-500">Field dengan <span class="text-rose-500">*</span> wajib diisi</p>

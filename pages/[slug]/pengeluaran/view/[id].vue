@@ -14,7 +14,7 @@
         <li>Edit</li>
       </ul>
     </div>
-    <form @submit.prevent class="bg-white rounded-xl shadow-lg border border-slate-200 p-8 mb-8">
+    <form @submit.prevent class="bg-white rounded-xl shadow-lg border border-slate-200 border-t-4 border-t-[#D69009] p-8 mb-8">
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-slate-800 mb-6">Detil Pengeluaran</h3>
         <div class="overflow-x-auto">

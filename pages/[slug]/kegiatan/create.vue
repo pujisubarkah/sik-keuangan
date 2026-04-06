@@ -125,7 +125,7 @@ async function submitForm() {
       SIK - Input Kegiatan
     </h1>
 
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-[#D69009]">
       <div class="px-8 pt-6 pb-4 border-b border-gray-200">
         <h1 class="text-2xl font-bold text-gray-800">Tambah Kegiatan</h1>
         <p class="text-gray-500 text-sm mt-1">Lengkapi detail kegiatan di bawah ini.</p>
