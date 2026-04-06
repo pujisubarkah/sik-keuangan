@@ -9,7 +9,7 @@
       </h2>
       <div class="flex gap-2">
         
-        <a class="btn btn-sm btn-success flex items-center gap-2" :href="exportUrl">
+        <a class="btn btn-sm flex items-center gap-1.5 text-white bg-[#00B925] hover:opacity-90 transition-colors" style="border-radius:0.5rem;padding:0.5rem 1rem;" :href="exportUrl">
           <i class="fa fa-download"></i> Export Excel
         </a>
       </div>

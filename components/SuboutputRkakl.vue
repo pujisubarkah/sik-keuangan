@@ -1,47 +1,59 @@
 <template>
-  <div v-if="data" class="bg-white rounded-lg shadow overflow-hidden">
+  <div v-if="data" class="bg-white rounded-lg shadow overflow-hidden my-8">
     <!-- Header Info -->
-    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-      <h2 class="text-xl font-bold text-white">Detail Rincian Kegiatan Anggaran</h2>
-      <p class="text-blue-100 text-sm mt-1">{{ data.nama_suboutput || '-' }}</p>
+    <div class="bg-white px-6 py-4 border-t-4 border-[#D69009] flex items-center gap-4">
+      <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 mt-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4V4zm4 4h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z" />
+        </svg>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-base font-bold text-gray-500 mb-1">Detail Rincian Output (RO)</span>
+        <span class="text-xl font-semibold text-gray-900 leading-tight">{{ data.nama_suboutput || '-' }}</span>
+      </div>
     </div>
+    <div class="border-b border-gray-200"></div>
 
     <!-- Action Buttons -->
     <div class="flex gap-2 justify-end px-6 py-4">
       <NuxtLink
         :to="`/${$route.params.slug}/anggaran/create`"
-        class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
+        class="inline-flex items-center gap-2 rounded-md border border-[#B1670C] bg-[#B1670C] text-white font-semibold transition-all px-4 py-2 text-sm hover:opacity-90"
       >
-        <IconPlus class="w-4 h-4" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
         Tambah Anggaran
       </NuxtLink>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 text-white font-semibold shadow-md transition-all px-4 py-2 text-sm hover:bg-green-800 hover:shadow-lg"
+        class="inline-flex items-center gap-2 rounded-md border border-[#00B925] bg-[#00B925] text-white font-semibold transition-all px-4 py-2 text-sm hover:opacity-90"
         @click="$emit('ekspor-excel')"
       >
-        <IconFileSpreadsheet class="w-4 h-4" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
         Ekspor ke Excel
       </button>
     </div>
     <!-- Table -->
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-        <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
-          <tr>
-            <th class="px-3 py-3 text-left font-bold text-blue-900 border-b-2 border-blue-200 w-20">Kode</th>
-            <th class="px-3 py-3 text-left font-bold text-blue-900 border-b-2 border-blue-200">Uraian</th>
-            <th class="px-3 py-3 text-right font-bold text-blue-900 border-b-2 border-blue-200 w-24">Volume</th>
-            <th class="px-3 py-3 text-left font-bold text-blue-900 border-b-2 border-blue-200 w-20">Satuan</th>
-            <th class="px-3 py-3 text-right font-bold text-blue-900 border-b-2 border-blue-200 w-32">Harga Satuan</th>
-            <th class="px-3 py-3 text-right font-bold text-blue-900 border-b-2 border-blue-200 w-32">Jumlah</th>
-            <th class="px-3 py-3 text-center font-bold text-blue-900 border-b-2 border-blue-200 w-16">Aksi</th>
+        <thead>
+          <tr class="bg-blue-50">
+            <th class="px-3 py-3 text-left font-bold text-blue-900 w-20">Kode</th>
+            <th class="px-3 py-3 text-left font-bold text-blue-900">Uraian</th>
+            <th class="px-3 py-3 text-right font-bold text-blue-900 w-24">Volume</th>
+            <th class="px-3 py-3 text-left font-bold text-blue-900 w-20">Satuan</th>
+            <th class="px-3 py-3 text-right font-bold text-blue-900 w-32">Harga Satuan</th>
+            <th class="px-3 py-3 text-right font-bold text-blue-900 w-32">Jumlah</th>
+            <th class="px-3 py-3 text-center font-bold text-blue-900 w-16">Aksi</th>
           </tr>
         </thead>
         <tbody>
           <!-- Komponen Level -->
           <template v-for="(komp, idxK) in data.komponen || []" :key="`komp-${idxK}`">
-            <tr class="bg-blue-50">
+            <tr>
               <td class="px-3 py-2 font-bold text-blue-800 border-t">{{ komp.kode_komponen }}</td>
               <td class="px-3 py-2 font-bold text-blue-800 border-t" colspan="6">
                 {{ komp.nama_komponen }}
@@ -50,7 +62,7 @@
             
             <!-- Subkomponen Level -->
             <template v-for="(subkomp, idxS) in komp.subkomponen || []" :key="`subkomp-${idxS}`">
-              <tr class="bg-indigo-50">
+              <tr>
                 <td class="px-3 py-2 font-semibold text-indigo-700 border-t pl-6">{{ subkomp.kode_subkomponen }}</td>
                 <td class="px-3 py-2 font-semibold text-indigo-700 border-t" colspan="6">
                   {{ subkomp.nama_subkomponen }}
@@ -60,7 +72,7 @@
               <!-- Group by Akun (Belanja Bahan, Belanja Honor, etc) -->
               <template v-for="(akunGroup, akunKode) in groupByAkun(subkomp.akun)" :key="`akun-${akunKode}`">
                 <!-- Akun Header -->
-                <tr class="bg-amber-50 border-t-2 border-amber-200">
+                <tr class="border-t-2 border-amber-200">
                   <td class="px-3 py-2 font-bold text-amber-800" colspan="2">
                     {{ akunKode }} - {{ akunGroup[0]?.nama_akun }}
                   </td>
@@ -73,8 +85,7 @@
                 <tr 
                   v-for="(item, idx) in akunGroup" 
                   :key="`item-${idx}`"
-                  class="hover:bg-gray-50"
-                  :class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+                  :class="''"
                 >
                   <td class="px-3 py-2 text-gray-500 text-xs pl-12" colspan="2">
                     <div class="flex items-start gap-2">
@@ -111,7 +122,7 @@
         </tbody>
         
         <!-- Footer Total -->
-        <tfoot class="bg-gradient-to-r from-green-50 to-emerald-50">
+        <tfoot>
           <tr>
             <td colspan="5" class="px-3 py-3 text-right font-bold text-green-800 border-t-2 border-green-300">
               TOTAL ANGGARAN:

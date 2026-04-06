@@ -183,7 +183,6 @@ async function submitForm() {
           <!-- Tahun -->
           <div class="flex items-center gap-4">
             <label for="tahun" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
-              <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
               Tahun
             </label>
             <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" readonly />
@@ -191,7 +190,7 @@ async function submitForm() {
         </div>
         <div class="flex justify-end mt-10">
           <Button 
-            class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 px-8 py-3 font-bold text-lg bg-gradient-to-tr from-brandBlue-500 to-brandBlue-700 text-white hover:from-brandBlue-600 hover:to-brandBlue-800"
+            class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 px-8 py-3 font-bold text-lg bg-[#00B925] text-white hover:bg-green-600"
             native-type="submit"
           >
             Simpan

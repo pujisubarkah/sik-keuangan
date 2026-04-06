@@ -8,7 +8,7 @@
 				Daftar Output Semua Satker Tahun 2026
 			</h2>
 			<div class="flex gap-2">
-				<a class="btn btn-sm btn-success" href="/index.php?r=admin/index&export=1&exportObject=kro">
+				<a class="btn btn-sm flex items-center gap-1.5 text-white bg-[#00B925] hover:opacity-90 transition-colors" style="border-radius:0.5rem;padding:0.5rem 1rem;" href="/index.php?r=admin/index&export=1&exportObject=kro">
 					<i class="fa fa-download"></i> Export Excel
 				</a>
 			</div>
