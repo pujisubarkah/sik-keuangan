@@ -175,7 +175,7 @@
           <!-- Export Buttons -->
           <div class="mt-4 flex gap-2">
             <button @click="addIndukAkun"
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2663A3] hover:bg-brandBlue-700 text-white font-semibold shadow transition-all">
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-green-800 bg-green-700 hover:bg-green-800 text-white font-semibold shadow-md transition-all">
               <span class="text-xl font-bold leading-none">+</span> Tambah Akun Induk
             </button>
             <button @click="exportExcel"
