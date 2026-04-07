@@ -27,7 +27,7 @@
                 <div class="relative" ref="dropdownRefs" :data-idx="idx">
                   <button 
                     type="button"
-                    class="btn btn-xs btn-primary rounded shadow hover:shadow-md transition-shadow" 
+                    class="p-1 rounded hover:bg-gray-100 focus:outline-none transition-shadow"
                     @click="toggleDropdown(idx)"
                     :aria-expanded="dropdownOpen === idx"
                     :aria-controls="`dropdown-menu-${idx}`"
@@ -37,25 +37,26 @@
                   <div 
                     v-if="dropdownOpen === idx" 
                     :id="`dropdown-menu-${idx}`"
-                    class="absolute z-20 bg-white border rounded shadow-lg mt-1 left-0 w-48 py-1"
+                    class="fixed z-30 bg-white border rounded shadow-lg mt-1 left-0 w-48 py-1"
+                    :style="dropdownMenuStyle"
                   >
                     <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('jadwal', row)">
-                      <i class="fa fa-calendar w-4 text-blue-500"></i> Jadwal
+                      <i class="fa fa-calendar w-4 text-blue-600"></i> Jadwal
                     </a>
                     <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('revisi', row)">
-                      <i class="fa fa-pencil-alt w-4 text-blue-500"></i> Revisi
+                      <i class="fa fa-edit w-4 text-blue-600"></i> Revisi
                     </a>
                     <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('sub', row)">
-                      <i class="fa fa-plus w-4 text-green-500"></i> Sub Anggaran
+                      <i class="fa fa-plus w-4 text-blue-600"></i> Sub Anggaran
                     </a>
                     <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('cairkan', row)">
-                      <i class="fa fa-shopping-cart w-4 text-orange-500"></i> Ajukan Pencairan
+                      <i class="fa fa-shopping-cart w-4 text-blue-600"></i> Ajukan Pencairan
                     </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-red-50 text-red-700" @click.prevent="confirmDelete(row)">
-                      <i class="fa fa-trash w-4 text-red-600"></i> Hapus
+                    <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-blue-700" @click.prevent="confirmDelete(row)">
+                      <i class="fa fa-trash w-4 text-blue-600"></i> Hapus
                     </a>
                     <a href="#" class="block px-4 py-2 hover:bg-blue-50 text-gray-700" @click.prevent="handleAction('debug', row)">
-                      <i class="fa fa-refresh w-4 text-gray-500"></i> Debug (Developer)
+                      <i class="fa fa-refresh w-4 text-blue-600"></i> Debug (Developer)
                     </a>
                   </div>
                 </div>
@@ -89,9 +90,9 @@
               </template>
             </td>
                 <!-- Tombol Simpan -->
-                <div class="flex justify-end px-8 pb-6">
+                <div class="flex justify-end px-8 pb-6 mt-8">
                   <button
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow disabled:opacity-50"
+                    class="bg-[#2663A3] hover:bg-[#1F4F85] text-white font-semibold px-6 py-2 rounded shadow disabled:opacity-50"
                     :disabled="!canSave"
                     @click="saveAll"
                   >
@@ -149,6 +150,7 @@ const rows = ref([
 // Dropdown state
 const dropdownOpen = ref(null)
 const dropdownRefs = ref([])
+const dropdownMenuStyle = ref({})
 
 // Inline edit state
 const editingCell = ref(null) // { row, idx, value, error }
@@ -162,7 +164,34 @@ const deleteSuccess = ref(false)
 
 // Toggle dropdown dengan close outside handler
 function toggleDropdown(idx) {
-  dropdownOpen.value = dropdownOpen.value === idx ? null : idx
+  if (dropdownOpen.value === idx) {
+    dropdownOpen.value = null
+    dropdownMenuStyle.value = {}
+  } else {
+    dropdownOpen.value = idx
+    nextTick(() => {
+      const btn = dropdownRefs.value[idx]?.querySelector('button')
+      if (btn) {
+        const rect = btn.getBoundingClientRect()
+        const menuHeight = 240 // approx height of dropdown
+        const menuWidth = 192 // w-48
+        const spaceBelow = window.innerHeight - rect.bottom
+        let top = rect.bottom
+        if (spaceBelow < menuHeight) {
+          top = rect.top - menuHeight
+        }
+        let left = rect.left
+        if (left + menuWidth > window.innerWidth) {
+          left = window.innerWidth - menuWidth - 8
+        }
+        dropdownMenuStyle.value = {
+          left: left + 'px',
+          top: top + 'px',
+          width: menuWidth + 'px',
+        }
+      }
+    })
+  }
 }
 
 // Close dropdown when clicking outside
