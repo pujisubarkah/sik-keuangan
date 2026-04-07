@@ -166,8 +166,7 @@ function formatHargaSatuan(e) {
 						</div>
 					</div>
 					<div class="form-actions flex justify-end mt-8">
-						<button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-							<Icon icon="mdi:check" class="w-5 h-5" />
+						<button type="submit" class="inline-flex items-center gap-2 rounded-md border border-[#2663A3] bg-[#2663A3] px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#1F4F85] hover:shadow-lg">
 							Simpan
 						</button>
 					</div>

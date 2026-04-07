@@ -37,13 +37,13 @@ definePageMeta({ layout: 'default' });
           <thead class="bg-blue-100 sticky top-0 z-10">
             <tr>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
-              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
                 <button @click="sortBy('kode_barang')" class="hover:text-blue-700">Kode Barang {{ getSortIcon('kode_barang') }}</button>
               </th>
-              <th class="px-3 py-2 font-semibold text-blue-700 align-middle">
+              <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
                 <button @click="sortBy('nama_barang')" class="hover:text-blue-700">Nama Barang {{ getSortIcon('nama_barang') }}</button>
               </th>
-              <th class="px-3 py-2 text-right font-semibold text-green-700 align-middle">
+              <th class="px-3 py-2 text-center font-semibold text-green-700 align-middle">
                 <button @click="sortBy('harga_satuan')" class="hover:text-green-700">Harga Satuan {{ getSortIcon('harga_satuan') }}</button>
               </th>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">
@@ -57,19 +57,19 @@ definePageMeta({ layout: 'default' });
               </th>
               <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Aksi</th>
             </tr>
-            <tr class="bg-blue-50">
+            <tr class="bg-white">
               <td></td>
               <td>
-                <input v-model="filters.kode_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Barang" />
+                <input v-model="filters.kode_barang" @input="applyFilters" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center" maxlength="50" placeholder="Cari..." />
               </td>
               <td>
-                <input v-model="filters.nama_barang" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="255" placeholder="Nama Barang" />
+                <input v-model="filters.nama_barang" @input="applyFilters" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center" maxlength="255" placeholder="Cari..." />
               </td>
               <td>
-                <input v-model="filters.harga_satuan" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="20" placeholder="Harga" />
+                <input v-model="filters.harga_satuan" @input="applyFilters" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center" maxlength="20" placeholder="Cari..." />
               </td>
               <td>
-                <select v-model="filters.id_satker" @change="applyFilters" class="select select-bordered select-xs w-full">
+                <select v-model="filters.id_satker" @change="applyFilters" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center">
                   <option value="">Semua</option>
                   <option v-for="satker in satkerOptions" :key="satker.id" :value="satker.id">
                     {{ satker.nama }}
@@ -77,7 +77,7 @@ definePageMeta({ layout: 'default' });
                 </select>
               </td>
               <td>
-                <select v-model="filters.id_unit" @change="applyFilters" class="select select-bordered select-xs w-full">
+                <select v-model="filters.id_unit" @change="applyFilters" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center">
                   <option value="">Semua</option>
                   <option v-for="unit in unitOptions" :key="unit.id" :value="unit.id">
                     {{ unit.nama }}
@@ -85,14 +85,9 @@ definePageMeta({ layout: 'default' });
                 </select>
               </td>
               <td>
-                <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="input input-bordered input-xs w-full" maxlength="50" placeholder="Kode Akun" />
+                <input v-model="filters.kode_akun" @input="applyFilters" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-center" maxlength="50" placeholder="Cari..." />
               </td>
-              <td class="text-center">
-                <button @click="applyFilters" type="button" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-                  <IconSearch class="w-4 h-4" />
-                  <span>Filter Data</span>
-                </button>
-              </td>
+              <td></td>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
