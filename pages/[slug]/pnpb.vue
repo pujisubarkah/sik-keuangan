@@ -85,12 +85,12 @@
         </div>
       </div>
       <!-- Rekap Akun PNBP Table -->
-      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
+      <div class="mb-2">
+        <h2 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">Rekap Akun PNBP</h2>
+      </div>
+      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100 overflow-hidden">
+        <div class="h-1 bg-[#D69009]" />
         <div class="card-body p-3 md:p-4">
-          <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-            <i class="fa fa-bar-list text-blue-500"></i>
-            Rekap Akun PNBP
-          </h2>
           <div class="w-full overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl shadow-lg border border-blue-100 bg-white" style="table-layout: auto;">
               <thead class="bg-blue-100 sticky top-0 z-10">
@@ -174,9 +174,18 @@
           </div>
           <!-- Export Buttons -->
           <div class="mt-4 flex gap-2">
-            <button class="btn btn-primary btn-sm" @click="addIndukAkun"><i class="glyphicon glyphicon-plus"></i> Tambah Akun Induk</button>
-            <button class="btn btn-success btn-sm" @click="exportExcel"><i class="glyphicon glyphicon-download"></i> Export ke Excel</button>
-            <button class="btn btn-success btn-sm" @click="exportRealisasi"><i class="glyphicon glyphicon-file"></i> Export Realisasi</button>
+            <button @click="addIndukAkun"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2663A3] hover:bg-brandBlue-700 text-white font-semibold shadow transition-all">
+              <span class="text-xl font-bold leading-none">+</span> Tambah Akun Induk
+            </button>
+            <button @click="exportExcel"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00B925] hover:bg-green-700 text-white font-semibold shadow transition-all">
+              <i class="fa fa-download text-white"></i> Export Excel
+            </button>
+            <button @click="exportRealisasi"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold shadow transition-all">
+              <i class="fa fa-download text-white"></i> Export Realisasi
+            </button>
           </div>
         </div>
       </div>
