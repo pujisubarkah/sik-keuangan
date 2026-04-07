@@ -128,20 +128,16 @@ definePageMeta({ layout: 'default' });
       </div>
         
         <!-- Pagination -->
-        <div class="flex justify-center mt-6">
-          <div class="btn-group">
-            <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" class="btn btn-sm">«</button>
-            <button
-              v-for="page in visiblePages"
-              :key="page"
-              @click="goToPage(page)"
-              :class="['btn btn-sm', page === currentPage ? 'btn-active' : '']"
-            >
-              {{ page }}
-            </button>
-            <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" class="btn btn-sm">»</button>
+        <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-6">
+          <span class="text-sm text-gray-500 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
+          <div class="flex flex-wrap items-center gap-2 md:justify-end">
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(1)">Awal</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">Previous</button>
+            <button v-for="page in visiblePages" :key="page" type="button" class="rounded-md border px-3 py-2 text-sm transition-colors" :class="page === currentPage ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'" @click="goToPage(page)">{{ page }}</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages" @click="goToPage(currentPage + 1)">Next</button>
+            <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50" :disabled="currentPage === totalPages" @click="goToPage(totalPages)">Akhir</button>
           </div>
-		</div>
+        </div>
 	  </div>
 	</div>
 </template>

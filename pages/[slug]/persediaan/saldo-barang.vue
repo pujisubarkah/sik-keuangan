@@ -124,7 +124,7 @@ function cetakPdf() {
 
     <!-- Filter Card (Refactored to match DashboardFilter.vue) -->
     <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden">
-      <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+      <div class="h-1 bg-gradient-to-r from-[#B1670C] via-[#B1670C] to-[#B1670C]" />
       <div class="p-5 md:p-6">
         <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
           <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
