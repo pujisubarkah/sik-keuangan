@@ -117,7 +117,7 @@ const handleSubmit = async () => {
 
     <!-- CARD (Styled like DashboardFilter.vue) -->
     <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden max-w-3xl mx-auto">
-      <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+      <div class="h-1" style="background-color: #B1670C;" />
       <div class="p-5 md:p-6">
         <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
           <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
@@ -173,13 +173,12 @@ const handleSubmit = async () => {
           </span>
         </div>
         <!-- ACTION -->
-        <div class="flex">
+        <div>
           <Button
             @click="handleSubmit"
             :disabled="isSubmitting"
-            class="btn w-auto px-6 flex items-center gap-2 bg-green-600 hover:bg-green-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+            class="btn w-full flex items-center gap-2 bg-green-600 hover:bg-green-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
           >
-            <!-- Icon ceklis dihapus -->
             <span>
               {{ isSubmitting ? 'Menyimpan...' : 'Simpan' }}
             </span>

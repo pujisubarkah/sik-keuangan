@@ -1,15 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 
-import Icon from '~/components/Icon.vue'
-import SuboutputAlert from '~/components/SuboutputAlert.vue'
-
-definePageMeta({
-  layout: 'default'
-})
-
-// State
-const showAlert = ref(true)
 const filterForm = ref({
   nama_perusahaan: '',
   nomor_faktur: '',
@@ -58,7 +49,7 @@ const filterData = () => {
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700">
-        <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
+        Beranda
       </NuxtLink>
       <span>/</span>
       <NuxtLink to="/persediaanFaktur/admin" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
@@ -71,43 +62,39 @@ const filterData = () => {
     <!-- Data Table Card -->
     <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <div class="card-body">
-        <div class="text-sm mb-4 text-blue-700 font-semibold">
-          Menampilkan <span class="font-bold">{{ tableData.length }}</span> hasil.
-        </div>
-        
         <div class="overflow-x-auto">
           <table class="table table-md w-full rounded-xl overflow-hidden">
             <thead>
               <!-- Header Row -->
               <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="text-center rounded-tl-xl">No</th>
-                <th class="text-center">Perusahaan</th>
-                <th class="text-center">Nomor Faktur</th>
-                <th class="text-center">Tanggal Faktur</th>
-                <th class="text-center">Nomor SPM</th>
-                <th class="text-center">Akun</th>
-                <th class="text-right">Jumlah</th>
-                <th class="text-center">&nbsp;</th>
-                <th class="text-center">&nbsp;</th>
-                <th class="text-center rounded-tr-xl">Pilihan</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle rounded-tl-xl bg-blue-100">No</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Perusahaan</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Nomor Faktur</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Tanggal Faktur</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Nomor SPM</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Akun</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Jumlah</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">&nbsp;</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">&nbsp;</th>
+                <th class="px-3 py-2 text-left font-semibold text-blue-700 align-middle rounded-tr-xl bg-blue-100">Pilihan</th>
               </tr>
               <!-- Filter Row -->
               <tr class="bg-blue-50 border-b border-blue-100">
                 <td><div class="filter-container">&nbsp;</div></td>
                 <td>
-                  <input v-model="filterForm.nama_perusahaan" type="text" class="input input-bordered input-xs w-full" placeholder="Perusahaan" />
+                  <input v-model="filterForm.nama_perusahaan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Perusahaan" />
                 </td>
                 <td>
-                  <input v-model="filterForm.nomor_faktur" type="text" class="input input-bordered input-xs w-full" placeholder="No Faktur" />
+                  <input v-model="filterForm.nomor_faktur" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="No Faktur" />
                 </td>
                 <td>
-                  <input v-model="filterForm.tanggal_faktur" type="date" class="input input-bordered input-xs w-full" />
+                  <input v-model="filterForm.tanggal_faktur" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
                 </td>
                 <td>
-                  <input v-model="filterForm.nomor_spm" type="text" class="input input-bordered input-xs w-full" placeholder="No SPM" />
+                  <input v-model="filterForm.nomor_spm" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="No SPM" />
                 </td>
                 <td>
-                  <input v-model="filterForm.akun" type="text" class="input input-bordered input-xs w-full" placeholder="Akun" />
+                  <input v-model="filterForm.akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Akun" />
                 </td>
                 <td><div class="filter-container">&nbsp;</div></td>
                 <td><div class="filter-container">&nbsp;</div></td>
@@ -116,7 +103,7 @@ const filterData = () => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in tableData" :key="item.id" class="hover:bg-blue-50 transition-all duration-150">
+              <tr v-for="(item, index) in tableData" :key="item.id">
                 <td class="text-center font-bold text-blue-700">{{ item.no }}</td>
                 <td class="text-blue-700 font-semibold">{{ item.perusahaan }}</td>
                 <td class="text-center">{{ item.nomor_faktur }}</td>
@@ -127,18 +114,18 @@ const filterData = () => {
                 
                 <!-- Action Icons -->
                 <td class="text-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="hover:text-blue-700 transition tooltip" data-tip="Detail Pengeluaran">
-                    <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="tooltip" data-tip="Detail Pengeluaran">
+                    <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
                 </td>
                 <td class="text-center">
-                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="hover:text-blue-700 transition tooltip" data-tip="Cetak Faktur">
-                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="tooltip" data-tip="Cetak Faktur">
+                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
                   </a>
                 </td>
                 <td class="text-center">
-                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
-                    <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="tooltip" data-tip="View">
+                    <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
                 </td>
               </tr>

@@ -112,7 +112,7 @@ function cetakPdf() {
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700">
-        <Icon icon="tabler:home" class="w-4 h-4 inline text-blue-600" /> Dashboard
+        Beranda
       </NuxtLink>
       <span>/</span>
       <span>Persediaan</span>
@@ -228,12 +228,12 @@ function cetakPdf() {
             <!-- Header Row 2 -->
             <tr class="bg-blue-100 text-blue-700 font-semibold">
               <th class="px-3 py-2 text-center border border-gray-300">Jumlah</th>
-              <th class="px-3 py-2 text-right border border-gray-300">Rupiah</th>
+              <th class="px-3 py-2 text-center border border-gray-300">Rupiah</th>
               <th class="px-3 py-2 text-center border border-gray-300">Tambah</th>
               <th class="px-3 py-2 text-center border border-gray-300">Kurang</th>
               <th class="px-3 py-2 text-center border border-gray-300">Jumlah</th>
               <th class="px-3 py-2 text-center border border-gray-300">Jumlah</th>
-              <th class="px-3 py-2 text-right border border-gray-300">Rupiah</th>
+              <th class="px-3 py-2 text-center border border-gray-300">Rupiah</th>
             </tr>
           </thead>
           <tbody>

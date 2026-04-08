@@ -5,7 +5,7 @@ definePageMeta({ layout: 'default' });
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700">
-        <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
+        Beranda
       </NuxtLink>
       <span>/</span>
       <span>Persediaan</span>

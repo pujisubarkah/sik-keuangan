@@ -34,19 +34,19 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Admin OMSPAN</h1>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">
-        <span class="font-semibold text-blue-700">{{ item.nama }}</span>
+        <span class="font-semibold text-black">{{ item.nama }}</span>
       </template>
       <template #username="{ item }">
-        <span class="text-center">{{ item.username }}</span>
+        <span class="text-center text-black">{{ item.username }}</span>
       </template>
       <template #role="{ item }">
         <span class="badge badge-primary text-white font-bold">{{ item.role }}</span>
       </template>
       <template #satker="{ item }">
-        <span class="text-center">{{ item.satker }}</span>
+        <span class="text-center text-black">{{ item.satker }}</span>
       </template>
       <template #lastLogin="{ item }">
-        <span class="text-center text-sm">{{ item.lastLogin }}</span>
+        <span class="text-center text-sm text-black">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
         <button class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">

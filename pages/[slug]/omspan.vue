@@ -37,8 +37,8 @@ const formatCurrency = (value) =>
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/admin" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink to="/admin" class="hover:text-blue-700">
+        Beranda
       </NuxtLink>
       <span>/</span>
       <span>OMSPAN</span>
@@ -121,7 +121,7 @@ const formatCurrency = (value) =>
         <!-- FOOTER ACTION -->
         <div class="mt-6">
           <NuxtLink to="/admin/omspanPengaturan">
-            <Button class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+            <Button class="inline-flex px-6 py-2 rounded-lg bg-blue-500 text-white font-semibold shadow hover:bg-blue-600 transition items-center gap-2">
               <IconEdit class="w-4 h-4" />
               <span>Kelola Isi Konten OMSPAN</span>
             </Button>

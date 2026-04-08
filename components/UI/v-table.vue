@@ -19,14 +19,15 @@
       </thead>
       <tbody class="divide-y divide-gray-100">
         <template v-if="items && items.length">
-          <tr v-for="(item, rowIndex) in items" :key="rowIndex" class="hover:bg-yellow-50 align-middle">
+          <tr v-for="(item, rowIndex) in items" :key="rowIndex" class="hover:bg-yellow-50 align-middle bg-blue-50">
             <td
               v-for="header in headers"
               :key="header.value"
               :class="[
-                'px-3 py-2 text-sm align-middle',
+                'px-3 py-2 text-sm align-middle !text-black',
                 header.center ? 'text-center' : (header.right ? 'text-right' : 'text-left')
               ]"
+              style="color: #000 !important;"
             >
               <slot :name="header.value" :item="item" :index="rowIndex">
                 {{ item[header.value] }}
