@@ -85,7 +85,11 @@
               <button 
                 type="submit" 
                 :disabled="submitting || !form.judul.trim() || !form.deskripsi.trim()"
-                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-md shadow text-white"
+                style="background-color:#2663A3;"
+                @mouseover="(e) => e.currentTarget.style.backgroundColor = '#1F4F85'"
+                @mouseleave="(e) => e.currentTarget.style.backgroundColor = '#2663A3'"
+                :style="submitting || !form.judul.trim() || !form.deskripsi.trim() ? 'background-color:#d1d5db;color:#6b7280;cursor:not-allowed;' : 'background-color:#2663A3;color:#fff;'"
               >
                 <svg v-if="submitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

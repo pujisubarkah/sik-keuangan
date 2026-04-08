@@ -30,8 +30,8 @@ const berkasList = ref([
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink to="/" class="hover:text-blue-700">
+        <span class="font-medium">Beranda</span>
       </NuxtLink>
       <span>/</span>
       <span>Berkas</span>
@@ -48,7 +48,7 @@ const berkasList = ref([
     <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
       <div class="card-body">
         <!-- ACTION -->
-        <div class="mb-4">
+        <div class="mt-6 mb-6 ml-4">
           <NuxtLink to="/admin/berkas/create">
             <VButton
               variant="primary"
@@ -60,7 +60,7 @@ const berkasList = ref([
             </VButton>
           </NuxtLink>
         </div>
-        <div class="text-sm mb-4 text-blue-700 font-semibold">
+        <div class="text-sm mb-4 text-blue-700 font-semibold ml-4">
           Menampilkan <b>{{ berkasList.length }}</b> data
         </div>
         <!-- TABLE -->
@@ -76,25 +76,31 @@ const berkasList = ref([
               </tr>
               <tr class="bg-blue-50">
                 <td></td>
-                <td>
+                <td class="px-3 py-2">
                   <input
                     v-model="filter.kode_akun"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Kode Akun"
+                    type="text"
+                    class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    maxlength="255"
+                    placeholder="Cari kode..."
                   />
                 </td>
-                <td>
+                <td class="px-3 py-2">
                   <input
                     v-model="filter.nama_berkas"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Nama Berkas"
+                    type="text"
+                    class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    maxlength="255"
+                    placeholder="Cari nama berkas..."
                   />
                 </td>
-                <td>
+                <td class="px-3 py-2">
                   <input
                     v-model="filter.kata_kunci"
-                    class="input input-bordered input-xs w-full text-center"
-                    placeholder="Kata Kunci"
+                    type="text"
+                    class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    maxlength="255"
+                    placeholder="Cari kata kunci..."
                   />
                 </td>
                 <td></td>
@@ -112,13 +118,13 @@ const berkasList = ref([
               >
                 <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ i + 1 }}</td>
                 <td class="px-3 py-2 text-center align-middle">
-                  <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ b.kode_akun }}</span>
+                  <span class="font-semibold text-blue-700 bg-transparent">{{ b.kode_akun }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
-                  <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ b.nama_berkas }}</span>
+                  <span class="font-semibold text-green-700 bg-transparent">{{ b.nama_berkas }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
-                  <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ b.kata_kunci }}</span>
+                  <span class="font-semibold text-yellow-700 bg-transparent">{{ b.kata_kunci }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-1">

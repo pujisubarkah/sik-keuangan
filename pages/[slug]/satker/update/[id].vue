@@ -23,18 +23,7 @@
             required
           />
         </div>
-        <div class="mb-6">
-          <label for="unit_kerja" class="block text-sm font-semibold text-gray-700 mb-2">
-            Unit Kerja
-          </label>
-          <select
-            id="unit_kerja"
-            v-model="selectedUnit"
-            class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 shadow-sm transition"
-          >
-            <option v-for="unit in unitOptions" :key="unit.id" :value="unit.id">{{ unit.name }}</option>
-          </select>
-        </div>
+
         <div class="flex justify-end">
           <button
             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition flex items-center gap-2"
@@ -58,33 +47,21 @@ import SuboutputAlert from '@/components/SuboutputAlert.vue'
 
 const route = useRoute()
 const satkerId = route?.params?.id
-const satkerNama = ref('LAN JAKARTA')
+const satkerNama = ref('')
 const unitOptions = ref([])
 const selectedUnit = ref('')
 
 onMounted(async () => {
   if (!satkerId) return
   try {
-    // Fetch data satker untuk mendapatkan unit_id yang sedang dipakai
+    // Fetch data satker untuk mendapatkan nama
     const satkerRes = await fetch(`/api/satker/${satkerId}`)
     const satkerData = await satkerRes.json()
-    // Fetch unit options
-    const res = await fetch(`/api/unit_kerja/satker/${satkerId}`)
-    const data = await res.json()
-    unitOptions.value = Array.isArray(data) ? data : []
-    // Jika satkerData.unit_id ada di unitOptions, set selectedUnit ke unit_id tersebut
-    if (satkerData && satkerData.unit_id) {
-      const found = unitOptions.value.find(u => u.id === satkerData.unit_id)
-      if (found) {
-        selectedUnit.value = found.id.toString()
-      } else if (unitOptions.value.length > 0) {
-        selectedUnit.value = unitOptions.value[0].id.toString()
-      }
-    } else if (unitOptions.value.length > 0) {
-      selectedUnit.value = unitOptions.value[0].id.toString()
+    if (satkerData && satkerData.name) {
+      satkerNama.value = satkerData.name
     }
   } catch (e) {
-    unitOptions.value = []
+    satkerNama.value = ''
   }
 })
 

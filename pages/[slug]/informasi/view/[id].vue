@@ -75,10 +75,9 @@ const formatDeskripsi = (text) => {
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink 
         to="/" 
-        class="hover:text-blue-700 flex items-center gap-1 transition"
+        class="hover:text-blue-700 transition"
       >
-        <IconFileText class="w-4 h-4 text-blue-600" /> 
-        Dashboard
+        <span class="font-medium">Beranda</span>
       </NuxtLink>
       <span class="text-gray-300">/</span>
       <NuxtLink 

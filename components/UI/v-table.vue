@@ -1,6 +1,6 @@
 
 <template>
-  <div class="shadow-lg rounded-xl bg-white p-4 overflow-x-auto">
+  <div class="rounded-xl bg-white p-4 overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200 text-sm" style="table-layout: auto;">
       <thead class="bg-blue-100 sticky top-0 z-10">
         <tr>

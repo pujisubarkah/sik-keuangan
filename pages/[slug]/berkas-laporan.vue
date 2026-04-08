@@ -47,25 +47,25 @@ const filteredLaporanList = computed(() =>
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <IconHome class="w-4 h-4 text-blue-600" /> Dashboard
+      <NuxtLink to="/" class="hover:text-blue-700">
+        <span class="font-medium">Beranda</span>
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/berkas-laporan" class="hover:text-blue-700">Berkas Laporans</NuxtLink>
+      <NuxtLink to="/admin/berkas-laporan" class="hover:text-blue-700">Berkas Laporan</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
 
     <!-- TITLE -->
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      Daftar Berkas Laporans
+      Daftar Berkas Laporan
     </h1>
 
     <!-- CARD -->
     <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
       <div class="card-body">
         <!-- ACTION -->
-        <div class="mb-4">
+        <div class="mt-6 mb-6 ml-4">
           <NuxtLink to="/admin/berkas-laporan/create">
             <VButton
               variant="primary"
@@ -73,11 +73,12 @@ const filteredLaporanList = computed(() =>
               :prependIcon="IconPlus"
               class="w-fit"
             >
-              Tambah Berkas Laporans
+              Tambah Berkas Laporan
             </VButton>
           </NuxtLink>
         </div>
         <div class="text-sm mb-4 text-blue-700 font-semibold">
+        <div class="text-sm mb-4 text-blue-700 font-semibold ml-4">
           Menampilkan <b>{{ laporanList.length }}</b> data
         </div>
         <!-- TABLE: VTable -->
@@ -135,5 +136,6 @@ const filteredLaporanList = computed(() =>
         </VTable>
       </div>
     </div>
+  </div>
   </div>
 </template>

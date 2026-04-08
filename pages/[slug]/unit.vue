@@ -16,9 +16,9 @@
       <h1 class="text-2xl font-bold">Daftar Unit</h1>
 
       <ul class="breadcrumb flex gap-2 text-sm text-gray-500">
-        <li><a href="/">Dashboard</a></li>
+        <li><a href="/">Beranda</a></li>
         <li>/</li>
-        <li><a href="#">Units</a></li>
+        <li><a href="#">Unit</a></li>
         <li>/</li>
         <li>Daftar</li>
       </ul>
@@ -62,18 +62,10 @@
         <tbody class="divide-y divide-gray-100">
           <tr v-for="(unit, index) in paginatedUnits" :key="unit.id" class="hover:bg-yellow-50 align-middle transition">
             <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-            <td class="px-3 py-2 text-left align-middle">
-              <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ unit.name }}</span>
-            </td>
-            <td class="px-3 py-2 text-center align-middle">
-              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ unit.kode || '-' }}</span>
-            </td>
-            <td class="px-3 py-2 text-center align-middle">
-              <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ getSatkerName(unit.satker_id) }}</span>
-            </td>
-            <td class="px-3 py-2 text-center align-middle">
-              <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ unit.alias || '-' }}</span>
-            </td>
+            <td class="px-3 py-2 text-left align-middle font-semibold text-blue-700">{{ unit.name }}</td>
+            <td class="px-3 py-2 text-center align-middle font-semibold text-green-700">{{ unit.kode || '-' }}</td>
+            <td class="px-3 py-2 text-center align-middle font-semibold text-yellow-700">{{ getSatkerName(unit.satker_id) }}</td>
+            <td class="px-3 py-2 text-center align-middle font-semibold text-green-700">{{ unit.alias || '-' }}</td>
           </tr>
           <tr v-if="paginatedUnits.length === 0">
             <td colspan="5" class="text-center py-8 text-gray-500 border border-blue-100">Tidak ada data ditemukan</td>
@@ -83,9 +75,9 @@
 
       <!-- Pagination -->
       <div v-if="units && units.length > pageSize" class="flex items-center justify-between mt-4">
-        <button @click="prevPage" :disabled="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50">Previous</button>
+        <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-1.5 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50 text-sm">Previous</button>
         <span class="text-sm">Halaman {{ currentPage }} dari {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50">Next</button>
+        <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-1.5 rounded bg-gray-200 text-gray-700 hover:bg-gray-400 hover:text-white transition disabled:opacity-50 text-sm">Next</button>
       </div>
     </div>
 
