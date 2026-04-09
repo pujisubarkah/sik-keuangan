@@ -16,7 +16,7 @@
       <h1 class="text-2xl font-bold">Daftar Unit</h1>
 
       <ul class="breadcrumb flex gap-2 text-sm text-gray-500">
-        <li><a href="/">Beranda</a></li>
+        <li><NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 font-medium">Beranda</NuxtLink></li>
         <li>/</li>
         <li><a href="#">Unit</a></li>
         <li>/</li>

@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-[#F8F9FB]">
+  <div class="min-h-screen bg-white border-0">
     <Header :rail="rail" @toggle-sidebar="toggleSidebar" />
     <!-- Sidebar top offset and main padding-top must match header height -->
     <Sidebar :rail="rail" class="fixed top-20 left-0 z-30" />
-    <main :class="[rail ? 'ml-20' : 'ml-64', 'pt-20', 'transition-all duration-300', 'px-6', 'py-6']">
+    <main :class="[rail ? 'ml-20' : 'ml-64', 'pt-20', 'transition-all duration-300', 'px-6', 'py-6', 'bg-white', 'border-0']">
       <slot />
     </main>
     <!-- <Footer /> jika ada -->

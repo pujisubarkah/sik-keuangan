@@ -47,7 +47,7 @@ const filteredLaporanList = computed(() =>
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         <span class="font-medium">Beranda</span>
       </NuxtLink>
       <span>/</span>

@@ -6,7 +6,7 @@
       </h1>
       <ul class="flex items-center gap-2 text-sm text-slate-500 mt-2">
         <li>
-          <NuxtLink to="/" class="hover:text-blue-600"><i class="fa fa-dashboard"></i></NuxtLink>
+          <NuxtLink to="/" class="hover:text-blue-600">Beranda</NuxtLink>
         </li>
         <li><span class="mx-1">/</span></li>
         <li>Pengeluaran</li>

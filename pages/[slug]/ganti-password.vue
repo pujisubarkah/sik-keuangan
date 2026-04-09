@@ -104,7 +104,7 @@ const handleSubmit = async () => {
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+        Beranda
       </NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Ganti Password</span>

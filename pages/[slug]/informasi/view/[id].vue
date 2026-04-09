@@ -74,7 +74,7 @@ const formatDeskripsi = (text) => {
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink 
-        to="/" 
+        :to="`/${$route.params.slug}`" 
         class="hover:text-blue-700 transition"
       >
         <span class="font-medium">Beranda</span>

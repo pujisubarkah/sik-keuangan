@@ -139,14 +139,14 @@ async function submitForm() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16 pb-12 px-4">
+  <div class="min-h-screen bg-white pt-16 pb-12 px-4">
     <!-- ALERT -->
     <SuboutputAlert :showAlert="showAlert" />
 
     <!-- BREADCRUMB -->
     <div class="max-w-6xl mx-auto mb-6">
       <nav class="flex items-center gap-2 text-sm text-gray-500">
-        <NuxtLink to="/" class="hover:text-blue-600 transition-colors">
+        <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-600 transition-colors">
           <span class="font-medium">Beranda</span>
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-gray-300" />

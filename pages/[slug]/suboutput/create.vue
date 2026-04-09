@@ -261,8 +261,7 @@ onMounted(async () => {
     <div class="max-w-5xl mx-auto px-6 mb-8">
       <nav class="flex items-center gap-2 text-sm">
         <NuxtLink to="/" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
-          <Icon icon="mdi:home-outline" class="w-4 h-4 group-hover:scale-110 transition-transform" />
-          <span class="font-medium">Dashboard</span>
+          <span class="font-medium">Beranda</span>
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />
         <NuxtLink :to="`/${route.params.slug}/suboutput`" 
