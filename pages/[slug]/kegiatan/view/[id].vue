@@ -14,9 +14,9 @@
       </h1>
       <!-- Breadcrumb -->
       <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=/site/index">Dashboard</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}`">Beranda</NuxtLink></li>
         <li>/</li>
-        <li><NuxtLink to="/index.php?r=kegiatan/index">Kegiatan</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}/kegiatan`">Kegiatan</NuxtLink></li>
         <li>/</li>
         <li class="font-medium text-slate-700">{{ kegiatanInfo.kegiatan_nama }}</li>
       </ul>

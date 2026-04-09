@@ -103,7 +103,7 @@ const handleSubmit = async () => {
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
         Beranda
       </NuxtLink>
       <span>/</span>
@@ -117,7 +117,7 @@ const handleSubmit = async () => {
 
     <!-- CARD (Styled like DashboardFilter.vue) -->
     <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden max-w-3xl mx-auto">
-      <div class="h-1" style="background-color: #B1670C;" />
+      <div class="h-1" style="background-color: #D69009;" />
       <div class="p-5 md:p-6">
         <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
           <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">

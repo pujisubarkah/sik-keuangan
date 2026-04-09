@@ -4,11 +4,9 @@ definePageMeta({ layout: 'default' });
   <div class="pt-14">
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         Beranda
       </NuxtLink>
-      <span>/</span>
-      <span>Persediaan</span>
       <span>/</span>
       <span class="font-bold text-blue-700">Daftar Barang</span>
     </div>

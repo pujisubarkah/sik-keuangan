@@ -37,11 +37,9 @@ const formatCurrency = (value) =>
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/admin" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         Beranda
       </NuxtLink>
-      <span>/</span>
-      <span>OMSPAN</span>
       <span>/</span>
       <span class="font-bold text-blue-700">Realisasi Terakhir</span>
     </div>

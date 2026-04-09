@@ -260,7 +260,7 @@ onMounted(async () => {
     <!-- 📍 Breadcrumb -->
     <div class="max-w-5xl mx-auto px-6 mb-8">
       <nav class="flex items-center gap-2 text-sm">
-        <NuxtLink to="/" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
+        <NuxtLink :to="`/${$route.params.slug}`" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
           <span class="font-medium">Beranda</span>
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />

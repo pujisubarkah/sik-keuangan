@@ -48,11 +48,9 @@ const filterData = () => {
 
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         Beranda
       </NuxtLink>
-      <span>/</span>
-      <NuxtLink to="/persediaanFaktur/admin" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
@@ -79,7 +77,7 @@ const filterData = () => {
                 <th class="px-3 py-2 text-left font-semibold text-blue-700 align-middle rounded-tr-xl bg-blue-100">Pilihan</th>
               </tr>
               <!-- Filter Row -->
-              <tr class="bg-blue-50 border-b border-blue-100">
+              <tr class="bg-white border-b border-blue-100">
                 <td><div class="filter-container">&nbsp;</div></td>
                 <td>
                   <input v-model="filterForm.nama_perusahaan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Perusahaan" />
@@ -114,17 +112,17 @@ const filterData = () => {
                 
                 <!-- Action Icons -->
                 <td class="text-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="tooltip" data-tip="Detail Pengeluaran">
+                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Detail Pengeluaran" style="border:none;padding:0;">
                     <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
                 </td>
                 <td class="text-center">
-                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="tooltip" data-tip="Cetak Faktur">
+                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Cetak Faktur" style="border:none;padding:0;">
                     <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
                   </a>
                 </td>
                 <td class="text-center">
-                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="tooltip" data-tip="View">
+                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View" style="border:none;padding:0;">
                     <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
                 </td>

@@ -106,9 +106,7 @@ function formatHargaSatuan(e) {
 
 		<!-- BREADCRUMB -->
 		<div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-			<NuxtLink to="/" class="hover:text-blue-700">Beranda</NuxtLink>
-			<span>/</span>
-			<NuxtLink to="/admin/persediaan/daftar-barang" class="hover:text-blue-700">Persediaan Barang</NuxtLink>
+			<NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">Beranda</NuxtLink>
 			<span>/</span>
 			<span class="font-bold text-blue-700">Tambah</span>
 		</div>

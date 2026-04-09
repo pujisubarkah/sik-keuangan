@@ -21,9 +21,9 @@
 
       <!-- Breadcrumb -->
       <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=/site/index">Beranda</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}`">Beranda</NuxtLink></li>
         <li>/</li>
-        <li><NuxtLink to="/index.php?r=program/index">Program</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}/program`">Program</NuxtLink></li>
         <li>/</li>
         <li class="font-medium text-slate-700">{{ programInfo.program_nama }}</li>
       </ul>

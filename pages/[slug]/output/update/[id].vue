@@ -9,7 +9,7 @@
     </transition>
     <SuboutputAlert class="mb-6" :showAlert="true" />
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
         Beranda
       </NuxtLink>
       <span>/</span>

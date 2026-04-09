@@ -3,7 +3,7 @@
     <section class="content-header flex flex-wrap items-center justify-between gap-4 mb-4">
       <div class="flex items-center gap-2">
         <h1 class="font-bold text-xl">Edit Pengeluaran</h1>
-        <span class="text-xl text-blue-600 font-semibold">: {{ namaSuboutput || '-' }}</span>
+        <span class="text-2xl font-bold text-blue-700">: {{ namaSuboutput || '-' }}</span>
       </div>
       <ul class="breadcrumb flex items-center gap-2 bg-transparent p-0 m-0">
         <li>

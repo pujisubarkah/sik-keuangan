@@ -111,11 +111,9 @@ function cetakPdf() {
 
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         Beranda
       </NuxtLink>
-      <span>/</span>
-      <span>Persediaan</span>
       <span>/</span>
       <span class="font-bold text-blue-700">Saldo Barang</span>
     </div>
@@ -124,7 +122,7 @@ function cetakPdf() {
 
     <!-- Filter Card (Refactored to match DashboardFilter.vue) -->
     <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden">
-      <div class="h-1 bg-gradient-to-r from-[#B1670C] via-[#B1670C] to-[#B1670C]" />
+      <div class="h-1 bg-[#D69009]" />
       <div class="p-5 md:p-6">
         <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
           <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">

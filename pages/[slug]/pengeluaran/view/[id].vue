@@ -2,14 +2,14 @@
   <section class="px-8 pt-8">
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-        Edit Pengeluaran <span class="text-base font-normal text-slate-500">: {{ form.nama_suboutput || '-' }}</span>
+        Edit Pengeluaran <span class="text-2xl font-bold text-blue-700">: {{ form.nama_suboutput || '-' }}</span>
       </h1>
       <ul class="flex items-center gap-2 text-sm text-slate-500 mt-2">
         <li>
-          <NuxtLink to="/" class="hover:text-blue-600">Beranda</NuxtLink>
+          <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-600">Beranda</NuxtLink>
         </li>
         <li><span class="mx-1">/</span></li>
-        <li>Pengeluaran</li>
+        <li><NuxtLink :to="`/${$route.params.slug}/pengeluaran`" class="hover:text-blue-600">Pengeluaran</NuxtLink></li>
         <li><span class="mx-1">/</span></li>
         <li>Edit</li>
       </ul>
