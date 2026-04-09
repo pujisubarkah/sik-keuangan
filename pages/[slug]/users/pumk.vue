@@ -374,22 +374,20 @@ definePageMeta({ layout: 'default' })
           <span class="text-center text-sm">{{ item.lastLogin }}</span>
         </template>
         <template #password="{ item }">
-          <button @click="resetPassword(item)" data-tip="Reset Password" style="background:none;border:none;padding:0;">
-            <Button type="warning" size="sm" circle>
-              <IconLock class="w-5 h-5" />
-            </Button>
+          <button @click="resetPassword(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+            <IconLock class="w-5 h-5" />
           </button>
         </template>
         <template #aksi="{ item }">
           <div class="flex justify-center gap-2">
-            <button @click="openViewModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
-              <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            <button @click="openViewModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View" style="border:none;padding:0;">
+              <IconEye class="w-5 h-5 text-blue-600" />
             </button>
-            <button @click="openEditModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
-              <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            <button @click="openEditModal(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Update" style="border:none;padding:0;">
+              <IconPencil class="w-5 h-5 text-yellow-600" />
             </button>
-            <button @click="openDeleteModal(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-              <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+            <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete" style="border:none;padding:0;">
+              <IconTrash class="w-5 h-5 text-red-600" />
             </button>
           </div>
         </template>

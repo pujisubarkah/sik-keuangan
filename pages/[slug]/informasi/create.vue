@@ -77,7 +77,7 @@
                 :disabled="submitting"
                 required
               ></textarea>
-              <p class="mt-1 text-xs text-gray-400">Gunakan bahasa yang jelas dan informatif</p>
+              <p class="mt-1 text-xs text-gray-400">Gunakan kalimat yang mudah dipahami dan informatif.</p>
             </div>
 
             <!-- Form Actions -->

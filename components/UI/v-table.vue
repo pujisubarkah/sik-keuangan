@@ -19,7 +19,7 @@
       </thead>
       <tbody class="divide-y divide-gray-100">
         <template v-if="items && items.length">
-          <tr v-for="(item, rowIndex) in items" :key="rowIndex" class="hover:bg-yellow-50 align-middle bg-blue-50">
+          <tr v-for="(item, rowIndex) in items" :key="rowIndex" class="align-middle bg-white">
             <td
               v-for="header in headers"
               :key="header.value"

@@ -157,17 +157,17 @@
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <div class="flex gap-2 justify-center">
-                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
-                    <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Pengeluaran" style="border:none;padding:0;">
+                    <IconEye class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
-                  <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
-                    <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Export UMK" style="border:none;padding:0;">
+                    <IconPrinter class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
-                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                    <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Sunting" style="border:none;padding:0;">
+                    <IconPencil class="w-5 h-5 text-yellow-600" />
                   </NuxtLink>
-                  <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                    <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                  <button @click="confirmDelete(item.id)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+                    <IconTrash class="w-5 h-5 text-red-600" />
                   </button>
                 </div>
               </td>

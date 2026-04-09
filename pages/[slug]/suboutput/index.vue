@@ -120,15 +120,14 @@
                 
                 <td class="px-3 py-2 text-right align-middle">
                   <div class="flex justify-end space-x-2">
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/view/${item.id}`" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors" title="Lihat Detail">
-                      <IconEye class="h-4 w-4" />
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/view/${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" title="Lihat Detail">
+                      <IconEye class="h-4 w-4 text-blue-600" />
                     </NuxtLink>
-                    <!-- id di sini adalah id dari anggaran_suboutput, dipakai untuk update by id -->
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/update/${item.id}`" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Edit">
-                      <IconPencil class="h-4 w-4" />
+                    <NuxtLink :to="`/${$route.params.slug}/suboutput/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" title="Edit">
+                      <IconPencil class="h-4 w-4 text-yellow-600" />
                     </NuxtLink>
-                    <button @click="confirmDelete(item.id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors" title="Hapus">
-                      <IconTrash class="h-4 w-4" />
+                    <button @click="confirmDelete(item.id)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" title="Hapus">
+                      <IconTrash class="h-4 w-4 text-red-600" />
                     </button>
                   </div>
                 </td>

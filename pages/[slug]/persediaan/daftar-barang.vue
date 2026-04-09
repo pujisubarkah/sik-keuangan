@@ -101,14 +101,14 @@ definePageMeta({ layout: 'default' });
               <td class="px-3 py-2 text-center align-middle font-semibold text-blue-600">{{ item.kode_akun }}</td>
               <td class="px-3 py-2 text-center align-middle">
                 <div class="flex gap-2 justify-center">
-                  <button @click="viewItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="View" style="background:none;border:none;padding:0;">
-                    <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <button @click="viewItem(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View" style="border:none;padding:0;">
+                    <IconEye class="w-5 h-5 text-blue-600" />
                   </button>
-                  <button @click="editItem(item)" class="hover:text-blue-700 transition tooltip" data-tip="Update" style="background:none;border:none;padding:0;">
-                    <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <button @click="editItem(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Update" style="border:none;padding:0;">
+                    <IconPencil class="w-5 h-5 text-yellow-600" />
                   </button>
-                  <button @click="deleteItem(item)" class="hover:text-red-600 transition tooltip" data-tip="Delete" style="background:none;border:none;padding:0;">
-                    <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                  <button @click="deleteItem(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete" style="border:none;padding:0;">
+                    <IconTrash class="w-5 h-5 text-red-600" />
                   </button>
                 </div>
               </td>

@@ -97,14 +97,14 @@ const filteredLaporanList = computed(() =>
           </template>
           <template #aksi="{ item }">
             <div class="flex justify-center gap-2">
-              <NuxtLink :to="`/admin/berkas-laporan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
-                <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+              <NuxtLink :to="`/admin/berkas-laporan/view/${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View">
+                <IconEye class="w-5 h-5 text-blue-600" />
               </NuxtLink>
-              <NuxtLink :to="`/admin/berkas-laporan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
-                <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+              <NuxtLink :to="`/admin/berkas-laporan/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Update">
+                <IconPencil class="w-5 h-5 text-yellow-600" />
               </NuxtLink>
-              <button class="hover:text-red-600 transition tooltip" data-tip="Delete" @click="confirm('Yakin hapus berkas laporan ini?')" style="background:none;border:none;padding:0;">
-                <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+              <button class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete" @click="confirm('Yakin hapus berkas laporan ini?')" style="border:none;padding:0;">
+                <IconTrash class="w-5 h-5 text-red-600" />
               </button>
             </div>
           </template>
