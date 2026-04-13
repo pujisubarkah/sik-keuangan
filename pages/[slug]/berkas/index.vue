@@ -1,10 +1,13 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 import VButton from '~/components/UI/v-button.vue'
 import { IconPlus } from '@tabler/icons-vue'
+
+const route = useRoute()
 
 const showAlert = ref(true)
 const filter = ref({ kode_akun: '', nama_berkas: '', kata_kunci: '' })
@@ -49,7 +52,7 @@ const berkasList = ref([
       <div class="card-body">
         <!-- ACTION -->
         <div class="mb-4">
-          <NuxtLink to="/admin/berkas/create">
+          <NuxtLink :to="`/${route.params.slug}/berkas/create`">
             <VButton
               variant="primary"
               size="md"
@@ -123,13 +126,13 @@ const berkasList = ref([
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-1">
                     <NuxtLink
-                      :to="`/admin/berkas/view/${b.id}`"
+                      :to="`/${route.params.slug}/berkas/view/${b.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="View"
                     >
                       <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                     <NuxtLink
-                      :to="`/admin/berkas/update/${b.id}`"
+                      :to="`/${route.params.slug}/berkas/update/${b.id}`"
                       class="hover:text-blue-700 transition tooltip" data-tip="Update"
                     >
                       <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />

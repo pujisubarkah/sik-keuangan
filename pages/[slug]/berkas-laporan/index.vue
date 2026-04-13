@@ -1,10 +1,13 @@
 <script setup>
 
 import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { IconAlertCircle, IconHome, IconPlus, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 import VButton from '~/components/UI/v-button.vue'
 import VTable from '~/components/UI/v-table.vue'
+
+const route = useRoute()
 
 const showAlert = ref(true)
 const filter = ref({ judul: '', berkas: '', user_pembuat: '', waktu_dibuat: '' })
@@ -51,7 +54,7 @@ const filteredLaporanList = computed(() =>
         <IconHome class="w-4 h-4 text-blue-600" /> Dashboard
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/berkas-laporan" class="hover:text-blue-700">Berkas Laporans</NuxtLink>
+      <NuxtLink :to="`/${route.params.slug}/berkas-laporan`" class="hover:text-blue-700">Berkas Laporans</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
@@ -66,7 +69,7 @@ const filteredLaporanList = computed(() =>
       <div class="card-body">
         <!-- ACTION -->
         <div class="mb-4">
-          <NuxtLink to="/admin/berkas-laporan/create">
+          <NuxtLink :to="`/${route.params.slug}/berkas-laporan/create`">
             <VButton
               variant="primary"
               size="md"
@@ -96,10 +99,10 @@ const filteredLaporanList = computed(() =>
           </template>
           <template #aksi="{ item }">
             <div class="flex justify-center gap-2">
-              <NuxtLink :to="`/admin/berkas-laporan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
+              <NuxtLink :to="`/${route.params.slug}/berkas-laporan/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
                 <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
               </NuxtLink>
-              <NuxtLink :to="`/admin/berkas-laporan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
+              <NuxtLink :to="`/${route.params.slug}/berkas-laporan/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Update">
                 <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
               </NuxtLink>
               <button class="hover:text-red-600 transition tooltip" data-tip="Delete" @click="confirm('Yakin hapus berkas laporan ini?')" style="background:none;border:none;padding:0;">

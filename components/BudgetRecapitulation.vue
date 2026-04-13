@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="mb-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold text-blue-700 flex items-center gap-3">
@@ -32,13 +32,13 @@
             <span class="text-3xl font-extrabold drop-shadow">{{ card.value }}</span>
             <span v-if="card.unit" class="text-lg font-medium">{{ card.unit }}</span>
           </div>
-          <a
-            :href="card.link"
+          <NuxtLink
+            :to="card.link"
             class="mt-4 text-sm font-semibold text-white flex items-center gap-1 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:underline focus:outline-none"
             style="padding-left:0"
           >
             Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white"></i>
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -47,6 +47,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import Icon from '~/components/Icon.vue'
 
 const props = defineProps({
@@ -59,6 +60,9 @@ const props = defineProps({
     default: 2026
   }
 })
+
+const route = useRoute()
+const baseRoute = computed(() => route.params.slug ? `/${route.params.slug}` : '')
 
 const collapsed = ref(false)
 
@@ -85,63 +89,63 @@ const cards = computed(() => [
     title: 'Total Pagu Anggaran',
     value: formatCurrency(props.budgetData?.totalBudget),
     icon: 'tabler:Moneybag',
-    link: '#',
+    link: `${baseRoute.value}/perencanaan`,
     unit: null,
   },
   {
     title: 'Jumlah Pengajuan',
     value: props.budgetData?.submissionCount ?? 0,
     icon: 'tabler:FileText',
-    link: '/index.php?r=pengeluaran/pengajuan',
+    link: `${baseRoute.value}/pengajuan`,
     unit: null,
   },
   {
     title: 'Nominal Pengajuan',
     value: formatCurrency(props.budgetData?.submissionAmount),
     icon: 'tabler:Calculator',
-    link: '/index.php?r=pengeluaran/pengajuan',
+    link: `${baseRoute.value}/pengajuan`,
     unit: null,
   },
   {
     title: 'Realisasi Bendahara',
     value: formatCurrency(props.budgetData?.treasurerRealization),
     icon: 'tabler:ShoppingCart',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: null,
   },
   {
     title: 'Sisa Bendahara',
     value: formatCurrency(props.budgetData?.treasurerBalance),
     icon: 'tabler:CircleCheck',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: null,
   },
   {
     title: '% Penyerapan Bendahara',
     value: props.budgetData?.treasurerAbsorption?.toFixed(2) ?? '0.00',
     icon: 'tabler:ChartPie',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: '%',
   },
   {
     title: 'Realisasi SP2D',
     value: formatCurrency(props.budgetData?.sp2dRealization),
     icon: 'tabler:CreditCard',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: null,
   },
   {
     title: 'Sisa SP2D',
     value: formatCurrency(props.budgetData?.sp2dBalance),
     icon: 'tabler:Wallet',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: null,
   },
   {
     title: '% Penyerapan SP2D',
     value: props.budgetData?.sp2dAbsorption?.toFixed(2) ?? '0.00',
     icon: 'tabler:ChartLine',
-    link: '#',
+    link: `${baseRoute.value}/pengeluaran`,
     unit: '%',
   },
 ])
