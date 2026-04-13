@@ -72,9 +72,7 @@ const filterData = () => {
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Nomor SPM</th>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Akun</th>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Jumlah</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">&nbsp;</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">&nbsp;</th>
-                <th class="px-3 py-2 text-left font-semibold text-blue-700 align-middle rounded-tr-xl bg-blue-100">Pilihan</th>
+                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Aksi</th>
               </tr>
               <!-- Filter Row -->
               <tr class="bg-white border-b border-blue-100">
@@ -94,10 +92,7 @@ const filterData = () => {
                 <td>
                   <input v-model="filterForm.akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Akun" />
                 </td>
-                <td><div class="filter-container">&nbsp;</div></td>
-                <td><div class="filter-container">&nbsp;</div></td>
-                <td><div class="filter-container">&nbsp;</div></td>
-                <td>&nbsp;</td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
@@ -109,22 +104,34 @@ const filterData = () => {
                 <td class="text-center">{{ item.nomor_spm || '-' }}</td>
                 <td class="text-center"><span class="badge badge-outline badge-sm">{{ item.akun }}</span></td>
                 <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah) }}</td>
-                
-                <!-- Action Icons -->
-                <td class="text-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Detail Pengeluaran" style="border:none;padding:0;">
-                    <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600" />
-                  </NuxtLink>
-                </td>
-                <td class="text-center">
-                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Cetak Faktur" style="border:none;padding:0;">
-                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
-                  </a>
-                </td>
-                <td class="text-center">
-                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View" style="border:none;padding:0;">
-                    <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
-                  </NuxtLink>
+                <td class="px-3 py-2 text-center align-middle">
+                  <div class="flex justify-center gap-1">
+                    <NuxtLink
+                      :to="`/${$route.params.slug}/persediaan/daftar-faktur/view/${item.id}`"
+                      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View"
+                    >
+                      <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
+                    </NuxtLink>
+                    <NuxtLink
+                      :to="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`"
+                      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Cetak"
+                    >
+                      <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
+                    </NuxtLink>
+                    <NuxtLink
+                      :to="`/${$route.params.slug}/persediaan/daftar-faktur/edit/${item.id}`"
+                      class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit"
+                    >
+                      <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600" />
+                    </NuxtLink>
+                    <button
+                      class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete"
+                      @click="confirm('Yakin hapus faktur ini?')"
+                      style="border:none;padding:0;"
+                    >
+                      <Icon icon="mdi:trash-can" class="w-5 h-5 text-red-600" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
