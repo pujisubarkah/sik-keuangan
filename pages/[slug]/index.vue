@@ -74,7 +74,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { useRoute } from '#app'
 import { useUserStore } from '~/stores/user'
 
 definePageMeta({
@@ -82,8 +83,47 @@ definePageMeta({
 })
 
 const userStore = useUserStore()
+const route = useRoute()
 const userRole = computed(() => userStore.role)
 const userSatkerId = computed(() => userStore.satker_id)
+const routeSatkerId = ref<number | null>(null)
+
+const effectiveSatkerId = computed(() => {
+  if (routeSatkerId.value) return routeSatkerId.value
+  if (userRole.value === 'satker' && userSatkerId.value) return Number(userSatkerId.value)
+  return null
+})
+
+const resolveSatkerIdFromSlug = async () => {
+  try {
+    const slug = String(route.params.slug || '')
+    if (!slug) {
+      routeSatkerId.value = null
+      return
+    }
+
+    // /admin harus tetap menampilkan dashboard global, bukan dashboard satker tertentu.
+    if (slug.toLowerCase() === 'admin') {
+      routeSatkerId.value = null
+      return
+    }
+
+    const token = localStorage.getItem('token')
+    const res = await fetch('/api/users', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    })
+    const users = await res.json()
+    if (Array.isArray(users)) {
+      const matchedUser = users.find((u: any) => u?.username === slug)
+      routeSatkerId.value = matchedUser?.satker_id ? Number(matchedUser.satker_id) : null
+      return
+    }
+    routeSatkerId.value = null
+  } catch (e) {
+    console.error('Failed to resolve satker from slug', e)
+    routeSatkerId.value = null
+  }
+}
 // State
 const currentYear = ref(2026)
 const showAlert = ref(true)
@@ -112,12 +152,10 @@ const satkerRealizationData = ref<any[]>([])
 const fetchSatkerRealizationData = async () => {
   try {
     const token = localStorage.getItem('token');
-    // Ambil role_id dan satker_id dari userStore
-    const roleId = userStore.role_id;
-    const satkerId = userStore.satker_id;
+    const satkerId = effectiveSatkerId.value;
     let url = '/api/dashboard/satker';
-    // Jika role_id 8 (Admin Satker), gunakan endpoint khusus
-    if (roleId === 8) {
+    // Jika satker ter-resolve dari slug/user satker, tampilkan dashboard sesuai satker tersebut
+    if (satkerId) {
       url = `/api/dashboard/unit_kerja/satker/${satkerId}`;
     }
     const res = await fetch(url, {
@@ -129,7 +167,8 @@ const fetchSatkerRealizationData = async () => {
       satkerRealizationData.value = data.data.map((item: any) => ({
         id: item.id,
         name: item.nama_unit || item.nama_satker || item.name || '',
-        percentage: item.percentage
+        percentage: item.percentage,
+        username: item.username ?? null
       }));
     }
   } catch (e) {
@@ -153,10 +192,10 @@ const budgetData = reactive({
 const fetchBudgetData = async () => {
   try {
     const token = localStorage.getItem('token');
-    // Contoh: jika role 'satker', tambahkan param satker_id
+    const satkerId = effectiveSatkerId.value
     let url = '/api/total_pengajuan';
-    if (userRole.value === 'satker' && userSatkerId.value) {
-      url += `?satker_id=${userSatkerId.value}`
+    if (satkerId) {
+      url += `?satker_id=${satkerId}`
     }
     const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -267,9 +306,10 @@ const totalProgram = computed(() => {
 const fetchPrograms = async () => {
   try {
     const token = localStorage.getItem('token');
+    const satkerId = effectiveSatkerId.value
     let url = '/api/dashboard/program';
-    if (userRole.value === 'satker' && userSatkerId.value) {
-      url += `?satker_id=${userSatkerId.value}`
+    if (satkerId) {
+      url += `?satker_id=${satkerId}`
     }
     const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -322,9 +362,10 @@ const totalActivity = computed(() => {
 const fetchActivities = async () => {
   try {
     const token = localStorage.getItem('token');
+    const satkerId = effectiveSatkerId.value
     let url = '/api/dashboard/kegiatan';
-    if (userRole.value === 'satker' && userSatkerId.value) {
-      url += `?satker_id=${userSatkerId.value}`
+    if (satkerId) {
+      url += `?satker_id=${satkerId}`
     }
     const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -343,9 +384,10 @@ const outputs = ref<any[]>([])
 const fetchOutputs = async () => {
   try {
     const token = localStorage.getItem('token');
+    const satkerId = effectiveSatkerId.value
     let url = '/api/dashboard/output';
-    if (userRole.value === 'satker' && userSatkerId.value) {
-      url += `?satker_id=${userSatkerId.value}`
+    if (satkerId) {
+      url += `?satker_id=${satkerId}`
     }
     const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -374,9 +416,10 @@ const subOutputs = ref<any[]>([])
 const fetchSubOutputs = async () => {
   try {
     const token = localStorage.getItem('token');
+    const satkerId = effectiveSatkerId.value
     let url = '/api/dashboard/suboutput';
-    if (userRole.value === 'satker' && userSatkerId.value) {
-      url += `?satker_id=${userSatkerId.value}`
+    if (satkerId) {
+      url += `?satker_id=${satkerId}`
     }
     const res = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -454,6 +497,7 @@ const formatPercentage = (value: number) => {
 
 onMounted(async () => {
   // Initialize data
+  await resolveSatkerIdFromSlug();
   await fetchBudgetData();
   await fetchSubOutputs();
   await fetchOutputs();
@@ -469,6 +513,18 @@ onMounted(async () => {
     // ...initialize charts here
   }
 });
+
+watch(() => route.params.slug, async () => {
+  await resolveSatkerIdFromSlug();
+  await fetchBudgetData();
+  await fetchSubOutputs();
+  await fetchOutputs();
+  await fetchActivities();
+  await fetchPrograms();
+  await fetchSatkerRealizationData();
+  await fetchExpenditureChartData();
+  await fetchAbsorptionChartData();
+})
 </script>
 
 <style scoped>

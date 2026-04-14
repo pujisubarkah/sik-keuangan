@@ -27,15 +27,23 @@
             <span class="text-3xl font-extrabold drop-shadow">{{ satker.percentage.toFixed(2) }}</span>
             <span class="text-lg font-medium">%</span>
           </div>
-          <a
-            :href="`/index.php?r=admin/index&DashboardForm[id_satker]=${satker.id}`"
+          <NuxtLink
+            v-if="satker.username"
+            :to="`/${satker.username}`"
             class="mt-4 text-sm font-semibold text-white inline-flex items-center gap-1 py-2 rounded-lg transition-all duration-200 cursor-pointer group focus:outline-none"
             style="padding-left:0"
           >
             <span class="group-hover:underline decoration-2 underline-offset-2 inline-flex items-center">
               Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white"></i>
             </span>
-          </a>
+          </NuxtLink>
+          <span
+            v-else
+            class="mt-4 text-sm font-semibold text-white/70 inline-flex items-center gap-1 py-2 rounded-lg cursor-not-allowed"
+            style="padding-left:0"
+          >
+            Info Lebih Lanjut <i class="fa fa-arrow-circle-right text-base ml-1 text-white/70"></i>
+          </span>
         </div>
       </div>
     </div>
