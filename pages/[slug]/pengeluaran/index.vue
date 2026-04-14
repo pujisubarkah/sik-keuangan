@@ -255,19 +255,43 @@
           <h3 class="text-base font-semibold text-gray-900">Rekap Data Pengeluaran</h3>
         </div>
         <div class="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
-          <div class="rounded-lg border border-gray-200 bg-brandGold-300 p-5">
-            <p class="text-sm font-medium text-gray-500">Jumlah Pengeluaran</p>
+          <div class="rounded-lg border border-gray-200 bg-brandGold-300 p-5 relative overflow-hidden">
+            <div class="flex items-center gap-3 mb-2 relative">
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+                <Icon icon="database-search" class="w-6 h-6 text-yellow-900" />
+              </span>
+              <!-- Siluet SVG Dekoratif -->
+              <span class="absolute left-0 top-0 w-20 h-20 opacity-30 z-0 pointer-events-none select-none">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                  <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+                </svg>
+              </span>
+              <p class="text-sm font-medium text-gray-700 relative z-10">Jumlah Pengeluaran</p>
+            </div>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ totalPengeluaran }} Pengeluaran</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
-          </a>
+              <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+            </a>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-brandGold-200 p-5">
-            <p class="text-sm font-medium text-gray-500">Jumlah Dana</p>
-            <p class="mt-2 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalDana) }}</p>
+          <div class="rounded-lg border border-gray-200 bg-green-400 p-5 relative overflow-hidden">
+            <div class="flex items-center gap-3 mb-2 relative">
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+                  <Icon icon="cash" class="w-6 h-6 text-green-900" />
+                </span>
+              <!-- Siluet SVG Dekoratif -->
+              <span class="absolute left-0 top-0 w-20 h-20 opacity-30 z-0 pointer-events-none select-none">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                  <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+                </svg>
+              </span>
+              <p class="text-sm font-medium text-white relative z-10">Jumlah Dana</p>
+            </div>
+            <p class="mt-2 text-2xl font-semibold text-white">{{ formatCurrency(totalDana) }}</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
-          </a>
+              <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+            </a>
           </div>
         </div>
       </div>

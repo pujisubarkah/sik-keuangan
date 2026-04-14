@@ -203,20 +203,37 @@
       <!-- Jumlah Pengajuan -->
       <div class="overflow-hidden border border-gray-200 bg-brandGold-400 shadow sm:rounded-lg">
         <div class="px-4 sm:px-6 py-4">
-          <div class="flex items-center gap-3 mb-2">
-    
-            <span class="text-lg font-bold text-white">Jumlah Pengajuan</span>
+          <div class="flex items-center gap-3 mb-2 relative">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+              <IconDatabaseSearch class="w-6 h-6 text-white" />
+            </span>
+            <!-- Siluet SVG Dekoratif -->
+            <span class="absolute left-0 top-0 w-16 h-16 opacity-30 z-0 pointer-events-none select-none">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+              </svg>
+            </span>
+            <span class="text-lg font-bold text-white relative z-10">Jumlah Pengajuan</span>
           </div>
           <div class="text-3xl font-extrabold mb-2 text-white">{{ rekapData.submissionCount }}</div>
-          
         </div>
       </div>
       <!-- Jumlah Dana -->
       <div class="overflow-hidden border border-gray-200 bg-green-400 shadow sm:rounded-lg">
         <div class="px-4 sm:px-6 py-4">
-          <div class="flex items-center gap-3 mb-2">
-          
-            <span class="text-lg font-bold text-white">Jumlah Dana</span>
+          <div class="flex items-center gap-3 mb-2 relative">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+              <IconFolderCheck class="w-6 h-6 text-white" />
+            </span>
+            <!-- Siluet SVG Dekoratif -->
+            <span class="absolute left-0 top-0 w-16 h-16 opacity-30 z-0 pointer-events-none select-none">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+              </svg>
+            </span>
+            <span class="text-lg font-bold text-white relative z-10">Jumlah Dana</span>
           </div>
           <div class="text-3xl font-extrabold mb-2 text-white">
             {{ formatCurrency(rekapData.submissionAmount) }}
@@ -224,7 +241,6 @@
           <div class="text-sm mb-2 text-white">&nbsp;</div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -412,7 +428,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .filter-input {
   @apply w-full px-3 py-2 border border-gray-300 rounded text-xs bg-white shadow-sm transition placeholder-gray-400 focus:border-green-400 focus:ring-0 outline-none placeholder:text-center placeholder:font-normal;
 }
