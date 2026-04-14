@@ -38,6 +38,22 @@ const filteredLaporanList = computed(() =>
     )
     .map((l, i) => ({ ...l, no: i + 1 }))
 )
+
+async function onDelete(item) {
+  if (confirm('Yakin hapus berkas laporan ini?')) {
+    try {
+      const res = await fetch(`/api/berkas-laporan/${item.id}`, { method: 'DELETE' })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        laporanList.value = laporanList.value.filter(l => l.id !== item.id)
+      } else {
+        alert(data.error || 'Gagal menghapus data!')
+      }
+    } catch (e) {
+      alert('Terjadi kesalahan saat menghapus: ' + e.message)
+    }
+  }
+}
 </script>
 
 <template>
@@ -103,7 +119,7 @@ const filteredLaporanList = computed(() =>
               <NuxtLink :to="`/admin/berkas-laporan/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Update">
                 <IconPencil class="w-5 h-5 text-yellow-600" />
               </NuxtLink>
-              <button class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete" @click="confirm('Yakin hapus berkas laporan ini?')" style="border:none;padding:0;">
+              <button class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete" @click="onDelete(item)" style="border:none;padding:0;">
                 <IconTrash class="w-5 h-5 text-red-600" />
               </button>
             </div>

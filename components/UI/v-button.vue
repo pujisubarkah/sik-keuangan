@@ -69,7 +69,7 @@
 
     // Map variant ke class Tailwind
     const variantClasses = {
-      primary: 'border-green-800 bg-green-700 text-white hover:bg-green-800 hover:shadow-lg',
+      primary: 'border-[#03300C] bg-[#03300C] text-white hover:bg-[#022408] hover:border-[#022408] hover:shadow-lg',
       secondary: 'border-gray-600 bg-gray-600 text-white hover:bg-gray-700 hover:shadow-lg',
       success: 'border-emerald-800 bg-emerald-700 text-white hover:bg-emerald-800 hover:shadow-lg',
       danger: 'border-red-800 bg-red-700 text-white hover:bg-red-800 hover:shadow-lg',
