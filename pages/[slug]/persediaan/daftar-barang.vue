@@ -5,11 +5,7 @@ definePageMeta({ layout: 'default' });
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
-<<<<<<< HEAD
         <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
-=======
-        Beranda
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
       </NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Daftar Barang</span>

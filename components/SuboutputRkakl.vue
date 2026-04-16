@@ -107,7 +107,6 @@
                   <td class="px-3 py-2 text-right text-xs font-sans">{{ formatCurrency(item.harga_satuan) }}</td>
                   <td class="px-3 py-2 text-right text-xs font-sans font-semibold text-gray-800">{{ formatCurrency(item.jumlah) }}</td>
                   <td class="px-3 py-2 text-center">
-<<<<<<< HEAD
                     <div class="flex items-center justify-center gap-2">
                       <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal/${item.id}`" class="text-blue-500 hover:text-blue-700 tooltip" data-tip="Jadwal">
                         <IconCalendar class="w-4 h-4" />
@@ -128,14 +127,6 @@
                         <IconBug class="w-4 h-4" />
                       </button>
                     </div>
-=======
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal`" class="inline-flex items-center justify-center text-[#2663A3] hover:opacity-80">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#2663A3" stroke-width="2">
-                        <!-- path plus dihapus, hanya path pensil/edit -->
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.121 2.121 0 113 3L7.5 18.75l-4 1 1-4L16.862 3.487z" />
-                      </svg>
-                    </NuxtLink>
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
                   </td>
                 </tr>
               </template>

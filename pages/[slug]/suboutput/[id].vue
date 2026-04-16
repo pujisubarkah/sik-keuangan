@@ -7,8 +7,24 @@
         <template #header>
           <h3 class="text-xl font-bold text-blue-700">Detail Suboutput</h3>
         </template>
-        <SuboutputDetail :data="subOutputData" class="pb-0" />
+        <SuboutputDetail 
+          :data="subOutputData" 
+          class="pb-0" 
+          @revisi="handleRevisi"
+          @sub="handleSub"
+          @ajukan="handleAjukan"
+          @delete="confirmDelete"
+        />
       </Card>
+
+      <DeleteModal 
+        :show-delete-modal="showDeleteModal"
+        :delete-loading="deleteLoading"
+        :delete-error="deleteError"
+        :delete-success="deleteSuccess"
+        @close="closeDeleteModal"
+        @confirm="doDelete"
+      />
 
 
 
@@ -48,6 +64,7 @@ import { ref, computed } from 'vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
 import SuboutputRkakl from '@/components/SuboutputRkakl.vue';
 import SuboutputCharts from '@/components/SuboutputCharts.vue';
+import DeleteModal from '~/components/UI/DeleteModal.vue';
 const rkaklDetail = ref(null);
 
 // Konversi data chart ke format FusionCharts
@@ -132,6 +149,52 @@ const chartPengeluaranFusion = computed(() => {
 
 // --- State Data ---
 const showAlert = ref(true);
+
+const showDeleteModal = ref(false)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
+const handleRevisi = () => alert('Fitur Revisi Anggaran')
+const handleSub = () => alert('Fitur Tambah Sub RO')
+const handleAjukan = () => {
+  if (confirm('Ajukan Rincian Output ini untuk verifikasi?')) {
+    alert('RO telah diajukan')
+  }
+}
+
+const confirmDelete = () => {
+  showDeleteModal.value = true
+}
+
+const closeDeleteModal = () => {
+  showDeleteModal.value = false
+  deleteError.value = ''
+  deleteSuccess.value = false
+}
+
+const doDelete = async () => {
+  deleteLoading.value = true
+  try {
+    const token = localStorage.getItem('token')
+    const res = await fetch(`/api/anggaran_suboutput/${route.params.id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    if (res.ok) {
+      deleteSuccess.value = true
+      setTimeout(() => {
+        router.push(`/${route.params.slug}/suboutput`)
+      }, 1500)
+    } else {
+      throw new Error('Gagal menghapus data')
+    }
+  } catch (e) {
+    deleteError.value = e.message
+  } finally {
+    deleteLoading.value = false
+  }
+}
 
 const subOutputData = reactive({});
 const userStore = useUserStore();

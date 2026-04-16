@@ -25,14 +25,10 @@ importers:
         version: 3.0.3
       drizzle-orm:
         specifier: ^0.45.1
-<<<<<<< HEAD
         version: 0.45.2(@types/pg@8.20.0)(pg@8.20.0)
-=======
-        version: 0.45.1(@types/pg@8.18.0)(pg@8.19.0)
       formidable:
         specifier: ^3.5.4
         version: 3.5.4
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
       fusioncharts:
         specifier: ^4.2.1
         version: 4.2.2

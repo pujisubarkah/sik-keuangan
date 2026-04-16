@@ -3,23 +3,19 @@ import { ref, computed } from 'vue'
 import { IconLock, IconEye, IconPencil, IconTrash, IconPlus } from '@tabler/icons-vue'
 import VTable from '~/components/UI/v-table.vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
+import DeleteModal from '~/components/UI/DeleteModal.vue'
 
 const showAlert = ref(true)
-const showAddModal = ref(false)
-const showDeleteModal = ref(false)
-const userToDelete = ref(null)
-
 const users = ref([
   {
     id: 1,
-    nama: 'Drs. H. Mulyanto',
-    username: 'mulyanto_karo',
+    nama: 'Bpk. Karo Umum',
+    username: 'karo_umum_lan',
     role: 'Karo Umum',
     satker: 'LAN JAKARTA',
-    lastLogin: '2026-04-11 10:00'
+    lastLogin: '2026-03-12'
   }
 ])
-
 const userHeaders = [
   { text: 'No', value: 'no', center: true },
   { text: 'Nama', value: 'nama' },
@@ -30,21 +26,34 @@ const userHeaders = [
   { text: 'Password', value: 'password', center: true },
   { text: 'Aksi', value: 'aksi', center: true }
 ]
-
 const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 })))
 
-function openAddModal() { showAddModal.value = true }
+const showDeleteModal = ref(false)
+const userToDelete = ref(null)
+const deleteLoading = ref(false)
+const deleteError = ref('')
+const deleteSuccess = ref(false)
+
 function openDeleteModal(user) {
   userToDelete.value = user
   showDeleteModal.value = true
 }
+
 function closeDeleteModal() {
   showDeleteModal.value = false
   userToDelete.value = null
+  deleteLoading.value = false
+  deleteError.value = ''
+  deleteSuccess.value = false
 }
-function confirmDeleteUser() {
-  alert('User dihapus: ' + (userToDelete.value?.nama || ''))
-  closeDeleteModal()
+
+function doDelete() {
+  deleteLoading.value = true
+  setTimeout(() => {
+    users.value = users.value.filter(u => u.id !== userToDelete.value.id)
+    deleteSuccess.value = true
+    setTimeout(closeDeleteModal, 1000)
+  }, 1000)
 }
 </script>
 
@@ -53,7 +62,7 @@ function confirmDeleteUser() {
     <SuboutputAlert :showAlert="showAlert" />
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-3xl font-bold text-blue-700">Daftar Karo Umum</h1>
-      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+      <button class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-700">
         <IconPlus class="w-4 h-4" />
         Tambah Karo Umum
       </button>
@@ -61,9 +70,6 @@ function confirmDeleteUser() {
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">
         <span class="font-semibold text-blue-700">{{ item.nama }}</span>
-      </template>
-      <template #role="{ item }">
-        <span class="badge badge-primary text-white font-bold">{{ item.role }}</span>
       </template>
       <template #lastLogin="{ item }">
         <span class="text-center text-sm">{{ item.lastLogin }}</span>
@@ -75,22 +81,14 @@ function confirmDeleteUser() {
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-<<<<<<< HEAD
-          <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
+          <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail">
             <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
-          <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
+          <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit">
             <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
-=======
-          <button @click="openViewModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
-            <IconEye class="w-5 h-5 text-blue-600" />
           </button>
-          <button @click="openEditModal(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
-            <IconPencil class="w-5 h-5 text-yellow-600" />
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
-          </button>
-          <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
-            <IconTrash class="w-5 h-5 text-red-600" />
+          <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus">
+            <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
           </button>
         </div>
       </template>
@@ -98,6 +96,14 @@ function confirmDeleteUser() {
         <span class="text-gray-400">Tidak ada data</span>
       </template>
     </VTable>
+
+    <DeleteModal 
+      :show-delete-modal="showDeleteModal"
+      :delete-loading="deleteLoading"
+      :delete-error="deleteError"
+      :delete-success="deleteSuccess"
+      @close="closeDeleteModal"
+      @confirm="doDelete"
+    />
   </div>
 </template>
-

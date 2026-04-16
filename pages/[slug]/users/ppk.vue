@@ -8,16 +8,13 @@ const showAlert = ref(true)
 const users = ref([
   {
     id: 1,
-    nama: 'Asep Saepuloh',
-    username: 'asep_ppk',
+    nama: 'Pejabat PPK',
+    username: 'ppk_lan',
     role: 'PPK',
     satker: 'LAN JAKARTA',
-    lastLogin: '2026-04-10 14:20'
+    lastLogin: '2026-03-15'
   }
 ])
-import { IconPlus } from '@tabler/icons-vue'
-const showAddModal = ref(false)
-function openAddModal() { showAddModal.value = true }
 const userHeaders = [
   { text: 'No', value: 'no', center: true },
   { text: 'Nama', value: 'nama' },
@@ -36,7 +33,7 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
     <SuboutputAlert :showAlert="showAlert" />
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-3xl font-bold text-blue-700">Daftar Pejabat Pembuat Komitmen (PPK)</h1>
-      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+      <button class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-700">
         <IconPlus class="w-4 h-4" />
         Tambah PPK
       </button>
@@ -64,14 +61,14 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-          <button class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
-            <IconEye class="w-5 h-5 text-blue-600" />
+          <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
+            <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
-          <button class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
-            <IconPencil class="w-5 h-5 text-yellow-600" />
+          <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
+            <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
           </button>
-          <button class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
-            <IconTrash class="w-5 h-5 text-red-600" />
+          <button class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+            <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
           </button>
         </div>
       </template>

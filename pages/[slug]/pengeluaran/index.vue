@@ -84,7 +84,7 @@
               <div class="md:col-span-12 flex flex-col sm:flex-row justify-end items-center gap-2 mt-2 w-full">
                 <div class="flex flex-row w-full sm:w-auto justify-end gap-2">
                   <button type="submit"
-                    class="inline-flex items-center gap-2 rounded-md border border-brandBlue-700 bg-brandBlue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brandBlue-700 focus:outline-none focus:ring-2 focus:ring-brandBlue-400 focus:ring-offset-2">
+                    class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -128,8 +128,8 @@
             <thead class="bg-blue-100 sticky top-0 z-10">
               <tr>
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">No</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode RO</th>
-                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Rincian Output</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Kode Suboutput</th>
+                <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Suboutput</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Komp</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Sub Komp</th>
                 <th class="px-3 py-2 font-semibold text-blue-700 align-middle">Akun</th>
@@ -143,38 +143,19 @@
                 <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle">Jumlah Data Dukung</th>
                 <th class="px-3 py-2 text-right font-semibold text-blue-700 align-middle">Aksi</th>
               </tr>
-              <tr class="bg-white border-b border-gray-200 mt-2">
-                <th></th>
-                <th><input v-model="columnFilters.id_pekerjaan_kode" placeholder="Cari" class="filter-input" /></th>
-                <th><input v-model="columnFilters.id_pekerjaan_nama" class="filter-input" placeholder="" /></th>
-                <th><input v-model="columnFilters.kode_komponen" class="filter-input" /></th>
-                <th><input v-model="columnFilters.kode_subkomponen" class="filter-input" /></th>
-                <th><input v-model="columnFilters.kode_akun" class="filter-input" /></th>
-                <th><input v-model="columnFilters.uraian" class="filter-input" /></th>
-                <th><input v-model="columnFilters.jumlah" class="filter-input text-right" /></th>
-                <th><input v-model="columnFilters.tanggal_pengajuan" class="filter-input text-center" /></th>
-                <th><input v-model="columnFilters.tanggal" class="filter-input text-center" /></th>
-                <th><input v-model="columnFilters.status_pertanggungjawaban" class="filter-input text-center" /></th>
-                <th><input v-model="columnFilters.status_sp2d" class="filter-input text-center" /></th>
-                <th><input v-model="columnFilters.keterangan" class="filter-input" /></th>
-                <th></th>
-                <th></th>
-              </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="(item, index) in filteredPengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
-                  <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
+              <tr v-for="(item, index) in pengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
+                <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
-                  <NuxtLink v-if="item.id_pekerjaan" :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-blue-700 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_kode }}
                   </NuxtLink>
-                  <span v-else>{{ item.id_pekerjaan_kode }}</span>
                 </td>
                 <td class="px-3 py-2 align-middle">
-                  <NuxtLink v-if="item.id_pekerjaan" :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  <NuxtLink :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_nama }}
                   </NuxtLink>
-                  <span v-else>{{ item.id_pekerjaan_nama }}</span>
                 </td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>
@@ -197,23 +178,23 @@
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex items-center justify-center gap-2">
-                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Pengeluaran" style="border:none;padding:0;">
-                      <Icon icon="eye" class="w-5 h-5 text-blue-600" />
+                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
+                      <Icon icon="eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Export UMK" style="border:none;padding:0;">
-                      <Icon icon="printer" class="w-5 h-5 text-blue-600" />
+                    <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
+                      <Icon icon="printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Sunting" style="border:none;padding:0;">
-                      <Icon icon="pencil" class="w-5 h-5 text-yellow-600" />
+                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
+                      <Icon icon="pencil" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip flex items-center justify-center" title="Hapus" style="border:none;padding:0;">
-                      <Icon icon="trash" class="w-5 h-5 text-red-600" />
+                    <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip flex items-center justify-center" title="Hapus" style="background:none;border:none;padding:0;">
+                      <Icon icon="trash" class="w-5 h-5 text-red-500" />
                     </button>
                   </div>
                 </td>
               </tr>
               <!-- Empty State -->
-              <tr v-if="(filteredPengeluaranData?.length || 0) === 0">
+              <tr v-if="(pengeluaranData?.length || 0) === 0">
                 <td colspan="15" class="px-6 py-10 text-center text-gray-500">
                   <div class="flex flex-col items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -257,43 +238,19 @@
           <h3 class="text-base font-semibold text-gray-900">Rekap Data Pengeluaran</h3>
         </div>
         <div class="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
-          <div class="rounded-lg border border-gray-200 bg-brandGold-300 p-5 relative overflow-hidden">
-            <div class="flex items-center gap-3 mb-2 relative">
-              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
-                <Icon icon="database-search" class="w-6 h-6 text-yellow-900" />
-              </span>
-              <!-- Siluet SVG Dekoratif -->
-              <span class="absolute left-0 top-0 w-20 h-20 opacity-30 z-0 pointer-events-none select-none">
-                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
-                  <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
-                </svg>
-              </span>
-              <p class="text-sm font-medium text-gray-700 relative z-10">Jumlah Pengeluaran</p>
-            </div>
+          <div class="rounded-lg border border-gray-200 bg-brandGold-300 p-5">
+            <p class="text-sm font-medium text-gray-500">Jumlah Pengeluaran</p>
             <p class="mt-2 text-2xl font-semibold text-gray-900">{{ totalPengeluaran }} Pengeluaran</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-              <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
-            </a>
+            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+          </a>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-green-400 p-5 relative overflow-hidden">
-            <div class="flex items-center gap-3 mb-2 relative">
-              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
-                  <Icon icon="cash" class="w-6 h-6 text-green-900" />
-                </span>
-              <!-- Siluet SVG Dekoratif -->
-              <span class="absolute left-0 top-0 w-20 h-20 opacity-30 z-0 pointer-events-none select-none">
-                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
-                  <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
-                </svg>
-              </span>
-              <p class="text-sm font-medium text-white relative z-10">Jumlah Dana</p>
-            </div>
-            <p class="mt-2 text-2xl font-semibold text-white">{{ formatCurrency(totalDana) }}</p>
+          <div class="rounded-lg border border-gray-200 bg-brandGold-200 p-5">
+            <p class="text-sm font-medium text-gray-500">Jumlah Dana</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">{{ formatCurrency(totalDana) }}</p>
             <a href="/api/pengeluaran/export?export=1&exportFormat=1" class="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-900" target="_blank" rel="noopener">
-              <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
-            </a>
+            <span class="mt-4 inline-flex text-sm font-medium text-brandgold-600 hover:text-brandgold-800">&nbsp;</span>
+          </a>
           </div>
         </div>
       </div>
@@ -344,40 +301,6 @@ const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const pengeluaranData = ref([])
 const totalData = ref(0)
-const searchText = ref('')
-
-const columnFilters = ref({
-  id_pekerjaan_kode: '',
-  id_pekerjaan_nama: '',
-  kode_komponen: '',
-  kode_subkomponen: '',
-  kode_akun: '',
-  uraian: '',
-  jumlah: '',
-  tanggal_pengajuan: '',
-  tanggal: '',
-  status_pertanggungjawaban: '',
-  status_sp2d: '',
-  keterangan: '',
-})
-
-const filteredPengeluaranData = computed(() => {
-  return pengeluaranData.value.filter(item => {
-    if (columnFilters.value.id_pekerjaan_kode && !(item.id_pekerjaan_kode || '').toLowerCase().includes(columnFilters.value.id_pekerjaan_kode.toLowerCase())) return false
-    if (columnFilters.value.id_pekerjaan_nama && !(item.id_pekerjaan_nama || '').toLowerCase().includes(columnFilters.value.id_pekerjaan_nama.toLowerCase())) return false
-    if (columnFilters.value.kode_komponen && !(item.kode_komponen || '').toLowerCase().includes(columnFilters.value.kode_komponen.toLowerCase())) return false
-    if (columnFilters.value.kode_subkomponen && !(item.kode_subkomponen || '').toLowerCase().includes(columnFilters.value.kode_subkomponen.toLowerCase())) return false
-    if (columnFilters.value.kode_akun && !(item.kode_akun || '').toLowerCase().includes(columnFilters.value.kode_akun.toLowerCase())) return false
-    if (columnFilters.value.uraian && !(item.uraian || '').toLowerCase().includes(columnFilters.value.uraian.toLowerCase())) return false
-    if (columnFilters.value.jumlah && !(String(item.jumlah || '').toLowerCase().includes(columnFilters.value.jumlah.toLowerCase()))) return false
-    if (columnFilters.value.tanggal_pengajuan && !(String(item.tanggal_pengajuan || '').toLowerCase().includes(columnFilters.value.tanggal_pengajuan.toLowerCase()))) return false
-    if (columnFilters.value.tanggal && !(String(item.tanggal || '').toLowerCase().includes(columnFilters.value.tanggal.toLowerCase()))) return false
-    if (columnFilters.value.status_pertanggungjawaban && !(String(item.status_pertanggungjawaban || '').toLowerCase().includes(columnFilters.value.status_pertanggungjawaban.toLowerCase()))) return false
-    if (columnFilters.value.status_sp2d && !(String(item.status_sp2d || '').toLowerCase().includes(columnFilters.value.status_sp2d.toLowerCase()))) return false
-    if (columnFilters.value.keterangan && !(item.keterangan || '').toLowerCase().includes(columnFilters.value.keterangan.toLowerCase())) return false
-    return true
-  })
-})
 
 async function fetchPengeluaran() {
   try {
@@ -537,9 +460,3 @@ watch(itemsPerPage, () => {
   currentPage.value = 1
 })
 </script>
-
-<style scoped>
-.filter-input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded text-xs bg-white shadow-sm transition placeholder-gray-400 focus:border-green-400 focus:ring-0 outline-none placeholder:text-center placeholder:font-normal;
-}
-</style>

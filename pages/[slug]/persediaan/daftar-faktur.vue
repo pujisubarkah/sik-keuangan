@@ -1,6 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 
+import Icon from '~/components/Icon.vue'
+import SuboutputAlert from '~/components/SuboutputAlert.vue'
+
+definePageMeta({
+  layout: 'default'
+})
+
+// State
+const showAlert = ref(true)
 const filterForm = ref({
   nama_perusahaan: '',
   nomor_faktur: '',
@@ -43,14 +52,6 @@ const filterData = () => {
 function printFaktur(item) {
   alert(`Cetak Faktur: ${item.nomor_faktur}`)
 }
-
-function viewFaktur(item) {
-  alert(`Lihat Faktur: ${item.nomor_faktur}`)
-}
-
-function editFaktur(item) {
-  alert(`Edit Faktur: ${item.nomor_faktur}`)
-}
 </script>
 
 <template>
@@ -58,17 +59,11 @@ function editFaktur(item) {
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
-<<<<<<< HEAD
         <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
       </NuxtLink>
       <span>/</span>
       <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-faktur`" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
       <span>/</span>
-=======
-        Beranda
-      </NuxtLink>
-      <span>/</span>
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
 
@@ -77,43 +72,48 @@ function editFaktur(item) {
     <!-- Data Table Card -->
     <div class="card bg-white shadow-xl mb-6 rounded-xl border border-blue-100">
       <div class="card-body">
+        <div class="text-sm mb-4 text-blue-700 font-semibold">
+          Menampilkan <span class="font-bold">{{ tableData.length }}</span> hasil.
+        </div>
+        
         <div class="overflow-x-auto">
           <table class="table table-md w-full rounded-xl overflow-hidden">
             <thead>
               <!-- Header Row -->
               <tr class="bg-gradient-to-r from-blue-200 via-blue-100 to-green-100 text-blue-900">
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle rounded-tl-xl bg-blue-100">No</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Perusahaan</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Nomor Faktur</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Tanggal Faktur</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Nomor SPM</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Akun</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Jumlah</th>
-                <th class="px-3 py-2 text-center font-semibold text-blue-700 align-middle bg-blue-100">Aksi</th>
+                <th class="text-center rounded-tl-xl w-16">No</th>
+                <th class="text-center">Perusahaan</th>
+                <th class="text-center">Nomor Faktur</th>
+                <th class="text-center">Tanggal Faktur</th>
+                <th class="text-center w-32">Nomor SPM</th>
+                <th class="text-center w-24">Akun</th>
+                <th class="text-right w-32">Jumlah</th>
+                <th class="text-center rounded-tr-xl w-40">Aksi</th>
               </tr>
               <!-- Filter Row -->
-              <tr class="bg-white border-b border-blue-100">
+              <tr class="bg-blue-50 border-b border-blue-100">
                 <td><div class="filter-container">&nbsp;</div></td>
                 <td>
-                  <input v-model="filterForm.nama_perusahaan" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Perusahaan" />
+                  <input v-model="filterForm.nama_perusahaan" type="text" class="input input-bordered input-xs w-full" placeholder="Perusahaan" />
                 </td>
                 <td>
-                  <input v-model="filterForm.nomor_faktur" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="No Faktur" />
+                  <input v-model="filterForm.nomor_faktur" type="text" class="input input-bordered input-xs w-full" placeholder="No Faktur" />
                 </td>
                 <td>
-                  <input v-model="filterForm.tanggal_faktur" type="date" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+                  <input v-model="filterForm.tanggal_faktur" type="date" class="input input-bordered input-xs w-full" />
                 </td>
                 <td>
-                  <input v-model="filterForm.nomor_spm" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="No SPM" />
+                  <input v-model="filterForm.nomor_spm" type="text" class="input input-bordered input-xs w-full" placeholder="No SPM" />
                 </td>
                 <td>
-                  <input v-model="filterForm.akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" maxlength="255" placeholder="Akun" />
+                  <input v-model="filterForm.akun" type="text" class="input input-bordered input-xs w-full" placeholder="Akun" />
                 </td>
-                <td></td>
+                <td><div class="filter-container">&nbsp;</div></td>
+                <td>&nbsp;</td>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in tableData" :key="item.id">
+              <tr v-for="(item, index) in tableData" :key="item.id" class="hover:bg-blue-50 transition-all duration-150">
                 <td class="text-center font-bold text-blue-700">{{ item.no }}</td>
                 <td class="text-blue-700 font-semibold">{{ item.perusahaan }}</td>
                 <td class="text-center">{{ item.nomor_faktur }}</td>
@@ -121,53 +121,23 @@ function editFaktur(item) {
                 <td class="text-center">{{ item.nomor_spm || '-' }}</td>
                 <td class="text-center"><span class="badge badge-outline badge-sm">{{ item.akun }}</span></td>
                 <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah) }}</td>
-<<<<<<< HEAD
                 
                 <!-- Action Icons -->
                 <td class="text-center">
-                  <button @click="viewFaktur(item)" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Faktur" style="background:none;border:none;padding:0;">
-                    <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                  </button>
-                </td>
-                <td class="text-center">
-                  <button @click="editFaktur(item)" class="hover:text-yellow-700 transition tooltip" data-tip="Edit Faktur" style="background:none;border:none;padding:0;">
-                    <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
-                  </button>
-                </td>
-                <td class="text-center">
-                  <button @click="printFaktur(item)" class="hover:text-blue-700 transition tooltip" data-tip="Cetak Faktur" style="background:none;border:none;padding:0;">
-                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                  </button>
-=======
-                <td class="px-3 py-2 text-center align-middle">
-                  <div class="flex justify-center gap-1">
-                    <NuxtLink
-                      :to="`/${$route.params.slug}/persediaan/daftar-faktur/view/${item.id}`"
-                      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View"
-                    >
-                      <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
+                  <div class="flex items-center justify-center gap-2">
+                    <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-faktur`" class="hover:text-blue-700 transition tooltip" data-tip="View Detail">
+                      <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink
-                      :to="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`"
-                      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Cetak"
-                    >
-                      <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
+                    <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-faktur`" class="hover:text-yellow-700 transition tooltip" data-tip="Edit Faktur">
+                      <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
                     </NuxtLink>
-                    <NuxtLink
-                      :to="`/${$route.params.slug}/persediaan/daftar-faktur/edit/${item.id}`"
-                      class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit"
-                    >
-                      <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600" />
-                    </NuxtLink>
-                    <button
-                      class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete"
-                      @click="confirm('Yakin hapus faktur ini?')"
-                      style="border:none;padding:0;"
-                    >
-                      <Icon icon="mdi:trash-can" class="w-5 h-5 text-red-600" />
+                    <button @click="printFaktur(item)" class="hover:text-green-700 transition tooltip" data-tip="Cetak Faktur" style="background:none;border:none;padding:0;">
+                      <Icon icon="mdi:printer" class="w-5 h-5 text-green-600 hover:text-green-800" />
                     </button>
+                    <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.pengeluaran_id}`" class="hover:text-indigo-700 transition tooltip" data-tip="Detail Pengeluaran">
+                      <Icon icon="mdi:file-document" class="w-5 h-5 text-indigo-600 hover:text-indigo-800" />
+                    </NuxtLink>
                   </div>
->>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
                 </td>
               </tr>
             </tbody>

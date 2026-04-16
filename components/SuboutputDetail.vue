@@ -76,6 +76,10 @@
         :id="data.id" 
         :pengeluaranCount="data.stats?.pengeluaranCount || 0" 
         :pengajuanCount="data.stats?.pengajuanCount || 0" 
+        @revisi="$emit('revisi')"
+        @sub="$emit('sub')"
+        @ajukan="$emit('ajukan')"
+        @delete="$emit('delete')"
       />
     </div>
   </div>

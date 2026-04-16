@@ -22,6 +22,78 @@ const deleteLoading = ref(false)
 const deleteError = ref('')
 const deleteSuccess = ref(false)
 
+const selectedFile = ref(null)
+const uploadKeterangan = ref('')
+const isUploading = ref(false)
+const uploadError = ref('')
+const uploadSuccess = ref(false)
+
+const handleFileChange = (e) => {
+  selectedFile.value = e.target.files[0]
+}
+
+const uploadBerkas = async () => {
+  if (!selectedFile.value) {
+    uploadError.value = 'Pilih berkas terlebih dahulu'
+    return
+  }
+
+  isUploading.value = true
+  uploadError.value = ''
+  
+  try {
+    const formData = new FormData()
+    formData.append('file', selectedFile.value)
+    formData.append('keterangan', uploadKeterangan.value)
+    
+    // Attempt actual upload if API exists, else simulate
+    const token = localStorage.getItem('token')
+    const response = await fetch('/api/berkas', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    })
+
+    if (!response.ok) throw new Error('Gagal mengunggah berkas ke server')
+    
+    const result = await response.json()
+    
+    // Add to list if successful
+    berkasList.value.unshift({
+      id: result.id || Date.now(),
+      nama: selectedFile.value.name,
+      tipe: selectedFile.value.name.split('.').pop().toUpperCase(),
+      tanggal: new Date().toISOString().split('T')[0],
+      ukuran: (selectedFile.value.size / (1024 * 1024)).toFixed(2) + ' MB',
+      pengunggah: 'User'
+    })
+    
+    uploadSuccess.value = true
+    setTimeout(() => {
+      showAddModal.value = false
+      resetUpload()
+    }, 1500)
+  } catch (e) {
+    console.error('Upload error:', e)
+    uploadError.value = 'Terjadi kesalahan saat upload. Pastikan koneksi stabil dan ukuran file tidak melebihi batas.'
+    
+    // Fallback simulation for demo if API fails
+    /*
+    berkasList.value.unshift({ ... })
+    uploadSuccess.value = true
+    */
+  } finally {
+    isUploading.value = false
+  }
+}
+
+const resetUpload = () => {
+  selectedFile.value = null
+  uploadKeterangan.value = ''
+  uploadError.value = ''
+  uploadSuccess.value = false
+}
+
 const filteredBerkas = computed(() => {
   return berkasList.value.filter(b => {
     return b.nama.toLowerCase().includes(filterForm.value.nama.toLowerCase()) &&
@@ -29,53 +101,8 @@ const filteredBerkas = computed(() => {
   })
 })
 
-const selectedFile = ref(null)
-const uploadKeterangan = ref('')
-const uploading = ref(false)
-
 const openAddModal = () => {
   showAddModal.value = true
-}
-
-const onFileChange = (e) => {
-  selectedFile.value = e.target.files[0]
-}
-
-const uploadFile = async () => {
-  if (!selectedFile.value) {
-    alert('Pilih file terlebih dahulu')
-    return
-  }
-
-  uploading.value = true
-  try {
-    const formData = new FormData()
-    formData.append('file', selectedFile.value)
-    formData.append('keterangan', uploadKeterangan.value)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    // Success simulation
-    const newBerkas = {
-      id: Date.now(),
-      nama: selectedFile.value.name,
-      tipe: selectedFile.value.name.split('.').pop().toUpperCase(),
-      tanggal: new Date().toISOString().split('T')[0],
-      ukuran: (selectedFile.value.size / (1024 * 1024)).toFixed(2) + ' MB',
-      pengunggah: 'User'
-    }
-    
-    berkasList.value.unshift(newBerkas)
-    showAddModal.value = false
-    selectedFile.value = null
-    uploadKeterangan.value = ''
-    alert('Berkas berhasil diunggah')
-  } catch (e) {
-    alert('Terjadi kesalahan saat upload: ' + e.message)
-  } finally {
-    uploading.value = false
-  }
 }
 
 const confirmDelete = (item) => {
@@ -204,11 +231,13 @@ const formatSize = (size) => size
     </div>
 
     <!-- Modals -->
-    <VDialog v-model="showAddModal" title="Tambah Berkas Laporan" confirmText="Unggah" :loading="uploading" @confirm="uploadFile">
+    <VDialog v-model="showAddModal" title="Tambah Berkas Laporan" :confirmText="isUploading ? 'Mengunggah...' : 'Unggah'" :confirmDisabled="isUploading" @confirm="uploadBerkas" @cancel="resetUpload">
       <div class="space-y-4">
+        <div v-if="uploadError" class="alert alert-error text-sm text-white py-2">{{ uploadError }}</div>
+        <div v-if="uploadSuccess" class="alert alert-success text-sm text-white py-2">Berkas berhasil diunggah!</div>
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-1">Pilih File</label>
-          <input type="file" @change="onFileChange" class="file-input file-input-bordered w-full" />
+          <input type="file" @change="handleFileChange" class="file-input file-input-bordered w-full" />
         </div>
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-1">Keterangan</label>
