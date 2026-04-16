@@ -8,13 +8,16 @@ const showAlert = ref(true)
 const users = ref([
   {
     id: 1,
-    nama: 'Nama User',
-    username: 'username',
-    role: 'Admin OMSPAN',
+    nama: 'Asep Saepuloh',
+    username: 'asep_ppk',
+    role: 'PPK',
     satker: 'LAN JAKARTA',
-    lastLogin: 'Belum Pernah Login'
+    lastLogin: '2026-04-10 14:20'
   }
 ])
+import { IconPlus } from '@tabler/icons-vue'
+const showAddModal = ref(false)
+function openAddModal() { showAddModal.value = true }
 const userHeaders = [
   { text: 'No', value: 'no', center: true },
   { text: 'Nama', value: 'nama' },
@@ -31,7 +34,13 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
 <template>
   <div class="pt-14">
     <SuboutputAlert :showAlert="showAlert" />
-    <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Admin OMSPAN</h1>
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-blue-700">Daftar Pejabat Pembuat Komitmen (PPK)</h1>
+      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <IconPlus class="w-4 h-4" />
+        Tambah PPK
+      </button>
+    </div>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">
         <span class="font-semibold text-blue-700">{{ item.nama }}</span>

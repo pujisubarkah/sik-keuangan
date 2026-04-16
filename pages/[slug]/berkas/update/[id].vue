@@ -2,7 +2,6 @@
 import { Button, TextField } from '@idds/vue'
 import { ref } from 'vue'
 import Icon from '~/components/Icon.vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const kode_akun = ref('521211')
 const nama_berkas = ref('Faktur Barang')
@@ -13,8 +12,8 @@ const toastMessage = ref('')
 const toastType = ref('success')
 const isSubmitting = ref(false)
 
-const router = useRouter?.() || null
-const route = useRoute?.() || null
+const router = useRouter()
+const route = useRoute()
 
 async function submitForm() {
   if (isSubmitting.value) return

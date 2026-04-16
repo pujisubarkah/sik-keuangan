@@ -37,7 +37,7 @@ const formatCurrency = (value) =>
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/admin" class="hover:text-blue-700 flex items-center gap-1">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
         <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
       </NuxtLink>
       <span>/</span>
@@ -85,13 +85,13 @@ const formatCurrency = (value) =>
                 <td class="px-3 py-2 text-right font-bold align-middle" :class="row.selisih < 0 ? 'text-red-600' : 'text-green-600'">{{ formatCurrency(row.selisih) }}</td>
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-2">
-                    <NuxtLink :to="`/admin/omspan/preview/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Preview">
+                    <NuxtLink :to="`/${$route.params.slug}/omspan/preview/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Preview">
                       <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/admin/omspan/sendEmail/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Kirim Email">
+                    <NuxtLink :to="`/${$route.params.slug}/omspan/sendEmail/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Kirim Email">
                       <Icon icon="mdi:send" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
-                    <NuxtLink :to="`/admin/omspan/update/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Penerima Email">
+                    <NuxtLink :to="`/${$route.params.slug}/omspan/update/${row.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Penerima Email">
                       <Icon icon="mdi:account" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
                     </NuxtLink>
                   </div>
@@ -120,7 +120,7 @@ const formatCurrency = (value) =>
 
         <!-- FOOTER ACTION -->
         <div class="mt-6">
-          <NuxtLink to="/admin/omspanPengaturan">
+          <NuxtLink :to="`/${$route.params.slug}/omspan/pengaturan`">
             <Button class="btn btn-gradient w-auto px-6 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-semibold py-2.5 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
               <IconEdit class="w-4 h-4" />
               <span>Kelola Isi Konten OMSPAN</span>

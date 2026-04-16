@@ -1,8 +1,7 @@
-import * as Idds from '@idds/vue'
+import { Button, TextField, Card } from '@idds/vue'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  Object.entries(Idds).forEach(([name, value]) => {
-    if (name === 'setBrandTheme' || name === 'default') return
-    nuxtApp.vueApp.component(name, value as any)
-  })
+  nuxtApp.vueApp.component('Button', Button)
+  nuxtApp.vueApp.component('TextField', TextField)
+  nuxtApp.vueApp.component('Card', Card)
 })

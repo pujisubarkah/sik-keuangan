@@ -98,11 +98,26 @@
                     {{ formatCurrency(item.jumlah) }}
                   </td>
                   <td class="px-3 py-2 text-center">
-                    <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal`" class="inline-flex items-center justify-center text-blue-500 hover:text-blue-700">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13h3l8-8a2.828 2.828 0 10-4-4l-8 8v3h3z" />
-                      </svg>
-                    </NuxtLink>
+                    <div class="flex items-center justify-center gap-2">
+                      <NuxtLink :to="`/${$route.params.slug}/suboutput/jadwal/${item.id}`" class="text-blue-500 hover:text-blue-700 tooltip" data-tip="Jadwal">
+                        <IconCalendar class="w-4 h-4" />
+                      </NuxtLink>
+                      <NuxtLink :to="`/${$route.params.slug}/suboutput/revisi/${item.id}`" class="text-orange-500 hover:text-orange-700 tooltip" data-tip="Revisi">
+                        <IconRefresh class="w-4 h-4" />
+                      </NuxtLink>
+                      <NuxtLink :to="`/${$route.params.slug}/suboutput/sub/${item.id}`" class="text-indigo-500 hover:text-indigo-700 tooltip" data-tip="Sub">
+                        <IconList class="w-4 h-4" />
+                      </NuxtLink>
+                      <button @click="$emit('ajukan', item)" class="text-green-500 hover:text-green-700 tooltip" data-tip="Ajukan">
+                        <IconSend class="w-4 h-4" />
+                      </button>
+                      <button @click="$emit('hapus', item)" class="text-red-500 hover:text-red-700 tooltip" data-tip="Hapus">
+                        <IconTrash class="w-4 h-4" />
+                      </button>
+                      <button @click="$emit('debug', item)" class="text-purple-500 hover:text-purple-700 tooltip" data-tip="Debug">
+                        <IconBug class="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </template>
@@ -133,7 +148,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { NuxtLink } from '#components'
-import { IconPlus, IconFileSpreadsheet } from '@tabler/icons-vue'
+import { IconPlus, IconFileSpreadsheet, IconCalendar, IconRefresh, IconList, IconSend, IconTrash, IconBug } from '@tabler/icons-vue'
 const $route = useRoute()
 const props = defineProps({
   data: Object

@@ -14,6 +14,9 @@ const activeMenu = computed(() => {
   if (path.includes('pekerjaan/perencanaan')) return 'perencanaan';
   return '';
 });
+
+const emit = defineEmits(['delete', 'ajukan'])
+
 import { useClickOutside } from '~/composables/useClickOutside';
 import Icon from '~/components/Icon.vue';
 
@@ -24,7 +27,7 @@ const props = defineProps({
   },
   pengeluaranCount: {
     type: Number,
-    default: 7,
+    default: 0,
   },
   pengajuanCount: {
     type: Number,
@@ -50,6 +53,24 @@ function handleSalinClick(event) {
     event.preventDefault();
   }
 }
+
+function handleDelete() {
+  if (confirm('Apakah Anda yakin ingin menghapus Rincian Output ini?')) {
+    emit('delete', props.id)
+  }
+}
+
+function handleAjukan() {
+  if (confirm('Ajukan Rincian Output ini?')) {
+    emit('ajukan', props.id)
+  }
+}
+
+function handleDebug() {
+  console.log('DEBUG INFO - RO ID:', props.id);
+  console.log('Route Context:', route.params);
+  alert('Debug info printed to console');
+}
 </script>
 
 <template>
@@ -74,7 +95,7 @@ function handleSalinClick(event) {
     >
       <Icon icon="tabler:currency-dollar" class="w-4 h-4 text-gray-500" /> Anggaran
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengeluaran&id=${id}`"
+    <a :href="`/${$route.params.slug}/pengeluaran?id_pekerjaan=${id}`"
       :class="[
         'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
         activeMenu === 'pengeluaran'
@@ -85,7 +106,7 @@ function handleSalinClick(event) {
       <Icon icon="tabler:shopping-cart" class="w-4 h-4 text-gray-500" /> Pengeluaran
       <span v-if="pengeluaranCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengeluaranCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/pengajuan&id=${id}`"
+    <a :href="`/${$route.params.slug}/pengajuan?id_pekerjaan=${id}`"
       :class="[
         'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
         activeMenu === 'pengajuan'
@@ -96,18 +117,41 @@ function handleSalinClick(event) {
       <Icon icon="tabler:arrow-up-circle" class="w-4 h-4 text-gray-500" /> Pengajuan
       <span v-if="pengajuanCount > 0" class="ml-1 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded-full">{{ pengajuanCount }}</span>
     </a>
-    <a :href="`/index.php?r=pekerjaan/perencanaan&id=${id}`"
-      :class="[
-        'inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap border',
-        activeMenu === 'perencanaan'
-          ? 'text-blue-700 bg-blue-100 border-blue-400'
-          : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
-      ]"
+    <a :href="`/${$route.params.slug}/suboutput/jadwal/${id}`"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
     >
-      <Icon icon="tabler:calendar" class="w-4 h-4 text-gray-500" /> Perencanaan
+      <Icon icon="tabler:calendar-event" class="w-4 h-4 text-gray-500" /> Jadwal
     </a>
+    <a :href="`/${$route.params.slug}/suboutput/revisi/${id}`"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
+    >
+      <Icon icon="tabler:edit" class="w-4 h-4 text-gray-500" /> Revisi
+    </a>
+    <a :href="`/${$route.params.slug}/suboutput/sub/${id}`"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
+    >
+      <Icon icon="tabler:hierarchy" class="w-4 h-4 text-gray-500" /> Sub-RO
+    </a>
+    <button
+      @click="handleAjukan"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-green-600 border border-green-700 rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors whitespace-nowrap"
+    >
+      <Icon icon="tabler:send" class="w-4 h-4" /> Ajukan
+    </button>
+    <button
+      @click="handleDelete"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-red-600 border border-red-700 rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors whitespace-nowrap"
+    >
+      <Icon icon="tabler:trash" class="w-4 h-4" /> Hapus
+    </button>
+    <button
+      @click="handleDebug"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors whitespace-nowrap"
+    >
+      <Icon icon="tabler:bug" class="w-4 h-4" /> Debug
+    </button>
     <a
-      :href="`/index.php?r=pekerjaan/salin&id=${id}`"
+      :href="`/${$route.params.slug}/suboutput/salin/${id}`"
       class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
       @click="handleSalinClick"
     >

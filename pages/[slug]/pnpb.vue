@@ -38,8 +38,9 @@
                 </div>
               </div>
               <div class="md:col-span-2 flex items-end">
-                <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-                  <i class="fa fa-search w-4 h-4" />
+                <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg" :disabled="loading">
+                  <Icon icon="tabler:search" v-if="!loading" class="w-4 h-4" />
+                  <div v-else class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                   <span>Tampilkan</span>
                 </button>
               </div>
@@ -87,7 +88,6 @@
           </div>
         </div>
       </div>
-      <!-- Rekap Akun PNBP Table -->
       <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
         <div class="card-body p-3 md:p-4">
           <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
@@ -107,23 +107,16 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">
-                <tr v-for="row in tableData" :key="row.kode" class="hover:bg-yellow-50 align-middle">
-                  <DeleteModal 
-                    :show-delete-modal="showDeleteModal"
-                    :delete-loading="deleteLoading"
-                    :delete-error="deleteError"
-                    :delete-success="deleteSuccess"
-                    @close="closeDeleteModal"
-                    @confirm="doDelete"
-                  />
+                <tr v-for="row in filteredTableData" :key="row.kode" class="hover:bg-yellow-50 align-middle">
                   <td class="px-3 py-2 text-center align-middle">{{ row.kode }}</td>
                   <td class="px-3 py-2 align-middle">
                     <div class="inline-flex gap-1">
-                      <button class="rounded bg-blue-100 text-blue-700 px-2 py-1 text-xs font-semibold hover:bg-blue-200 transition" @click.prevent="addSubAkun(row)"><i class="fa fa-plus"></i></button>
-                      <button class="rounded bg-yellow-100 text-yellow-700 px-2 py-1 text-xs font-semibold hover:bg-yellow-200 transition" @click.prevent="editAkun(row)"><i class="fa fa-pencil"></i></button>
-                      <button class="rounded bg-red-100 text-red-700 px-2 py-1 text-xs font-semibold hover:bg-red-200 transition" @click.prevent="deleteAkun(row)"><i class="fa fa-trash"></i></button>
+                      <button class="rounded bg-blue-100 text-blue-700 px-2 py-1 text-xs font-semibold hover:bg-blue-200 transition" @click.prevent="openAddModal(row)"><i class="fa fa-plus"></i></button>
+                      <button class="rounded bg-yellow-100 text-yellow-700 px-2 py-1 text-xs font-semibold hover:bg-yellow-200 transition" @click.prevent="openEditModal(row)"><i class="fa fa-pencil"></i></button>
+                      <button class="rounded bg-red-100 text-red-700 px-2 py-1 text-xs font-semibold hover:bg-red-200 transition" @click.prevent="confirmDelete(row)"><i class="fa fa-trash"></i></button>
                     </div>
-                    <span class="ml-2">{{ row.uraian }}</span>
+                    <span class="ml-2 font-semibold text-indigo-700" v-if="row.kode.length <= 3">{{ row.uraian }}</span>
+                    <span class="ml-6 text-gray-700" v-else>{{ row.uraian }}</span>
                   </td>
                   <td class="px-3 py-2 text-right align-middle">
                     <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(row.target) }}</span>
@@ -139,57 +132,72 @@
                   </td>
                 </tr>
                 <!-- Total Row -->
-                <tr class="bg-blue-50 font-bold">
+                <tr class="bg-blue-50 font-extrabold text-blue-900 border-t-2 border-blue-200">
                   <td class="px-3 py-2 text-center align-middle">&nbsp;</td>
-                  <td class="px-3 py-2 text-center align-middle">Total (Rp.)</td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.target) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.realisasi) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalRow.selisih) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalRow.persen }}%</span>
-                  </td>
-                </tr>
-                <tr><td colspan="6" class="py-1"></td></tr>
-                <tr class="bg-blue-100 font-bold">
-                  <td class="px-3 py-2">&nbsp;</td>
-                  <td class="px-3 py-2 text-center align-middle">Total Keseluruhan (Rp.)</td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.target) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-green-100 text-green-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.realisasi) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-red-100 text-red-700 rounded px-2 py-1 font-semibold">{{ formatCurrency(totalAll.selisih) }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-right align-middle">
-                    <span class="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 font-semibold">{{ totalAll.persen }}%</span>
-                  </td>
+                  <td class="px-3 py-2 text-center align-middle uppercase">Total (Rp.)</td>
+                  <td class="px-3 py-2 text-right align-middle">{{ formatCurrency(totalRow.target) }}</td>
+                  <td class="px-3 py-2 text-right align-middle text-green-700">{{ formatCurrency(totalRow.realisasi) }}</td>
+                  <td class="px-3 py-2 text-right align-middle text-red-700">{{ formatCurrency(totalRow.selisih) }}</td>
+                  <td class="px-3 py-2 text-right align-middle text-yellow-700">{{ totalRow.persen }}%</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <!-- Export Buttons -->
-          <div class="mt-4 flex gap-2">
-            <button class="btn btn-primary btn-sm" @click="addIndukAkun"><i class="glyphicon glyphicon-plus"></i> Tambah Akun Induk</button>
-            <button class="btn btn-success btn-sm" @click="exportExcel"><i class="glyphicon glyphicon-download"></i> Export ke Excel</button>
-            <button class="btn btn-success btn-sm" @click="exportRealisasi"><i class="glyphicon glyphicon-file"></i> Export Realisasi</button>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <button class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="openAddModal()">
+               <IconPlus class="w-4 h-4" />
+               <span>Tambah Akun Induk</span>
+            </button>
+            <button class="inline-flex items-center gap-2 rounded-md border border-green-700 bg-green-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-green-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
+               <Icon icon="tabler:file-spreadsheet" class="w-4 h-4" />
+               <span>Export ke Excel</span>
+            </button>
+            <button class="inline-flex items-center gap-2 rounded-md border border-emerald-700 bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-emerald-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
+               <Icon icon="tabler:file-invoice" class="w-4 h-4" />
+               <span>Export Realisasi</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modals -->
+    <VDialog v-model="showAddModal" :title="editMode ? 'Edit Akun' : 'Tambah Akun'" @cancel="showAddModal = false" @confirm="saveAccount">
+       <div class="space-y-4">
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-1">Kode Akun</label>
+             <input v-model="accountForm.kode" type="text" class="input input-bordered w-full" placeholder="Contoh: 423" />
+          </div>
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-1">Uraian</label>
+             <input v-model="accountForm.uraian" type="text" class="input input-bordered w-full" placeholder="Nama Akun" />
+          </div>
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-1">Target (Rp)</label>
+             <input v-model.number="accountForm.target" type="number" class="input input-bordered w-full" />
+          </div>
+          <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-1">Realisasi (Rp)</label>
+             <input v-model.number="accountForm.realisasi" type="number" class="input input-bordered w-full" />
+          </div>
+       </div>
+    </VDialog>
+
+    <DeleteModal 
+      :show-delete-modal="showDeleteModal"
+      :delete-loading="deleteLoading"
+      :delete-error="deleteError"
+      :delete-success="deleteSuccess"
+      @close="closeDeleteModal"
+      @confirm="doDelete"
+    />
   </div>
 </template>
 
 <script setup>
 import SuboutputAlert from '@/components/SuboutputAlert.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 import StatBox from '~/components/UI/StatBox.vue'
 
 let FusionChartsLib = null
@@ -268,7 +276,7 @@ const tableData = ref([
   { kode: '123', uraian: 'abc', target: 5000000, realisasi: 1000000, selisih: 4000000, persen: 20 },
   { kode: '234', uraian: 'rty', target: 5000000, realisasi: 1000000, selisih: 4000000, persen: 20 },
 ])
-const totalRow = { target: 5000000, realisasi: 1000000, selisih: 4000000, persen: 0 }
+// Total calculated via computed property below
 const totalAll = { target: 5000000, realisasi: 1000000, selisih: 4000000, persen: 20 }
 
 const renderChartJumlah = () => {
@@ -328,32 +336,98 @@ onMounted(async () => {
   }
 })
 
-function formatCurrency(value) {
-  if (value == null) return '-'
-  return value.toLocaleString('id-ID')
-}
-function filterData() {
-  // TODO: Implement filter logic
-}
-function addSubAkun(row) {
-  // TODO: Implement add sub akun logic
-}
-function editAkun(row) {
-  // TODO: Implement edit akun logic
-}
+import VDialog from '~/components/UI/v-dialog.vue'
 import DeleteModal from '~/components/UI/DeleteModal.vue'
+import Icon from '~/components/Icon.vue'
+import { IconPlus } from '@tabler/icons-vue'
 
+const showAddModal = ref(false)
 const showDeleteModal = ref(false)
+const editMode = ref(false)
+const accountForm = reactive({
+  id: null,
+  kode: '',
+  uraian: '',
+  target: 0,
+  realisasi: 0
+})
+
 const itemToDelete = ref(null)
 const deleteLoading = ref(false)
 const deleteError = ref('')
 const deleteSuccess = ref(false)
 
-function deleteAkun(row) {
+const filteredTableData = computed(() => {
+  if (!filterForm.value.id_satker) return tableData.value
+  // Mock filter logic based on satker
+  return tableData.value
+})
+
+const totalRow = computed(() => {
+  const target = tableData.value.reduce((sum, r) => sum + r.target, 0)
+  const realisasi = tableData.value.reduce((sum, r) => sum + r.realisasi, 0)
+  const selisih = target - realisasi
+  const persen = target > 0 ? ((realisasi / target) * 100).toFixed(2) : 0
+  return { target, realisasi, selisih, persen }
+})
+
+function formatCurrency(value) {
+  if (value == null) return 'Rp 0'
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value)
+}
+
+const loading = ref(false)
+
+async function filterData() {
+  console.log('Filtering PNBP data for satker:', filterForm.value.id_satker)
+  loading.value = true
+  // Mock API call delay
+  await new Promise(resolve => setTimeout(resolve, 800))
+  // Actual filtering happens reactively via filteredTableData
+  loading.value = false
+}
+
+function openAddModal(parent = null) {
+  editMode.value = false
+  accountForm.id = null
+  accountForm.kode = parent ? parent.kode + '.' : ''
+  accountForm.uraian = ''
+  accountForm.target = 0
+  accountForm.realisasi = 0
+  showAddModal.value = true
+}
+
+function openEditModal(row) {
+  editMode.value = true
+  Object.assign(accountForm, {
+    ...row
+  })
+  showAddModal.value = true
+}
+
+function saveAccount() {
+  const selisih = accountForm.target - accountForm.realisasi
+  const persen = accountForm.target > 0 ? Number(((accountForm.realisasi / accountForm.target) * 100).toFixed(2)) : 0
+  
+  if (editMode.value) {
+    const idx = tableData.value.findIndex(r => r.id === accountForm.id || r.kode === accountForm.kode)
+    if (idx > -1) {
+      tableData.value[idx] = { ...accountForm, selisih, persen }
+    }
+  } else {
+    tableData.value.push({
+      ...accountForm,
+      id: Date.now(),
+      selisih,
+      persen
+    })
+  }
+  showAddModal.value = false
+}
+
+function confirmDelete(row) {
   itemToDelete.value = row
   showDeleteModal.value = true
-  deleteError.value = ''
-  deleteSuccess.value = false
 }
 
 function closeDeleteModal() {
@@ -366,38 +440,33 @@ function closeDeleteModal() {
 
 const doDelete = async () => {
   if (!itemToDelete.value) return
-  
   deleteLoading.value = true
-  deleteError.value = ''
-  
   try {
-    // Simulate API call - replace with actual delete API
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // Remove from tableData
     const idx = tableData.value.findIndex(r => r.kode === itemToDelete.value.kode)
-    if (idx > -1) {
-      tableData.value.splice(idx, 1)
-    }
-    
+    if (idx > -1) tableData.value.splice(idx, 1)
     deleteSuccess.value = true
-    setTimeout(() => {
-      closeDeleteModal()
-    }, 1500)
-  } catch (error) {
-    deleteError.value = 'Gagal menghapus akun. Silakan coba lagi.'
+    setTimeout(closeDeleteModal, 1000)
+  } catch (e) {
+    deleteError.value = 'Gagal menghapus data'
   } finally {
     deleteLoading.value = false
   }
 }
-function addIndukAkun() {
-  // TODO: Implement add induk akun logic
-}
-function exportExcel() {
-  // TODO: Implement export excel logic
-}
-function exportRealisasi() {
-  // TODO: Implement export realisasi logic
+
+function exportToCSV() {
+  const headers = ['Kode', 'Uraian', 'Target', 'Realisasi', 'Selisih', 'Persen']
+  const rows = tableData.value.map(r => [r.kode, `"${r.uraian}"`, r.target, r.realisasi, r.selisih, r.persen])
+  let csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n")
+  
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement("a")
+  const url = URL.createObjectURL(blob)
+  link.setAttribute("href", url)
+  link.setAttribute("download", `rekap_pnbp_${new Date().toISOString().split('T')[0]}.csv`)
+  link.style.visibility = 'hidden'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 }
 </script>
 

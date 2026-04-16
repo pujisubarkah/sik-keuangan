@@ -22,6 +22,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+  ssr: false,
   modules: ['@nuxtjs/tailwindcss'],
   css: ['@idds/vue/index.css'],
   tailwindcss: {
@@ -32,14 +33,16 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  plugins: [
-    '~/plugins/pinia.js',
-    '~/plugins/idds.client.ts',
-    '~/plugins/idds-theme.client.ts',
-    '~/plugins/fusioncharts.client.ts',
-    '~/plugins/auth-fetch.client.ts',
-    '~/plugins/apexcharts.client.js'
-  ],
+  vite: {
+    optimizeDeps: {
+      include: ['@idds/vue', '@tabler/icons-vue', 'fusioncharts', 'apexcharts']
+    },
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true
+      }
+    }
+  },
   build: {
     transpile: ['@idds/vue']
   }

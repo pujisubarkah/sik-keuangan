@@ -8,13 +8,30 @@ const showAlert = ref(true)
 const users = ref([
   {
     id: 1,
-    nama: 'Nama User',
-    username: 'username',
-    role: 'Admin OMSPAN',
+    nama: 'Bambang Irawan',
+    username: 'bambang_satker',
+    role: 'Kepala Satker',
     satker: 'LAN JAKARTA',
-    lastLogin: 'Belum Pernah Login'
+    lastLogin: '2026-04-11 14:00'
   }
 ])
+import { IconPlus } from '@tabler/icons-vue'
+const showAddModal = ref(false)
+function openAddModal() { showAddModal.value = true }
+const showDeleteModal = ref(false)
+const userToDelete = ref(null)
+function openDeleteModal(user) {
+  userToDelete.value = user
+  showDeleteModal.value = true
+}
+function closeDeleteModal() {
+  showDeleteModal.value = false
+  userToDelete.value = null
+}
+function confirmDeleteUser() {
+  alert('User dihapus: ' + (userToDelete.value?.nama || ''))
+  closeDeleteModal()
+}
 const userHeaders = [
   { text: 'No', value: 'no', center: true },
   { text: 'Nama', value: 'nama' },
@@ -31,7 +48,13 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
 <template>
   <div class="pt-14">
     <SuboutputAlert :showAlert="showAlert" />
-    <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Admin OMSPAN</h1>
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-blue-700">Daftar Kepala Satker</h1>
+      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <IconPlus class="w-4 h-4" />
+        Tambah Kepala Satker
+      </button>
+    </div>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">
         <span class="font-semibold text-blue-700">{{ item.nama }}</span>
@@ -61,7 +84,7 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
           <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
             <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
           </button>
-          <button class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
+          <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
             <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
           </button>
         </div>

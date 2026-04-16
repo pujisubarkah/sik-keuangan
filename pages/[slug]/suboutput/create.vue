@@ -4,7 +4,6 @@ import DeleteModal from '~/components/UI/DeleteModal.vue'
 import { ref, onMounted, watch } from 'vue'
 import Icon from '~/components/Icon.vue'
 import { useUserStore } from '~/stores/user'
-import { useRoute, useRouter } from 'vue-router'
 
 // State
 const satker = ref('')
@@ -28,8 +27,8 @@ const unitList = ref([{ value: '', label: '- Pilih Unit -' }])
 const isSubmitting = ref(false)
 
 const userStore = useUserStore()
-const router = useRouter?.() || null
-const route = useRoute?.() || null
+const router = useRouter()
+const route = useRoute()
 
 // Watch satker untuk fetch output & unit
 watch(satker, async (newSatker) => {

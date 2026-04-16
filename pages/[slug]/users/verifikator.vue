@@ -53,13 +53,15 @@ const showAlert = ref(true)
 const users = ref([
   {
     id: 1,
-    nama: 'Nama User',
-    username: 'username',
+    nama: 'Budi Santoso',
+    username: 'budi_verif',
     role: 'Verifikator',
     satker: 'LAN JAKARTA',
-    lastLogin: 'Belum Pernah Login'
+    lastLogin: '2026-04-12 08:30'
   }
 ])
+const showAddModal = ref(false)
+function openAddModal() { showAddModal.value = true }
 const userHeaders = [
   { text: 'No', value: 'no', center: true },
   { text: 'Nama', value: 'nama' },
@@ -76,10 +78,10 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
 <template>
   <div class="pt-14">
     <SuboutputAlert :showAlert="showAlert" />
-    <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Verifikator</h1>
-    <div class="mb-4">
-      <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-        <IconPlus class="h-4 w-4" />
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-blue-700">Daftar Verifikator</h1>
+      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+        <IconPlus class="w-4 h-4" />
         Tambah Verifikator
       </button>
     </div>

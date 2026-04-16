@@ -254,7 +254,7 @@ function cetakPdf() {
               <tr v-for="(item, index) in group.items" :key="item.id" class="hover:bg-blue-50 transition-all duration-150 border-b border-gray-100">
                 <td class="text-center font-mono text-sm text-blue-600">{{ item.kode }}</td>
                 <td>
-                  <NuxtLink :to="`/persediaanBarang/view?id=${item.id}`" class="text-blue-700 font-semibold hover:underline">
+                  <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-barang`" class="text-blue-700 font-semibold hover:underline">
                     {{ item.uraian }}
                   </NuxtLink>
                 </td>

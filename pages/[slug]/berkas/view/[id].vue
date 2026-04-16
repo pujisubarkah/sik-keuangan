@@ -2,14 +2,13 @@
 import { Button, TextField } from '@idds/vue'
 import { ref } from 'vue'
 import Icon from '~/components/Icon.vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const kode_akun = ref('521211')
 const nama_berkas = ref('Faktur Barang')
 const kata_kunci = ref('')
 
-const router = useRouter?.() || null
-const route = useRoute?.() || null
+const router = useRouter()
+const route = useRoute()
 
 </script>
 

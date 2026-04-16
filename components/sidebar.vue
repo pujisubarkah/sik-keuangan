@@ -1,4 +1,4 @@
-﻿/* ===== CUSTOM SEARCH BAR OVERRIDE ===== */
+/* ===== CUSTOM SEARCH BAR OVERRIDE ===== */
 .sidebar-form input:focus, .sidebar-form input:hover {
   background-color: #f3f4f6 !important; /* abu-abu netral */
   border-color: #60a5fa !important; /* biru lembut */
@@ -168,7 +168,6 @@
 </template>
 
 <script>
-import Icon from '~/components/Icon.vue'
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { getMenuItems } from '~/layouts/menu-config.js';
@@ -176,9 +175,6 @@ import { computed } from 'vue';
 
 export default {
   name: 'Sidebar',
-  components: {
-    Icon
-  },
   props: {
     userRole: {
       type: String,

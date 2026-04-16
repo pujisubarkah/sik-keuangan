@@ -148,14 +148,16 @@
               <tr v-for="(item, index) in pengeluaranData" :key="item.id" class="hover:bg-yellow-50 align-middle">
                 <td class="px-3 py-2 text-center align-middle">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                 <td class="px-3 py-2 font-semibold text-blue-700 align-middle">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  <NuxtLink v-if="item.id_pekerjaan" :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_kode }}
                   </NuxtLink>
+                  <span v-else>{{ item.id_pekerjaan_kode }}</span>
                 </td>
                 <td class="px-3 py-2 align-middle">
-                  <NuxtLink :to="`/pekerjaan/view?id=${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
+                  <NuxtLink v-if="item.id_pekerjaan" :to="`/${$route.params.slug}/suboutput/${item.id_pekerjaan}`" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline line-clamp-2">
                     {{ item.id_pekerjaan_nama }}
                   </NuxtLink>
+                  <span v-else>{{ item.id_pekerjaan_nama }}</span>
                 </td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_komponen }}</td>
                 <td class="px-3 py-2 text-blue-600 font-semibold align-middle">{{ item.kode_subkomponen }}</td>

@@ -95,7 +95,7 @@
       </div>
     </form>
     <div class="flex flex-col gap-8">
-      <Berkas :berkas-list="berkasList" @delete="handleBerkasDelete" />
+      <Berkas :berkas-list="berkasList" @delete="handleBerkasDelete" @add="goToAddBerkas" />
       <Riwayat :riwayat-list="riwayatList" />
       <DeleteModal 
         :show-delete-modal="showDeleteModal"
@@ -161,6 +161,10 @@ function handleBerkasDelete(berkas) {
   showDeleteModal.value = true
   deleteError.value = ''
   deleteSuccess.value = false
+}
+
+function goToAddBerkas() {
+  router.push(`/${slug}/berkas-laporan/index?pengeluaran_id=${id}`)
 }
 
 function closeDeleteModal() {

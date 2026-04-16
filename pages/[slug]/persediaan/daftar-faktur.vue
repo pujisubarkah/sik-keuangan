@@ -48,20 +48,29 @@ const filterData = () => {
   console.log('Filtering with:', filterForm.value)
   // Implement logic to fetch data based on filters
 }
+
+function printFaktur(item) {
+  alert(`Cetak Faktur: ${item.nomor_faktur}`)
+}
+
+function viewFaktur(item) {
+  alert(`Lihat Faktur: ${item.nomor_faktur}`)
+}
+
+function editFaktur(item) {
+  alert(`Edit Faktur: ${item.nomor_faktur}`)
+}
 </script>
 
 <template>
-  <div class="pt-14">
-    <!-- Alert -->
-    <SuboutputAlert :showAlert="showAlert" />
-
+  <div class="pt-14 px-1 md:px-2">
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/persediaanFaktur/admin" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
+      <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-faktur`" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
@@ -127,19 +136,19 @@ const filterData = () => {
                 
                 <!-- Action Icons -->
                 <td class="text-center">
-                  <NuxtLink :to="`/pengeluaran/view?id=${item.pengeluaran_id}`" class="hover:text-blue-700 transition tooltip" data-tip="Detail Pengeluaran">
-                    <Icon icon="mdi:file-document" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                  </NuxtLink>
-                </td>
-                <td class="text-center">
-                  <a :href="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`" target="_blank" class="hover:text-blue-700 transition tooltip" data-tip="Cetak Faktur">
-                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                  </a>
-                </td>
-                <td class="text-center">
-                  <NuxtLink :to="`/persediaanFaktur/view?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="View">
+                  <button @click="viewFaktur(item)" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Faktur" style="background:none;border:none;padding:0;">
                     <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-                  </NuxtLink>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button @click="editFaktur(item)" class="hover:text-yellow-700 transition tooltip" data-tip="Edit Faktur" style="background:none;border:none;padding:0;">
+                    <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button @click="printFaktur(item)" class="hover:text-blue-700 transition tooltip" data-tip="Cetak Faktur" style="background:none;border:none;padding:0;">
+                    <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  </button>
                 </td>
               </tr>
             </tbody>

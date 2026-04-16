@@ -172,14 +172,13 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import SuboutputAlert from '@/components/SuboutputAlert.vue';
 import { useUserStore } from '~/stores/user';
-import { useRoute, useRouter } from 'vue-router';
 import VButton from '@/components/UI/v-button.vue';
 import VTextField from '@/components/UI/v-text-field.vue';
 import Icon from '~/components/Icon.vue';
 
 const isSubmitting = ref(false);
-const route = useRoute?.() || null;
-const router = useRouter?.() || null;
+const route = useRoute();
+const router = useRouter();
 const userStore = useUserStore();
 
 // Options & Form State

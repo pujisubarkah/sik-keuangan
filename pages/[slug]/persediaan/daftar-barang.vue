@@ -4,7 +4,7 @@ definePageMeta({ layout: 'default' });
   <div class="pt-14">
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700">
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
         <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
       </NuxtLink>
       <span>/</span>
@@ -18,10 +18,9 @@ definePageMeta({ layout: 'default' });
     <!-- Alert -->
     <SuboutputAlert :showAlert="showAlert" />
 
-     <!-- ACTION -->
     <div class="mb-4">
       <NuxtLink
-        to="/admin/persediaan/create"
+        :to="`/${$route.params.slug}/persediaan/create`"
         class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg"
       >
         <IconPlus class="w-4 h-4" />
@@ -389,14 +388,15 @@ const getUnitName = (id) => {
 
 const viewItem = (item) => {
   console.log('View item:', item)
-  // Implement view functionality or navigation
-  alert(`View: ${item.nama_barang}`)
+  alert(`Detail Barang: ${item.nama_barang}\nKode: ${item.kode_barang}\nHarga: ${formatCurrency(item.harga_satuan)}`)
 }
 
 const editItem = (item) => {
   console.log('Edit item:', item)
-  // Implement edit functionality or navigation
-  alert(`Edit: ${item.nama_barang}`)
+  const newName = prompt(`Ubah Nama Barang "${item.nama_barang}":`, item.nama_barang)
+  if (newName) {
+    item.nama_barang = newName
+  }
 }
 
 const deleteItem = (item) => {
