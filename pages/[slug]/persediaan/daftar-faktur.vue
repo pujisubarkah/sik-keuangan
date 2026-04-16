@@ -56,6 +56,7 @@ function printFaktur(item) {
 
 <template>
   <div class="pt-14 px-1 md:px-2">
+<<<<<<< HEAD
     <!-- Breadcrumb -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
@@ -66,6 +67,18 @@ function printFaktur(item) {
       <span>/</span>
       <span class="font-bold text-blue-700">Kelola</span>
     </div>
+=======
+<!-- Breadcrumb -->
+<div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
+  <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
+    <Icon icon="mdi:home" class="w-4 h-4 inline" /> Dashboard
+  </NuxtLink>
+  <span>/</span>
+  <NuxtLink :to="`/${$route.params.slug}/persediaan/daftar-faktur`" class="hover:text-blue-700">Persediaan Faktur</NuxtLink>
+  <span>/</span>
+  <span class="font-bold text-blue-700">Kelola</span>
+</div>
+>>>>>>> 73a4997 (lanjut)
 
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Faktur Barang</h1>
 
@@ -120,6 +133,7 @@ function printFaktur(item) {
                 <td class="text-center">{{ formatDate(item.tanggal_faktur) }}</td>
                 <td class="text-center">{{ item.nomor_spm || '-' }}</td>
                 <td class="text-center"><span class="badge badge-outline badge-sm">{{ item.akun }}</span></td>
+<<<<<<< HEAD
                 <td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah) }}</td>
                 
                 <!-- Action Icons -->
@@ -139,6 +153,38 @@ function printFaktur(item) {
                     </NuxtLink>
                   </div>
                 </td>
+=======
+<td class="text-right text-green-700 font-bold">{{ formatCurrency(item.jumlah) }}</td>
+<td class="px-3 py-2 text-center align-middle">
+  <div class="flex justify-center gap-1">
+    <NuxtLink
+      :to="`/${$route.params.slug}/persediaan/daftar-faktur/view/${item.id}`"
+      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="View"
+    >
+      <Icon icon="mdi:eye" class="w-5 h-5 text-blue-600" />
+    </NuxtLink>
+    <NuxtLink
+      :to="`/index.php?r=persediaanFaktur/exportPdf&id=${item.id}`"
+      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Cetak"
+    >
+      <Icon icon="mdi:printer" class="w-5 h-5 text-blue-600" />
+    </NuxtLink>
+    <NuxtLink
+      :to="`/${$route.params.slug}/persediaan/daftar-faktur/edit/${item.id}`"
+      class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit"
+    >
+      <Icon icon="mdi:pencil" class="w-5 h-5 text-yellow-600" />
+    </NuxtLink>
+    <button
+      class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Delete"
+      @click="confirm('Yakin hapus faktur ini?')"
+      style="border:none;padding:0;"
+    >
+      <Icon icon="mdi:trash-can" class="w-5 h-5 text-red-600" />
+    </button>
+  </div>
+</td>
+>>>>>>> 73a4997 (lanjut)
               </tr>
             </tbody>
           </table>

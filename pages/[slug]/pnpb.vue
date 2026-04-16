@@ -38,8 +38,17 @@
                 </div>
               </div>
               <div class="md:col-span-2 flex items-end">
+<<<<<<< HEAD
                 <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
                   <i class="fa fa-search w-4 h-4" />
+=======
+                <button 
+                  type="submit"
+                  class="w-full bg-brandBlue-600 hover:bg-brandBlue-700 active:bg-brandBlue-800 border border-brandBlue-700 hover:border-brandBlue-800 active:border-brandBlue-800 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brandBlue-300"
+                  style="min-height:44px"
+                >
+                  <i class="fa fa-search w-5 h-5 group-hover:scale-110 transition-transform" />
+>>>>>>> 73a4997 (lanjut)
                   <span>Tampilkan</span>
                 </button>
               </div>
@@ -87,7 +96,16 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
+=======
+      <!-- Rekap Akun PNBP Table -->
+      <div class="mb-2">
+        <h2 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">Rekap Akun PNBP</h2>
+      </div>
+      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100 overflow-hidden">
+        <div class="h-1 bg-[#D69009]" />
+>>>>>>> 73a4997 (lanjut)
         <div class="card-body p-3 md:p-4">
           <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
             <i class="fa fa-bar-list text-blue-500"></i>
