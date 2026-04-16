@@ -75,14 +75,22 @@ function confirmDeleteUser() {
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
+<<<<<<< HEAD
           <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
             <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
           <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
             <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
+=======
+          <button @click="openViewModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
+            <IconEye class="w-5 h-5 text-blue-600" />
           </button>
-          <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-            <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+          <button @click="openEditModal(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
+            <IconPencil class="w-5 h-5 text-yellow-600" />
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
+          </button>
+          <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+            <IconTrash class="w-5 h-5 text-red-600" />
           </button>
         </div>
       </template>

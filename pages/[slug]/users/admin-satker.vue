@@ -324,8 +324,8 @@ definePageMeta({ layout: 'default' })
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">
+        Beranda
       </NuxtLink>
       <span>/</span>
       <span>User</span>
@@ -380,14 +380,14 @@ definePageMeta({ layout: 'default' })
         </template>
         <template #aksi="{ item }">
           <div class="flex justify-center gap-2">
-            <button @click="openViewModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
-              <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            <button @click="openViewModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
+              <IconEye class="w-5 h-5 text-blue-600" />
             </button>
-            <button @click="openEditModal(item)" class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
-              <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
+            <button @click="openEditModal(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
+              <IconPencil class="w-5 h-5 text-yellow-600" />
             </button>
-            <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-              <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+            <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+              <IconTrash class="w-5 h-5 text-red-600" />
             </button>
           </div>
         </template>
@@ -449,12 +449,17 @@ definePageMeta({ layout: 'default' })
               <label for="username" class="w-40 font-semibold text-gray-700">Username</label>
               <input v-model="newAdmin.username" id="username" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center relative">
               <label for="satker" class="w-40 font-semibold text-gray-700">Satker</label>
-              <select v-model="newAdmin.satker_id" id="satker" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required>
-                <option value="" disabled>Pilih Satker</option>
-                <option v-for="s in satkerList" :key="s.id" :value="s.id">{{ s.name }}</option>
-              </select>
+              <div class="flex-1 relative">
+                <select v-model="newAdmin.satker_id" id="satker" class="w-full border rounded-lg px-3 py-2 focus:ring focus:border-blue-400 appearance-none pr-10" required>
+                  <option value="" disabled>Pilih Satker</option>
+                  <option v-for="s in satkerList" :key="s.id" :value="s.id">{{ s.name }}</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </span>
+              </div>
             </div>
           </div>
           <div class="flex justify-end mt-8 gap-2">
@@ -505,16 +510,20 @@ definePageMeta({ layout: 'default' })
               <label for="edit-username" class="w-40 font-semibold text-gray-700">Username</label>
               <input v-model="editUser.username" id="edit-username" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center relative">
               <label for="edit-satker" class="w-40 font-semibold text-gray-700">Satker</label>
-              <select v-model="editUser.satker_id" id="edit-satker" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required>
-                <option value="" disabled>Pilih Satker</option>
-                <option v-for="s in satkerList" :key="s.id" :value="s.id">{{ s.name }}</option>
-              </select>
+              <div class="flex-1 relative">
+                <select v-model="editUser.satker_id" id="edit-satker" class="w-full border rounded-lg px-3 py-2 focus:ring focus:border-blue-400 appearance-none pr-10" required>
+                  <option value="" disabled>Pilih Satker</option>
+                  <option v-for="s in satkerList" :key="s.id" :value="s.id">{{ s.name }}</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </span>
+              </div>
             </div>
           </div>
           <div class="flex justify-end mt-8 gap-2">
-            <VButton type="button" variant="secondary" @click="closeEditModal">Batal</VButton>
             <VButton type="submit" variant="success">Simpan</VButton>
           </div>
         </form>

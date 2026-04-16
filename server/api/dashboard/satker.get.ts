@@ -3,11 +3,15 @@ import { db } from "@/server/database";
 import { satker } from "@/server/database/schema/satker";
 import { rkaklDetail } from "@/server/database/schema/rkakl_detail";
 import { pengajuan } from "@/server/database/schema/pengajuan";
+import { users } from "@/server/database/schema/users";
 
 export default defineEventHandler(async (event) => {
 	// GET handler (default)
 	// Ambil semua satker
 	const satkerRows = await db.select().from(satker);
+	// Ambil semua user untuk mendapatkan username berdasarkan relasi satker.user_id -> users.id
+	const userRows = await db.select({ id: users.id, username: users.username }).from(users);
+	const userMap = new Map(userRows.map(u => [u.id, u.username]));
 	// Ambil semua rkakl_detail dan pengajuan
 	const rkaklRows = await db.select().from(rkaklDetail);
 	const pengajuanRows = await db.select().from(pengajuan);
@@ -39,7 +43,8 @@ export default defineEventHandler(async (event) => {
 		return {
 			id: s.id,
 			nama_satker: s.name,
-			percentage
+			percentage,
+			username: s.user_id ? (userMap.get(s.user_id) ?? null) : null
 		};
 	});
 

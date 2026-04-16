@@ -81,33 +81,32 @@ const form = ref({
 	harga_satuan: ''
 })
 
+
 function submitForm() {
 	// Simulate submit, replace with actual API call
 	alert('Barang Persediaan berhasil disimpan!')
 	router.push('/admin/persediaan/daftar-barang')
+}
+
+function formatHargaSatuan(e) {
+	let val = e.target.value.replace(/\D/g, '')
+	if (val === '') {
+		form.value.harga_satuan = ''
+		return
+	}
+	// Format ribuan manual tanpa batas digit
+	form.value.harga_satuan = val.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 </script>
 
 <template>
 	<div class="pt-14">
 		<!-- ALERT -->
-		<div v-if="showAlert" class="alert alert-error shadow-lg mb-6">
-			<div>
-				<Icon icon="mdi:alert" class="w-6 h-6" />
-				<span>
-					Terdapat <b>41 Sub Output</b> yang belum ditentukan unitnya.
-					<NuxtLink to="/admin/suboutput" class="link link-hover underline ml-1">Klik di sini</NuxtLink>
-				</span>
-			</div>
-		</div>
+		<SuboutputAlert :showAlert="showAlert" />
 
 		<!-- BREADCRUMB -->
 		<div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-			<NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-				<Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
-			</NuxtLink>
-			<span>/</span>
-			<NuxtLink to="/admin/persediaan/daftar-barang" class="hover:text-blue-700">Persediaan Barang</NuxtLink>
+			<NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700">Beranda</NuxtLink>
 			<span>/</span>
 			<span class="font-bold text-blue-700">Tambah</span>
 		</div>
@@ -116,47 +115,56 @@ function submitForm() {
 		<h1 class="text-3xl font-bold text-blue-700 mb-6">Tambah Barang Persediaan</h1>
 
 		<!-- CARD -->
-		<div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-			<div class="card-body">
+		<div class="card bg-white shadow-xl rounded-xl border border-blue-100 max-w-4xl mx-auto p-8">
+			<div class="card-body p-0">
 				<form @submit.prevent="submitForm" class="space-y-6">
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<div>
+						<div class="relative">
 							<label class="block mb-2 font-semibold text-blue-700">Satker</label>
-							<select v-model="form.id_satker" class="select select-bordered w-full">
+							<select v-model="form.id_satker" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition pr-10 appearance-none">
 								<option value="">Pilih Satker</option>
 								<option v-for="s in satkers" :key="s.id" :value="s.id">{{ s.name }}</option>
 							</select>
+							<Icon icon="tabler:chevron-down" class="w-5 h-5 text-gray-400 absolute right-3 top-11 pointer-events-none" />
 						</div>
-						<div>
+						<div class="relative">
 							<label class="block mb-2 font-semibold text-blue-700">Unit</label>
-							<select v-model="form.id_unit" class="select select-bordered w-full">
+							<select v-model="form.id_unit" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition pr-10 appearance-none">
 								<option value="">Pilih Unit</option>
 								<option v-for="u in units" :key="u.id" :value="u.id">{{ u.name }}</option>
 							</select>
+							<Icon icon="tabler:chevron-down" class="w-5 h-5 text-gray-400 absolute right-3 top-11 pointer-events-none" />
 						</div>
 						<div>
 							<label class="block mb-2 font-semibold text-blue-700">Kode Akun</label>
-							<input v-model="form.kode_akun" type="text" class="input input-bordered w-full" maxlength="50" placeholder="Kode Akun" />
+							<input v-model="form.kode_akun" type="text" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" maxlength="50" placeholder="Kode Akun" />
 						</div>
 						<div>
 							<label class="block mb-2 font-semibold text-blue-700">Kode Barang</label>
-							<input v-model="form.kode_barang" type="text" class="input input-bordered w-full" maxlength="50" placeholder="Kode Barang" />
+							<input v-model="form.kode_barang" type="text" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" maxlength="50" placeholder="Kode Barang" />
 						</div>
 						<div class="md:col-span-2">
 							<label class="block mb-2 font-semibold text-blue-700">Nama Barang <span class="text-red-500">*</span></label>
-							<input v-model="form.nama_barang" type="text" class="input input-bordered w-full" maxlength="255" placeholder="Nama Barang" required />
+							<input v-model="form.nama_barang" type="text" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" maxlength="255" placeholder="Nama Barang" required />
 						</div>
 						<div class="md:col-span-2">
 							<label class="block mb-2 font-semibold text-blue-700">Harga Satuan</label>
 							<div class="input-group flex">
 								<span class="input-group-addon bg-blue-100 px-3 py-2 rounded-l">Rp</span>
-								<input v-model="form.harga_satuan" type="text" class="input input-bordered w-full rounded-l-none" maxlength="255" placeholder="Harga Satuan" />
+																<input
+																	v-model.lazy="form.harga_satuan"
+																	type="text"
+																	inputmode="numeric"
+																	pattern="[0-9.]*"
+																	class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition rounded-l-none"
+																	placeholder="Harga Satuan"
+																	@input="formatHargaSatuan"
+																/>
 							</div>
 						</div>
 					</div>
 					<div class="form-actions flex justify-end mt-8">
-						<button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-							<Icon icon="mdi:check" class="w-5 h-5" />
+						<button type="submit" class="inline-flex items-center gap-2 rounded-md border border-[#2663A3] bg-[#2663A3] px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#1F4F85] hover:shadow-lg">
 							Simpan
 						</button>
 					</div>

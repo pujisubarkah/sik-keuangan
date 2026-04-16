@@ -5,7 +5,7 @@
     :class="{ 'animate-fade-in-up': true }"
   >
     <!-- Decorative Header Bar -->
-    <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+    <div class="h-1 bg-[#D69009]" />
     
     <div class="p-5 md:p-6">
       <!-- Card Header -->
@@ -101,7 +101,7 @@
                 min="2000"
                 max="2100"
                 placeholder="2026"
-                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 text-center font-mono"
+                class="input input-bordered w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-500 transition-all rounded-xl hover:border-gray-500 text-center font-[Inter]"
                 @input="validateYear"
               />
               <!-- Icon di dalam input Tahun dihapus -->
@@ -112,7 +112,7 @@
             <div class="md:col-span-2 flex-1 flex flex-col">
               <button 
                 type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 border border-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group"
+                class="w-full bg-brandBlue-600 hover:bg-brandBlue-700 active:bg-brandBlue-800 border border-brandBlue-700 hover:border-brandBlue-800 active:border-brandBlue-800 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brandBlue-300"
                 style="min-height:44px"
               >
                 <IconSearch class="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -152,17 +152,17 @@
         
         <a 
           href="/index.php?r=admin/perBulan" 
-          class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
+          class="btn btn-outline btn-sm rounded-xl px-4 group text-brandGold-300 hover:text-brandGold-400 active:text-brandGold-500 border-brandGold-300 hover:border-brandGold-400 active:border-brandGold-500 transition-colors duration-150 flex items-center"
         >
-          <IconCalendarMonth class="w-4 h-4 mr-1.5" />
+          <IconCalendarMonth class="w-4 h-4 mr-1.5 text-brandGold-300 group-hover:text-brandGold-400 group-active:text-brandGold-500 transition-colors duration-150" />
           <span class="hidden sm:inline">Per Bulan</span>
         </a>
         
         <a 
           href="/index.php?r=admin/perBulan&sp2d=1" 
-          class="btn btn-outline btn-sm btn-soft-success rounded-xl px-4 group"
+          class="btn btn-outline btn-sm rounded-xl px-4 group text-brandGold-300 hover:text-brandGold-400 active:text-brandGold-500 border-brandGold-300 hover:border-brandGold-400 active:border-brandGold-500 transition-colors duration-150 flex items-center"
         >
-          <IconCalendarCheck class="w-4 h-4 mr-1.5" />
+          <IconCalendarCheck class="w-4 h-4 mr-1.5 text-brandGold-300 group-hover:text-brandGold-400 group-active:text-brandGold-500 transition-colors duration-150" />
           <span class="hidden sm:inline">SP2D</span>
         </a>
         

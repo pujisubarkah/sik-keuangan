@@ -112,26 +112,24 @@ async function submitForm() {
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
+        Beranda
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
+      <NuxtLink to="/admin/output" class="hover:text-blue-700">Output</NuxtLink>
       <span>/</span>
-      <span class="font-bold text-blue-700">Create</span>
+      <span class="font-bold text-blue-700">Input</span>
     </div>
 
     <!-- TITLE -->
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      SIK - Create Output
+      SIK - Input Output
     </h1>
 
-    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden border-t-4 border-t-[#D69009]">
       <div class="px-8 py-6 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-b border-slate-100">
         <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-blue-100 rounded-xl">
-            <Icon icon="mdi:file-document-plus-outline" class="w-5 h-5 text-blue-600" />
-          </div>
+          <!-- Icon di header dihapus sesuai permintaan -->
           <div>
             <h2 class="text-lg font-semibold text-slate-800">Detail Output</h2>
             <p class="text-sm text-slate-500">Field dengan <span class="text-rose-500">*</span> wajib diisi</p>
@@ -185,15 +183,17 @@ async function submitForm() {
           <!-- Tahun -->
           <div class="flex items-center gap-4">
             <label for="tahun" class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
-              <Icon icon="mdi:calendar-clock" class="w-4 h-4 text-slate-400" />
               Tahun
             </label>
             <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="flex-1 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3 text-slate-600 cursor-not-allowed transition-all duration-200" readonly />
           </div>
         </div>
         <div class="flex justify-end mt-10">
-          <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
-            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+          <Button 
+            class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 px-8 py-3 font-bold text-lg bg-[#00B925] text-white hover:bg-green-600"
+            native-type="submit"
+          >
+            Simpan
           </Button>
         </div>
       </form>

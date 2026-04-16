@@ -13,35 +13,31 @@
           <dl class="-my-3 divide-y divide-gray-200 text-sm">
             <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
               <dt class="font-semibold text-gray-600">Nama</dt>
-              <dd class="text-gray-900 font-medium sm:col-span-2">LAN JAKARTA</dd>
+              <dd class="text-black font-medium sm:col-span-2">LAN JAKARTA</dd>
             </div>
             <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
               <dt class="font-semibold text-gray-600">Kode Satker</dt>
-              <dd class="text-gray-900 font-medium sm:col-span-2">425113</dd>
+              <dd class="text-black font-medium sm:col-span-2">425113</dd>
             </div>
             <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
               <dt class="font-semibold text-gray-600">Pagu</dt>
-              <dd class="font-bold text-green-600 sm:col-span-2">Rp. 89.233.124.000</dd>
+              <dd class="font-bold text-black sm:col-span-2">Rp. 89.233.124.000</dd>
             </div>
             <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
               <dt class="font-semibold text-gray-600">Realisasi</dt>
-              <dd class="font-bold text-blue-600 sm:col-span-2">Rp. 2.931.239.129</dd>
+              <dd class="font-bold text-black sm:col-span-2">Rp. 2.931.239.129</dd>
             </div>
           </dl>
         </div>
         <div class="border-t border-gray-200 px-8 py-4 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
-          <NuxtLink to="/index.php?r=satker/update&id=1">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-4 py-2 rounded-md font-semibold shadow-sm transition-colors">
-              <Icon icon="tabler:pencil" class="w-4 h-4" />
-              Sunting Satker
-            </button>
-          </NuxtLink>
-          <NuxtLink to="/index.php?r=satker/admin&id=1">
-            <button class="bg-gray-600 hover:bg-gray-700 text-white flex items-center gap-2 px-4 py-2 rounded-md font-semibold shadow-sm transition-colors">
-              <Icon icon="tabler:list" class="w-4 h-4" />
-              Daftar Satker
-            </button>
-          </NuxtLink>
+          <div class="flex justify-start w-full">
+            <NuxtLink to="/index.php?r=satker/update&id=1">
+              <button class="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-4 py-2 rounded-md font-semibold shadow-sm transition-colors">
+                <Icon icon="tabler:pencil" class="w-4 h-4" />
+                Edit Satker
+              </button>
+            </NuxtLink>
+          </div>
         </div>
       </div>
 

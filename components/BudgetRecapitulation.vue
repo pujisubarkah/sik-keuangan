@@ -121,7 +121,7 @@ const cards = computed(() => [
     unit: null,
   },
   {
-    title: '% Penyerapan Bendahara',
+    title: 'Penyerapan Bendahara',
     value: props.budgetData?.treasurerAbsorption?.toFixed(2) ?? '0.00',
     icon: 'tabler:ChartPie',
     link: `${baseRoute.value}/pengeluaran`,
@@ -142,7 +142,7 @@ const cards = computed(() => [
     unit: null,
   },
   {
-    title: '% Penyerapan SP2D',
+    title: 'Penyerapan SP2D',
     value: props.budgetData?.sp2dAbsorption?.toFixed(2) ?? '0.00',
     icon: 'tabler:ChartLine',
     link: `${baseRoute.value}/pengeluaran`,

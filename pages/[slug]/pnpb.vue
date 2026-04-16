@@ -3,10 +3,10 @@
     <!-- Alert -->
     <SuboutputAlert :showAlert="showAlert" />
     <div class="w-full max-w-7xl mx-auto">
-      <h1 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">LAN JAKARTA - PNBP</h1>
+      <h1 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">Penerimaan Negara Bukan Pajak (PNBP)</h1>
       <!-- Filter Form: Konsisten dengan DashboardFilter.vue -->
       <div class="filter-card bg-gradient-to-br from-white to-blue-50/30 shadow-xl mb-6 rounded-2xl border border-blue-200/60 backdrop-blur-sm overflow-hidden animate-fade-in-up">
-        <div class="h-1 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500" />
+        <div class="h-1 bg-[#D69009]" />
         <div class="p-5 md:p-6">
           <div class="flex items-center justify-between mb-5 pb-4 border-b border-blue-100">
             <h2 class="text-lg font-bold text-blue-800 flex items-center gap-2.5">
@@ -22,25 +22,33 @@
                 <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                   <i class="fa fa-building text-blue-500" />
                   <span>Satker</span>
-                  <span v-if="filterForm.id_satker" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
+                  <!-- Ceklis dihapus sesuai permintaan -->
                 </label>
                 <div class="relative">
-                  <select v-model="filterForm.id_satker" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.id_satker }">
+                  <select v-model="filterForm.id_satker"
+                    class="block w-full rounded-md border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-base focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer">
                     <option value="" disabled selected>Pilih Satker...</option>
                     <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
                   </select>
-                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <i class="fa fa-building text-gray-400" />
-                  </div>
+                  <!-- Icon building dihapus sesuai permintaan -->
                   <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                     <i class="fa fa-chevron-down text-gray-400" />
                   </div>
                 </div>
               </div>
               <div class="md:col-span-2 flex items-end">
+<<<<<<< HEAD
                 <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg" :disabled="loading">
                   <Icon icon="tabler:search" v-if="!loading" class="w-4 h-4" />
                   <div v-else class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+=======
+                <button 
+                  type="submit"
+                  class="w-full bg-brandBlue-600 hover:bg-brandBlue-700 active:bg-brandBlue-800 border border-brandBlue-700 hover:border-brandBlue-800 active:border-brandBlue-800 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brandBlue-300"
+                  style="min-height:44px"
+                >
+                  <i class="fa fa-search w-5 h-5 group-hover:scale-110 transition-transform" />
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
                   <span>Tampilkan</span>
                 </button>
               </div>
@@ -69,31 +77,30 @@
       </div>
       <!-- Charts -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-          <div class="card-body">
-            <h3 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-              <i class="fa fa-bar-chart-o text-blue-500"></i>
-              Grafik Jumlah Realisasi
-            </h3>
-            <div id="chart-jumlah" ref="chartJumlahRef" style="min-height: 350px;"></div>
+        <div class="card bg-white shadow rounded-lg border border-gray-200 p-2">
+          <div class="card-body p-2">
+            <!-- Judul dan icon Grafik Jumlah Realisasi dihapus -->
+            <div id="chart-jumlah" ref="chartJumlahRef" style="min-height: 220px;"></div>
           </div>
         </div>
-        <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-          <div class="card-body">
-            <h3 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-              <i class="fa fa-bar-chart-o text-blue-500"></i>
-              Grafik Persentase Realisasi
-            </h3>
-            <div id="chart-persen" ref="chartPersenRef" style="min-height: 350px;"></div>
+        <div class="card bg-white shadow rounded-lg border border-gray-200 p-2">
+          <div class="card-body p-2">
+            <!-- Judul dan icon Grafik Persentase Realisasi dihapus -->
+            <div id="chart-persen" ref="chartPersenRef" style="min-height: 220px;"></div>
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100">
+=======
+      <!-- Rekap Akun PNBP Table -->
+      <div class="mb-2">
+        <h2 class="text-xl md:text-2xl font-bold text-blue-700 mb-3">Rekap Akun PNBP</h2>
+      </div>
+      <div class="card bg-white shadow-xl mb-3 rounded-xl border border-blue-100 overflow-hidden">
+        <div class="h-1 bg-[#D69009]" />
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
         <div class="card-body p-3 md:p-4">
-          <h2 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-            <i class="fa fa-bar-list text-blue-500"></i>
-            Rekap Akun PNBP
-          </h2>
           <div class="w-full overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 text-sm rounded-xl shadow-lg border border-blue-100 bg-white" style="table-layout: auto;">
               <thead class="bg-blue-100 sticky top-0 z-10">
@@ -144,6 +151,7 @@
             </table>
           </div>
           <!-- Export Buttons -->
+<<<<<<< HEAD
           <div class="mt-8 flex flex-wrap gap-3">
             <button class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="openAddModal()">
                <IconPlus class="w-4 h-4" />
@@ -156,6 +164,20 @@
             <button class="inline-flex items-center gap-2 rounded-md border border-emerald-700 bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-emerald-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
                <Icon icon="tabler:file-invoice" class="w-4 h-4" />
                <span>Export Realisasi</span>
+=======
+          <div class="mt-4 flex gap-2">
+            <button @click="addIndukAkun"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-green-800 bg-green-700 hover:bg-[#0d5a2e] text-white font-semibold shadow-md transition-all">
+              <span class="text-xl font-bold leading-none">+</span> Tambah Akun Induk
+            </button>
+            <button @click="exportExcel"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00B925] hover:bg-[#008B1F] text-white font-semibold shadow transition-all">
+              <i class="fa fa-download text-white"></i> Export Excel
+            </button>
+            <button @click="exportRealisasi"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold shadow transition-all">
+              <i class="fa fa-download text-white"></i> Export Realisasi
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
             </button>
           </div>
         </div>
@@ -266,7 +288,7 @@ const chartPersenData = {
   }],
   dataset: [
     {
-      seriesname: 'Realisasi',
+      // seriesname: 'Realisasi',
       data: [{ value: '0' }, { value: '20' }],
     },
   ],

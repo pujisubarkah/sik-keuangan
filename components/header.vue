@@ -44,9 +44,9 @@
                 </div>
                 <div class="flex flex-col items-start justify-center">
                   <span class="hidden-xs user-name font-extrabold text-base text-white leading-tight">{{ displayName }}</span>
-                  <span class="flex items-center gap-1 mt-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
-                    <span class="text-[10px] font-semibold text-white">Online</span>
+                  <span class="flex items-center gap-0.5 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20" fill="#4ade80"><circle cx="10" cy="10" r="8" /></svg>
+                    <span class="text-xs font-semibold text-white">Online</span>
                   </span>
                 </div>
                 <i class="idds idds-chevron-down" :class="{ 'rotate-180': isUserOpen }"></i>
@@ -88,12 +88,12 @@
               <li class="user-footer">
                 <div class="footer-btn-group">
                   <NuxtLink 
-                    to="/users" 
-                    class="btn-profile"
+                    to="/logout" 
+                    class="btn-profile bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded transition"
                     @click="closeUser"
                     role="menuitem"
                   >
-                    <i class="idds idds-user"></i>
+                    <i class="idds idds-sign-out"></i>
                     Ganti Akun
                   </NuxtLink>
                 </div>

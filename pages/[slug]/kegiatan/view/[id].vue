@@ -14,9 +14,9 @@
       </h1>
       <!-- Breadcrumb -->
       <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=/site/index">Dashboard</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}`">Beranda</NuxtLink></li>
         <li>/</li>
-        <li><NuxtLink to="/index.php?r=kegiatan/index">Kegiatan</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}/kegiatan`">Kegiatan</NuxtLink></li>
         <li>/</li>
         <li class="font-medium text-slate-700">{{ kegiatanInfo.kegiatan_nama }}</li>
       </ul>
@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                   <th>Jumlah</th>
-                  <td class="text-right">Rp {{ kegiatanInfo.total_anggaran }}</td>
+                  <td class="text-right font-inter-number">Rp {{ kegiatanInfo.total_anggaran }}</td>
                 </tr>
               </tbody>
             </table>
@@ -121,10 +121,11 @@ onMounted(fetchKegiatanDetail)
 
 /* ===== Card / Box ===== */
 
+
 .box {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-top: 4px solid #60a5fa; /* outline biru di atas */
+  border-top: 4px solid #D69009; /* outline gold di atas */
   border-bottom: none;
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
@@ -152,6 +153,11 @@ onMounted(fetchKegiatanDetail)
   padding: 10px 8px;
   font-weight: 500;
   color: #1e293b;
+}
+
+.font-inter-number {
+  font-family: 'Inter', 'Arial', sans-serif;
+  letter-spacing: 0.01em;
 }
 
 .detail-view tr {
@@ -201,8 +207,12 @@ onMounted(fetchKegiatanDetail)
 /* ===== Angka ===== */
 .text-right {
   text-align: right;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-weight: 600;
+}
+
+.font-inter-number {
+  font-family: 'Inter', 'Arial', sans-serif !important;
+  letter-spacing: 0.01em;
 }
 
 /* ===== Alert Wrapper ===== */

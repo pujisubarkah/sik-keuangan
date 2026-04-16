@@ -83,7 +83,7 @@ function handleDebug() {
           : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
       ]"
     >
-      <Icon icon="tabler:pencil" class="w-4 h-4 text-blue-500" /> Edit
+      <Icon icon="tabler:pencil" class="w-4 h-4 text-gray-500" /> Edit
     </a>
     <a :href="`/${$route.params.slug}/suboutput/view/${id}`"
       :class="[

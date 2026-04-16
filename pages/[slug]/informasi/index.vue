@@ -82,8 +82,8 @@
             <thead class="bg-blue-100">
               <tr>
                 <th class="px-3 py-2 text-center w-16">No</th>
-                <th class="px-3 py-2 text-left">Judul</th>
-                <th class="px-3 py-2 text-right w-28">Aksi</th>
+                <th class="px-3 py-2 text-center">Judul</th>
+                <th class="px-3 py-2 text-center w-28">Aksi</th>
               </tr>
 
               <!-- Filter -->
@@ -113,7 +113,7 @@
                 </td>
 
                 <td class="px-3 py-2">
-                  <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-semibold">
+                  <span class="text-blue-700 font-semibold bg-transparent">
                     {{ info.judul }}
                   </span>
                 </td>
@@ -123,7 +123,7 @@
 
                     <NuxtLink
                       :to="`/${route.params.slug}/informasi/view/${info.id}`"
-                      class="bg-indigo-50 p-2 rounded hover:bg-indigo-100 text-indigo-600"
+                      class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600"
                     >
                       <IconEye class="h-4 w-4"/>
                     </NuxtLink>

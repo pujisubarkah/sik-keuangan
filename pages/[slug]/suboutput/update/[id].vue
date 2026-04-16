@@ -4,14 +4,13 @@
       
       <!-- 📍 Breadcrumb -->
       <nav class="flex items-center gap-2 text-sm mb-8">
-        <NuxtLink to="/" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
-          <Icon icon="mdi:home-outline" class="w-4 h-4 group-hover:scale-110 transition-transform" />
-          <span class="font-medium">Dashboard</span>
+        <NuxtLink :to="`/${$route.params.slug}`" class="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors group">
+          <span class="font-medium">Beranda</span>
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />
         <NuxtLink :to="`/${route?.params?.slug}/suboutput`" 
-                  class="text-slate-500 hover:text-blue-600 transition-colors font-medium">
-          Suboutput
+            class="text-slate-500 hover:text-blue-600 transition-colors font-medium">
+          Rincian Output
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-slate-300" />
         <span class="text-blue-600 font-semibold">Ubah Data</span>
@@ -37,7 +36,7 @@
       </div>
 
       <!-- 📋 Form Card -->
-      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden">
+      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 border-t-4 border-t-[#D69009] overflow-hidden">
         
         <!-- Card Header -->
         <div class="px-8 py-6 bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-b border-slate-100">
@@ -150,7 +149,8 @@
             <VButton 
               type="submit" 
               :loading="isSubmitting"
-              class="px-8 py-2.5 rounded-xl font-semibold bg-green-500 text-white hover:bg-green-600 focus:ring-4 focus:ring-green-200 shadow-lg shadow-green-500/20 transition-all duration-200 flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              variant="brandblue"
+              class="px-8 py-2.5 rounded-xl font-semibold flex items-center gap-2"
             >
               <Icon v-if="isSubmitting" icon="mdi:loading" class="w-5 h-5 animate-spin" />
               <Icon v-else icon="mdi:content-save" class="w-5 h-5" />

@@ -111,21 +111,21 @@ async function submitForm() {
 
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
+        Beranda
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
+      <NuxtLink to="/admin/output" class="hover:text-blue-700">Output</NuxtLink>
       <span>/</span>
-      <span class="font-bold text-blue-700">Create</span>
+      <span class="font-bold text-blue-700">Input</span>
     </div>
 
     <!-- TITLE -->
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
-      SIK - Create Kegiatan
+      SIK - Input Kegiatan
     </h1>
 
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-[#D69009]">
       <div class="px-8 pt-6 pb-4 border-b border-gray-200">
         <h1 class="text-2xl font-bold text-gray-800">Tambah Kegiatan</h1>
         <p class="text-gray-500 text-sm mt-1">Lengkapi detail kegiatan di bawah ini.</p>
@@ -173,8 +173,8 @@ async function submitForm() {
           </div>
         </div>
         <div class="flex justify-end mt-10">
-          <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
-            <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Simpan
+          <Button type="success" class="rounded-xl shadow-lg bg-green-600 hover:bg-green-700 transition-transform duration-150 px-8 py-3 font-semibold text-lg text-white" native-type="submit">
+            Simpan
           </Button>
         </div>
       </form>

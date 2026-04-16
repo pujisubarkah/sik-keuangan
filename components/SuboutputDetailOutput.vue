@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="bg-white shadow-lg rounded-xl border border-gray-200/80 overflow-hidden">
+  <div class="bg-white shadow-lg rounded-xl border border-gray-200/80 overflow-hidden border-t-4 border-t-[#D69009]">
     <!-- Card Header -->
     <div class="p-4 sm:p-6 border-b border-gray-100">
       <div class="flex items-start gap-4">
@@ -27,9 +27,9 @@
               {{ field.label }}
             </td>
             <td class="px-4 py-2 text-sm font-medium text-gray-800">
-              <span v-if="field.key === 'kode'" class="inline-block bg-blue-100 text-blue-800 font-mono px-2 py-1 rounded text-xs">{{ data?.[field.key] || '-' }}</span>
-              <span v-else-if="field.key === 'tahun'" class="inline-block bg-yellow-100 text-yellow-800 font-bold px-2 py-1 rounded text-xs">{{ data?.[field.key] || '-' }}</span>
-              <span v-else-if="field.key === 'total'" class="inline-flex items-center font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 shadow-sm text-sm">
+              <span v-if="field.key === 'kode'" class="inline-block font-inter text-xs text-blue-800">{{ data?.[field.key] || '-' }}</span>
+              <span v-else-if="field.key === 'tahun'" class="inline-block font-inter font-bold text-xs text-yellow-800">{{ data?.[field.key] || '-' }}</span>
+              <span v-else-if="field.key === 'total'" class="inline-flex items-center font-inter font-bold text-emerald-700 text-sm">
                 <span class="text-emerald-600/70 text-xs font-semibold mr-1">Rp</span>
                 {{ data?.[field.key] ? Number(data[field.key]).toLocaleString('id-ID') : '-' }}
               </span>

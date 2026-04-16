@@ -9,18 +9,18 @@
     </transition>
     <SuboutputAlert class="mb-6" :showAlert="true" />
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <Icon icon="mdi:home" class="w-4 h-4" /> Dashboard
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
+        Beranda
       </NuxtLink>
       <span>/</span>
-      <NuxtLink to="/admin/output" class="hover:text-blue-700">Outputs</NuxtLink>
+      <NuxtLink to="/admin/output" class="hover:text-blue-700">Output</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Update</span>
     </div>
     <h1 class="text-3xl font-bold text-blue-700 mb-6">
       SIK - Update Output
     </h1>
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-[#D69009]">
       <div class="px-8 pt-6 pb-4 border-b border-gray-200">
         <h1 class="text-2xl font-bold text-gray-800">Edit Output</h1>
         <p class="text-gray-500 text-sm mt-1">Ubah detail output di bawah ini.</p>
@@ -31,7 +31,7 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="kegiatan">Kegiatan</label>
             <div class="col-span-9">
-              <select v-model="kegiatan" id="kegiatan" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+              <select v-model="kegiatan" id="kegiatan" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
                 <option v-for="k in kegiatanList" :key="k.value" :value="k.value">{{ k.label }}</option>
               </select>
             </div>
@@ -40,7 +40,7 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="satker">Satker</label>
             <div class="col-span-9">
-              <select v-model="satker" id="satker" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+              <select v-model="satker" id="satker" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
                 <option v-for="s in satkerList" :key="s.value" :value="s.value">{{ s.label }}</option>
               </select>
             </div>
@@ -49,27 +49,27 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="kode">Kode</label>
             <div class="col-span-9">
-              <input v-model="kode" id="kode" type="text" maxlength="255" placeholder="Kode" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+              <input v-model="kode" id="kode" type="text" maxlength="255" placeholder="Kode" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
             </div>
           </div>
           <!-- Nama -->
           <div class="grid grid-cols-12 items-start gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
             <div class="col-span-9">
-              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition min-h-[48px] max-h-40 resize-y break-words"></textarea>
+              <textarea v-model="nama" id="nama" maxlength="255" placeholder="Nama" rows="2" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition min-h-[48px] max-h-40 resize-y break-words"></textarea>
             </div>
           </div>
           <!-- Tahun -->
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="tahun">Tahun</label>
             <div class="col-span-9">
-              <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+              <input v-model="tahun" id="tahun" type="text" maxlength="4" placeholder="Tahun" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
             </div>
           </div>
         </div>
         <div class="flex justify-end mt-8">
-          <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 transition-colors">
-            <Icon icon="mdi:pencil" class="w-5 h-5" /> Update
+          <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-[#2663A3] rounded-lg shadow-sm hover:opacity-90 focus:ring-4 focus:outline-none focus:ring-blue-300 transition-colors">
+            Simpan
           </button>
         </div>
       </form>

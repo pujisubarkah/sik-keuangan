@@ -8,7 +8,7 @@
         </div>
       </transition>
       <SuboutputAlert class="mb-6" :showAlert="true" />
-      <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-[#D69009]">
         <div class="px-8 pt-6 pb-4 border-b border-gray-200">
           <h1 class="text-2xl font-bold text-gray-800">Ubah Kegiatan</h1>
           <p class="text-gray-500 text-sm mt-1">Perbarui detail kegiatan di bawah ini.</p>
@@ -40,20 +40,29 @@
             <div class="grid grid-cols-12 items-start gap-4">
               <label class="col-span-3 text-right font-semibold text-gray-700 pt-2" for="nama">Nama</label>
               <div class="col-span-9">
-                <textarea v-model="form.nama" class="form-control w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
+                <textarea v-model="form.nama" class="form-control block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition min-h-[48px] max-h-40 resize-y break-words" id="nama" maxlength="255" placeholder="Nama" rows="2"></textarea>
               </div>
             </div>
             <!-- Jumlah -->
             <div class="grid grid-cols-12 items-center gap-4">
               <label class="col-span-3 text-right font-semibold text-gray-700" for="jumlah">Jumlah</label>
               <div class="col-span-9">
-                <input v-model="form.jumlah" class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" id="jumlah" type="text" maxlength="20" placeholder="Jumlah" />
+                <input
+                  v-model="form.jumlah"
+                  @input="form.jumlah = formatNumberWithDots(form.jumlah)"
+                  class="form-control block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition"
+                  id="jumlah"
+                  type="text"
+                  maxlength="20"
+                  placeholder="Jumlah"
+                  autocomplete="off"
+                />
               </div>
             </div>
           </div>
           <div class="flex justify-end mt-10">
-            <Button type="success" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800" native-type="submit">
-              <Icon icon="mdi:check" class="w-6 h-6 mr-2" /> Update
+            <Button type="success" class="rounded-xl shadow-lg bg-green-600 hover:bg-green-700 transition-transform duration-150 px-8 py-3 font-semibold text-lg text-white" native-type="submit">
+              Simpan
             </Button>
           </div>
         </form>
@@ -74,6 +83,17 @@ const form = ref({
 })
 const route = useRoute()
 
+const formatNumberWithDots = (value) => {
+  if (!value) return ''
+  // Hanya angka
+  const number = value.toString().replace(/\D/g, '')
+  return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+const unformatNumber = (value) => {
+  if (!value) return ''
+  return value.toString().replace(/\./g, '')
+}
+
 async function fetchKegiatan() {
   const token = localStorage.getItem('token')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
@@ -87,7 +107,7 @@ async function fetchKegiatan() {
         id_program: json.data.program_id || '',
         kode: json.data.kode_kegiatan || '',
         nama: json.data.nama_kegiatan || '',
-        jumlah: json.data.total ? String(json.data.total) : ''
+        jumlah: json.data.total ? formatNumberWithDots(String(json.data.total)) : ''
       }
     }
   } catch (e) {}
@@ -108,7 +128,7 @@ async function handleSubmit() {
         kode_kegiatan: form.value.kode,
         nama_kegiatan: form.value.nama,
         program_id: form.value.id_program,
-        total: form.value.jumlah ? Number(form.value.jumlah) : null
+        total: form.value.jumlah ? Number(unformatNumber(form.value.jumlah)) : null
       })
     })
     const json = await res.json()

@@ -74,11 +74,10 @@ const formatDeskripsi = (text) => {
     <!-- BREADCRUMB -->
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
       <NuxtLink 
-        to="/" 
-        class="hover:text-blue-700 flex items-center gap-1 transition"
+        :to="`/${$route.params.slug}`" 
+        class="hover:text-blue-700 transition"
       >
-        <IconFileText class="w-4 h-4 text-blue-600" /> 
-        Dashboard
+        <span class="font-medium">Beranda</span>
       </NuxtLink>
       <span class="text-gray-300">/</span>
       <NuxtLink 
@@ -109,32 +108,9 @@ const formatDeskripsi = (text) => {
           class="inline-flex items-center gap-2 rounded-md border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
         >
           <IconPencil class="h-4 w-4" />
-          <span>Sunting Informasi</span>
+          <span>Edit</span>
         </NuxtLink>
-        
-        <NuxtLink
-          to="/admin/informasi/create"
-          class="inline-flex items-center gap-2 rounded-md border border-green-600 bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-700 hover:shadow-lg"
-        >
-          <IconPlus class="h-4 w-4" />
-          <span>Tambah Informasi</span>
-        </NuxtLink>
-
-        <NuxtLink
-          to="/admin/informasi"
-          class="inline-flex items-center gap-2 rounded-md border border-gray-600 bg-gray-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-gray-700 hover:shadow-lg"
-        >
-          <IconList class="h-4 w-4" />
-          <span>Kelola Informasi</span>
-        </NuxtLink>
-
-        <NuxtLink
-          to="/admin/informasi"
-          class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-md transition-all hover:bg-gray-50"
-        >
-          <IconArrowLeft class="h-4 w-4" />
-          <span>Kembali</span>
-        </NuxtLink>
+        <!-- Button Tambah Informasi, Kelola Informasi, dan Kembali dihapus sesuai permintaan -->
       </div>
     </div>
 

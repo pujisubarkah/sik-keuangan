@@ -139,16 +139,15 @@ async function submitForm() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16 pb-12 px-4">
+  <div class="min-h-screen bg-white pt-16 pb-12 px-4">
     <!-- ALERT -->
     <SuboutputAlert :showAlert="showAlert" />
 
     <!-- BREADCRUMB -->
     <div class="max-w-6xl mx-auto mb-6">
       <nav class="flex items-center gap-2 text-sm text-gray-500">
-        <NuxtLink to="/" class="hover:text-blue-600 transition-colors flex items-center gap-1.5 group">
-          <Icon icon="mdi:home" class="w-4 h-4 group-hover:scale-110 transition-transform" /> 
-          <span class="font-medium">Dashboard</span>
+        <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-600 transition-colors">
+          <span class="font-medium">Beranda</span>
         </NuxtLink>
         <Icon icon="mdi:chevron-right" class="w-4 h-4 text-gray-300" />
         <span class="font-semibold text-blue-700">Import RKAKL</span>
@@ -157,15 +156,13 @@ async function submitForm() {
 
     <!-- HEADER SECTION -->
     <div class="max-w-6xl mx-auto text-center mb-10">
-      <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
-        <Icon icon="mdi:upload" class="w-4 h-4" />
-        Upload Data RKAKL
-      </div>
       <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent mb-3">
         Import RKAKL
       </h1>
       <p class="text-gray-600 max-w-2xl mx-auto">
-        Upload file Excel RKAKL Anda untuk diproses ke dalam sistem. 
+        Upload file Excel RKAKL Anda untuk diproses ke dalam sistem.
+      </p>
+      <p class="text-gray-500 max-w-2xl mx-auto mt-2">
         Pastikan data telah sesuai dengan template yang ditentukan.
       </p>
     </div>
@@ -197,13 +194,18 @@ async function submitForm() {
               <label class="block text-sm font-semibold text-gray-700" for="satker">
                 Satuan Kerja
               </label>
-              <select 
-                v-model="satker" 
-                id="satker" 
-                class="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all text-gray-700"
-              >
-                <option v-for="s in satkers" :key="s.id" :value="s.id">{{ s.name }}</option>
-              </select>
+              <div class="relative">
+                <select 
+                  v-model="satker" 
+                  id="satker" 
+                  class="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all text-gray-700 appearance-none pr-10"
+                >
+                  <option v-for="s in satkers" :key="s.id" :value="s.id">{{ s.name }}</option>
+                </select>
+                <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <Icon icon="mdi:chevron-down" class="w-5 h-5" />
+                </span>
+              </div>
             </div>
             
           </div>
@@ -284,10 +286,11 @@ async function submitForm() {
           <!-- Submit Button -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4 border-t border-gray-100">
             <Button 
-              type="success" 
-              native-type="submit" 
+              type="success"
+              native-type="submit"
               :disabled="isLoading || !file"
-              class="flex-1 sm:flex-none px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-blue-200/50 hover:shadow-blue-300/70"
+              size="lg"
+              class="flex-1 sm:flex-none"
             >
               <span v-if="isLoading" class="flex items-center gap-2">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -301,15 +304,15 @@ async function submitForm() {
                 Proses Impor Data
               </span>
             </Button>
-            
-            <button
-              type="button"
-              @click="clearFile"
+            <Button
+              type="secondary"
               :disabled="!file || isLoading"
-              class="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium rounded-xl border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              @click="clearFile"
+              size="lg"
+              class="flex-1 sm:flex-none !bg-gray-500 !hover:bg-gray-600 !text-white border-none"
             >
               Reset Form
-            </button>
+            </Button>
           </div>
           
           <!-- Loading Status -->

@@ -61,7 +61,7 @@
             <div class="md:col-span-12 flex flex-col sm:flex-row justify-end items-center gap-2 mt-2 w-full">
               <div class="flex flex-row w-full sm:w-auto justify-end gap-2">
                 <button type="submit"
-                  class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                  class="inline-flex items-center gap-2 rounded-md border border-brandBlue-700 bg-brandBlue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brandBlue-700 active:bg-brandBlue-800 hover:border-brandBlue-800 active:border-brandBlue-800 focus:outline-none focus:ring-2 focus:ring-brandBlue-300 focus:ring-offset-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -157,17 +157,17 @@
               </td>
               <td class="px-3 py-2 text-center align-middle">
                 <div class="flex gap-2 justify-center">
-                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Pengeluaran">
-                    <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/view/${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Pengeluaran" style="border:none;padding:0;">
+                    <IconEye class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
-                  <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Export UMK">
-                    <IconPrinter class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/pengeluaran/exportExcelUmk?id=${item.id}`" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Export UMK" style="border:none;padding:0;">
+                    <IconPrinter class="w-5 h-5 text-blue-600" />
                   </NuxtLink>
-                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="hover:text-blue-700 transition tooltip" data-tip="Sunting">
-                    <IconPencil class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+                  <NuxtLink :to="`/${$route.params.slug}/pengeluaran/update/${item.id}`" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Sunting" style="border:none;padding:0;">
+                    <IconPencil class="w-5 h-5 text-yellow-600" />
                   </NuxtLink>
-                  <button @click="confirmDelete(item.id)" class="hover:text-red-600 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-                    <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+                  <button @click="confirmDelete(item.id)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+                    <IconTrash class="w-5 h-5 text-red-600" />
                   </button>
                 </div>
               </td>
@@ -203,20 +203,37 @@
       <!-- Jumlah Pengajuan -->
       <div class="overflow-hidden border border-gray-200 bg-brandGold-400 shadow sm:rounded-lg">
         <div class="px-4 sm:px-6 py-4">
-          <div class="flex items-center gap-3 mb-2">
-    
-            <span class="text-lg font-bold text-white">Jumlah Pengajuan</span>
+          <div class="flex items-center gap-3 mb-2 relative">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+              <IconDatabaseSearch class="w-6 h-6 text-white" />
+            </span>
+            <!-- Siluet SVG Dekoratif -->
+            <span class="absolute left-0 top-0 w-16 h-16 opacity-30 z-0 pointer-events-none select-none">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+              </svg>
+            </span>
+            <span class="text-lg font-bold text-white relative z-10">Jumlah Pengajuan</span>
           </div>
           <div class="text-3xl font-extrabold mb-2 text-white">{{ rekapData.submissionCount }}</div>
-          
         </div>
       </div>
       <!-- Jumlah Dana -->
       <div class="overflow-hidden border border-gray-200 bg-green-400 shadow sm:rounded-lg">
         <div class="px-4 sm:px-6 py-4">
-          <div class="flex items-center gap-3 mb-2">
-          
-            <span class="text-lg font-bold text-white">Jumlah Dana</span>
+          <div class="flex items-center gap-3 mb-2 relative">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white bg-opacity-20 mr-2 relative z-10">
+              <IconFolderCheck class="w-6 h-6 text-white" />
+            </span>
+            <!-- Siluet SVG Dekoratif -->
+            <span class="absolute left-0 top-0 w-16 h-16 opacity-30 z-0 pointer-events-none select-none">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="32" fill="white" fill-opacity="0.15" />
+                <circle cx="32" cy="32" r="24" fill="white" fill-opacity="0.10" />
+              </svg>
+            </span>
+            <span class="text-lg font-bold text-white relative z-10">Jumlah Dana</span>
           </div>
           <div class="text-3xl font-extrabold mb-2 text-white">
             {{ formatCurrency(rekapData.submissionAmount) }}
@@ -224,7 +241,6 @@
           <div class="text-sm mb-2 text-white">&nbsp;</div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -412,7 +428,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .filter-input {
   @apply w-full px-3 py-2 border border-gray-300 rounded text-xs bg-white shadow-sm transition placeholder-gray-400 focus:border-green-400 focus:ring-0 outline-none placeholder:text-center placeholder:font-normal;
 }

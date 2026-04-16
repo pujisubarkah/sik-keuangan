@@ -69,12 +69,18 @@ function confirmDeleteUser() {
         <span class="text-center text-sm">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
+<<<<<<< HEAD
         <button class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
           <IconLock class="h-4 w-4" />
+=======
+        <button @click="resetPassword(item)" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
+          <IconLock class="w-5 h-5" />
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
         </button>
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
+<<<<<<< HEAD
           <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
             <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
@@ -84,6 +90,84 @@ function confirmDeleteUser() {
           <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
             <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
           </button>
+=======
+          <button @click="openViewModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
+            <IconEye class="w-5 h-5 text-blue-600" />
+          </button>
+          <button @click="openEditModal(item)" class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
+            <IconPencil class="w-5 h-5 text-yellow-600" />
+          </button>
+          <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+            <IconTrash class="w-5 h-5 text-red-600" />
+          </button>
+              <!-- Modal View User -->
+              <div v-if="showViewModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
+                <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+                  <button @click="closeViewModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+                  <h3 class="text-xl font-bold text-blue-700 mb-6 text-center">Detail Deputi</h3>
+                  <div v-if="selectedUser" class="space-y-4">
+                    <div class="flex items-center"><span class="w-40 font-semibold text-gray-700">Nama</span><span class="flex-1">{{ selectedUser.nama }}</span></div>
+                    <div class="flex items-center"><span class="w-40 font-semibold text-gray-700">Username</span><span class="flex-1">{{ selectedUser.username }}</span></div>
+                    <div class="flex items-center"><span class="w-40 font-semibold text-gray-700">Role</span><span class="flex-1">{{ selectedUser.role }}</span></div>
+                    <div class="flex items-center"><span class="w-40 font-semibold text-gray-700">Satker</span><span class="flex-1">{{ selectedUser.satker }}</span></div>
+                    <div class="flex items-center"><span class="w-40 font-semibold text-gray-700">Terakhir Login</span><span class="flex-1">{{ selectedUser.lastLogin }}</span></div>
+                  </div>
+                  <div class="flex justify-end mt-8">
+                    <Button type="secondary" @click="closeViewModal">Tutup</Button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Edit User -->
+              <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
+                <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+                  <button @click="closeEditModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+                  <h3 class="text-xl font-bold text-blue-700 mb-6 text-center">Edit Deputi</h3>
+                  <form @submit.prevent="submitEditUser">
+                    <div class="space-y-4">
+                      <div class="flex items-center">
+                        <label for="edit-nama" class="w-40 font-semibold text-gray-700">Nama</label>
+                        <input v-model="editUser.nama" id="edit-nama" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
+                      </div>
+                      <div class="flex items-center">
+                        <label for="edit-username" class="w-40 font-semibold text-gray-700">Username</label>
+                        <input v-model="editUser.username" id="edit-username" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
+                      </div>
+                      <div class="flex items-center">
+                        <label for="edit-role" class="w-40 font-semibold text-gray-700">Role</label>
+                        <input v-model="editUser.role" id="edit-role" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
+                      </div>
+                      <div class="flex items-center">
+                        <label for="edit-satker" class="w-40 font-semibold text-gray-700">Satker</label>
+                        <input v-model="editUser.satker" id="edit-satker" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" required />
+                      </div>
+                      <div class="flex items-center">
+                        <label for="edit-lastLogin" class="w-40 font-semibold text-gray-700">Terakhir Login</label>
+                        <input v-model="editUser.lastLogin" id="edit-lastLogin" type="text" class="flex-1 border rounded-lg px-3 py-2 focus:ring focus:border-blue-400" />
+                      </div>
+                    </div>
+                    <div class="flex justify-end mt-8 gap-2">
+                      <Button type="secondary" @click="closeEditModal">Batal</Button>
+                      <Button type="success" native-type="submit">Simpan</Button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            <!-- Modal Delete User -->
+            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 pointer-events-auto">
+              <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative animate-fade-in">
+                <button @click="closeDeleteModal" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl font-bold">&times;</button>
+                <h3 class="text-xl font-bold text-red-700 mb-6 text-center">Konfirmasi Hapus Akun</h3>
+                <div class="text-center text-gray-700 mb-6">
+                  Apakah Anda yakin ingin menghapus akun <span class="font-bold">{{ userToDelete?.nama }}</span>?
+                </div>
+                <div class="flex justify-end gap-2">
+                  <Button type="secondary" @click="closeDeleteModal">Batal</Button>
+                  <Button type="error" @click="confirmDeleteUser">Hapus</Button>
+                </div>
+              </div>
+            </div>
+>>>>>>> 7f81c7ed4af8c029214cd2e342963f8aed59d98e
         </div>
       </template>
       <template #empty>

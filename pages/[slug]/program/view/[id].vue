@@ -21,9 +21,9 @@
 
       <!-- Breadcrumb -->
       <ul class="breadcrumb flex gap-2 text-sm text-gray-600">
-        <li><NuxtLink to="/index.php?r=/site/index">Dashboard</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}`">Beranda</NuxtLink></li>
         <li>/</li>
-        <li><NuxtLink to="/index.php?r=program/index">Programs</NuxtLink></li>
+        <li><NuxtLink :to="`/${$route.params.slug}/program`">Program</NuxtLink></li>
         <li>/</li>
         <li class="font-medium text-slate-700">{{ programInfo.program_nama }}</li>
       </ul>
@@ -188,7 +188,7 @@ onMounted(fetchProgramDetail)
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.05);
   transition: 0.25s;
-  border-top: 4px solid #60a5fa; /* border-blue-400 */
+  border-top: 4px solid #D69009; /* border-gold */
   border-bottom: none;
 }
 

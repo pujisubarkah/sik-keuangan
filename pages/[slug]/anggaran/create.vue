@@ -2,24 +2,17 @@
 <template>
   <div class="pt-14 min-h-screen font-poppins">
     <div class="mb-4">
-      <button class="text-blue-700 flex items-center mb-2 hover:text-blue-900" @click="$router.back()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        Kembali
-      </button>
       <SuboutputAlert :showAlert="true" />
     </div>
     <div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
-      <NuxtLink to="/" class="hover:text-blue-700 flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18" /></svg>
-        Dashboard
+      <NuxtLink :to="`/${$route.params.slug}`" class="hover:text-blue-700 flex items-center gap-1">
+        Beranda
       </NuxtLink>
-      <span>/</span>
-      <NuxtLink to="/anggaran" class="hover:text-blue-700">Anggaran</NuxtLink>
       <span>/</span>
       <span class="font-bold text-blue-700">Tambah</span>
     </div>
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Tambah Anggaran</h1>
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-blue-500">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 border-t-4 border-t-[#B1670C]">
       <div class="px-8 pt-6 pb-4 border-b border-gray-200">
         <h1 class="text-2xl font-bold text-gray-800">Form Anggaran</h1>
         <p class="text-gray-500 text-sm mt-1">Isi detail anggaran di bawah ini.</p>
@@ -29,7 +22,7 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="komponen">Komponen</label>
             <div class="col-span-9">
-              <select v-model="form.komponen" id="komponen" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+              <select v-model="form.komponen" id="komponen" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
                 <option value="">-- Pilih Komponen --</option>
                 <option v-for="opt in komponenOptions" :key="opt.kode_komponen" :value="opt.kode_komponen">{{ opt.nama_komponen }}</option>
               </select>
@@ -38,7 +31,7 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="subkomponen">Sub Komponen</label>
             <div class="col-span-9">
-              <select v-model="form.subkomponen" id="subkomponen" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.komponen">
+              <select v-model="form.subkomponen" id="subkomponen" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.komponen">
                 <option value="">-- Pilih Sub Komponen --</option>
                 <option v-for="opt in filteredSubkomponenOptions" :key="opt.kode_subkomponen" :value="opt.kode_subkomponen">{{ opt.nama_subkomponen }}</option>
               </select>
@@ -47,7 +40,7 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="akun">Akun</label>
             <div class="col-span-9">
-              <select v-model="form.akun" id="akun" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.subkomponen">
+              <select v-model="form.akun" id="akun" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" :disabled="!form.subkomponen">
                 <option value="">-- Pilih Akun --</option>
                 <option v-for="opt in filteredAkunOptions" :key="opt.kode_akun" :value="opt.kode_akun">{{ opt.kode_akun }} - {{ opt.nama_akun }}</option>
               </select>
@@ -56,19 +49,19 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_uraian">Uraian</label>
             <div class="col-span-9">
-              <textarea v-model="form.uraian" id="Anggaran_uraian" maxlength="255" placeholder="Uraian" rows="2" class="block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words"></textarea>
+              <textarea v-model="form.uraian" id="Anggaran_uraian" maxlength="255" placeholder="Uraian" rows="2" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition shadow-sm min-h-[48px] max-h-40 resize-y break-words pt-4 bg-gray-50"></textarea>
             </div>
           </div>
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_kode">Kode</label>
             <div class="col-span-9">
-              <input v-model="form.kode" id="Anggaran_kode" type="text" maxlength="255" placeholder="Kode" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+              <input v-model="form.kode" id="Anggaran_kode" type="text" maxlength="255" placeholder="Kode" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
             </div>
           </div>
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_revisi">Revisi</label>
             <div class="col-span-9">
-              <select v-model="form.revisi" id="Anggaran_revisi" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
+              <select v-model="form.revisi" id="Anggaran_revisi" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition">
                 <option value="tidak">Tidak</option>
                 <option value="ya">Ya</option>
               </select>
@@ -77,29 +70,26 @@
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_volume">Volume</label>
             <div class="col-span-9">
-              <input v-model="form.volume" id="Anggaran_volume" type="text" placeholder="Volume" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+                <input v-model="form.volume" id="Anggaran_volume" type="text" placeholder="Volume" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
             </div>
           </div>
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_satuan">Satuan</label>
             <div class="col-span-9">
-              <input v-model="form.satuan" id="Anggaran_satuan" type="text" maxlength="255" placeholder="Satuan" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
+              <input v-model="form.satuan" id="Anggaran_satuan" type="text" maxlength="255" placeholder="Satuan" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition" />
             </div>
           </div>
           <div class="grid grid-cols-12 items-center gap-4">
             <label class="col-span-3 text-right font-semibold text-gray-700" for="Anggaran_harga_satuan">Harga Satuan</label>
             <div class="col-span-9">
-              <input :value="computedHargaSatuan" id="Anggaran_harga_satuan" type="text" readonly placeholder="Harga Satuan" class="block w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition bg-gray-100" />
+              <input :value="computedHargaSatuan" id="Anggaran_harga_satuan" type="text" readonly placeholder="Harga Satuan" class="block w-full rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 py-2 px-4 text-gray-800 placeholder-gray-400 shadow-sm transition bg-gray-100" />
             </div>
           </div>
           <input type="hidden" v-model="form.referrer" />
         </div>
         <div class="flex justify-end mt-10 gap-4">
-          <button type="submit" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800">
-            <span class="mdi mdi-check"></span> Simpan
-          </button>
-          <button type="button" @click="$router.back()" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 flex items-center gap-2 px-8 py-3 font-semibold text-lg bg-gradient-to-tr from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800">
-            <span class="mdi mdi-close"></span> Batal
+          <button type="submit" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-150 px-5 py-2.5 font-bold text-base bg-[#2663A3] text-white hover:bg-[#1F4F85] active:scale-95">
+            Simpan
           </button>
         </div>
       </form>

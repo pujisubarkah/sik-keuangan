@@ -34,19 +34,19 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
     <h1 class="text-3xl font-bold text-blue-700 mb-6">Daftar Admin OMSPAN</h1>
     <VTable :headers="userHeaders" :items="usersWithNo">
       <template #nama="{ item }">
-        <span class="font-semibold text-blue-700">{{ item.nama }}</span>
+        <span class="font-semibold text-black">{{ item.nama }}</span>
       </template>
       <template #username="{ item }">
-        <span class="text-center">{{ item.username }}</span>
+        <span class="text-center text-black">{{ item.username }}</span>
       </template>
       <template #role="{ item }">
         <span class="badge badge-primary text-white font-bold">{{ item.role }}</span>
       </template>
       <template #satker="{ item }">
-        <span class="text-center">{{ item.satker }}</span>
+        <span class="text-center text-black">{{ item.satker }}</span>
       </template>
       <template #lastLogin="{ item }">
-        <span class="text-center text-sm">{{ item.lastLogin }}</span>
+        <span class="text-center text-sm text-black">{{ item.lastLogin }}</span>
       </template>
       <template #password="{ item }">
         <button class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-md transition-colors" title="Reset Password">
@@ -55,14 +55,14 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-          <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
-            <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
+          <button class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
+            <IconEye class="w-5 h-5 text-blue-600" />
           </button>
-          <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
-            <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
+          <button class="bg-yellow-50 p-2 rounded hover:bg-yellow-100 text-yellow-600 transition tooltip" data-tip="Edit" style="border:none;padding:0;">
+            <IconPencil class="w-5 h-5 text-yellow-600" />
           </button>
-          <button class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-            <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
+          <button class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
+            <IconTrash class="w-5 h-5 text-red-600" />
           </button>
         </div>
       </template>
