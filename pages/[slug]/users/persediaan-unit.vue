@@ -87,11 +87,7 @@ function doDelete() {
           <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit">
             <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
           </button>
-<<<<<<< HEAD
-          <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus">
-=======
           <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
->>>>>>> 73a4997 (lanjut)
             <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
           </button>
         </div>

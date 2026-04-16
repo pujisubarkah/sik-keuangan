@@ -64,28 +64,11 @@ const doDelete = () => {
       </NuxtLink>
     </div>
 
-<<<<<<< HEAD
     <div class="card bg-white shadow-xl rounded-xl border border-blue-100 overflow-hidden">
       <div class="card-body p-6">
         <div class="text-sm mb-4 text-blue-700 font-semibold">
           Menampilkan <b>{{ berkasList.length }}</b> jenis berkas
-=======
-    <!-- CARD -->
-    <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-      <div class="card-body">
-        <!-- ACTION -->
-        <div class="mb-4">
-          <NuxtLink :to="`/${route.params.slug}/berkas/create`">
-            <VButton
-              variant="primary"
-              size="md"
-              :prependIcon="IconPlus"
-              class="w-fit"
-            >
-              Tambah Berkas
-            </VButton>
-          </NuxtLink>
->>>>>>> 73a4997 (lanjut)
+              
         </div>
 
         <div class="overflow-x-auto">
@@ -116,25 +99,6 @@ const doDelete = () => {
                 </td>
               </tr>
             </thead>
-<<<<<<< HEAD
-            <tbody>
-              <tr v-for="(b, i) in berkasList.filter(bk => 
-                bk.kode_akun.toLowerCase().includes(filter.kode_akun.toLowerCase()) &&
-                bk.nama_berkas.toLowerCase().includes(filter.nama_berkas.toLowerCase()) &&
-                bk.kata_kunci.toLowerCase().includes(filter.kata_kunci.toLowerCase())
-              )" :key="b.id" class="hover:bg-blue-50 transition">
-                <td class="text-center font-bold text-blue-700">{{ i + 1 }}</td>
-                <td class="text-center font-mono font-semibold text-blue-800">{{ b.kode_akun }}</td>
-                <td class="font-medium text-gray-800">{{ b.nama_berkas }}</td>
-                <td class="text-gray-500 italic">{{ b.kata_kunci || '-' }}</td>
-                <td class="text-center">
-                  <div class="flex justify-center gap-2">
-                    <NuxtLink :to="`/${route.params.slug}/berkas/view/${b.id}`" class="text-blue-600 hover:text-blue-800 p-1 rounded-md hover:bg-blue-100 transition" title="View">
-                      <IconEye class="w-5 h-5" />
-                    </NuxtLink>
-                    <NuxtLink :to="`/${route.params.slug}/berkas/update/${b.id}`" class="text-yellow-600 hover:text-yellow-800 p-1 rounded-md hover:bg-yellow-100 transition" title="Edit">
-                      <IconPencil class="w-5 h-5" />
-=======
             <tbody class="divide-y divide-gray-100">
               <tr
                 v-for="(b, i) in berkasList.filter(bk =>
@@ -153,22 +117,23 @@ const doDelete = () => {
                   <span class="font-semibold text-green-700 bg-transparent">{{ b.nama_berkas }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
-                  <span class="font-semibold text-yellow-700 bg-transparent">{{ b.kata_kunci }}</span>
+                  <span class="font-semibold text-yellow-700 bg-transparent">{{ b.kata_kunci || '-' }}</span>
                 </td>
                 <td class="px-3 py-2 text-center align-middle">
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/${route.params.slug}/berkas/view/${b.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="View"
+                      class="text-blue-600 hover:text-blue-800 p-1 rounded-md hover:bg-blue-100 transition"
+                      title="View"
                     >
-                      <IconEye class="w-5 h-5 text-blue-600" />
+                      <IconEye class="w-5 h-5" />
                     </NuxtLink>
                     <NuxtLink
                       :to="`/${route.params.slug}/berkas/update/${b.id}`"
-                      class="hover:text-blue-700 transition tooltip" data-tip="Update"
+                      class="text-yellow-600 hover:text-yellow-800 p-1 rounded-md hover:bg-yellow-100 transition"
+                      title="Edit"
                     >
-                      <IconPencil class="w-5 h-5 text-yellow-600" />
->>>>>>> 73a4997 (lanjut)
+                      <IconPencil class="w-5 h-5" />
                     </NuxtLink>
                     <button @click="confirmDelete(b)" class="text-red-500 hover:text-red-700 p-1 rounded-md hover:bg-red-100 transition" title="Delete">
                       <IconTrash class="w-5 h-5" />

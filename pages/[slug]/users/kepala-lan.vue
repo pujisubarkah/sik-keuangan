@@ -81,11 +81,7 @@ function doDelete() {
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-<<<<<<< HEAD
-          <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail">
-=======
           <button class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
->>>>>>> 73a4997 (lanjut)
             <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
           <button class="hover:text-yellow-700 transition tooltip" data-tip="Edit">

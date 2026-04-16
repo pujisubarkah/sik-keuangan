@@ -60,7 +60,7 @@ function confirmDeleteUser() {
   closeDeleteModal()
 }
 import { ref, computed } from 'vue'
-import { IconLock, IconEye, IconPencil, IconTrash } from '@tabler/icons-vue'
+import { IconLock, IconEye, IconPencil, IconTrash, IconPlus } from '@tabler/icons-vue'
 import VTable from '~/components/UI/v-table.vue'
 import SuboutputAlert from '~/components/SuboutputAlert.vue'
 
@@ -91,17 +91,11 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
 <template>
   <div class="pt-14">
     <SuboutputAlert :showAlert="showAlert" />
-<<<<<<< HEAD
     <div class="mb-2">
       <h1 class="text-3xl font-bold text-blue-700 text-center">Daftar Bendahara Penerima</h1>
     </div>
     <div class="mb-6">
       <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
-=======
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-3xl font-bold text-blue-700">Daftar Bendahara Penerima</h1>
-      <button @click="openAddModal" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
->>>>>>> 73a4997 (lanjut)
         <IconPlus class="w-4 h-4" />
         Tambah Bendahara Penerima
       </button>
@@ -129,16 +123,6 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
       </template>
       <template #aksi="{ item }">
         <div class="flex justify-center gap-2">
-<<<<<<< HEAD
-          <button @click="openLoginHistoryModal(item)" class="hover:text-blue-700 transition tooltip" data-tip="Lihat Detail" style="background:none;border:none;padding:0;">
-            <IconEye class="w-5 h-5 text-blue-600 hover:text-blue-800" />
-          </button>
-          <button @click="openEditModal(item)" class="hover:text-yellow-700 transition tooltip" data-tip="Edit" style="background:none;border:none;padding:0;">
-            <IconPencil class="w-5 h-5 text-yellow-600 hover:text-yellow-800" />
-          </button>
-          <button @click="openDeleteModal(item)" class="hover:text-red-700 transition tooltip" data-tip="Hapus" style="background:none;border:none;padding:0;">
-            <IconTrash class="w-5 h-5 text-red-500 hover:text-red-700" />
-=======
           <button @click="openLoginHistoryModal(item)" class="bg-blue-50 p-2 rounded hover:bg-blue-100 text-blue-600 transition tooltip" data-tip="Lihat Detail" style="border:none;padding:0;">
             <IconEye class="w-5 h-5 text-blue-600" />
           </button>
@@ -147,7 +131,6 @@ const usersWithNo = computed(() => users.value.map((u, i) => ({ ...u, no: i + 1 
           </button>
           <button @click="openDeleteModal(item)" class="bg-red-50 p-2 rounded hover:bg-red-100 text-red-600 transition tooltip" data-tip="Hapus" style="border:none;padding:0;">
             <IconTrash class="w-5 h-5 text-red-600" />
->>>>>>> 73a4997 (lanjut)
           </button>
         </div>
       </template>
