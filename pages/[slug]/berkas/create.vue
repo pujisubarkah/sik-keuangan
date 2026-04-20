@@ -1,64 +1,67 @@
 <template>
-	<section class="max-w-2xl mx-auto mt-10 px-4">
+	<section class="max-w-5xl mx-auto mt-10 px-6">
 		<h1 class="text-2xl font-bold mb-6">Tambah Berkas Anggaran</h1>
 		<v-alert v-if="alert.message" :type="alert.type" :message="alert.message" dismissible class="mb-4" />
 		<form @submit.prevent="handleSubmit">
-			<div class="bg-white rounded-xl shadow-md overflow-hidden">
-				<!-- Header kartu -->
-				<div class="bg-primary/10 border-b border-primary/20 px-6 py-3">
-					<p class="text-sm text-gray-500">
-						Field bertanda <span class="text-red-500 font-bold">*</span> wajib diisi.
-					</p>
+			<div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200/80 overflow-hidden border-t-4 border-t-[#D69009]">
+				<!-- Card Header dengan gradient accent -->
+				<div class="px-8 py-6 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 border-b border-slate-100">
+					<div class="flex items-center gap-3">
+						<div>
+							<h2 class="text-lg font-semibold text-slate-800">Detail Berkas Anggaran</h2>
+							<p class="text-sm text-slate-500">Field bertanda <span class="text-rose-500">*</span> wajib diisi</p>
+						</div>
+					</div>
 				</div>
 
 				<!-- Body form -->
-				<div class="px-6 py-6 space-y-5">
+				<div class="px-8 py-8 space-y-7">
 
 					<!-- Kode Akun -->
-					<div class="grid grid-cols-[170px_1fr] items-start gap-x-4">
-						<label class="pt-2.5 text-sm font-semibold text-gray-700 text-right">
+					<div class="flex items-center gap-4">
+						<label class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
 							Kode Akun <span class="text-red-500">*</span>
 						</label>
-						<div>
+						<div class="relative flex-1">
 							<input
 								v-model="form.kode_akun"
 								type="text"
 								placeholder="Masukkan kode akun"
-								class="input input-bordered w-full"
+								class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200"
 							/>
 							<p v-if="errors.kode_akun" class="text-error text-xs mt-1">{{ errors.kode_akun }}</p>
 						</div>
 					</div>
 
 					<!-- Nama Berkas -->
-					<div class="grid grid-cols-[170px_1fr] items-start gap-x-4">
-						<label class="pt-2.5 text-sm font-semibold text-gray-700 text-right">
+					<div class="flex items-center gap-4">
+						<label class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0">
 							Nama Berkas <span class="text-red-500">*</span>
 						</label>
-						<div>
+						<div class="relative flex-1">
 							<input
 								v-model="form.nama_berkas"
 								type="text"
 								placeholder="Masukkan nama berkas"
-								class="input input-bordered w-full"
+								class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200"
 							/>
 							<p v-if="errors.nama_berkas" class="text-error text-xs mt-1">{{ errors.nama_berkas }}</p>
 						</div>
 					</div>
 
 					<!-- Kata Kunci -->
-					<div class="grid grid-cols-[170px_1fr] items-start gap-x-4">
-						<label class="pt-2.5 text-sm font-semibold text-gray-700 text-right" for="kata_kunci">
+					<div class="flex items-center gap-4">
+						<label class="w-48 flex items-center gap-2 text-sm font-semibold text-slate-700 flex-shrink-0" for="kata_kunci">
 							Kata Kunci
 						</label>
-						<div>
+						<div class="relative flex-1">
 							<textarea
 								id="kata_kunci"
 								v-model="form.kata_kunci"
 								placeholder="Masukkan kata kunci (opsional)"
 								maxlength="255"
 								rows="3"
-								class="textarea textarea-bordered w-full resize-none"
+								class="flex-1 min-w-0 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-700 placeholder-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white transition-all duration-200 resize-y min-h-[80px] max-h-48 leading-relaxed"
 							></textarea>
 							<p v-if="errors.kata_kunci" class="text-error text-xs mt-1">{{ errors.kata_kunci }}</p>
 							<p class="text-gray-400 text-xs mt-1 text-right">{{ form.kata_kunci.length }}/255</p>
@@ -68,9 +71,8 @@
 				</div>
 
 				<!-- Footer -->
-				<div class="px-6 py-4 bg-gray-50 border-t flex justify-end gap-2">
-					<button type="button" class="btn btn-ghost" @click="$router.back()">Batal</button>
-					<v-button :loading="loading" type="submit" class="btn btn-primary">
+				<div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-10 pt-6 border-t border-slate-100 px-8 py-4 bg-gray-50">
+					<v-button :loading="loading" type="submit" class="px-8 py-2.5 rounded-xl font-semibold bg-[#2663A3] text-white hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200">
 						<template #default>Simpan</template>
 					</v-button>
 				</div>

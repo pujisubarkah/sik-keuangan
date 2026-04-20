@@ -50,9 +50,6 @@ const route = useRoute()
               <TextField v-model="kata_kunci" type="text" readonly class="flex-1 [&>input]:rounded-xl [&>input]:border-slate-200 [&>input]:bg-gray-100 [&>input]:px-4 [&>input]:py-3" />
             </div>
           </div>
-          <div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-10 pt-6 border-t border-slate-100">
-            <Button type="neutral" native-type="button" class="px-6 py-2.5 rounded-xl border-slate-200" @click="router?.back()">Kembali</Button>
-          </div>
         </form>
       </div>
     </div>
