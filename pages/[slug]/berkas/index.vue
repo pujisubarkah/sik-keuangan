@@ -72,25 +72,25 @@ const doDelete = () => {
         </div>
 
         <div class="overflow-x-auto">
-          <table class="table table-md w-full">
+          <table class="table table-md w-full text-sm">
             <thead class="bg-blue-50 text-blue-900">
               <tr>
-                <th class="w-16 text-center">No</th>
-                <th class="w-32 text-center">Kode Akun</th>
-                <th>Nama Berkas</th>
-                <th>Kata Kunci</th>
-                <th class="w-40 text-center">Aksi</th>
+                <th class="w-16 text-center text-sm">No</th>
+                <th class="w-32 text-center text-sm">Kode Akun</th>
+                <th class="text-sm">Nama Berkas</th>
+                <th class="text-sm">Kata Kunci</th>
+                <th class="w-40 text-center text-sm">Aksi</th>
               </tr>
               <tr class="bg-white">
                 <td></td>
                 <td>
-                  <input v-model="filter.kode_akun" type="text" class="input input-bordered input-xs w-full" placeholder="Cari..." />
+                  <input v-model="filter.kode_akun" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 mb-2" maxlength="255" placeholder="Cari..." />
                 </td>
                 <td>
-                  <input v-model="filter.nama_berkas" type="text" class="input input-bordered input-xs w-full" placeholder="Cari nama berkas..." />
+                  <input v-model="filter.nama_berkas" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 mb-2" maxlength="255" placeholder="Cari nama berkas..." />
                 </td>
                 <td>
-                  <input v-model="filter.kata_kunci" type="text" class="input input-bordered input-xs w-full" placeholder="Cari kata kunci..." />
+                  <input v-model="filter.kata_kunci" type="text" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 mb-2" maxlength="255" placeholder="Cari kata kunci..." />
                 </td>
                 <td class="text-center">
                   <button class="btn btn-ghost btn-xs">
@@ -109,17 +109,17 @@ const doDelete = () => {
                 :key="b.id"
                 class="hover:bg-yellow-50 align-middle transition"
               >
-                <td class="px-3 py-2 text-center align-middle font-bold text-blue-700">{{ i + 1 }}</td>
-                <td class="px-3 py-2 text-center align-middle">
+                <td class="px-3 py-2 text-center align-middle font-bold text-blue-700 text-sm">{{ i + 1 }}</td>
+                <td class="px-3 py-2 text-center align-middle text-sm">
                   <span class="font-semibold text-blue-700 bg-transparent">{{ b.kode_akun }}</span>
                 </td>
-                <td class="px-3 py-2 text-center align-middle">
+                <td class="px-3 py-2 text-center align-middle text-sm">
                   <span class="font-semibold text-green-700 bg-transparent">{{ b.nama_berkas }}</span>
                 </td>
-                <td class="px-3 py-2 text-center align-middle">
+                <td class="px-3 py-2 text-center align-middle text-sm">
                   <span class="font-semibold text-yellow-700 bg-transparent">{{ b.kata_kunci || '-' }}</span>
                 </td>
-                <td class="px-3 py-2 text-center align-middle">
+                <td class="px-3 py-2 text-center align-middle text-sm">
                   <div class="flex justify-center gap-1">
                     <NuxtLink
                       :to="`/${route.params.slug}/berkas/view/${b.id}`"
@@ -142,7 +142,7 @@ const doDelete = () => {
                 </td>
               </tr>
               <tr v-if="berkasList.length === 0">
-                <td colspan="5" class="text-center py-8 text-gray-400">Tidak ada data berkas.</td>
+                <td colspan="5" class="text-center py-8 text-gray-400 text-sm">Tidak ada data berkas.</td>
               </tr>
             </tbody>
           </table>
