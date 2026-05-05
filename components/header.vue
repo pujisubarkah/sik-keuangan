@@ -18,8 +18,11 @@
       <span class="sr-only">Toggle navigation</span>
     </button>
     <div class="header-left flex items-center h-full pl-4">
-      <!-- Kosong, bisa diisi logo jika perlu -->
+      <span class="text-lg font-bold text-white tracking-wide select-none ml-12">
+        {{ currentMenuName }}
+      </span>
     </div>
+
     <!-- Navbar -->
     <nav class="navbar flex-1">
       <!-- Navbar Right Menu -->
@@ -108,6 +111,28 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
+const currentMenuName = computed(() => {
+  const path = route.path
+  if (path === '/' || path === '' || /^\/[^/]+$/.test(path)) return 'Beranda'
+  if (path.includes('/unit')) return 'Unit'
+  if (path.includes('/ganti-password')) return 'Ganti Password'
+  if (path.includes('/perencanaan')) return 'Perencanaan'
+  if (path.includes('/pengajuan')) return 'Pengajuan'
+  if (path.includes('/pengeluaran')) return 'Pengeluaran'
+  if (path.includes('/informasi')) return 'Informasi'
+  if (path.includes('/pnpb')) return 'PNBP'
+  if (path.includes('/berkas')) return 'Berkas'
+  if (path.includes('/satker')) return 'Satker'
+  if (path.includes('/program')) return 'Program'
+  if (path.includes('/kegiatan')) return 'Kegiatan'
+  if (path.includes('/output')) return 'Output'
+  if (path.includes('/suboutput')) return 'Rincian Output'
+  if (path.includes('/users')) return 'User'
+  return 'Menu'
+})
 
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useUserStore } from '~/stores/user'

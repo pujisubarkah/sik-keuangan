@@ -14,12 +14,14 @@ export default defineEventHandler(async (event) => {
     return { error: 'Method not allowed' };
   }
 
+
+  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
   const form = new IncomingForm({
-    uploadDir: path.join(process.cwd(), 'public', 'uploads'),
+    uploadDir,
     keepExtensions: true,
   });
 
-  await fs.mkdir(form.uploadDir, { recursive: true });
+  await fs.mkdir(uploadDir, { recursive: true });
 
   return new Promise((resolve) => {
     form.parse(event.req, async (err, fields, files) => {

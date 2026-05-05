@@ -131,16 +131,16 @@ function handleSalinClick(event) {
       <Icon icon="tabler:subtask" class="w-4 h-4 text-gray-500" /> Sub
     </button>
     <button
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-green-600 border border-green-700 rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors whitespace-nowrap"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
       @click="$emit('ajukan')"
     >
-      <Icon icon="tabler:send" class="w-4 h-4 text-white" /> Ajukan
+      <Icon icon="tabler:send" class="w-4 h-4 text-gray-500" /> Ajukan
     </button>
     <button
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-red-600 border border-red-700 rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors whitespace-nowrap"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap"
       @click="$emit('delete')"
     >
-      <Icon icon="tabler:trash" class="w-4 h-4 text-white" /> Hapus
+      <Icon icon="tabler:trash" class="w-4 h-4 text-gray-500" /> Hapus
     </button>
     <div class="relative inline-block" ref="dropdownRef">
       <button @click="toggleDropdown" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors whitespace-nowrap" type="button">
