@@ -22,23 +22,19 @@
                 <label class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
                   <i class="fa fa-building text-blue-500" />
                   <span>Satker</span>
-                  <span v-if="filterForm.id_satker" class="ml-auto text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded-full">✓</span>
                 </label>
                 <div class="relative">
-                  <select v-model="filterForm.id_satker" class="select select-bordered w-full pl-10 pr-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all rounded-xl hover:border-blue-400 appearance-none cursor-pointer" :class="{ 'border-green-400 ring-2 ring-green-100': filterForm.id_satker }">
+                  <select v-model="filterForm.id_satker" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 pr-10 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 appearance-none cursor-pointer shadow-none" :class="{ 'border-gray-400': filterForm.id_satker }">
                     <option value="" disabled selected>Pilih Satker...</option>
                     <option v-for="satker in satkerOptions" :key="satker.value" :value="satker.value">{{ satker.text }}</option>
                   </select>
-                  <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <i class="fa fa-building text-gray-400" />
-                  </div>
-                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <i class="fa fa-chevron-down text-gray-400" />
+                  <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                    <i class="fa fa-chevron-down" />
                   </div>
                 </div>
               </div>
               <div class="md:col-span-2 flex items-end">
-                <button type="submit" class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-green-800 hover:shadow-lg">
+                <button type="submit" class="w-full bg-brandBlue-600 hover:bg-brandBlue-700 active:bg-brandBlue-800 border border-brandBlue-700 hover:border-brandBlue-800 active:border-brandBlue-800 text-white font-semibold py-1.5 px-3 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brandBlue-300" style="min-height:36px">
                   <i class="fa fa-search w-4 h-4" />
                   <span>Tampilkan</span>
                 </button>
@@ -67,23 +63,15 @@
         </StatBox>
       </div>
       <!-- Charts -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-          <div class="card-body">
-            <h3 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-              <i class="fa fa-bar-chart-o text-blue-500"></i>
-              Grafik Jumlah Realisasi
-            </h3>
-            <div id="chart-jumlah" ref="chartJumlahRef" style="min-height: 350px;"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-stretch">
+        <div class="card w-full min-w-0 overflow-hidden bg-white/80 shadow-lg rounded-xl border border-blue-100 backdrop-blur-sm">
+          <div class="card-body bg-transparent">
+            <div id="chart-jumlah" ref="chartJumlahRef" class="w-full max-w-full overflow-hidden bg-transparent" style="min-height: 350px; width: 100%;"></div>
           </div>
         </div>
-        <div class="card bg-white shadow-xl rounded-xl border border-blue-100">
-          <div class="card-body">
-            <h3 class="card-title text-base font-bold text-blue-700 mb-2 flex items-center gap-2">
-              <i class="fa fa-bar-chart-o text-blue-500"></i>
-              Grafik Persentase Realisasi
-            </h3>
-            <div id="chart-persen" ref="chartPersenRef" style="min-height: 350px;"></div>
+        <div class="card w-full min-w-0 overflow-hidden bg-white/80 shadow-lg rounded-xl border border-blue-100 backdrop-blur-sm">
+          <div class="card-body bg-transparent">
+            <div id="chart-persen" ref="chartPersenRef" class="w-full max-w-full overflow-hidden bg-transparent" style="min-height: 350px; width: 100%;"></div>
           </div>
         </div>
       </div>
@@ -109,10 +97,16 @@
                 <tr v-for="row in filteredTableData" :key="row.kode" class="hover:bg-yellow-50 align-middle">
                   <td class="px-3 py-2 text-center align-middle">{{ row.kode }}</td>
                   <td class="px-3 py-2 align-middle">
-                    <div class="inline-flex gap-1">
-                      <button class="rounded bg-blue-100 text-blue-700 px-2 py-1 text-xs font-semibold hover:bg-blue-200 transition" @click.prevent="openAddModal(row)"><i class="fa fa-plus"></i></button>
-                      <button class="rounded bg-yellow-100 text-yellow-700 px-2 py-1 text-xs font-semibold hover:bg-yellow-200 transition" @click.prevent="openEditModal(row)"><i class="fa fa-pencil"></i></button>
-                      <button class="rounded bg-red-100 text-red-700 px-2 py-1 text-xs font-semibold hover:bg-red-200 transition" @click.prevent="confirmDelete(row)"><i class="fa fa-trash"></i></button>
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" title="Tambah anak akun" aria-label="Tambah anak akun" class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-700 text-[11px] transition-colors hover:bg-blue-100 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300" @click.prevent="openAddModal(row)">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                      <button type="button" title="Edit akun" aria-label="Edit akun" class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-yellow-200 bg-yellow-50 text-yellow-700 text-[11px] transition-colors hover:bg-yellow-100 hover:border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300" @click.prevent="openEditModal(row)">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button type="button" title="Hapus akun" aria-label="Hapus akun" class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-200 bg-red-50 text-red-700 text-[11px] transition-colors hover:bg-red-100 hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300" @click.prevent="confirmDelete(row)">
+                        <i class="fa fa-trash"></i>
+                      </button>
                     </div>
                     <span class="ml-2 font-semibold text-indigo-700" v-if="row.kode.length <= 3">{{ row.uraian }}</span>
                     <span class="ml-6 text-gray-700" v-else>{{ row.uraian }}</span>
@@ -144,15 +138,15 @@
           </div>
           <!-- Export Buttons -->
           <div class="mt-8 flex flex-wrap gap-3">
-            <button class="inline-flex items-center gap-2 rounded-md border border-blue-700 bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="openAddModal()">
+            <button class="inline-flex items-center gap-2 rounded-md border border-green-800 bg-green-700 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-green-800 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="openAddModal()">
                <IconPlus class="w-4 h-4" />
                <span>Tambah Akun Induk</span>
             </button>
-            <button class="inline-flex items-center gap-2 rounded-md border border-green-700 bg-green-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-green-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
-               <Icon icon="tabler:file-spreadsheet" class="w-4 h-4" />
+            <button class="inline-flex items-center gap-2 rounded-md border border-[#00B925] bg-[#00B925] px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
+              <Icon icon="tabler:download" class="w-4 h-4" />
                <span>Export ke Excel</span>
             </button>
-            <button class="inline-flex items-center gap-2 rounded-md border border-emerald-700 bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-emerald-700 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
+            <button class="inline-flex items-center gap-2 rounded-md border border-[#00B925] bg-[#00B925] px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0" @click="exportToCSV">
                <Icon icon="tabler:file-invoice" class="w-4 h-4" />
                <span>Export Realisasi</span>
             </button>
@@ -257,6 +251,7 @@ const chartPersenData = {
     yAxisMaxValue: 100,
     theme: 'fusion',
     numberSuffix: '%',
+    showLegend: '0',
   },
   categories: [{
     category: [
@@ -265,7 +260,6 @@ const chartPersenData = {
   }],
   dataset: [
     {
-      seriesname: 'Realisasi',
       data: [{ value: '0' }, { value: '20' }],
     },
   ],
@@ -284,11 +278,14 @@ const renderChartJumlah = () => {
   console.log('Rendering chart-jumlah...')
   const chartContainer = document.getElementById('chart-jumlah')
   console.log('Chart container:', chartContainer)
+  if (!chartContainer) return
+  chartContainer.innerHTML = ''
+  const chartWidth = Math.max(chartContainer.clientWidth || 0, 320)
   
   new FusionChartsLib({
     type: 'column3d',
     renderAt: 'chart-jumlah',
-    width: '100%',
+    width: String(chartWidth),
     height: '350',
     dataFormat: 'json',
     dataSource: chartJumlahData
@@ -301,11 +298,14 @@ const renderChartPersen = () => {
   console.log('Rendering chart-persen...')
   const chartContainer = document.getElementById('chart-persen')
   console.log('Chart container:', chartContainer)
+  if (!chartContainer) return
+  chartContainer.innerHTML = ''
+  const chartWidth = Math.max(chartContainer.clientWidth || 0, 320)
   
   new FusionChartsLib({
     type: 'msline',
     renderAt: 'chart-persen',
-    width: '100%',
+    width: String(chartWidth),
     height: '350',
     dataFormat: 'json',
     dataSource: chartPersenData

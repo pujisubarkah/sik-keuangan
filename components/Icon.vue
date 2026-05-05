@@ -33,6 +33,8 @@ import {
   IconBuilding,
   IconFileText,
   IconFileImport,
+  IconDownload,
+  IconFileInvoice,
   IconLogout,
   IconChevronRight,
   IconChevronDown,
@@ -100,6 +102,8 @@ const iconMap: Record<string, any> = {
   'tabler:file-description': IconFileDescription,
   'tabler:file-text': IconFileText,
   'tabler:file-import': IconFileImport,
+  'tabler:file-invoice': IconFileInvoice,
+  'tabler:download': IconDownload,
   'tabler:logout': IconLogout
 }
 
